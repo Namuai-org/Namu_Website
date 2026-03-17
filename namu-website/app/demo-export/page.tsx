@@ -18,7 +18,7 @@ export default function DemoExportPage() {
           width: "min(1440px, calc((100vh - 40px) * 16 / 9), 100%)",
         }}
       >
-        <StudioDemo autoPlay startDelayMs={2000} showControls={false} showStoryPills={false} />
+        <StudioDemo autoPlay loop={false} startDelayMs={2000} showControls={false} showStoryPills={false} />
       </div>
     </main>
   );

@@ -1,71 +1,111 @@
-﻿"use client";
+"use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useTranslation } from "@/hooks/useTranslation";
+
+type ProblemCardProps = {
+  id: string;
+  body: string;
+  align: "left" | "right";
+  total: number;
+};
+
+function ProblemCard({ id, body, align, total }: ProblemCardProps) {
+  const ref = useRef<HTMLElement | null>(null);
+  const [hasStarted, setHasStarted] = useState(false);
+  const [typedLength, setTypedLength] = useState(0);
+  const [isHolding, setIsHolding] = useState(false);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setHasStarted(true);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.35 }
+    );
+
+    observer.observe(node);
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!hasStarted) return;
+    if (isHolding) {
+      const timer = window.setTimeout(() => {
+        setIsHolding(false);
+        setTypedLength(0);
+      }, 15000);
+
+      return () => window.clearTimeout(timer);
+    }
+
+    if (typedLength < body.length) {
+      const nextCharacter = body[typedLength];
+      const delay = nextCharacter === " " ? 12 : 24;
+      const timer = window.setTimeout(() => {
+        setTypedLength((current) => current + 1);
+      }, delay);
+
+      return () => window.clearTimeout(timer);
+    }
+
+    setIsHolding(true);
+  }, [body, hasStarted, isHolding, typedLength]);
+
+  return (
+    <article
+      ref={ref}
+      className={`problem-scroll-card reveal ${align === "left" ? "reveal-left" : "reveal-right"} problem-scroll-card-${align}`}
+    >
+      <div className="problem-scroll-shell">
+        <div className="problem-scroll-meta">
+          <span className="problem-scroll-kicker">Problem</span>
+          <span className="problem-scroll-count">
+            {id} / {String(total).padStart(2, "0")}
+          </span>
+        </div>
+
+        <div className="problem-scroll-window">
+          <span className="problem-card-number">{id}</span>
+          <p>
+            {hasStarted ? body.slice(0, typedLength) : ""}
+            <span className="problem-card-caret" aria-hidden="true" />
+          </p>
+        </div>
+      </div>
+    </article>
+  );
+}
 
 export function ProblemSection() {
   useScrollReveal("#problem .reveal");
   const { t } = useTranslation();
 
-  const items = useMemo(
-    () => [
-      { id: "01", title: t("problem.1.title"), body: t("problem.1.body") },
-      { id: "02", title: t("problem.2.title"), body: t("problem.2.body") },
-      { id: "03", title: t("problem.3.title"), body: t("problem.3.body") },
-      { id: "04", title: t("problem.4.title"), body: t("problem.4.body") },
-    ],
-    [t]
-  );
-
-  const sectionRef = useRef<HTMLElement | null>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  useEffect(() => {
-    const onScroll = () => {
-      if (!sectionRef.current) return;
-      const rect = sectionRef.current.getBoundingClientRect();
-      const travel = Math.max(rect.height - window.innerHeight * 0.55, 1);
-      const progress = Math.min(Math.max((window.innerHeight * 0.35 - rect.top) / travel, 0), 0.999);
-      const nextIndex = Math.floor(progress * items.length);
-      setActiveIndex(nextIndex);
-    };
-
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, [items.length]);
+  const items = [
+    { id: "01", body: t("problem.1.body"), align: "left" as const },
+    { id: "02", body: t("problem.2.body"), align: "right" as const },
+    { id: "03", body: t("problem.3.body"), align: "left" as const },
+  ];
 
   return (
-    <section className="section problem-story" id="problem" ref={sectionRef}>
+    <section className="section problem-editorial" id="problem">
       <div className="container">
-        <span className="section-label section-label-center problem-label reveal reveal-fade">{t("problem.label")}</span>
-        <h2 className="problem-title reveal reveal-up">{t("problem.title")}</h2>
+        <span className="section-label section-label-center reveal reveal-fade">{t("problem.label")}</span>
 
-        <div className="problem-story-grid">
-          <div className="problem-sticky reveal reveal-fade">
-            <div className="problem-progress-track">
-              <div className="problem-progress-fill" style={{ height: `${((activeIndex + 1) / items.length) * 100}%` }} />
-            </div>
-          </div>
-
-          <div className="problem-sequence">
-            {items.map((item, idx) => (
-              <article
-                className={`problem-seq-item ${idx % 2 === 0 ? "is-left" : "is-right"} ${idx === activeIndex ? "is-active" : ""} ${idx < activeIndex ? "is-past" : ""}`}
-                key={item.id}
-              >
-                <span className="problem-number">{item.id}</span>
-                <h3>{item.title}</h3>
-                <div className="problem-underline" />
-                <p>{item.body}</p>
-              </article>
-            ))}
-          </div>
+        <div className="problem-scroll-list">
+          {items.map((item) => (
+            <ProblemCard key={item.id} id={item.id} body={item.body} align={item.align} total={items.length} />
+          ))}
         </div>
       </div>
     </section>

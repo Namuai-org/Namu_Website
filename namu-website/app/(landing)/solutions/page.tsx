@@ -1,74 +1,107 @@
-﻿"use client";
+"use client";
 
-import type { MouseEvent } from "react";
 import { Footer } from "@/components/landing/Footer";
 import { NavBar } from "@/components/landing/NavBar";
+import { SolutionsDeviceShowcase } from "@/components/landing/SolutionsDeviceShowcase";
+import { SolutionsFeatureShowcase } from "@/components/landing/SolutionsFeatureShowcase";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useTranslation } from "@/hooks/useTranslation";
-import { getStudioTarget } from "@/lib/supabaseClient";
 
 export default function SolutionsPage() {
   const { t } = useTranslation();
   useScrollReveal(".reveal");
-
-  const onStudioClick = async (e: MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    const target = await getStudioTarget();
-    window.location.href = target;
-  };
 
   return (
     <>
       <NavBar />
       <section className="page-hero" id="solutions-page">
         <div className="container narrow">
-          <span className="section-label reveal reveal-fade">{t("solutions.heroLabel")}</span>
+          <span className="section-label section-label-center reveal reveal-fade">{t("solutions.heroLabel")}</span>
           <h1 className="hero-title page-title reveal reveal-up">{t("solutions.heroTitle")}</h1>
+          <div className="hero-actions solutions-hero-actions reveal reveal-up">
+            <a href="/contact" className="btn-secondary hero-secondary solutions-hero-secondary">
+              {t("hero.secondaryCta")}
+            </a>
+          </div>
         </div>
       </section>
 
       <section className="section solutions-page-clean">
         <div className="container article">
-          <article className="about-block reveal reveal-up">
-            <h2 className="title">{t("solutions.summaryTitle")}</h2>
-            <p className="editorial-text">{t("solutions.summaryBody")}</p>
-          </article>
-
-          <article className="about-block reveal reveal-up">
-            <h3 className="title">{t("solutions.featuresTitle")}</h3>
-            <ul className="solution-feature-list">
-              <li>{t("solutions.f1")}</li>
-              <li>{t("solutions.f2")}</li>
-              <li>{t("solutions.f3")}</li>
-              <li>{t("solutions.f4")}</li>
-              <li>{t("solutions.f5")}</li>
-            </ul>
-          </article>
-
-          <article className="about-block reveal reveal-up">
-            <span className="section-label">{t("solutions.howLabel")}</span>
-            <div className="mini-how-grid">
-              <div>
-                <h4>01</h4>
-                <p>{t("how.s1.body")}</p>
+          <article className="about-block solutions-about-block reveal reveal-up">
+            <span className="section-label section-label-center">{t("solutions.aboutLabel")}</span>
+            <div className="solutions-about-stage">
+              <div className="solutions-about-intro">
+                <h2 className="solutions-about-title">{t("solutions.summaryTitle")}</h2>
+                <p className="solutions-about-kicker">{t("solutions.aboutIntro")}</p>
               </div>
-              <div>
-                <h4>02</h4>
-                <p>{t("how.s2.body")}</p>
-              </div>
-              <div>
-                <h4>03</h4>
-                <p>{t("how.s3.body")}</p>
+              <div
+                style={{
+                  width: "min(920px, 100%)",
+                  margin: "0 auto",
+                  display: "grid",
+                  gap: "28px",
+                }}
+              >
+                <p
+                  className="solutions-about-body"
+                  style={{
+                    fontSize: "clamp(18px, 1.42vw, 22px)",
+                    lineHeight: 1.86,
+                    textWrap: "balance",
+                  }}
+                >
+                  {t("solutions.aboutBody1")}
+                </p>
+                <p
+                  className="solutions-about-body"
+                  style={{
+                    maxWidth: "760px",
+                    color: "#5a5149",
+                    fontSize: "clamp(16px, 1.18vw, 18px)",
+                    lineHeight: 1.8,
+                    textWrap: "balance",
+                  }}
+                >
+                  {t("solutions.aboutBody2")}
+                </p>
               </div>
             </div>
-            <a href="/login" onClick={onStudioClick} className="btn-primary">
-              {t("solution.cta")}
-            </a>
           </article>
 
-          <article className="about-block reveal reveal-up">
-            <span className="section-label">{t("solutions.visionLabel")}</span>
-            <p className="editorial-text">{t("solutions.visionBody")}</p>
+          <SolutionsFeatureShowcase />
+
+          <article className="about-block solutions-workplace-block reveal reveal-up">
+            <span className="section-label section-label-center">{t("solutions.workplaceLabel")}</span>
+            <div className="solutions-workplace-head">
+              <h3 className="solutions-workplace-title">{t("solutions.workplaceTitle")}</h3>
+              <p className="solutions-workplace-intro">{t("solutions.workplaceIntro")}</p>
+            </div>
+            <SolutionsDeviceShowcase />
+            <div className="solutions-demo-cta reveal reveal-up">
+              <div className="solutions-demo-cta-background" aria-hidden="true">
+                <div className="solutions-demo-aura solutions-demo-aura-1" />
+                <div className="solutions-demo-aura solutions-demo-aura-2" />
+                <div className="solutions-demo-orbit solutions-demo-orbit-1" />
+                <div className="solutions-demo-orbit solutions-demo-orbit-2" />
+                <span className="solutions-demo-chip solutions-demo-chip-1">{t("cta.bg1")}</span>
+                <span className="solutions-demo-chip solutions-demo-chip-2">{t("cta.bg2")}</span>
+                <span className="solutions-demo-chip solutions-demo-chip-3">{t("cta.bg3")}</span>
+                <span className="solutions-demo-chip solutions-demo-chip-4">{t("cta.bg4")}</span>
+              </div>
+              <div className="solutions-demo-cta-inner">
+                <span className="solutions-demo-label">{t("solutions.demoCtaLabel")}</span>
+                <div className="solutions-demo-cta-copy">
+                  <h4>{t("solutions.demoCtaTitle")}</h4>
+                  <p>{t("solutions.workplaceCtaBody")}</p>
+                </div>
+                <div className="solutions-demo-action-row">
+                  <a href="/contact" className="btn-primary solutions-demo-cta-button">
+                    {t("hero.secondaryCta")}
+                  </a>
+                </div>
+              </div>
+            </div>
           </article>
         </div>
       </section>

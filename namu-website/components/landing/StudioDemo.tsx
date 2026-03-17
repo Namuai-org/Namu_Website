@@ -217,11 +217,13 @@ function getOverlayMode(elapsed: number): OverlayMode {
 
 export function StudioDemo({
   autoPlay = true,
+  loop = true,
   startDelayMs = 0,
   showControls = true,
   showStoryPills = true,
 }: {
   autoPlay?: boolean;
+  loop?: boolean;
   startDelayMs?: number;
   showControls?: boolean;
   showStoryPills?: boolean;
@@ -262,7 +264,14 @@ export function StudioDemo({
       lastTsRef.current = timestamp;
       if (isPlaying) {
         elapsedRef.current += delta;
-        if (elapsedRef.current >= LOOP_MS) elapsedRef.current %= LOOP_MS;
+        if (elapsedRef.current >= LOOP_MS) {
+          if (loop) {
+            elapsedRef.current %= LOOP_MS;
+          } else {
+            elapsedRef.current = LOOP_MS;
+            setIsPlaying(false);
+          }
+        }
         setElapsed(elapsedRef.current);
       }
       rafRef.current = requestAnimationFrame(tick);
@@ -271,7 +280,7 @@ export function StudioDemo({
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [isPlaying]);
+  }, [isPlaying, loop]);
 
   useEffect(() => {
     if (!autoPlay) {
@@ -373,7 +382,11 @@ export function StudioDemo({
   };
 
   return (
-    <div className={styles.viewport} ref={containerRef}>
+    <div
+      className={styles.viewport}
+      ref={containerRef}
+      data-demo-complete={!loop && elapsed >= LOOP_MS ? "true" : "false"}
+    >
       <div className={styles.base} style={{ transform: `scale(${scale})` }}>
         <div className={styles.titleBar}>
           <div className={styles.traffic}>

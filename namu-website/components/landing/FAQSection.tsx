@@ -21,7 +21,7 @@ export function FAQSection() {
     <section className="section faq" id="faq">
       <div className="container narrow">
         <span className="section-label section-label-center reveal reveal-fade">{t("faq.label")}</span>
-        <h2 className="title center reveal reveal-up">{t("faq.title")}</h2>
+        <h2 className="title center reveal reveal-up faq-title">{t("faq.title")}</h2>
 
         <div className="faq-list reveal reveal-fade">
           {items.map((item, idx) => {

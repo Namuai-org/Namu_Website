@@ -1,25 +1,28 @@
 .viewport {
-  --bg-base: #0f1209;
-  --bg-panel: #141a0d;
-  --bg-elevated: #1a2110;
-  --bg-active: #1f2914;
-  --border: #2a3318;
-  --border-bright: #3a4a22;
+  --bg-base: #f0ebe2;
+  --bg-panel: #e7dfd5;
+  --bg-elevated: #f8f4ee;
+  --bg-active: #f3e9dd;
+  --border: #dbd1c4;
+  --border-bright: #ebe0d2;
   --orange: #d6703f;
   --orange-hover: #e8835a;
   --orange-glow: rgba(214, 112, 63, 0.12);
   --orange-subtle: rgba(214, 112, 63, 0.06);
-  --text-primary: #e8e0d0;
-  --text-secondary: #8a8070;
-  --text-muted: #4a4035;
-  --text-code: #d4ccb8;
+  --text-primary: #1c1916;
+  --text-secondary: #7f766d;
+  --text-muted: #aaa095;
+  --text-code: #534a42;
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
   overflow: hidden;
   border-radius: 14px;
-  background: radial-gradient(circle at 62% 110%, rgba(214, 112, 63, 0.14), transparent 42%), #0a1008;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 24px 80px rgba(0, 0, 0, 0.25);
+  background:
+    radial-gradient(circle at 52% 18%, rgba(214, 112, 63, 0.08), transparent 28%),
+    radial-gradient(circle at 62% 110%, rgba(214, 112, 63, 0.12), transparent 42%),
+    #ece5da;
+  box-shadow: 0 0 0 1px rgba(68, 61, 53, 0.08), 0 24px 80px rgba(15, 24, 36, 0.12);
 }
 
 .base {
@@ -45,8 +48,8 @@
 
 .titleBar {
   height: 32px;
-  background: #0a1008;
-  border-bottom: 1px solid #1a2110;
+  background: #f4eee5;
+  border-bottom: 1px solid #ddd3c6;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -67,21 +70,21 @@
 .red { background: #ff5f57; }
 .yellow { background: #febc2e; }
 .green { background: #28c840; }
-.titleText { margin: 0; font-size: 12px; color: #4a4035; }
+.titleText { margin: 0; font-size: 12px; color: #5c524a; }
 .versionPill {
   margin-right: 14px;
   padding: 2px 8px;
   border-radius: 999px;
-  border: 1px solid #2a3318;
-  background: #1a2110;
-  color: #4a4035;
+  border: 1px solid #e4d9cb;
+  background: #f7f2eb;
+  color: #8f857b;
   font-size: 10px;
 }
 
 .tabBar {
   height: 36px;
-  background: #0a1008;
-  border-bottom: 1px solid #1a2110;
+  background: #f4eee5;
+  border-bottom: 1px solid #ddd3c6;
   display: flex;
   align-items: stretch;
 }
@@ -91,16 +94,16 @@
   display: flex;
   align-items: center;
   gap: 7px;
-  color: #4a4035;
+  color: #9a8f84;
   font-size: 12px;
 }
 
 .tabActive {
-  background: #0f1209;
-  color: #e8e0d0;
+  background: #f8f4ee;
+  color: #1d1a17;
   border-top: 2px solid var(--orange);
-  border-left: 1px solid #2a3318;
-  border-right: 1px solid #2a3318;
+  border-left: 1px solid #ddd3c6;
+  border-right: 1px solid #ddd3c6;
 }
 
 .dirtyDot {
@@ -119,7 +122,7 @@
 
 .sidebar {
   background: var(--bg-panel);
-  border-right: 1px solid #1a2110;
+  border-right: 1px solid #ddd3c6;
   display: flex;
   flex-direction: column;
 }
@@ -131,7 +134,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: #4a4035;
+  color: #9b9085;
   font-size: 10px;
   letter-spacing: 0.12em;
 }
@@ -154,7 +157,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #8a8070;
+  color: #71685f;
 }
 
 .sessionRow strong {
@@ -165,14 +168,14 @@
 
 .sessionRow span:last-child {
   display: block;
-  color: #4a4035;
+  color: #9d948a;
   font-size: 10px;
 }
 
 .sessionActive {
   background: rgba(214, 112, 63, 0.09);
   border-left: 2px solid var(--orange);
-  color: #e8e0d0;
+  color: #1f1b17;
 }
 
 .sessionDot {
@@ -185,9 +188,9 @@
 .sessionCode { background: #d6703f; }
 .sessionBusiness { background: #c8a876; }
 .sessionLearning { background: #7eb8d4; }
-.sidebarDivider { border-top: 1px solid #1a2110; margin: 8px 0; }
+.sidebarDivider { border-top: 1px solid #ddd3c6; margin: 8px 0; }
 .toolList { display: flex; flex-direction: column; }
-.toolRow { height: 30px; padding: 0 12px; display: flex; align-items: center; color: #8a8070; font-size: 12px; }
+.toolRow { height: 30px; padding: 0 12px; display: flex; align-items: center; color: #6e655d; font-size: 12px; }
 .toolIcon {
   width: 14px;
   height: 14px;
@@ -279,7 +282,7 @@
 
 .mainPanel {
   background: var(--bg-base);
-  border-right: 1px solid #1a2110;
+  border-right: 1px solid #ddd3c6;
   min-height: 0;
   min-width: 0;
   overflow: hidden;
@@ -340,8 +343,8 @@
 .minimap {
   width: 60px;
   min-width: 60px;
-  background: #0a1008;
-  border-left: 1px solid #1a2110;
+  background: #ebe3d9;
+  border-left: 1px solid #ddd3c6;
   opacity: 0.45;
   padding: 8px 6px;
   display: flex;

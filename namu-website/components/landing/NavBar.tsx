@@ -37,17 +37,17 @@ export function NavBar() {
           <Link href="/" className="nav-link">
             {t("nav.home")}
           </Link>
-          <Link href="/about" className="nav-link">
-            {t("nav.about")}
-          </Link>
           <Link href="/solutions" className="nav-link">
             {t("nav.solutions")}
           </Link>
-          <Link href="/blog" className="nav-link">
-            {t("nav.blog")}
+          <Link href="/research" className="nav-link">
+            {t("nav.research")}
           </Link>
-          <Link href="/contact" className="nav-link">
-            {t("nav.contact")}
+          <Link href="/team" className="nav-link">
+            {t("nav.team")}
+          </Link>
+          <Link href="/pitch" className="nav-link">
+            {t("nav.pitch")}
           </Link>
         </nav>
 
@@ -78,17 +78,17 @@ export function NavBar() {
           <Link href="/" onClick={() => setMenuOpen(false)}>
             {t("nav.home")}
           </Link>
-          <Link href="/about" onClick={() => setMenuOpen(false)}>
-            {t("nav.about")}
-          </Link>
           <Link href="/solutions" onClick={() => setMenuOpen(false)}>
             {t("nav.solutions")}
           </Link>
-          <Link href="/blog" onClick={() => setMenuOpen(false)}>
-            {t("nav.blog")}
+          <Link href="/research" onClick={() => setMenuOpen(false)}>
+            {t("nav.research")}
           </Link>
-          <Link href="/contact" onClick={() => setMenuOpen(false)}>
-            {t("nav.contact")}
+          <Link href="/team" onClick={() => setMenuOpen(false)}>
+            {t("nav.team")}
+          </Link>
+          <Link href="/pitch" onClick={() => setMenuOpen(false)}>
+            {t("nav.pitch")}
           </Link>
           <a href="/login" onClick={onStudioClick}>
             {t("nav.openStudio")} {"->"}

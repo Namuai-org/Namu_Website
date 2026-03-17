@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -8,14 +8,23 @@ export function MissionSection() {
   const { t } = useTranslation();
 
   return (
-    <section className="section mission" id="mission">
-      <div className="container mission-single">
-        <span className="section-label reveal reveal-fade">{t("mission.label")}</span>
-        <div className="mission-accent reveal reveal-fade" />
-        <blockquote className="mission-quote reveal reveal-up">{t("mission.quote")}</blockquote>
-        <div className="mission-copy reveal reveal-up">
-          <p>{t("mission.p1")}</p>
-          <p>{t("mission.p2")}</p>
+    <section className="section mission mission-editorial" id="mission">
+      <div className="container">
+        <span className="section-label section-label-center reveal reveal-fade">{t("mission.label")}</span>
+        <div className="mission-layout reveal reveal-up">
+          <aside className="mission-quote-shell">
+            <span className="mission-mark" aria-hidden="true">
+              "
+            </span>
+            <blockquote className="mission-quote">{t("mission.quote")}</blockquote>
+            <div className="mission-attribution">
+              <p className="mission-author">{t("mission.author")}</p>
+              <p className="mission-role">{t("mission.role")}</p>
+              <p className="mission-signature" aria-label={t("mission.author")}>
+                <span className="mission-signature-text">{t("mission.signature")}</span>
+              </p>
+            </div>
+          </aside>
         </div>
       </div>
     </section>

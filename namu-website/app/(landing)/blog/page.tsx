@@ -1,4 +1,4 @@
-﻿import { BlogCarousel } from "@/components/landing/BlogCarousel";
+import { BlogCarousel } from "@/components/landing/BlogCarousel";
 import { Footer } from "@/components/landing/Footer";
 import { NavBar } from "@/components/landing/NavBar";
 

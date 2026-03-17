@@ -1,75 +1,105 @@
-﻿"use client";
+"use client";
 
-import type { MouseEvent } from "react";
-import { useEffect, useState } from "react";
+import Link from "next/link";
+import { StudioPreviewCard } from "@/components/landing/StudioPreviewCard";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-import { getStudioTarget } from "@/lib/supabaseClient";
 import { useTranslation } from "@/hooks/useTranslation";
-import { StudioDemo } from "@/components/landing/StudioDemo";
 
 export function SolutionsSection() {
   useScrollReveal("#solutions .reveal");
   const { t } = useTranslation();
-  const [activeStep, setActiveStep] = useState(0);
-
   const steps = [
-    { number: t("how.s1.number"), title: t("how.s1.title"), body: t("how.s1.body") },
-    { number: t("how.s2.number"), title: t("how.s2.title"), body: t("how.s2.body") },
-    { number: t("how.s3.number"), title: t("how.s3.title"), body: t("how.s3.body") },
+    {
+      id: "01",
+      title: t("solution.step1.title"),
+      body: t("solution.step1.body"),
+      align: "left",
+    },
+    {
+      id: "02",
+      title: t("solution.step2.title"),
+      body: t("solution.step2.body"),
+      align: "right",
+    },
+    {
+      id: "03",
+      title: t("solution.step3.title"),
+      body: t("solution.step3.body"),
+      align: "left",
+    },
   ];
 
-  useEffect(() => {
-    const timer = window.setInterval(() => {
-      setActiveStep((current) => (current + 1) % steps.length);
-    }, 2200);
-
-    return () => window.clearInterval(timer);
-  }, [steps.length]);
-
-  const onStudioClick = async (e: MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    const target = await getStudioTarget();
-    window.location.href = target;
-  };
-
   return (
-    <section className="section solution-single" id="solutions">
-      <div className="container center">
-        <span className="section-label reveal reveal-fade">{t("solution.label")}</span>
-        <h2 className="display-title reveal reveal-up">{t("solution.title")}</h2>
-        <p className="solution-subtitle reveal reveal-up">{t("solution.subtitle")}</p>
-
-        <div className="timeline-grid solution-steps-grid">
-          {steps.map((step, index) => (
-            <article
-              className={`timeline-step ${activeStep === index ? "timeline-step-active" : ""}`}
-              key={step.number}
-              onMouseEnter={() => setActiveStep(index)}
-            >
-              <span className="timeline-node" aria-hidden="true" />
-              <span className="timeline-number">{step.number}</span>
-              <h3>{step.title}</h3>
-              <p>{step.body}</p>
-            </article>
-          ))}
+    <section className="section solution-home" id="solutions">
+      <div className="container">
+        <div className="solution-home-copy solution-home-copy-centered">
+          <span className="section-label section-label-center reveal reveal-fade">{t("solution.label")}</span>
+          <p className="solution-subtitle solution-subtitle-centered reveal reveal-up">{t("solution.subtitle")}</p>
         </div>
 
-        <h3 className="title solution-demo-title reveal reveal-up">{t("how.title")}</h3>
+        <div className="solution-loop-system">
+          <svg className="solution-loop-lines" viewBox="0 0 1200 1040" aria-hidden="true">
+            <defs>
+              <linearGradient id="solutionLoopStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="rgba(214,112,63,0.14)" />
+                <stop offset="50%" stopColor="rgba(214,112,63,0.52)" />
+                <stop offset="100%" stopColor="rgba(155,190,228,0.24)" />
+              </linearGradient>
+              <marker id="solutionLoopArrow" markerWidth="12" markerHeight="12" refX="8" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+                <path d="M1 1L9 6L1 11" fill="none" stroke="#d6703f" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              </marker>
+            </defs>
+            <path className="solution-loop-path" d="M476 272C544 176 670 174 724 270" pathLength="100" markerEnd="url(#solutionLoopArrow)" />
+            <path className="solution-loop-path solution-loop-path-delay" d="M914 434C988 582 902 800 676 904" pathLength="100" markerEnd="url(#solutionLoopArrow)" />
+            <path className="solution-loop-path solution-loop-path-delay-two" d="M524 904C302 800 218 584 288 432" pathLength="100" markerEnd="url(#solutionLoopArrow)" />
+          </svg>
 
-        <div className="solution-demo-shell reveal reveal-fade">
-          <StudioDemo autoPlay />
+          <div className="solution-steps">
+            {steps.map((step, index) => (
+              <article
+                key={step.id}
+                className={`solution-step-card solution-step-card-${index + 1} reveal ${
+                  step.align === "left" ? "reveal-left solution-step-card-left" : "reveal-right solution-step-card-right"
+                }`}
+              >
+                <div className="solution-step-shell">
+                  <div className="solution-step-meta">
+                    <span className="solution-step-number">{step.id}</span>
+                    <span className="solution-step-kicker">{t("solution.label")}</span>
+                  </div>
+                  <h3 className="solution-step-title">{step.title}</h3>
+                  <p className="solution-step-body">{step.body}</p>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
 
-        <div className="solution-pill-row reveal reveal-up">
-          <span>{t("solution.pill1")}</span>
-          <span>{t("solution.pill2")}</span>
-          <span>{t("solution.pill3")}</span>
-          <span>{t("solution.pill4")}</span>
-        </div>
+        <div className="solution-implementation reveal reveal-fade">
+          <div className="solution-home-panel">
+            <div className="solution-panel-topline">{t("solution.panelLabel")}</div>
+            <h3 className="solution-panel-title">{t("solution.panelTitle")}</h3>
+            <p className="solution-panel-copy">{t("solution.panelIntro")}</p>
 
-        <a href="/login" onClick={onStudioClick} className="btn-primary solution-main-cta reveal reveal-up">
-          {t("solution.cta")}
-        </a>
+            <div className="solution-demo-wrap solution-demo-wrap-inline reveal reveal-up">
+              <div className="solution-demo-frame solution-demo-frame-static">
+                <StudioPreviewCard />
+              </div>
+            </div>
+
+            <div className="solution-panel-list">
+              <span>{t("solution.pill1")}</span>
+              <span>{t("solution.pill2")}</span>
+              <span>{t("solution.pill3")}</span>
+              <span>{t("solution.pill4")}</span>
+            </div>
+            <p>{t("solution.panelBody")}</p>
+            <div className="solution-panel-line" aria-hidden="true" />
+            <Link href="/solutions" className="btn-outline solution-pointer">
+              {t("solution.cta")}
+            </Link>
+          </div>
+        </div>
       </div>
     </section>
   );
