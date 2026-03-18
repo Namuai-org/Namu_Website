@@ -1,0 +1,5 @@
+bin/
+obj/
+.git
+*.md
+src/NamuStudio.API/appsettings.Development.json
