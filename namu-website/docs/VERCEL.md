@@ -2,6 +2,10 @@
 
 This app is **Next.js 15** (`namu-website`). Vercel runs `next build` and hosts the result.
 
+## Build stuck or fails at "Collecting build traces"
+
+If **`outputFileTracingRoot`** is set to the **repo root** while Vercel’s **Root Directory** is `namu-website`, Next can try to trace **sibling folders** (other apps, `node_modules`), which can **slow, hang, or fail** the build. Keep the default tracing (app folder only) unless you use a **hoisted** monorepo install (e.g. npm workspaces at repo root).
+
 ## 404 after deploy
 
 **Cause:** The Git repo root is **`Namu-/`**, but the Next.js app is inside **`namu-website/`**. If **Root Directory** is not set to `namu-website`, Vercel builds the wrong folder (or nothing useful) and the site can return **404**.
