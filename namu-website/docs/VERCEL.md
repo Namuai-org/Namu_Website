@@ -2,6 +2,19 @@
 
 This app is **Next.js 15** (`namu-website`). Vercel runs `next build` and hosts the result.
 
+## 404 after deploy
+
+**Cause:** The Git repo root is **`Namu-/`**, but the Next.js app is inside **`namu-website/`**. If **Root Directory** is not set to `namu-website`, Vercel builds the wrong folder (or nothing useful) and the site can return **404**.
+
+**Fix:**
+
+1. Vercel → **Project** → **Settings** → **General**
+2. **Root Directory** → **Edit** → enter **`namu-website`**
+3. **Save**
+4. **Deployments** → **Redeploy** the latest deployment
+
+Framework should remain **Next.js**. Install / build commands can stay default (`npm install`, `npm run build`) — they run *inside* `namu-website` once the root directory is set.
+
 ## 1. Push code to GitHub (or GitLab / Bitbucket)
 
 Vercel deploys from a Git repo. Commit and push your project.
