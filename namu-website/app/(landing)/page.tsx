@@ -10,7 +10,7 @@ import { SolutionsSection } from "@/components/landing/SolutionsSection";
 
 export default function HomePage() {
   return (
-    <>
+    <main className="home-page">
       <NavBar />
       <HeroSection />
       <MissionSection />
@@ -20,6 +20,6 @@ export default function HomePage() {
       <FAQSection />
       <CTASection />
       <Footer />
-    </>
+    </main>
   );
 }

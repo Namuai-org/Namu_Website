@@ -41,9 +41,19 @@ export const ha = {
   "mission.author": "Mouhamad Mamane",
   "mission.role": "Shugaba",
   "mission.signature": "M. Mamane",
+  "mission.standKicker": "Abin da muke tsaya masa",
+  "mission.standHeadline": "AI mai aminci domin harsunan Afirka—tare da tsanin kayan aikin duniya.",
+  "mission.standLead":
+    "Namu ya wanzu ne domin mutane kada a bukace su bar harshensu don samun AI na zamani. Muna gina samfur, muna mallakar wani bangare na tsarin, kuma muna inganta daga amfani na gaske.",
   "mission.p2":
     "Makomar AI bai kamata ta takaitu ga mutanen da aka riga aka yi wa kayan aikin ba. Idan al'umma suna tunani da aiki da Hausa, kayan aikin ma su fara daga nan.",
   "mission.p3": "Namu ya wanzu ne domin gina wannan matakin farko da muhimmanci, kwarewar samfur, da dogon hangen nesa.",
+  "mission.pillar1Title": "Harshe a tsakiya",
+  "mission.pillar1Body": "Muna tsara domin yadda mutane suke tunani, aiki, da kirkira cikin harsunansu—ba a matsayin baya-bayan nan ba.",
+  "mission.pillar2Title": "Kwarewar samfur",
+  "mission.pillar2Body": "Sake fitar da dandamali na gaske, auna inganci, kuma samun aminci ta amfani—ba ta hanyar slides kawai ba.",
+  "mission.pillar3Title": "Jinginar dogon lokaci",
+  "mission.pillar3Body": "Muna karbar bakuncin samfura, saka jari a kimanta da bayanai, kuma ci gaba da inganta tsawon shekaru—ba kwata-kwata kawai ba.",
 
   "solution.label": "Hanyar da muke bi",
   "solution.title": "Fasahar da ke koyon kai tsaye daga al'ummomin da take yi wa aiki.",
@@ -283,7 +293,6 @@ export const ha = {
   "solutions.f4": "Bayani da Hausa domin fahimta da koyo",
   "solutions.f5": "An gina domin aiki na zahiri ba demo kadai ba",
   "solutions.deviceAlt": "Namu AI-Studio a cikin firam mai kama da MacBook",
-  "solutions.howLabel": "Yadda yake aiki",
   "solutions.visionLabel": "Inda muke nufa",
   "solutions.visionBody": "Namu AI-Studio shi ne matakinmu na farko. Burin dogon lokaci shi ne fadada fahimtar harshe don tallafa wa noma, lafiya, banki, da ilimi a yammacin Afirka.",
   "team.label": "Tawaga",

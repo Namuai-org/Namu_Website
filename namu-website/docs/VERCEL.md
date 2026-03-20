@@ -1,0 +1,54 @@
+# Deploy Namu website on Vercel
+
+This app is **Next.js 15** (`namu-website`). Vercel runs `next build` and hosts the result.
+
+## 1. Push code to GitHub (or GitLab / Bitbucket)
+
+Vercel deploys from a Git repo. Commit and push your project.
+
+## 2. Import the project in Vercel
+
+1. Go to [vercel.com](https://vercel.com) and sign in.
+2. **Add New… → Project** → import your repository.
+
+### If the repo root is the monorepo (e.g. `Namu-/` with `namu-website/` inside)
+
+- **Root Directory:** set to `namu-website` (Framework Preset should stay **Next.js**).
+- Install command: `npm install` (default).
+- Build command: `npm run build` (default).
+- Output: leave default (Next.js handles it).
+
+### If only `namu-website` is the repo root
+
+- No root directory override needed.
+
+## 3. Environment variables
+
+In the project: **Settings → Environment Variables**, add (if you use Supabase for login / studio):
+
+| Name | Value |
+|------|--------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Your Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Your Supabase anon/public key |
+
+Use **Production**, **Preview**, and **Development** as needed. Redeploy after saving.
+
+Without these, the marketing site still works; **Open Studio** will send users to `/login` (see `lib/supabaseClient.ts`).
+
+## 4. Deploy
+
+Click **Deploy**. Every push to the connected branch triggers a new deployment (unless you change Git settings).
+
+## 5. Custom domain (optional)
+
+**Settings → Domains** → add your domain and follow DNS instructions.
+
+## Local check before deploy
+
+```bash
+cd namu-website
+npm install
+npm run build
+```
+
+If `npm run build` passes locally, Vercel should build successfully with the same settings.

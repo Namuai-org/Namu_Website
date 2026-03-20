@@ -15,7 +15,10 @@ function ProblemCard({ id, body, align, total }: ProblemCardProps) {
   const ref = useRef<HTMLElement | null>(null);
   const [hasStarted, setHasStarted] = useState(false);
   const [typedLength, setTypedLength] = useState(0);
-  const [isHolding, setIsHolding] = useState(false);
+
+  useEffect(() => {
+    setTypedLength(0);
+  }, [body]);
 
   useEffect(() => {
     const node = ref.current;
@@ -39,28 +42,16 @@ function ProblemCard({ id, body, align, total }: ProblemCardProps) {
   }, []);
 
   useEffect(() => {
-    if (!hasStarted) return;
-    if (isHolding) {
-      const timer = window.setTimeout(() => {
-        setIsHolding(false);
-        setTypedLength(0);
-      }, 15000);
+    if (!hasStarted || typedLength >= body.length) return;
 
-      return () => window.clearTimeout(timer);
-    }
+    const nextCharacter = body[typedLength];
+    const delay = nextCharacter === " " ? 12 : 24;
+    const timer = window.setTimeout(() => {
+      setTypedLength((current) => current + 1);
+    }, delay);
 
-    if (typedLength < body.length) {
-      const nextCharacter = body[typedLength];
-      const delay = nextCharacter === " " ? 12 : 24;
-      const timer = window.setTimeout(() => {
-        setTypedLength((current) => current + 1);
-      }, delay);
-
-      return () => window.clearTimeout(timer);
-    }
-
-    setIsHolding(true);
-  }, [body, hasStarted, isHolding, typedLength]);
+    return () => window.clearTimeout(timer);
+  }, [body, hasStarted, typedLength]);
 
   return (
     <article
@@ -79,7 +70,9 @@ function ProblemCard({ id, body, align, total }: ProblemCardProps) {
           <span className="problem-card-number">{id}</span>
           <p>
             {hasStarted ? body.slice(0, typedLength) : ""}
-            <span className="problem-card-caret" aria-hidden="true" />
+            {hasStarted && typedLength < body.length ? (
+              <span className="problem-card-caret" aria-hidden="true" />
+            ) : null}
           </p>
         </div>
       </div>

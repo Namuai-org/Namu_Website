@@ -35,36 +35,9 @@ export default function SolutionsPage() {
                 <h2 className="solutions-about-title">{t("solutions.summaryTitle")}</h2>
                 <p className="solutions-about-kicker">{t("solutions.aboutIntro")}</p>
               </div>
-              <div
-                style={{
-                  width: "min(920px, 100%)",
-                  margin: "0 auto",
-                  display: "grid",
-                  gap: "28px",
-                }}
-              >
-                <p
-                  className="solutions-about-body"
-                  style={{
-                    fontSize: "clamp(18px, 1.42vw, 22px)",
-                    lineHeight: 1.86,
-                    textWrap: "balance",
-                  }}
-                >
-                  {t("solutions.aboutBody1")}
-                </p>
-                <p
-                  className="solutions-about-body"
-                  style={{
-                    maxWidth: "760px",
-                    color: "#5a5149",
-                    fontSize: "clamp(16px, 1.18vw, 18px)",
-                    lineHeight: 1.8,
-                    textWrap: "balance",
-                  }}
-                >
-                  {t("solutions.aboutBody2")}
-                </p>
+              <div className="solutions-about-body-stack">
+                <p className="solutions-about-body solutions-about-body--lead">{t("solutions.aboutBody1")}</p>
+                <p className="solutions-about-body solutions-about-body--secondary">{t("solutions.aboutBody2")}</p>
               </div>
             </div>
           </article>

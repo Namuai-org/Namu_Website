@@ -71,6 +71,7 @@ export function StudioPreviewCard() {
                   width={1839}
                   height={824}
                   className="studio-shot-image"
+                  sizes="(max-width: 1023px) 100vw, min(960px, 85vw)"
                   priority={false}
                 />
               </div>

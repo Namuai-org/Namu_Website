@@ -40,9 +40,19 @@ export const en = {
   "mission.author": "Mouhamad Mamane",
   "mission.role": "CEO",
   "mission.signature": "M. Mamane",
+  "mission.standKicker": "What we stand for",
+  "mission.standHeadline": "Trustworthy AI for African languages—with the rigor of global infrastructure.",
+  "mission.standLead":
+    "Namu exists so people are not asked to leave their language to access modern AI. We build products, own the stack where it matters, and improve from real usage.",
   "mission.p2":
     "The future of AI cannot belong only to the people it was already designed for. If a community thinks, works, and builds in Hausa, the tools should meet them there from the start.",
   "mission.p3": "Namu exists to build that starting point with seriousness, product discipline, and long-term commitment.",
+  "mission.pillar1Title": "Language at the center",
+  "mission.pillar1Body": "We design for how people think, work, and create in their own languages—not as an afterthought.",
+  "mission.pillar2Title": "Product discipline",
+  "mission.pillar2Body": "Ship real platforms, measure quality, and earn trust through usage—not through slides alone.",
+  "mission.pillar3Title": "Long-term commitment",
+  "mission.pillar3Body": "We host models, invest in evaluation and data, and compound improvements over years—not quarters.",
 
   "solution.label": "Our Approach",
   "solution.title": "Technology that learns from the communities it serves.",
@@ -140,7 +150,7 @@ export const en = {
   "future.education.body": "AI tutors in Hausa that explain school subjects, generate learning materials, and support both students and teachers.",
   "future.banking.title": "Financial Services",
   "future.banking.body": "Hausa assistants that explain financial products, simplify banking information, and improve access to digital financial platforms.",
-  "future.government.title": "Government & Public Services",
+  "future.government.title": "Government",
   "future.government.body":
     "AI assistants that help citizens understand public information, complete administrative procedures, and access government services in Hausa.",
   "future.support.title": "Customer Support",
@@ -282,7 +292,6 @@ export const en = {
   "solutions.f4": "AI explanations in Hausa for clarity and learning",
   "solutions.f5": "Built for practical work, not just demos",
   "solutions.deviceAlt": "Namu AI-Studio shown in a MacBook-style frame",
-  "solutions.howLabel": "How it works",
   "solutions.visionLabel": "Where we are going",
   "solutions.visionBody": "Namu AI-Studio is our first step. The long-term destination is broader language intelligence that can support agriculture, healthcare, banking, and education across West Africa.",
   "team.label": "Team",

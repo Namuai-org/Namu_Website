@@ -4,76 +4,73 @@ import { useEffect, useRef, useState } from "react";
 import { StudioDemo } from "@/components/landing/StudioDemo";
 import { useTranslation } from "@/hooks/useTranslation";
 
-function clamp(value: number, min: number, max: number) {
-  return Math.max(min, Math.min(max, value));
-}
-
-function smoothstep(edge0: number, edge1: number, value: number) {
-  const x = clamp((value - edge0) / (edge1 - edge0), 0, 1);
-  return x * x * (3 - 2 * x);
-}
-
+/**
+ * Laptop open/close is driven by IntersectionObserver + CSS transitions
+ * (see `.solutions-device-shell--open` in globals.css). No scroll listeners or rAF smoothing.
+ */
 export function SolutionsDeviceShowcase() {
   const stageRef = useRef<HTMLDivElement | null>(null);
   const frameRef = useRef<HTMLDivElement | null>(null);
-  const [openness, setOpenness] = useState(0);
+  const [demoActive, setDemoActive] = useState(false);
   const { t } = useTranslation();
 
   useEffect(() => {
-    let rafId = 0;
+    const stage = stageRef.current;
+    const frame = frameRef.current;
+    if (!stage || !frame) return;
 
-    const update = () => {
-      if (!stageRef.current || !frameRef.current) return;
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-      const rect = stageRef.current.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      const totalDistance = rect.height + viewportHeight;
-      const traveled = viewportHeight - rect.top;
-      const progress = clamp(traveled / totalDistance, 0, 1);
-      const opening = smoothstep(0.04, 0.16, progress);
-      const closing = 1 - smoothstep(0.6, 0.86, progress);
-      const eased = clamp(opening * closing, 0, 1);
-      const closeProgress = smoothstep(0.58, 0.92, progress);
-      const shellTilt = closeProgress * 7;
-      const shellDrop = closeProgress * 14;
-
-      setOpenness(eased);
-
-      frameRef.current.style.setProperty("--device-open", eased.toFixed(3));
-      frameRef.current.style.setProperty("--device-lid-rotate", `${110 - eased * 110}deg`);
-      frameRef.current.style.setProperty("--device-lift", `${(1 - eased) * 8}px`);
-      frameRef.current.style.setProperty("--device-screen-opacity", `${0.18 + eased * 0.82}`);
-      frameRef.current.style.setProperty("--device-base-scale", `${0.992 + eased * 0.008}`);
-      frameRef.current.style.setProperty("--device-shadow-opacity", `${0.12 + eased * 0.16}`);
-      frameRef.current.style.setProperty("--device-exit-tilt", `${shellTilt}deg`);
-      frameRef.current.style.setProperty("--device-shell-drop", `${shellDrop}px`);
+    const syncShell = (intersecting: boolean) => {
+      const open = mq.matches || intersecting;
+      frame.classList.toggle("solutions-device-shell--open", open);
+      setDemoActive(open);
     };
 
-    const onScroll = () => {
-      cancelAnimationFrame(rafId);
-      rafId = window.requestAnimationFrame(update);
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        syncShell(entry.isIntersecting);
+      },
+      {
+        threshold: 0,
+        /* Require the demo stage to sit in the main viewport band — open in view, close when scrolled past */
+        rootMargin: "-10% 0px -16% 0px",
+      }
+    );
+
+    const onReducedMotionChange = () => {
+      if (mq.matches) {
+        io.disconnect();
+        syncShell(true);
+      } else {
+        io.observe(stage);
+      }
     };
 
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+    onReducedMotionChange();
+    mq.addEventListener("change", onReducedMotionChange);
 
     return () => {
-      cancelAnimationFrame(rafId);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      io.disconnect();
+      mq.removeEventListener("change", onReducedMotionChange);
     };
   }, []);
 
   return (
-    <div className="solutions-device-stage" ref={stageRef}>
+    <div className="solutions-device-stage" ref={stageRef} id="solutions-demo">
       <div className="solutions-device-shell" ref={frameRef}>
         <div className="solutions-device-shadow" aria-hidden="true" />
         <div className="solutions-device-top">
           <span className="solutions-device-camera" aria-hidden="true" />
           <div className="solutions-device-screen">
+            <div className="solutions-device-screen-shine" aria-hidden="true" />
             <div className="solutions-device-demo" aria-label={t("solutions.deviceAlt")}>
-              <StudioDemo autoPlay={openness > 0.62} startDelayMs={200} showControls={false} showStoryPills={false} />
+              <StudioDemo
+                autoPlay={demoActive}
+                startDelayMs={280}
+                showControls={false}
+                showStoryPills={false}
+              />
             </div>
           </div>
         </div>

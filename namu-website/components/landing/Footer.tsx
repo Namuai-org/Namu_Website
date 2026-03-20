@@ -11,8 +11,7 @@ export function Footer() {
       <div className="container footer-top">
         <div className="footer-col footer-brand-col">
           <div className="footer-brand">
-            <span className="nav-mark">N</span>
-            <span className="nav-name">{t("brand.name")}</span>
+            <span className="footer-name">{t("brand.name")}</span>
           </div>
           <p>{t("brand.missionShort")}</p>
         </div>
@@ -38,7 +37,7 @@ export function Footer() {
         <div className="footer-col">
           <h4>{t("footer.contact")}</h4>
           <div className="footer-link-list footer-contact-list">
-            <a href="mailto:hello@namu.ai">hello@namu.ai</a>
+            <a href="mailto:thenamu.ai@gmail.com">namu.ai@gmail.com</a>
             <a href="https://x.com" target="_blank" rel="noreferrer">
               {t("footer.socialX")}
             </a>

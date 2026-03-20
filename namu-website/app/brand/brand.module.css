@@ -1,0 +1,279 @@
+.page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(214, 112, 63, 0.1), transparent 30%),
+    linear-gradient(180deg, #fffdf9 0%, #f6f1e8 100%);
+  color: #171514;
+}
+
+.shell {
+  width: min(1180px, calc(100% - 2 * var(--layout-gutter)));
+  margin: 0 auto;
+  padding: clamp(40px, 8vw, 56px) 0 clamp(56px, 10vw, 80px);
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+  gap: 28px;
+  align-items: stretch;
+  margin-bottom: 28px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #9b532e;
+}
+
+.eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: currentColor;
+}
+
+.headline {
+  max-width: 12ch;
+  margin: 0 0 18px;
+  font-family: var(--font-display), serif;
+  font-size: clamp(44px, 7vw, 84px);
+  line-height: 0.96;
+  letter-spacing: -0.04em;
+}
+
+.lede {
+  max-width: 62ch;
+  margin: 0;
+  font-size: clamp(16px, 1.1vw + 14px, 18px);
+  line-height: 1.7;
+  color: rgba(23, 21, 20, 0.76);
+}
+
+.heroCard,
+.panel,
+.noteCard {
+  border: 1px solid rgba(23, 21, 20, 0.08);
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 24px 60px rgba(23, 21, 20, 0.08);
+  backdrop-filter: blur(10px);
+}
+
+.heroCard {
+  padding: 28px;
+  display: grid;
+  gap: 18px;
+}
+
+.heroQuote {
+  padding: 24px;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at top left, rgba(214, 112, 63, 0.14), transparent 34%),
+    #fff;
+}
+
+.heroQuoteText {
+  margin: 0;
+  font-family: var(--font-display), serif;
+  font-size: clamp(24px, 3.2vw, 34px);
+  line-height: 1.18;
+  letter-spacing: -0.03em;
+}
+
+.heroMeta {
+  display: grid;
+  gap: 14px;
+}
+
+.heroMetaRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(23, 21, 20, 0.08);
+  font-size: 14px;
+}
+
+.heroMetaRow span:first-child {
+  color: rgba(23, 21, 20, 0.56);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+}
+
+.panel {
+  overflow: hidden;
+}
+
+.panelHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 22px;
+  border-bottom: 1px solid rgba(23, 21, 20, 0.08);
+}
+
+.panelTitle {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.panelHint {
+  margin: 4px 0 0;
+  color: rgba(23, 21, 20, 0.62);
+  line-height: 1.5;
+}
+
+.stage {
+  display: grid;
+  gap: 18px;
+  padding: 22px;
+}
+
+.boardLight,
+.boardDark {
+  min-height: 220px;
+  border-radius: 26px;
+  display: grid;
+  place-items: center;
+  padding: 28px;
+}
+
+.boardLight {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(247, 241, 233, 0.96)),
+    #ffffff;
+  border: 1px solid rgba(23, 21, 20, 0.07);
+}
+
+.boardDark {
+  background:
+    radial-gradient(circle at top, rgba(214, 112, 63, 0.16), transparent 38%),
+    #171514;
+}
+
+.boardLabel {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(23, 21, 20, 0.5);
+}
+
+.darkLabel {
+  color: rgba(245, 239, 230, 0.52);
+}
+
+.conceptFrame {
+  width: min(100%, 440px);
+}
+
+.conceptLogo {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.conceptText {
+  margin: 0;
+  color: rgba(23, 21, 20, 0.68);
+  line-height: 1.7;
+}
+
+.notes {
+  margin-top: 28px;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 28px;
+}
+
+.noteCard {
+  padding: 24px;
+}
+
+.noteTitle {
+  margin: 0 0 14px;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.noteText {
+  margin: 0;
+  color: rgba(23, 21, 20, 0.7);
+  line-height: 1.7;
+}
+
+.palette {
+  display: grid;
+  gap: 14px;
+}
+
+.swatch {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 14px;
+  align-items: center;
+}
+
+.swatchChip {
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+  border: 1px solid rgba(23, 21, 20, 0.08);
+}
+
+.swatchMeta strong,
+.swatchMeta span {
+  display: block;
+}
+
+.swatchMeta strong {
+  margin-bottom: 4px;
+  font-size: 16px;
+}
+
+.swatchMeta span {
+  color: rgba(23, 21, 20, 0.6);
+  font-family: var(--font-mono), monospace;
+  font-size: 13px;
+}
+
+@media (max-width: 1023px) {
+  .hero,
+  .grid,
+  .notes {
+    grid-template-columns: 1fr;
+  }
+
+  .headline {
+    max-width: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .shell {
+    width: min(1180px, calc(100% - 2 * var(--layout-gutter)));
+    padding: 32px 0 52px;
+  }
+
+  .heroCard,
+  .noteCard,
+  .stage {
+    padding: 18px;
+  }
+
+}

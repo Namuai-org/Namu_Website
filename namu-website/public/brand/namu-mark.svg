@@ -1,0 +1,8 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path
+    fill-rule="evenodd"
+    clip-rule="evenodd"
+    d="M64 36H92V220H64L48 204V52L64 36ZM164 36H192L208 52V204L192 220H164V36ZM92 172H128L164 136V84H128L92 120V172ZM128 102L150 124L128 146L106 124L128 102Z"
+    fill="#D6703F"
+  />
+</svg>

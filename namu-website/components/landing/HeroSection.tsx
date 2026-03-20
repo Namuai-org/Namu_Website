@@ -5,7 +5,8 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useTranslation } from "@/hooks/useTranslation";
 
 export function HeroSection() {
-  useScrollReveal("#hero .reveal");
+  /* Defer observe so first paint shows blur + hidden state, then transition runs */
+  useScrollReveal("#hero .reveal", { deferFrames: 3 });
   const { t } = useTranslation();
   const heroBody = t("hero.body");
   const [typedLength, setTypedLength] = useState(0);

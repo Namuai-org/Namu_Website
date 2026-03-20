@@ -29,7 +29,6 @@ export function NavBar() {
     <>
       <header className={`nav-shell ${scrolled ? "scrolled" : ""}`}>
         <Link href="/" className="nav-brand" onClick={() => setMenuOpen(false)}>
-          <span className="nav-mark">N</span>
           <span className="nav-name">{t("brand.name")}</span>
         </Link>
 

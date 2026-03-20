@@ -46,7 +46,7 @@ export function SolutionsFeatureShowcase() {
                       fill
                       quality={100}
                       className="solutions-feature-image"
-                      sizes="(max-width: 900px) 100vw, 56vw"
+                      sizes="(max-width: 1023px) 100vw, 56vw"
                     />
                   </div>
 

@@ -1,0 +1,59 @@
+<svg width="1800" height="1280" viewBox="0 0 1800 1280" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1800" height="1280" fill="#F6EFE6"/>
+  <text x="96" y="112" fill="#A05A35" font-family="DM Sans, Arial, sans-serif" font-size="24" font-weight="700" letter-spacing="4">NAMU CONCEPT COMPARISON</text>
+  <text x="96" y="174" fill="#171514" font-family="DM Sans, Arial, sans-serif" font-size="68" font-weight="700" letter-spacing="-2">Which direction feels most like Namu?</text>
+
+  <rect x="96" y="236" width="512" height="920" rx="36" fill="#FFFDF9" stroke="#E7DED3"/>
+  <text x="132" y="296" fill="#171514" font-family="DM Sans, Arial, sans-serif" font-size="34" font-weight="700">1. Woven Belonging</text>
+  <text x="132" y="334" fill="#6A615A" font-family="DM Sans, Arial, sans-serif" font-size="22">Warm, shared, and strategically strongest.</text>
+  <rect x="132" y="378" width="440" height="232" rx="28" fill="#FFF8F1" stroke="#ECE0D4"/>
+  <g transform="translate(165 438)">
+    <g fill="#D6703F">
+      <path d="M52 32H82V128H52C41 128 32 119 32 108V52C32 41 41 32 52 32Z"/>
+      <path d="M180 32H210C221 32 230 41 230 52V108C230 119 221 128 210 128H180V32Z"/>
+      <path d="M82 52C82 41 91 32 102 32H118L180 106V128H157L82 60V52Z"/>
+      <path d="M82 128V106L144 32H170L95 128H82Z"/>
+    </g>
+    <text x="262" y="102" fill="#171514" font-family="DM Sans, Arial, sans-serif" font-size="60" font-weight="700" letter-spacing="-3">Namu</text>
+  </g>
+  <text x="132" y="686" fill="#171514" font-family="DM Sans, Arial, sans-serif" font-size="24" font-weight="700">Strengths</text>
+  <text x="132" y="730" fill="#5E564F" font-family="DM Sans, Arial, sans-serif" font-size="22">Separate forms become one.</text>
+  <text x="132" y="766" fill="#5E564F" font-family="DM Sans, Arial, sans-serif" font-size="22">Best icon and story balance.</text>
+  <text x="132" y="802" fill="#5E564F" font-family="DM Sans, Arial, sans-serif" font-size="22">Feels rooted without cliché.</text>
+  <rect x="132" y="1048" width="188" height="56" rx="28" fill="#D6703F"/>
+  <text x="168" y="1085" fill="#FFFDF9" font-family="DM Sans, Arial, sans-serif" font-size="22" font-weight="700">Recommended</text>
+
+  <rect x="644" y="236" width="512" height="920" rx="36" fill="#FFFDF9" stroke="#E7DED3"/>
+  <text x="680" y="296" fill="#171514" font-family="DM Sans, Arial, sans-serif" font-size="34" font-weight="700">2. Sahel Signal</text>
+  <text x="680" y="334" fill="#6A615A" font-family="DM Sans, Arial, sans-serif" font-size="22">Sharper, more architectural, more premium.</text>
+  <rect x="680" y="378" width="440" height="232" rx="28" fill="#FFF8F1" stroke="#ECE0D4"/>
+  <g transform="translate(712 438)">
+    <g fill="#D6703F">
+      <path d="M34 118L72 42H100L62 118H34Z"/>
+      <path d="M108 42H138L176 118H146L108 42Z"/>
+      <path d="M166 42H196L234 118H204L166 42Z"/>
+      <circle cx="122" cy="80" r="12" fill="#171514"/>
+    </g>
+    <text x="258" y="102" fill="#171514" font-family="DM Sans, Arial, sans-serif" font-size="60" font-weight="700" letter-spacing="-3">Namu</text>
+  </g>
+  <text x="680" y="686" fill="#171514" font-family="DM Sans, Arial, sans-serif" font-size="24" font-weight="700">Strengths</text>
+  <text x="680" y="730" fill="#5E564F" font-family="DM Sans, Arial, sans-serif" font-size="22">Most visually distinctive silhouette.</text>
+  <text x="680" y="766" fill="#5E564F" font-family="DM Sans, Arial, sans-serif" font-size="22">Feels elevated and editorial.</text>
+  <text x="680" y="802" fill="#5E564F" font-family="DM Sans, Arial, sans-serif" font-size="22">Strong for premium brand language.</text>
+
+  <rect x="1192" y="236" width="512" height="920" rx="36" fill="#FFFDF9" stroke="#E7DED3"/>
+  <text x="1228" y="296" fill="#171514" font-family="DM Sans, Arial, sans-serif" font-size="34" font-weight="700">3. Human Voice</text>
+  <text x="1228" y="334" fill="#6A615A" font-family="DM Sans, Arial, sans-serif" font-size="22">Friendlier, softer, and more language-led.</text>
+  <rect x="1228" y="378" width="440" height="232" rx="28" fill="#FFF8F1" stroke="#ECE0D4"/>
+  <g transform="translate(1260 438)">
+    <g fill="none" stroke="#D6703F" stroke-width="18" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M48 110V50L120 110V50L192 110V50"/>
+    </g>
+    <circle cx="120" cy="80" r="13" fill="#D6703F"/>
+    <text x="242" y="102" fill="#171514" font-family="DM Sans, Arial, sans-serif" font-size="60" font-weight="700" letter-spacing="-3">Namu</text>
+  </g>
+  <text x="1228" y="686" fill="#171514" font-family="DM Sans, Arial, sans-serif" font-size="24" font-weight="700">Strengths</text>
+  <text x="1228" y="730" fill="#5E564F" font-family="DM Sans, Arial, sans-serif" font-size="22">Most approachable and human.</text>
+  <text x="1228" y="766" fill="#5E564F" font-family="DM Sans, Arial, sans-serif" font-size="22">Closest to language and dialogue.</text>
+  <text x="1228" y="802" fill="#5E564F" font-family="DM Sans, Arial, sans-serif" font-size="22">Warmest first impression.</text>
+</svg>

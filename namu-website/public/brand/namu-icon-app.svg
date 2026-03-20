@@ -1,0 +1,10 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="256" height="256" rx="56" fill="#F5EFE6" />
+  <path
+    fill-rule="evenodd"
+    clip-rule="evenodd"
+    d="M76 52H98V204H76L62 190V66L76 52ZM158 52H180L194 66V190L180 204H158V52ZM98 166H128L158 136V90H128L98 120V166ZM128 104L146 122L128 140L110 122L128 104Z"
+    fill="#D6703F"
+  />
+  <rect x="36" y="36" width="184" height="184" rx="40" stroke="#171514" stroke-opacity="0.08" stroke-width="2" />
+</svg>

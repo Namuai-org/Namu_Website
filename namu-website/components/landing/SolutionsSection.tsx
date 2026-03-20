@@ -1,12 +1,30 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 import { StudioPreviewCard } from "@/components/landing/StudioPreviewCard";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useTranslation } from "@/hooks/useTranslation";
 
 export function SolutionsSection() {
   useScrollReveal("#solutions .reveal");
+  const implRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const root = implRef.current;
+    if (!root) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          root.classList.add("solution-impl-visible");
+          io.disconnect();
+        }
+      },
+      { threshold: 0.08, rootMargin: "0px 0px -6% 0px" }
+    );
+    io.observe(root);
+    return () => io.disconnect();
+  }, []);
   const { t } = useTranslation();
   const steps = [
     {
@@ -75,14 +93,14 @@ export function SolutionsSection() {
           </div>
         </div>
 
-        <div className="solution-implementation reveal reveal-fade">
-          <div className="solution-home-panel">
+        <div ref={implRef} className="solution-implementation">
+          <div className="solution-home-panel solution-impl-panel">
             <div className="solution-panel-topline">{t("solution.panelLabel")}</div>
             <h3 className="solution-panel-title">{t("solution.panelTitle")}</h3>
             <p className="solution-panel-copy">{t("solution.panelIntro")}</p>
 
-            <div className="solution-demo-wrap solution-demo-wrap-inline reveal reveal-up">
-              <div className="solution-demo-frame solution-demo-frame-static">
+            <div className="solution-demo-wrap solution-demo-wrap-inline">
+              <div className="solution-demo-frame solution-demo-frame-static solution-impl-demo-frame">
                 <StudioPreviewCard />
               </div>
             </div>
