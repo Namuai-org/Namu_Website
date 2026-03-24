@@ -1,7 +1,8 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { useTranslation } from "@/hooks/useTranslation";
+import { NamuLogoMark } from "@/components/brand/NamuLogoMark";
 
 export function Footer() {
   const { t } = useTranslation();
@@ -11,6 +12,7 @@ export function Footer() {
       <div className="container footer-top">
         <div className="footer-col footer-brand-col">
           <div className="footer-brand">
+            <NamuLogoMark variant="onDark" height={30} />
             <span className="footer-name">{t("brand.name")}</span>
           </div>
           <p>{t("brand.missionShort")}</p>

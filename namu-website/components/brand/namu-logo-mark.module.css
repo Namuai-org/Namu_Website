@@ -1,0 +1,118 @@
+/**
+ * Ambient mark motion — long, soft cycles (Anthropic-like pacing).
+ * Staggered delays so bars / diagonal / dot don’t move in lockstep.
+ */
+.mark {
+  display: block;
+  flex-shrink: 0;
+  width: auto;
+  aspect-ratio: 72 / 84;
+  height: var(--namu-logo-h, 28px);
+  overflow: visible;
+}
+
+.diag {
+  animation: namuDiag 11s cubic-bezier(0.42, 0.02, 0.28, 1) infinite;
+  animation-delay: -0.8s;
+  transform-box: fill-box;
+  transform-origin: 50% 58%;
+}
+
+.barL {
+  animation: namuLeanL 11s cubic-bezier(0.42, 0.02, 0.28, 1) infinite;
+  animation-delay: -2.4s;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+
+.barR {
+  animation: namuLeanR 11s cubic-bezier(0.42, 0.02, 0.28, 1) infinite;
+  animation-delay: -4.1s;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+
+.dot {
+  animation: namuDot 11s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation-delay: -1.1s;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.halo {
+  animation: namuHalo 11s cubic-bezier(0.45, 0.05, 0.25, 1) infinite;
+  animation-delay: -3.3s;
+  transform-origin: 36px 44px;
+  transform-box: fill-box;
+}
+
+@keyframes namuDiag {
+  0%,
+  100% {
+    transform: rotate(0deg) scaleX(1);
+  }
+  32% {
+    transform: rotate(0.85deg) scaleX(1.008);
+  }
+  64% {
+    transform: rotate(-0.75deg) scaleX(0.996);
+  }
+}
+
+@keyframes namuLeanL {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-0.38deg);
+  }
+}
+
+@keyframes namuLeanR {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(0.38deg);
+  }
+}
+
+@keyframes namuDot {
+  0%,
+  100% {
+    transform: scale(1) translate(0, 0);
+    opacity: 1;
+  }
+  38% {
+    transform: scale(1.09) translate(0, -0.6px);
+    opacity: 0.94;
+  }
+  72% {
+    transform: scale(0.98) translate(0, 0.35px);
+    opacity: 1;
+  }
+}
+
+@keyframes namuHalo {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  50% {
+    opacity: 0.055;
+    transform: scale(1.06);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .diag,
+  .barL,
+  .barR,
+  .dot,
+  .halo {
+    animation: none !important;
+  }
+}

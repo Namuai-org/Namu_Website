@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -8,6 +8,7 @@ import { useNavScroll } from "@/hooks/useNavScroll";
 import { getStudioTarget } from "@/lib/supabaseClient";
 import { useTranslation } from "@/hooks/useTranslation";
 import { LanguageToggle } from "@/components/landing/LanguageToggle";
+import { NamuLogoMark } from "@/components/brand/NamuLogoMark";
 
 export function NavBar() {
   const scrolled = useNavScroll(100);
@@ -29,6 +30,7 @@ export function NavBar() {
     <>
       <header className={`nav-shell ${scrolled ? "scrolled" : ""}`}>
         <Link href="/" className="nav-brand" onClick={() => setMenuOpen(false)}>
+          <NamuLogoMark variant="onDark" height={28} />
           <span className="nav-name">{t("brand.name")}</span>
         </Link>
 
