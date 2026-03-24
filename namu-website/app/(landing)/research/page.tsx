@@ -1,6 +1,7 @@
 "use client";
 
 import { Footer } from "@/components/landing/Footer";
+import { HeroEntrance } from "@/components/landing/HeroEntrance";
 import { NavBar } from "@/components/landing/NavBar";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -14,9 +15,11 @@ export default function ResearchPage() {
       <NavBar />
       <section className="page-hero" id="research-page">
         <div className="container narrow">
-          <span className="section-label reveal reveal-fade">{t("research.heroLabel")}</span>
-          <h1 className="hero-title page-title reveal reveal-up">{t("research.heroTitle")}</h1>
-          <p className="hero-sub reveal reveal-up">{t("research.heroSub")}</p>
+          <HeroEntrance>
+            <span className="section-label">{t("research.heroLabel")}</span>
+            <h1 className="hero-title page-title">{t("research.heroTitle")}</h1>
+            <p className="hero-sub">{t("research.heroSub")}</p>
+          </HeroEntrance>
         </div>
       </section>
 

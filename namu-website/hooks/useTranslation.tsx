@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { en } from "@/lib/i18n/en";
@@ -37,11 +37,11 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     (next: Language) => {
       if (next === language) return;
       setIsTransitioning(true);
-      window.setTimeout(() => {
+      requestAnimationFrame(() => {
         setLanguageState(next);
         window.localStorage.setItem("namu-lang", next);
-        window.requestAnimationFrame(() => setIsTransitioning(false));
-      }, 200);
+        requestAnimationFrame(() => setIsTransitioning(false));
+      });
     },
     [language]
   );

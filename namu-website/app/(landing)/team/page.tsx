@@ -1,6 +1,7 @@
 "use client";
 
 import { Footer } from "@/components/landing/Footer";
+import { HeroEntrance } from "@/components/landing/HeroEntrance";
 import { NavBar } from "@/components/landing/NavBar";
 import { useTranslation } from "@/hooks/useTranslation";
 
@@ -12,9 +13,11 @@ export default function TeamPage() {
       <NavBar />
       <section className="page-hero team-page">
         <div className="container narrow">
-          <span className="section-label section-label-center">{t("team.label")}</span>
-          <h1 className="page-title">{t("team.title")}</h1>
-          <p className="team-page-intro">{t("team.intro")}</p>
+          <HeroEntrance>
+            <span className="section-label section-label-center">{t("team.label")}</span>
+            <h1 className="page-title">{t("team.title")}</h1>
+            <p className="team-page-intro">{t("team.intro")}</p>
+          </HeroEntrance>
         </div>
       </section>
 

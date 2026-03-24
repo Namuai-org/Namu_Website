@@ -33,7 +33,7 @@ function ProblemCard({ id, body, align, total }: ProblemCardProps) {
           }
         });
       },
-      { threshold: 0.35 }
+      { threshold: 0.1 }
     );
 
     observer.observe(node);
@@ -42,16 +42,33 @@ function ProblemCard({ id, body, align, total }: ProblemCardProps) {
   }, []);
 
   useEffect(() => {
-    if (!hasStarted || typedLength >= body.length) return;
+    if (!hasStarted) return;
 
-    const nextCharacter = body[typedLength];
-    const delay = nextCharacter === " " ? 12 : 24;
-    const timer = window.setTimeout(() => {
-      setTypedLength((current) => current + 1);
-    }, delay);
+    let len = 0;
+    let nextAt = performance.now();
+    let raf = 0;
+    let cancelled = false;
 
-    return () => window.clearTimeout(timer);
-  }, [body, hasStarted, typedLength]);
+    const step = (now: number) => {
+      if (cancelled) return;
+      if (len >= body.length) return;
+      if (now < nextAt) {
+        raf = requestAnimationFrame(step);
+        return;
+      }
+      const delay = body[len] === " " ? 12 : 24;
+      len += 1;
+      setTypedLength(len);
+      nextAt = now + delay;
+      raf = requestAnimationFrame(step);
+    };
+
+    raf = requestAnimationFrame(step);
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(raf);
+    };
+  }, [hasStarted, body]);
 
   return (
     <article

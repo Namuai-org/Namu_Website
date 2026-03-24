@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
@@ -7,7 +7,12 @@ import { useTranslation } from "@/hooks/useTranslation";
 
 const angleMap = [-8, -3, 0, 3, 8];
 
-export function BlogCarousel() {
+type BlogCarouselProps = {
+  /** When true, title/label come from the page hero instead */
+  hideBlogHead?: boolean;
+};
+
+export function BlogCarousel({ hideBlogHead = false }: BlogCarouselProps) {
   useScrollReveal("#blog .reveal");
   const { t } = useTranslation();
 
@@ -49,15 +54,23 @@ export function BlogCarousel() {
   return (
     <section className="section blog" id="blog">
       <div className="container">
-        <div className="blog-head reveal reveal-fade">
-          <div>
-            <span className="section-label">{t("blog.label")}</span>
-            <h2 className="title">{t("blog.title")}</h2>
+        {hideBlogHead ? (
+          <div className="blog-head blog-head--link-only reveal reveal-fade">
+            <Link href="/blog" className="text-orange">
+              {t("blog.viewAll")}
+            </Link>
           </div>
-          <Link href="/blog" className="text-orange">
-            {t("blog.viewAll")}
-          </Link>
-        </div>
+        ) : (
+          <div className="blog-head reveal reveal-fade">
+            <div>
+              <span className="section-label">{t("blog.label")}</span>
+              <h2 className="title">{t("blog.title")}</h2>
+            </div>
+            <Link href="/blog" className="text-orange">
+              {t("blog.viewAll")}
+            </Link>
+          </div>
+        )}
 
         <div className="carousel-wrap reveal reveal-up" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
           <button onClick={() => setIndex((prev) => (prev - 1 + posts.length) % posts.length)} aria-label="Previous" className="carousel-btn">

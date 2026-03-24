@@ -40,7 +40,9 @@ export function FAQSection() {
                   </span>
                 </button>
                 <div className={`faq-answer-wrap ${isOpen ? "open" : ""}`}>
-                  <p className="faq-answer">{item.a}</p>
+                  <div className="faq-answer-inner">
+                    <p className="faq-answer">{item.a}</p>
+                  </div>
                 </div>
               </article>
             );

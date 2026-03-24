@@ -20,7 +20,7 @@ export function SolutionsSection() {
           io.disconnect();
         }
       },
-      { threshold: 0.08, rootMargin: "0px 0px -6% 0px" }
+      { threshold: 0.1, rootMargin: "0px" }
     );
     io.observe(root);
     return () => io.disconnect();

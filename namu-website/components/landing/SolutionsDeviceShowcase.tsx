@@ -1,85 +1,109 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { StudioDemo } from "@/components/landing/StudioDemo";
+import { useScrollProgress } from "@/hooks/useScrollProgress";
 import { useTranslation } from "@/hooks/useTranslation";
 
-/**
- * Laptop open/close is driven by IntersectionObserver + CSS transitions
- * (see `.solutions-device-shell--open` in globals.css). No scroll listeners or rAF smoothing.
- */
-export function SolutionsDeviceShowcase() {
-  const stageRef = useRef<HTMLDivElement | null>(null);
-  const frameRef = useRef<HTMLDivElement | null>(null);
-  const [demoActive, setDemoActive] = useState(false);
-  const { t } = useTranslation();
+const OPEN_ANGLE = -112;
+/** Slightly lower = heavier, more “physical” lid */
+const LERP = 0.065;
 
-  useEffect(() => {
-    const stage = stageRef.current;
-    const frame = frameRef.current;
-    if (!stage || !frame) return;
+function targetLidAngleFromProgress(p: number): number {
+  if (p <= 0) return 0;
+  if (p < 0.38) return (p / 0.38) * OPEN_ANGLE;
+  if (p <= 0.62) return OPEN_ANGLE;
+  if (p < 1) return OPEN_ANGLE + ((p - 0.62) / 0.38) * -OPEN_ANGLE;
+  return 0;
+}
+
+export function SolutionsDeviceShowcase() {
+  const { t } = useTranslation();
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const lidRef = useRef<HTMLDivElement | null>(null);
+  const progressTargetRef = useScrollProgress(sectionRef);
+  const smoothedAngleRef = useRef(0);
+  const rafRef = useRef<number | null>(null);
+
+  useLayoutEffect(() => {
+    const lid = lidRef.current;
+    if (!lid) return;
 
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (mq.matches) {
+      lid.style.willChange = "transform";
+      lid.style.transform = `translateZ(0) rotateX(${OPEN_ANGLE}deg)`;
+      return;
+    }
 
-    const syncShell = (intersecting: boolean) => {
-      const open = mq.matches || intersecting;
-      frame.classList.toggle("solutions-device-shell--open", open);
-      setDemoActive(open);
+    smoothedAngleRef.current = targetLidAngleFromProgress(progressTargetRef.current);
+    lid.style.willChange = "transform";
+    lid.style.transform = `translateZ(0) rotateX(${smoothedAngleRef.current}deg)`;
+  }, []);
+
+  useEffect(() => {
+    const lid = lidRef.current;
+    if (!lid) return;
+
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (mq.matches) return;
+
+    const tick = () => {
+      const tgtA = targetLidAngleFromProgress(progressTargetRef.current);
+      const curA = smoothedAngleRef.current;
+      smoothedAngleRef.current = curA + (tgtA - curA) * LERP;
+
+      lid.style.transform = `translateZ(0) rotateX(${smoothedAngleRef.current}deg)`;
+
+      rafRef.current = requestAnimationFrame(tick);
     };
 
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        syncShell(entry.isIntersecting);
-      },
-      {
-        threshold: 0,
-        /* Require the demo stage to sit in the main viewport band — open in view, close when scrolled past */
-        rootMargin: "-10% 0px -16% 0px",
-      }
-    );
-
-    const onReducedMotionChange = () => {
-      if (mq.matches) {
-        io.disconnect();
-        syncShell(true);
-      } else {
-        io.observe(stage);
-      }
-    };
-
-    onReducedMotionChange();
-    mq.addEventListener("change", onReducedMotionChange);
-
+    rafRef.current = requestAnimationFrame(tick);
     return () => {
-      io.disconnect();
-      mq.removeEventListener("change", onReducedMotionChange);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, []);
 
   return (
-    <div className="solutions-device-stage" ref={stageRef} id="solutions-demo">
-      <div className="solutions-device-shell" ref={frameRef}>
-        <div className="solutions-device-shadow" aria-hidden="true" />
-        <div className="solutions-device-top">
-          <span className="solutions-device-camera" aria-hidden="true" />
-          <div className="solutions-device-screen">
-            <div className="solutions-device-screen-shine" aria-hidden="true" />
-            <div className="solutions-device-demo" aria-label={t("solutions.deviceAlt")}>
-              <StudioDemo
-                autoPlay={demoActive}
-                startDelayMs={280}
-                showControls={false}
-                showStoryPills={false}
-              />
+    <section
+      ref={sectionRef}
+      className="solutions-mac-scroll"
+      id="solutions-demo"
+      aria-label={t("solutions.deviceAlt")}
+    >
+      <div className="solutions-mac-sticky">
+        <div className="solutions-mac-perspective">
+          <div className="solutions-mac-glow" aria-hidden="true" />
+          <div className="solutions-mac-rig">
+            <div className="solutions-mac-unit">
+              <div className="solutions-mac-base">
+                <div className="solutions-mac-base-well" aria-hidden="true" />
+                <div className="solutions-mac-base-lip" aria-hidden="true" />
+              </div>
+              <div className="solutions-mac-hinge-bar" aria-hidden="true" />
+              <div className="solutions-mac-lid">
+                <div ref={lidRef} className="solutions-mac-lid-pivot">
+                  <div className="solutions-mac-lid-shell">
+                    <div className="solutions-mac-lid-face">
+                      <span className="solutions-mac-camera" aria-hidden="true" />
+                      <div className="solutions-mac-screen-bezel">
+                        <div className="solutions-mac-demo">
+                          <StudioDemo
+                            autoPlay
+                            startDelayMs={200}
+                            showControls={false}
+                            showStoryPills={false}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div className="solutions-device-base" aria-hidden="true">
-          <div className="solutions-device-deck" />
-          <div className="solutions-device-hinge" />
-          <div className="solutions-device-lip" />
-        </div>
       </div>
-    </div>
+    </section>
   );
 }

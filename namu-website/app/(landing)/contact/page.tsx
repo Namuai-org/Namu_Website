@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { Footer } from "@/components/landing/Footer";
+import { HeroEntrance } from "@/components/landing/HeroEntrance";
 import { NavBar } from "@/components/landing/NavBar";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -36,10 +37,15 @@ export default function ContactPage() {
   return (
     <>
       <NavBar />
+      <section className="page-hero contact-page-hero" id="contact-hero">
+        <div className="container narrow">
+          <HeroEntrance>
+            <h1 className="title page-title">{t("contact.title")}</h1>
+          </HeroEntrance>
+        </div>
+      </section>
       <section className="section" id="contact-page">
         <div className="container contact-wrap">
-          <h1 className="title reveal reveal-up">{t("contact.title")}</h1>
-
           <div className="contact-cards">
             <article className="contact-card reveal reveal-up">
               <h3>{t("contact.card1")}</h3>

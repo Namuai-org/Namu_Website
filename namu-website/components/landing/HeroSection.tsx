@@ -1,12 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { HeroEntrance } from "@/components/landing/HeroEntrance";
 import { useTranslation } from "@/hooks/useTranslation";
 
 export function HeroSection() {
-  /* Defer observe so first paint shows blur + hidden state, then transition runs */
-  useScrollReveal("#hero .reveal", { deferFrames: 3 });
   const { t } = useTranslation();
   const heroBody = t("hero.body");
   const [typedLength, setTypedLength] = useState(0);
@@ -16,23 +14,39 @@ export function HeroSection() {
   }, [heroBody]);
 
   useEffect(() => {
-    if (typedLength >= heroBody.length) return;
+    let len = 0;
+    let nextAt = performance.now();
+    let raf = 0;
+    let cancelled = false;
 
-    const nextCharacter = heroBody[typedLength];
-    const delay = nextCharacter === " " ? 16 : typedLength < 10 ? 34 : 22;
-    const timer = window.setTimeout(() => {
-      setTypedLength((current) => current + 1);
-    }, delay);
+    const step = (now: number) => {
+      if (cancelled) return;
+      if (len >= heroBody.length) return;
+      if (now < nextAt) {
+        raf = requestAnimationFrame(step);
+        return;
+      }
+      const nextCharacter = heroBody[len];
+      const delay = nextCharacter === " " ? 16 : len < 10 ? 34 : 22;
+      len += 1;
+      setTypedLength(len);
+      nextAt = now + delay;
+      raf = requestAnimationFrame(step);
+    };
 
-    return () => window.clearTimeout(timer);
-  }, [heroBody, typedLength]);
+    raf = requestAnimationFrame(step);
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(raf);
+    };
+  }, [heroBody]);
 
   return (
     <section className="hero-section" id="hero">
       <div className="hero-glow" />
       <div className="hero-silhouette" aria-hidden="true" />
 
-      <div className="hero-content reveal reveal-up">
+      <HeroEntrance className="hero-content hero-content-home">
         <span className="section-label section-label-center">{t("hero.kicker")}</span>
         <h1 className="hero-title">
           <span className="hero-title-line">{t("hero.titleTop")}</span>
@@ -51,7 +65,7 @@ export function HeroSection() {
             {t("hero.secondaryCta")}
           </a>
         </div>
-      </div>
+      </HeroEntrance>
     </section>
   );
 }

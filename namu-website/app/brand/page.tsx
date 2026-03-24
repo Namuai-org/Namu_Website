@@ -5,7 +5,7 @@ export default function BrandPage() {
     <main className={styles.page}>
       <div className={styles.shell}>
         <section className={styles.hero}>
-          <div>
+          <div className="hero-entrance">
             <div className={styles.eyebrow}>Namu Brand Exploration</div>
             <h1 className={styles.headline}>Three stronger logo directions, built before we choose one.</h1>
             <p className={styles.lede}>

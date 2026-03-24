@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Footer } from "@/components/landing/Footer";
+import { HeroEntrance } from "@/components/landing/HeroEntrance";
 import { NavBar } from "@/components/landing/NavBar";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -15,9 +16,11 @@ export default function AboutPage() {
       <NavBar />
       <section className="page-hero" id="about-page">
         <div className="container narrow">
-          <span className="section-label reveal reveal-fade">{t("about.heroLabel")}</span>
-          <h1 className="hero-title page-title reveal reveal-up">{t("about.heroTitle")}</h1>
-          <p className="hero-sub reveal reveal-up">{t("about.heroSub")}</p>
+          <HeroEntrance>
+            <span className="section-label">{t("about.heroLabel")}</span>
+            <h1 className="hero-title page-title">{t("about.heroTitle")}</h1>
+            <p className="hero-sub">{t("about.heroSub")}</p>
+          </HeroEntrance>
         </div>
       </section>
 

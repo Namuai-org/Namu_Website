@@ -249,6 +249,7 @@ export function StudioDemo({
       if (!containerRef.current) return;
       const width = containerRef.current.clientWidth;
       const height = containerRef.current.clientHeight;
+      if (width < 4 || height < 4) return;
       setScale(Math.min(width / BASE_W, height / BASE_H));
     };
     computeScale();
@@ -293,11 +294,28 @@ export function StudioDemo({
     }
 
     setIsPlaying(false);
-    const timer = window.setTimeout(() => {
-      setIsPlaying(true);
-    }, startDelayMs);
+    let acc = 0;
+    let last = 0;
+    let raf = 0;
+    let cancelled = false;
 
-    return () => window.clearTimeout(timer);
+    const tick = (now: number) => {
+      if (cancelled) return;
+      if (!last) last = now;
+      acc += now - last;
+      last = now;
+      if (acc >= startDelayMs) {
+        setIsPlaying(true);
+        return;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+
+    raf = requestAnimationFrame(tick);
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(raf);
+    };
   }, [autoPlay, startDelayMs]);
 
   const story = getStory(elapsed);

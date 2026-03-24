@@ -24,27 +24,15 @@ export function MissionSection() {
               "
             </span>
             <blockquote className="mission-quote">{t("mission.quote")}</blockquote>
-            <div className="mission-attribution">
-              <p className="mission-author">{t("mission.author")}</p>
-              <p className="mission-role">{t("mission.role")}</p>
-              <p className="mission-signature" aria-label={t("mission.author")}>
-                <span className="mission-signature-text">{t("mission.signature")}</span>
-              </p>
-            </div>
           </aside>
 
-          <div className="mission-stand">
-            <p className="mission-stand-kicker">{t("mission.standKicker")}</p>
-            <h2 className="mission-stand-headline">{t("mission.standHeadline")}</h2>
-            <p className="mission-stand-lead">{t("mission.standLead")}</p>
-            <div className="mission-stand-body">
-              <p>{t("mission.p2")}</p>
-              <p>{t("mission.p3")}</p>
-            </div>
+          <div className="mission-main">
+            <h2 className="mission-headline">{t("mission.headline")}</h2>
+            <p className="mission-body">{t("mission.body")}</p>
           </div>
         </div>
 
-        <ul className="mission-pillars reveal reveal-fade" aria-label={t("mission.standKicker")}>
+        <ul className="mission-pillars reveal reveal-fade" aria-label={t("mission.pillarsLabel")}>
           {pillarKeys.map((pillar, index) => (
             <li key={pillar.title} className={`mission-pillar mission-pillar-${index + 1}`}>
               <span className="mission-pillar-index" aria-hidden="true">

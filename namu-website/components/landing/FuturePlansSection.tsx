@@ -33,16 +33,31 @@ function FutureNode({ className, title, detail, delayClass }: FutureNodeProps) {
       return;
     }
 
-    if (typedLength >= detail.length) return;
+    let len = 0;
+    let nextAt = performance.now();
+    let raf = 0;
+    let cancelled = false;
 
-    const nextCharacter = detail[typedLength];
-    const delay = nextCharacter === " " ? 10 : 18;
-    const timer = window.setTimeout(() => {
-      setTypedLength((current) => current + 1);
-    }, delay);
+    const step = (now: number) => {
+      if (cancelled) return;
+      if (len >= detail.length) return;
+      if (now < nextAt) {
+        raf = requestAnimationFrame(step);
+        return;
+      }
+      const delay = detail[len] === " " ? 10 : 18;
+      len += 1;
+      setTypedLength(len);
+      nextAt = now + delay;
+      raf = requestAnimationFrame(step);
+    };
 
-    return () => window.clearTimeout(timer);
-  }, [active, detail, typedLength]);
+    raf = requestAnimationFrame(step);
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(raf);
+    };
+  }, [active, detail]);
 
   return (
     <button
@@ -57,8 +72,10 @@ function FutureNode({ className, title, detail, delayClass }: FutureNodeProps) {
       <span className="future-node-glow" aria-hidden="true" />
       <span className="future-node-label">{title}</span>
       <span className={`future-node-detail ${active ? "is-visible" : ""}`}>
-        {active ? detail.slice(0, typedLength) : ""}
-        <span className="future-node-caret" aria-hidden="true" />
+        <span className="future-node-detail-inner">
+          {active ? detail.slice(0, typedLength) : ""}
+          <span className="future-node-caret" aria-hidden="true" />
+        </span>
       </span>
     </button>
   );
