@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "@/hooks/useTranslation";
+import { NamuLogoMark } from "@/components/brand/NamuLogoMark";
 import styles from "./solutions-macbook-demo.module.css";
 import { StudioDemo } from "./StudioDemo";
 
@@ -169,17 +170,105 @@ export function SolutionsMacBookDemoSection() {
                             <div className={styles.lidInner}>
                               <div className={styles.notch} aria-hidden />
                               <div ref={screenRef} className={styles.screenClip}>
-                                  <div className={styles.screenDemoWrap} aria-hidden>
-                                    <div className={styles.screenDemoScale}>
-                                      <StudioDemo
-                                        autoPlay={!reduceMotion}
-                                        loop={!reduceMotion}
-                                        startDelayMs={0}
-                                        showControls={showDemoControls}
-                                        showStoryPills={showDemoStoryPills}
-                                      />
+                                <div className={styles.desktopScene} aria-hidden>
+                                  <div className={styles.desktopWallpaper} />
+                                  <div className={styles.desktopMenuBar}>
+                                    <div className={styles.menuBarLeft}>
+                                      <span className={styles.menuBarBrandMark}>
+                                        <NamuLogoMark variant="onDark" height={16} />
+                                      </span>
+                                      <span className={styles.menuBarLabel}>Namu</span>
+                                    </div>
+                                    <div className={styles.menuBarRight}>
+                                      <span className={styles.menuStatusIcon} aria-hidden="true">
+                                        <svg viewBox="0 0 24 24">
+                                          <path
+                                            d="M3.5 9.5C5.9 7.1 8.8 6 12 6s6.1 1.1 8.5 3.5"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="1.9"
+                                            strokeLinecap="round"
+                                          />
+                                          <path
+                                            d="M6.7 12.7C8.2 11.2 10 10.5 12 10.5s3.8 0.7 5.3 2.2"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="1.9"
+                                            strokeLinecap="round"
+                                          />
+                                          <path
+                                            d="M9.8 15.8c0.6-0.6 1.4-0.9 2.2-0.9s1.6 0.3 2.2 0.9"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="1.9"
+                                            strokeLinecap="round"
+                                          />
+                                          <circle cx="12" cy="19" r="1.5" fill="currentColor" />
+                                        </svg>
+                                      </span>
+                                      <span className={styles.menuStatusIcon} aria-hidden="true">
+                                        <svg viewBox="0 0 24 24">
+                                          <defs>
+                                            <linearGradient id="siriOrb" x1="0" y1="0" x2="1" y2="1">
+                                              <stop offset="0%" stopColor="#9fd7ff" />
+                                              <stop offset="50%" stopColor="#d6703f" />
+                                              <stop offset="100%" stopColor="#7aa7d8" />
+                                            </linearGradient>
+                                          </defs>
+                                          <circle cx="12" cy="12" r="7.5" fill="none" stroke="url(#siriOrb)" strokeWidth="2.2" />
+                                          <path
+                                            d="M12 4.8a7.2 7.2 0 0 1 7.2 7.2"
+                                            fill="none"
+                                            stroke="#fff7ef"
+                                            strokeOpacity="0.9"
+                                            strokeWidth="1.2"
+                                            strokeLinecap="round"
+                                          />
+                                        </svg>
+                                      </span>
                                     </div>
                                   </div>
+                                  <div className={styles.desktopWindow}>
+                                    <div className={styles.desktopWindowBar}>
+                                      <div className={styles.windowTrafficLights}>
+                                        <span className={`${styles.trafficLight} ${styles.trafficLightRed}`} />
+                                        <span className={`${styles.trafficLight} ${styles.trafficLightYellow}`} />
+                                        <span className={`${styles.trafficLight} ${styles.trafficLightGreen}`} />
+                                      </div>
+                                      <span className={styles.desktopWindowTitle}>
+                                        <span className={styles.windowBrandMark}>
+                                          <NamuLogoMark variant="onDark" height={15} />
+                                        </span>
+                                        <span>Namu AI-Studio</span>
+                                      </span>
+                                    </div>
+                                    <div className={styles.screenDemoWrap}>
+                                      <div className={styles.screenDemoScale}>
+                                        <StudioDemo
+                                          autoPlay={!reduceMotion}
+                                          loop={!reduceMotion}
+                                          startDelayMs={0}
+                                          showControls={showDemoControls}
+                                          showStoryPills={showDemoStoryPills}
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className={styles.desktopDock}>
+                                    <span className={`${styles.dockIcon} ${styles.dockIconSafari}`}>
+                                      <img src="/macos-icons/safari.png" alt="" />
+                                    </span>
+                                    <span className={`${styles.dockIcon} ${styles.dockIconApps}`}>
+                                      <img src="/macos-icons/apps.png" alt="" />
+                                    </span>
+                                    <span className={`${styles.dockIcon} ${styles.dockIconNamu}`}>
+                                      <NamuLogoMark variant="onDark" height={22} />
+                                    </span>
+                                    <span className={`${styles.dockIcon} ${styles.dockIconSettings}`}>
+                                      <img src="/macos-icons/system-settings.png" alt="" />
+                                    </span>
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>

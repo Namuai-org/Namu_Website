@@ -57,7 +57,7 @@ export function HeroSection() {
           {typedLength < heroBody.length ? <span className="hero-body-caret" aria-hidden="true" /> : null}
         </p>
 
-        <div className="hero-actions hero-child">
+        <div className="hero-actions hero-child hero-actions-home">
           <a href="#waitlist" className="btn-primary hero-primary">
             {t("hero.primaryCta")}
           </a>

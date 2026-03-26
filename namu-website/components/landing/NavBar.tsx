@@ -61,11 +61,8 @@ export function NavBar() {
           <Link href="/solutions" className="nav-link">
             {t("nav.solutions")}
           </Link>
-          <Link href="/research" className="nav-link">
-            {t("nav.research")}
-          </Link>
-          <Link href="/team" className="nav-link">
-            {t("nav.team")}
+          <Link href="/blog" className="nav-link">
+            Blog
           </Link>
           <Link href="/pitch" className="nav-link">
             {t("nav.pitch")}
@@ -102,11 +99,8 @@ export function NavBar() {
           <Link href="/solutions" onClick={() => setMenuOpen(false)}>
             {t("nav.solutions")}
           </Link>
-          <Link href="/research" onClick={() => setMenuOpen(false)}>
-            {t("nav.research")}
-          </Link>
-          <Link href="/team" onClick={() => setMenuOpen(false)}>
-            {t("nav.team")}
+          <Link href="/blog" onClick={() => setMenuOpen(false)}>
+            Blog
           </Link>
           <Link href="/pitch" onClick={() => setMenuOpen(false)}>
             {t("nav.pitch")}
