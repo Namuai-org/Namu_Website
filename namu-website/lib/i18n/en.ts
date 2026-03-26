@@ -217,6 +217,7 @@ export const en = {
   "solutions.summaryBody": "Namu AI-Studio helps users write, plan, code, and create with advanced AI in Hausa. It is designed for students, builders, teams, and professionals who should not need English to access modern AI capabilities.",
   "solutions.featuresLabel": "Features",
   "solutions.featuresTitle": "Built for the people",
+  "solutions.featuresIntro": "First AI Workspace for Hausa speakers.",
   "solutions.workplaceLabel": "Hausa Workplace",
   "solutions.workplaceTitle": "See the full workspace.",
   "solutions.workplaceIntro": "Writing, planning, research, and building live in one place, with Hausa at the center.",
