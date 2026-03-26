@@ -19,6 +19,8 @@ type TypingSchedule = { stamps: number[] };
 const BASE_W = 1440;
 const BASE_H = 810;
 const LOOP_MS = 155000;
+/** Exported for shared clocks (e.g. multi-device mockups) */
+export const STUDIO_DEMO_LOOP_MS = LOOP_MS;
 
 const T = {
   story1Start: 0,
@@ -221,12 +223,18 @@ export function StudioDemo({
   startDelayMs = 0,
   showControls = true,
   showStoryPills = true,
+  /** When set, animation time is driven externally (single clock for multiple viewports). */
+  controlledElapsedMs,
+  /** Minimum UI scale when the container is very small (e.g. phone mask in a mockup). */
+  scaleFloor = 0,
 }: {
   autoPlay?: boolean;
   loop?: boolean;
   startDelayMs?: number;
   showControls?: boolean;
   showStoryPills?: boolean;
+  controlledElapsedMs?: number;
+  scaleFloor?: number;
 }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const codeScrollRef = useRef<HTMLDivElement | null>(null);
@@ -234,8 +242,12 @@ export function StudioDemo({
   const lastTsRef = useRef(0);
   const elapsedRef = useRef(0);
   const [scale, setScale] = useState(1);
-  const [elapsed, setElapsed] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(autoPlay && startDelayMs === 0);
+  const [internalElapsed, setInternalElapsed] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(
+    autoPlay && startDelayMs === 0 && controlledElapsedMs === undefined,
+  );
+
+  const elapsed = controlledElapsedMs ?? internalElapsed;
 
   const initialHtmlLines = useMemo(() => INITIAL_HTML.split("\n"), []);
   const finalHtmlLines = useMemo(() => FINAL_HTML.split("\n"), []);
@@ -250,15 +262,18 @@ export function StudioDemo({
       const width = containerRef.current.clientWidth;
       const height = containerRef.current.clientHeight;
       if (width < 4 || height < 4) return;
-      setScale(Math.min(width / BASE_W, height / BASE_H));
+      const raw = Math.min(width / BASE_W, height / BASE_H);
+      setScale(Math.max(raw, scaleFloor));
     };
     computeScale();
     const observer = new ResizeObserver(computeScale);
     if (containerRef.current) observer.observe(containerRef.current);
     return () => observer.disconnect();
-  }, []);
+  }, [scaleFloor]);
 
   useEffect(() => {
+    if (controlledElapsedMs !== undefined) return;
+
     const tick = (timestamp: number) => {
       if (!lastTsRef.current) lastTsRef.current = timestamp;
       const delta = timestamp - lastTsRef.current;
@@ -273,7 +288,7 @@ export function StudioDemo({
             setIsPlaying(false);
           }
         }
-        setElapsed(elapsedRef.current);
+        setInternalElapsed(elapsedRef.current);
       }
       rafRef.current = requestAnimationFrame(tick);
     };
@@ -281,9 +296,13 @@ export function StudioDemo({
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [isPlaying, loop]);
+  }, [isPlaying, loop, controlledElapsedMs]);
 
   useEffect(() => {
+    if (controlledElapsedMs !== undefined) {
+      setIsPlaying(true);
+      return;
+    }
     if (!autoPlay) {
       setIsPlaying(false);
       return;
@@ -316,7 +335,7 @@ export function StudioDemo({
       cancelled = true;
       cancelAnimationFrame(raf);
     };
-  }, [autoPlay, startDelayMs]);
+  }, [autoPlay, startDelayMs, controlledElapsedMs]);
 
   const story = getStory(elapsed);
   const overlayMode = getOverlayMode(elapsed);
@@ -395,8 +414,9 @@ export function StudioDemo({
   })), []);
 
   const jumpToStory = (storyId: StoryId) => {
+    if (controlledElapsedMs !== undefined) return;
     elapsedRef.current = STORY_STARTS[storyId];
-    setElapsed(STORY_STARTS[storyId]);
+    setInternalElapsed(STORY_STARTS[storyId]);
   };
 
   return (

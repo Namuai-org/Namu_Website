@@ -1,48 +1,66 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useTranslation } from "@/hooks/useTranslation";
-
-const pillarKeys = [
-  { title: "mission.pillar1Title" as const, body: "mission.pillar1Body" as const },
-  { title: "mission.pillar2Title" as const, body: "mission.pillar2Body" as const },
-  { title: "mission.pillar3Title" as const, body: "mission.pillar3Body" as const },
-];
+import styles from "./mission-section.module.css";
 
 export function MissionSection() {
   useScrollReveal("#mission .reveal");
   const { t } = useTranslation();
+  const sectionRef = useRef<HTMLElement>(null);
+  const [blocksInView, setBlocksInView] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setBlocksInView(true);
+      return;
+    }
+
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setBlocksInView(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.2, rootMargin: "0px" },
+    );
+
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  const inClass = blocksInView ? styles.isIn : "";
 
   return (
-    <section className="section mission mission-editorial" id="mission">
-      <div className="container mission-editorial-inner">
+    <section ref={sectionRef} className="section mission mission-editorial" id="mission">
+      <div className={`container mission-editorial-inner ${styles.missionStack}`}>
         <span className="section-label section-label-center reveal reveal-fade">{t("mission.label")}</span>
 
-        <div className="mission-layout reveal reveal-up">
-          <aside className="mission-quote-shell">
-            <span className="mission-mark" aria-hidden="true">
-              "
-            </span>
-            <blockquote className="mission-quote">{t("mission.quote")}</blockquote>
-          </aside>
-
-          <div className="mission-main">
-            <h2 className="mission-headline">{t("mission.headline")}</h2>
-            <p className="mission-body">{t("mission.body")}</p>
-          </div>
-        </div>
-
-        <ul className="mission-pillars reveal reveal-fade" aria-label={t("mission.pillarsLabel")}>
-          {pillarKeys.map((pillar, index) => (
-            <li key={pillar.title} className={`mission-pillar mission-pillar-${index + 1}`}>
-              <span className="mission-pillar-index" aria-hidden="true">
-                {String(index + 1).padStart(2, "0")}
+        <div className={styles.missionCenter}>
+          <div className={`${styles.quoteEnter} ${inClass}`}>
+            <div className={styles.quoteInner}>
+              <span className={styles.quoteMark} aria-hidden="true">
+                &ldquo;
               </span>
-              <h3 className="mission-pillar-title">{t(pillar.title)}</h3>
-              <p className="mission-pillar-body">{t(pillar.body)}</p>
-            </li>
-          ))}
-        </ul>
+              <blockquote className={styles.quoteText}>{t("mission.quote")}</blockquote>
+              <div className={styles.quoteAttribution}>
+                <span className={`${styles.quoteMark} ${styles.quoteMarkClose}`} aria-hidden="true">
+                  &rdquo;
+                </span>
+                <p className={styles.missionCredit}>{t("mission.attributionLine")}</p>
+              </div>
+            </div>
+          </div>
+
+          <p className={`${styles.missionStatement} ${inClass}`}>{t("mission.statement1")}</p>
+        </div>
       </div>
     </section>
   );

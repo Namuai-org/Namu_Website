@@ -1,6 +1,8 @@
-﻿"use client";
+"use client";
 
 import type { ReactNode } from "react";
+import { NavBar } from "@/components/landing/NavBar";
+import { PageTransition } from "@/components/PageTransition";
 import { LanguageProvider, useTranslation } from "@/hooks/useTranslation";
 
 function LandingContent({ children }: { children: ReactNode }) {
@@ -16,7 +18,10 @@ function LandingContent({ children }: { children: ReactNode }) {
 export default function LandingLayout({ children }: { children: ReactNode }) {
   return (
     <LanguageProvider>
-      <LandingContent>{children}</LandingContent>
+      <NavBar />
+      <LandingContent>
+        <PageTransition>{children}</PageTransition>
+      </LandingContent>
     </LanguageProvider>
   );
 }

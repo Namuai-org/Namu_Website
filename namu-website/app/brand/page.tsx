@@ -6,9 +6,9 @@ export default function BrandPage() {
       <div className={styles.shell}>
         <section className={styles.hero}>
           <div className="hero-entrance">
-            <div className={styles.eyebrow}>Namu Brand Exploration</div>
-            <h1 className={styles.headline}>Three stronger logo directions, built before we choose one.</h1>
-            <p className={styles.lede}>
+            <div className={`${styles.eyebrow} hero-child`}>Namu Brand Exploration</div>
+            <h1 className={`${styles.headline} hero-child`}>Three stronger logo directions, built before we choose one.</h1>
+            <p className={`${styles.lede} hero-child`}>
               The live site has been reset to a simple text wordmark. This page is now the review room: three distinct
               identity directions with more authorship, more cultural intelligence, and a clearer emotional point of view.
             </p>

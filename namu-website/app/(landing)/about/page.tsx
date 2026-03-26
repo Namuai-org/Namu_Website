@@ -13,13 +13,12 @@ export default function AboutPage() {
 
   return (
     <>
-      <NavBar />
       <section className="page-hero" id="about-page">
         <div className="container narrow">
           <HeroEntrance>
-            <span className="section-label">{t("about.heroLabel")}</span>
-            <h1 className="hero-title page-title">{t("about.heroTitle")}</h1>
-            <p className="hero-sub">{t("about.heroSub")}</p>
+            <span className="section-label hero-child">{t("about.heroLabel")}</span>
+            <h1 className="hero-title page-title hero-child">{t("about.heroTitle")}</h1>
+            <p className="hero-sub hero-child">{t("about.heroSub")}</p>
           </HeroEntrance>
         </div>
       </section>
@@ -49,7 +48,7 @@ export default function AboutPage() {
           <article className="about-block reveal reveal-up">
             <span className="section-label">{t("about.involvedLabel")}</span>
             <p className="editorial-text">{t("about.involvedBody")}</p>
-            <Link href="/contact" className="btn-primary">
+            <Link href="/login" className="btn-primary">
               {t("cta.primary")}
             </Link>
           </article>

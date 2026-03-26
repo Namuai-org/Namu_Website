@@ -1,0 +1,913 @@
+/* CSS 3D MacBook Pro — Silver; scoped to solutions demo section */
+
+.root {
+  position: relative;
+  width: 100%;
+  display: grid;
+  gap: clamp(18px, 3vw, 34px);
+}
+
+.copy {
+  text-align: center;
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 4vw, 24px);
+  position: relative;
+  z-index: 2;
+}
+
+.copyLabel {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #d6703f;
+  margin-bottom: 12px;
+}
+
+.copyTitle {
+  font-size: clamp(1.75rem, 4vw, 3.25rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  color: #0c0c0c;
+  margin: 0 0 12px;
+}
+
+.copySub {
+  font-size: clamp(1rem, 1.35vw, 1.125rem);
+  line-height: 1.5;
+  color: rgba(12, 12, 12, 0.52);
+  margin: 0;
+  max-width: 36rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.scrollStage {
+  position: relative;
+  min-height: clamp(760px, 118vh, 980px);
+  width: 100%;
+  scroll-margin-top: 96px;
+  box-sizing: border-box;
+  margin-top: clamp(280px, 22vw, 360px);
+}
+
+.requestCardOuter {
+  width: min(980px, calc(100vw - 32px));
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 0 clamp(0.5rem, 2vw, 1rem);
+  margin-top: clamp(-300px, -20vw, -220px);
+  box-sizing: border-box;
+  position: relative;
+  z-index: 3;
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: auto;
+  padding: clamp(160px, 14vw, 220px) clamp(12px, 3vw, 24px) 0;
+  box-sizing: border-box;
+}
+
+.perspective {
+  position: relative;
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+  perspective: 1350px;
+  perspective-origin: 50% 45%;
+}
+
+.glow {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  width: min(860px, 94vw);
+  height: min(300px, 36vh);
+  transform: translate(-50%, -50%);
+  border-radius: 45%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.24;
+  background:
+    radial-gradient(circle at center, rgba(214, 112, 63, 0.16) 0%, rgba(214, 112, 63, 0.06) 34%, transparent 70%);
+  filter: blur(12px);
+  will-change: opacity, transform;
+}
+
+.assemblyScale {
+  position: relative;
+  z-index: 1;
+  width: min(980px, 100%);
+  max-width: 100%;
+  margin: 0 auto;
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
+}
+
+.responsiveScale {
+  width: min(980px, 100%);
+  max-width: 100%;
+  margin: 0 auto;
+  transform-origin: 50% 50%;
+}
+
+@media (max-width: 1024px) {
+  .responsiveScale {
+    width: min(840px, 100%);
+  }
+}
+
+@media (max-width: 768px) {
+  .responsiveScale {
+    width: min(540px, 100%);
+  }
+}
+
+.assemblyFloat {
+  transform-origin: 50% 50%;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.unit {
+  position: relative;
+  width: min(980px, 100%);
+  max-width: 100%;
+  margin: 0 auto;
+  transform-style: preserve-3d;
+  transform: rotateX(0deg) rotateY(0deg) translateZ(0);
+}
+
+/* —— Base (keyboard deck) —— */
+.base {
+  position: relative;
+  width: min(980px, 100%);
+  max-width: 100%;
+  height: clamp(108px, 13vw, 132px);
+  transform-style: preserve-3d;
+  transform: rotateX(86deg);
+  transform-origin: 50% 100%;
+}
+
+.baseTop {
+  position: absolute;
+  inset: 0;
+  border-radius: 18px 18px 18px 18px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.18) 22%, transparent 44%),
+    radial-gradient(circle at 50% 24%, rgba(255, 255, 255, 0.22), transparent 36%),
+    linear-gradient(180deg, #f2f3f5 0%, #ced2d9 42%, #b0b5be 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    inset 0 -2px 8px rgba(84, 89, 99, 0.18),
+    0 12px 26px rgba(15, 24, 36, 0.06);
+}
+
+.baseTop::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.1;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0 1px, transparent 1px 8px),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 8px);
+}
+
+.baseBottom {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  width: 100%;
+  height: 8px;
+  background: linear-gradient(180deg, #a8aeb8 0%, #8d949f 100%);
+  transform-origin: top center;
+  transform: rotateX(-90deg);
+}
+
+.baseFront {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 8px;
+  background: linear-gradient(180deg, #bcc2cb 0%, #9198a3 100%);
+  transform-origin: bottom center;
+  transform: rotateX(90deg) translateY(100%);
+}
+
+.magsafe {
+  position: absolute;
+  left: 50%;
+  bottom: 6px;
+  width: 72px;
+  height: 4px;
+  margin-left: -36px;
+  background: linear-gradient(180deg, #7b818b 0%, #5d646d 100%);
+  border-radius: 999px;
+  z-index: 2;
+}
+
+.trackpad {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  width: clamp(150px, 18%, 190px);
+  aspect-ratio: 1.58 / 1;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(180deg, #c8ced7 0%, #aab1bc 100%);
+  border-radius: 14px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.64),
+    inset 0 -2px 5px rgba(99, 107, 118, 0.14);
+  z-index: 2;
+}
+
+/* —— Lid —— */
+.lidAnchor {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% - 2px);
+  height: clamp(450px, 47vw, 560px);
+  width: min(980px, 100%);
+  max-width: 100%;
+  margin: 0 auto;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.lidPivot {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: clamp(450px, 47vw, 560px);
+  transform-style: preserve-3d;
+  transform-origin: 50% 100%;
+  transform: translateZ(2px);
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.lidMesh {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+/* Hinge band */
+.hingeBar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 6px;
+  background: linear-gradient(180deg, #9097a1 0%, #686f79 100%);
+  border-radius: 4px 4px 0 0;
+  z-index: 4;
+  transform: translateZ(2px);
+}
+
+/* Inner bezel + screen (faces user when open) */
+.lidInner {
+  position: absolute;
+  left: 0;
+  bottom: 6px;
+  width: 100%;
+  height: calc(100% - 6px);
+  background: linear-gradient(180deg, #111214 0%, #090909 100%);
+  border-radius: 20px 20px 0 0;
+  transform: translateZ(3px);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.notch {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 148px;
+  height: 24px;
+  margin-left: -74px;
+  background: #0a0a0a;
+  border-radius: 0 0 14px 14px;
+  z-index: 3;
+}
+
+.screenClip {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(100% - 22px);
+  height: calc(100% - 28px);
+  max-width: calc(100% - 22px);
+  max-height: calc(100% - 28px);
+  transform: translate(-50%, -50%);
+  border-radius: 16px;
+  background: #000;
+  z-index: 2;
+  overflow: hidden;
+  box-shadow:
+    inset 0 0 24px rgba(0, 0, 0, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  will-change: opacity, filter;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.screenImg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+/* StudioDemo scaled to fit the lid's screen clip without visible "frame gaps". */
+.screenDemoWrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Ensure it stays behind any sheen/highlights */
+  z-index: 1;
+}
+
+.screenDemoScale {
+  transform-origin: center center;
+  transform: scale(1);
+  width: 100%;
+}
+
+/* Mobile static (no scroll rig) */
+.mobileStatic .lidPivot {
+  transform: rotateX(0deg) !important;
+}
+
+.mobileStatic .assemblyScale {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.mobileStatic .screenClip {
+  opacity: 1 !important;
+}
+
+.mobileStatic .glow {
+  opacity: 0.24;
+}
+
+.reduceMotion .lidPivot {
+  transform: rotateX(0deg) !important;
+}
+
+.reduceMotion .assemblyScale {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.reduceMotion .assemblyFloat {
+  transform: none !important;
+}
+
+.reduceMotion .screenClip {
+  opacity: 1 !important;
+}
+
+.reduceMotion .glow {
+  opacity: 0.24;
+}
+
+.reduceMotion .requestBlob,
+.reduceMotion .requestAurora,
+.reduceMotion .requestMesh,
+.reduceMotion .requestArcs,
+.reduceMotion .requestSheen,
+.reduceMotion .requestCornerPill {
+  animation: none !important;
+}
+
+.reduceMotion .requestCornerPill {
+  will-change: auto;
+}
+
+/* Request demo — wide card, soft gradient + animated aurora / arcs (screenshot-aligned) */
+.requestCard {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: clamp(48px, 6vw, 64px) clamp(28px, 5vw, 56px);
+  border-radius: 32px;
+  border: 1px solid rgba(220, 208, 192, 0.65);
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  isolation: isolate;
+  background: linear-gradient(168deg, #fefcf9 0%, #f7f1ea 38%, #f3f6fb 72%, #faf7f2 100%);
+  box-shadow:
+    0 16px 48px rgba(62, 52, 44, 0.06),
+    0 4px 14px rgba(214, 112, 63, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.requestCardVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Animated background layers (behind content) */
+.requestAnimWrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Soft color blobs — slow, visible drift (GPU-friendly) */
+.requestBlobs {
+  position: absolute;
+  inset: -15%;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+.requestBlob {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform;
+  filter: blur(36px);
+}
+
+.requestBlob:nth-child(1) {
+  width: min(52%, 420px);
+  height: min(52%, 420px);
+  left: -8%;
+  top: 8%;
+  background: radial-gradient(circle at 35% 35%, rgba(214, 112, 63, 0.32) 0%, rgba(255, 200, 170, 0.12) 45%, transparent 68%);
+  opacity: 0.93;
+  animation: requestBlobDrift1 15s cubic-bezier(0.45, 0.02, 0.55, 0.98) infinite;
+}
+
+.requestBlob:nth-child(2) {
+  width: min(48%, 380px);
+  height: min(48%, 380px);
+  right: -6%;
+  top: 28%;
+  background: radial-gradient(circle at 50% 50%, rgba(170, 198, 235, 0.38) 0%, rgba(230, 240, 255, 0.14) 48%, transparent 70%);
+  opacity: 0.82;
+  animation: requestBlobDrift2 19s cubic-bezier(0.45, 0.02, 0.55, 0.98) infinite;
+  animation-delay: -7s;
+}
+
+.requestBlob:nth-child(3) {
+  width: min(56%, 440px);
+  height: min(56%, 440px);
+  left: 22%;
+  bottom: -18%;
+  background: radial-gradient(circle at 40% 40%, rgba(255, 228, 210, 0.4) 0%, rgba(255, 245, 236, 0.12) 50%, transparent 72%);
+  opacity: 0.76;
+  animation: requestBlobDrift3 17s cubic-bezier(0.45, 0.02, 0.55, 0.98) infinite;
+  animation-delay: -11s;
+}
+
+.requestAurora {
+  position: absolute;
+  inset: -45%;
+  background:
+    radial-gradient(ellipse 42% 48% at 22% 28%, rgba(255, 232, 214, 0.55) 0%, transparent 55%),
+    radial-gradient(ellipse 38% 44% at 78% 18%, rgba(214, 228, 255, 0.5) 0%, transparent 52%),
+    radial-gradient(ellipse 40% 46% at 52% 88%, rgba(255, 220, 200, 0.38) 0%, transparent 50%),
+    radial-gradient(ellipse 35% 40% at 8% 75%, rgba(230, 245, 255, 0.18) 0%, transparent 45%);
+  filter: blur(28px);
+  opacity: 0.97;
+  animation: requestAuroraShift 14s cubic-bezier(0.45, 0.02, 0.55, 0.98) infinite alternate;
+  will-change: transform;
+}
+
+.requestMesh {
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.35) 0%, transparent 28%),
+    radial-gradient(circle at 70% 60%, rgba(214, 112, 63, 0.06) 0%, transparent 32%);
+  mix-blend-mode: soft-light;
+  opacity: 0.68;
+  animation: requestMeshDrift 16s cubic-bezier(0.45, 0.02, 0.55, 0.98) infinite alternate;
+  will-change: transform;
+  animation-delay: -3s;
+}
+
+.requestArcs {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      125deg,
+      transparent 0,
+      transparent 48px,
+      rgba(120, 110, 100, 0.04) 48px,
+      rgba(120, 110, 100, 0.04) 49px
+    ),
+    repeating-linear-gradient(
+      -38deg,
+      transparent 0,
+      transparent 56px,
+      rgba(100, 120, 150, 0.035) 56px,
+      rgba(100, 120, 150, 0.035) 57px
+    );
+  opacity: 0.5;
+  animation: requestArcDrift 30s linear infinite;
+  mask-image: radial-gradient(ellipse 85% 75% at 50% 45%, black 0%, transparent 72%);
+  will-change: transform;
+}
+
+/* Very subtle moving highlight (reads as ambient light, not a stripe) */
+.requestSheen {
+  position: absolute;
+  inset: -60% -40%;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    transparent 40%,
+    rgba(255, 255, 255, 0.09) 48%,
+    rgba(255, 255, 255, 0.14) 50%,
+    rgba(255, 255, 255, 0.08) 52%,
+    transparent 60%,
+    transparent 100%
+  );
+  opacity: 0.55;
+  mix-blend-mode: soft-light;
+  animation: requestSheenSweep 22s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  will-change: transform;
+}
+
+@keyframes requestBlobDrift1 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(16%, 11%) scale(1.08);
+  }
+  66% {
+    transform: translate(8%, -8%) scale(0.95);
+  }
+}
+
+@keyframes requestBlobDrift2 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  40% {
+    transform: translate(-14%, 16%) scale(1.06);
+  }
+  70% {
+    transform: translate(-6%, -10%) scale(0.98);
+  }
+}
+
+@keyframes requestBlobDrift3 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  35% {
+    transform: translate(-18%, -13%) scale(1.05);
+  }
+  65% {
+    transform: translate(12%, 9%) scale(0.97);
+  }
+}
+
+@keyframes requestAuroraShift {
+  0% {
+    transform: translate(-14%, 8%) rotate(-4.5deg) scale(1.02);
+  }
+  50% {
+    transform: translate(12%, -10%) rotate(3deg) scale(1.1);
+  }
+  100% {
+    transform: translate(7%, 12%) rotate(4deg) scale(1.05);
+  }
+}
+
+@keyframes requestMeshDrift {
+  0% {
+    transform: translate(0%, 0%) scale(1) rotate(0deg);
+  }
+  100% {
+    transform: translate(-11%, 9%) scale(1.1) rotate(-3deg);
+  }
+}
+
+@keyframes requestArcDrift {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate(-10%, 5%) rotate(4deg);
+  }
+}
+
+@keyframes requestSheenSweep {
+  0% {
+    transform: translate(-22%, -8%) rotate(-10deg);
+  }
+  50% {
+    transform: translate(14%, 6%) rotate(6deg);
+  }
+  100% {
+    transform: translate(28%, -4%) rotate(-6deg);
+  }
+}
+
+.requestCardInner {
+  position: relative;
+  z-index: 1;
+  margin: 0 auto;
+  max-width: 560px;
+  text-align: center;
+}
+
+.requestCornerPill {
+  position: absolute;
+  z-index: 2;
+  padding: 0.5rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  font-family: var(--font-body), sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: rgba(18, 18, 18, 0.42);
+  text-transform: uppercase;
+  pointer-events: none;
+  user-select: none;
+  transform-origin: center;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.requestCornerTL {
+  top: clamp(16px, 2.5vw, 24px);
+  left: clamp(16px, 2.5vw, 24px);
+  animation: requestPillFloatTL 15s cubic-bezier(0.45, 0.02, 0.55, 0.98) infinite;
+}
+
+.requestCornerBL {
+  bottom: clamp(16px, 2.5vw, 24px);
+  left: clamp(16px, 2.5vw, 24px);
+  animation: requestPillFloatBL 17s cubic-bezier(0.45, 0.02, 0.55, 0.98) infinite;
+  animation-delay: -4s;
+}
+
+.requestCornerTR {
+  top: clamp(16px, 2.5vw, 24px);
+  right: clamp(16px, 2.5vw, 24px);
+  animation: requestPillFloatTR 16s cubic-bezier(0.45, 0.02, 0.55, 0.98) infinite;
+  animation-delay: -9s;
+}
+
+.requestCornerBR {
+  bottom: clamp(16px, 2.5vw, 24px);
+  right: clamp(16px, 2.5vw, 24px);
+  animation: requestPillFloatBR 18s cubic-bezier(0.45, 0.02, 0.55, 0.98) infinite;
+  animation-delay: -2s;
+}
+
+@keyframes requestPillFloatTL {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  25% {
+    transform: translate(10px, -13px) scale(1.04) rotate(-2deg);
+  }
+  50% {
+    transform: translate(-4px, -6px) scale(1.02) rotate(1deg);
+  }
+  75% {
+    transform: translate(7px, 9px) scale(1.03) rotate(2deg);
+  }
+}
+
+@keyframes requestPillFloatTR {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  30% {
+    transform: translate(-11px, 10px) scale(1.035) rotate(2deg);
+  }
+  55% {
+    transform: translate(-7px, -8px) scale(1.02) rotate(-1deg);
+  }
+  80% {
+    transform: translate(8px, 5px) scale(1.03) rotate(-2deg);
+  }
+}
+
+@keyframes requestPillFloatBL {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  28% {
+    transform: translate(11px, 9px) scale(1.03) rotate(-2deg);
+  }
+  52% {
+    transform: translate(4px, -9px) scale(1.04) rotate(1deg);
+  }
+  78% {
+    transform: translate(-7px, 3px) scale(1.02) rotate(2deg);
+  }
+}
+
+@keyframes requestPillFloatBR {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  22% {
+    transform: translate(-10px, -8px) scale(1.03) rotate(2deg);
+  }
+  48% {
+    transform: translate(9px, 11px) scale(1.04) rotate(-1deg);
+  }
+  72% {
+    transform: translate(6px, -6px) scale(1.02) rotate(-2deg);
+  }
+}
+
+.requestEyebrow {
+  font-family: var(--font-body), sans-serif;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-weight: 700;
+  color: #b85a32;
+  margin: 0 0 12px;
+}
+
+.requestTitle {
+  margin: 0 0 18px;
+  font-family: var(--font-body), sans-serif;
+  font-size: clamp(1.65rem, 3.5vw, 2.35rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: #0c0c0c;
+}
+
+.requestBodyLines {
+  margin: 0 0 28px;
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+}
+
+.requestBodyLine {
+  margin: 0;
+  max-width: 520px;
+  font-family: var(--font-body), sans-serif;
+  font-size: clamp(0.875rem, 1.35vw, 1rem);
+  line-height: 1.55;
+  color: #4a4540;
+  text-wrap: balance;
+}
+
+/* Pill button: white ring + warm terracotta fill (screenshot) */
+.requestBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 190px;
+  min-height: 52px;
+  padding: 0 36px;
+  border-radius: 999px;
+  font-family: var(--font-body), sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  background: linear-gradient(180deg, #e07848, #c75a30);
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 0 0 1px rgba(214, 112, 63, 0.12),
+    0 10px 28px rgba(214, 112, 63, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+.requestBtn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+  box-shadow:
+    0 0 0 1px rgba(214, 112, 63, 0.18),
+    0 14px 36px rgba(214, 112, 63, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+@media (max-width: 768px) {
+  .scrollStage {
+    min-height: auto;
+  }
+
+  .sticky {
+    position: relative;
+    top: auto;
+    min-height: auto;
+    padding-bottom: 0;
+  }
+
+  .requestCardOuter {
+    width: calc(100vw - 28px);
+    margin-top: 0;
+    padding-top: 8px;
+    left: auto;
+    transform: none;
+  }
+
+  .requestCard {
+    padding: 40px 20px 36px;
+    border-radius: 22px;
+  }
+
+  .requestCornerPill {
+    font-size: 8px;
+    padding: 0.35rem 0.55rem;
+    letter-spacing: 0.1em;
+  }
+
+  .requestCornerTL,
+  .requestCornerTR {
+    top: 12px;
+  }
+
+  .requestCornerBL,
+  .requestCornerBR {
+    bottom: 12px;
+  }
+
+  .requestCornerTL,
+  .requestCornerBL {
+    left: 10px;
+  }
+
+  .requestCornerTR,
+  .requestCornerBR {
+    right: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .requestCard {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .requestBlob,
+  .requestAurora,
+  .requestMesh,
+  .requestArcs,
+  .requestSheen,
+  .requestCornerPill {
+    animation: none !important;
+  }
+
+  .requestCornerPill {
+    will-change: auto;
+  }
+}

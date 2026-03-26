@@ -2,7 +2,6 @@
 
 import { Footer } from "@/components/landing/Footer";
 import { HeroEntrance } from "@/components/landing/HeroEntrance";
-import { NavBar } from "@/components/landing/NavBar";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useTranslation } from "@/hooks/useTranslation";
 
@@ -12,13 +11,12 @@ export default function ResearchPage() {
 
   return (
     <>
-      <NavBar />
       <section className="page-hero" id="research-page">
         <div className="container narrow">
           <HeroEntrance>
-            <span className="section-label">{t("research.heroLabel")}</span>
-            <h1 className="hero-title page-title">{t("research.heroTitle")}</h1>
-            <p className="hero-sub">{t("research.heroSub")}</p>
+            <span className="section-label hero-child">{t("research.heroLabel")}</span>
+            <h1 className="hero-title page-title hero-child">{t("research.heroTitle")}</h1>
+            <p className="hero-sub hero-child">{t("research.heroSub")}</p>
           </HeroEntrance>
         </div>
       </section>
@@ -47,7 +45,7 @@ export default function ResearchPage() {
             <span className="section-label">{t("research.approachLabel")}</span>
             <h2 className="title">{t("research.approachTitle")}</h2>
             <p className="research-copy">{t("research.approachBody")}</p>
-            <a href="/contact" className="btn-secondary research-cta">
+            <a href="/login" className="btn-secondary research-cta">
               {t("research.cta")}
             </a>
           </article>

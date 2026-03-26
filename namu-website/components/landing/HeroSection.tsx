@@ -47,21 +47,21 @@ export function HeroSection() {
       <div className="hero-silhouette" aria-hidden="true" />
 
       <HeroEntrance className="hero-content hero-content-home">
-        <span className="section-label section-label-center">{t("hero.kicker")}</span>
-        <h1 className="hero-title">
+        <span className="section-label section-label-center hero-child">{t("hero.kicker")}</span>
+        <h1 className="hero-title hero-child">
           <span className="hero-title-line">{t("hero.titleTop")}</span>
           <span className="hero-title-line hero-title-line-bottom">{t("hero.titleBottom")}</span>
         </h1>
-        <p className="hero-body-home">
+        <p className="hero-body-home hero-child">
           {heroBody.slice(0, typedLength)}
           {typedLength < heroBody.length ? <span className="hero-body-caret" aria-hidden="true" /> : null}
         </p>
 
-        <div className="hero-actions">
+        <div className="hero-actions hero-child">
           <a href="#waitlist" className="btn-primary hero-primary">
             {t("hero.primaryCta")}
           </a>
-          <a href="/contact" className="btn-secondary hero-secondary">
+          <a href="/login" className="btn-secondary hero-secondary">
             {t("hero.secondaryCta")}
           </a>
         </div>

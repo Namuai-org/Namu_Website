@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import type { MouseEvent } from "react";
 import { usePathname } from "next/navigation";
 import { useNavScroll } from "@/hooks/useNavScroll";
+import { useScrollRevealLogo } from "@/hooks/useScrollRevealLogo";
 import { getStudioTarget } from "@/lib/supabaseClient";
 import { useTranslation } from "@/hooks/useTranslation";
 import { LanguageToggle } from "@/components/landing/LanguageToggle";
@@ -12,9 +13,13 @@ import { NamuLogoMark } from "@/components/brand/NamuLogoMark";
 
 export function NavBar() {
   const scrolled = useNavScroll(100);
+  const logoRevealProgress = useScrollRevealLogo();
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
   const { t } = useTranslation();
+  const brandName = t("brand.name");
+  /** Mark is the “N”; word suffix reveals on scroll so we don’t duplicate N in text */
+  const brandSuffix = brandName.slice(1);
 
   useEffect(() => {
     setMenuOpen(false);
@@ -29,9 +34,24 @@ export function NavBar() {
   return (
     <>
       <header className={`nav-shell ${scrolled ? "scrolled" : ""}`}>
-        <Link href="/" className="nav-brand" onClick={() => setMenuOpen(false)}>
+        <Link
+          href="/"
+          className="nav-brand"
+          aria-label={brandName}
+          onClick={() => setMenuOpen(false)}
+        >
           <NamuLogoMark variant="onDark" height={28} />
-          <span className="nav-name">{t("brand.name")}</span>
+          <span className="nav-name nav-name-wordmark" aria-hidden>
+            <span
+              className="nav-name-amu"
+              style={{
+                opacity: logoRevealProgress,
+                transform: `translate(${(1 - logoRevealProgress) * -8}px, 0.14em)`,
+              }}
+            >
+              {brandSuffix}
+            </span>
+          </span>
         </Link>
 
         <nav className="nav-links desktop-only">

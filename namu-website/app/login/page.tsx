@@ -6,9 +6,9 @@ export default function LoginPage() {
   return (
     <main className="login-page">
       <HeroEntrance className="login-page-inner">
-        <h1 className="login-page-title">Shiga Namu</h1>
-        <p className="login-page-lede">Wannan shafin login ne na Namu AI-Studio.</p>
-        <a href="/" className="btn-outline login-page-btn">
+        <h1 className="login-page-title hero-child">Shiga Namu</h1>
+        <p className="login-page-lede hero-child">Wannan shafin login ne na Namu AI-Studio.</p>
+        <a href="/" className="btn-outline login-page-btn hero-child">
           Koma shafin gida
         </a>
       </HeroEntrance>
