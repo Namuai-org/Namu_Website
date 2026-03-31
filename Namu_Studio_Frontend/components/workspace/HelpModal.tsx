@@ -27,22 +27,21 @@ export function HelpModal(): JSX.Element {
           <motion.button
             type="button"
             aria-label="Close help"
-            className="fixed inset-0 z-[9998] bg-black/40 backdrop-blur-sm"
+            className="studio-modal-scrim fixed inset-0 z-[9998]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={closeHelp}
           />
           <motion.div
-            className="fixed left-1/2 top-1/2 z-[9999] w-[min(460px,calc(100%-32px))] -translate-x-1/2 -translate-y-1/2 rounded-2xl border p-6 shadow-xl"
-            style={{ background: "var(--bg-elevated)", borderColor: "var(--border)" }}
+            className="namu-workspace-cream studio-apple-frame fixed left-1/2 top-1/2 z-[9999] w-[min(460px,calc(100%-32px))] -translate-x-1/2 -translate-y-1/2 p-6 font-sans"
             initial={{ opacity: 0, y: 12, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 12, scale: 0.98 }}
             transition={{ duration: 0.2 }}
           >
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-lg font-semibold" style={{ color: "var(--text-primary)" }}>
+              <h2 className="text-[17px] font-semibold tracking-tight" style={{ color: "var(--text-primary)" }}>
                 Taimako
               </h2>
               <button

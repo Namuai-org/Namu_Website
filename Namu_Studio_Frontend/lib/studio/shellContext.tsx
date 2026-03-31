@@ -5,28 +5,35 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import { useAuth } from "@/hooks/useAuth";
 import en from "@/lib/i18n/en";
 import ha from "@/lib/i18n/ha";
+import { resolveStudioLanguage } from "@/lib/i18n/resolveStudioLanguage";
 import { updateProfile } from "@/lib/studio/profileService";
 import type { Language, ThemeName } from "@/lib/supabase/types";
+import type { SettingsSection } from "@/lib/studio/settingsSections";
 import type { AppMode, ToastItem } from "@/types";
+
+import fr from "@/lib/i18n/fr";
 
 type Dictionary = Record<string, unknown>;
 
 interface ShellContextValue {
   activeMode: AppMode;
   setMode: (mode: AppMode) => void;
+  /** Desktop: wide sidebar with inline session list. Persisted in localStorage. */
+  sidebarExpanded: boolean;
+  setSidebarExpanded: (value: boolean) => void;
+  toggleSidebarExpanded: () => void;
   historyOpen: boolean;
   settingsOpen: boolean;
+  settingsSection: SettingsSection;
   helpOpen: boolean;
-  themeSwitcherOpen: boolean;
   openSidebar: () => void;
+  /** Mobile slide-over session list only (desktop uses expanded rail). */
+  openHistoryPanel: () => void;
   closeSidebar: () => void;
-  openSettings: () => void;
+  openSettings: (section?: SettingsSection) => void;
   closeSettings: () => void;
   openHelp: () => void;
   closeHelp: () => void;
-  openThemeSwitcher: () => void;
-  closeThemeSwitcher: () => void;
-  toggleThemeSwitcher: () => void;
   toasts: ToastItem[];
   pushToast: (toast: Omit<ToastItem, "id">) => void;
   removeToast: (id: string) => void;
@@ -40,7 +47,11 @@ interface ShellContextValue {
 }
 
 const ShellContext = createContext<ShellContextValue | null>(null);
-const dictionaries: Record<Language, Dictionary> = { en: en as Dictionary, ha: ha as Dictionary };
+const dictionaries: Record<Language, Dictionary> = {
+  en: en as Dictionary,
+  ha: ha as Dictionary,
+  fr: fr as Dictionary
+};
 
 function getValue(target: Dictionary, path: string): string {
   return path.split(".").reduce<unknown>((acc, key) => {
@@ -60,26 +71,33 @@ function readLocalValue<T extends string>(key: string, fallback: T, values: read
 export function ShellProvider({ children }: { children: React.ReactNode }): JSX.Element {
   const { user } = useAuth();
   const [activeMode, setActiveMode] = useState<AppMode>("chat");
+  const [sidebarExpanded, setSidebarExpandedState] = useState(true);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [settingsSection, setSettingsSection] = useState<SettingsSection>("general");
   const [helpOpen, setHelpOpen] = useState(false);
-  const [themeSwitcherOpen, setThemeSwitcherOpen] = useState(false);
   const [toasts, setToasts] = useState<ToastItem[]>([]);
   const [theme, setThemeState] = useState<ThemeName>("namu");
   const [language, setLanguageState] = useState<Language>("en");
   const [offline, setOffline] = useState(false);
 
   useEffect(() => {
+    if (window.localStorage.getItem("namu_sidebar_expanded") === "false") {
+      setSidebarExpandedState(false);
+    }
+  }, []);
+
+  useEffect(() => {
     const nextTheme =
       user?.theme ??
       readLocalValue<ThemeName>("namu_theme", "namu", ["namu", "gece", "daji", "sahara", "dare"]);
-    const nextLanguage = user?.language ?? readLocalValue<Language>("namu_language", "en", ["en", "ha"]);
+    const nextLanguage = resolveStudioLanguage(user);
     setThemeState(nextTheme);
     setLanguageState(nextLanguage);
     document.documentElement.setAttribute("data-theme", nextTheme);
+    document.documentElement.lang = nextLanguage === "ha" ? "ha" : nextLanguage === "fr" ? "fr" : "en";
     window.localStorage.setItem("namu_theme", nextTheme);
-    window.localStorage.setItem("namu_language", nextLanguage);
-  }, [user?.language, user?.theme]);
+  }, [user]);
 
   useEffect(() => {
     const updateOnline = (): void => setOffline(!navigator.onLine);
@@ -109,32 +127,57 @@ export function ShellProvider({ children }: { children: React.ReactNode }): JSX.
     }
   }, [user?.id]);
 
+  const setSidebarExpanded = useCallback((value: boolean) => {
+    setSidebarExpandedState(value);
+    window.localStorage.setItem("namu_sidebar_expanded", value ? "true" : "false");
+  }, []);
+
+  const toggleSidebarExpanded = useCallback(() => {
+    setSidebarExpandedState((prev) => {
+      const next = !prev;
+      window.localStorage.setItem("namu_sidebar_expanded", next ? "true" : "false");
+      return next;
+    });
+  }, []);
+
   const setLanguage = useCallback((nextLanguage: Language) => {
     setLanguageState(nextLanguage);
     window.localStorage.setItem("namu_language", nextLanguage);
+    document.documentElement.lang = nextLanguage === "ha" ? "ha" : nextLanguage === "fr" ? "fr" : "en";
     if (user?.id) {
       void updateProfile(user.id, { language: nextLanguage });
     }
   }, [user?.id]);
+
+  useEffect(() => {
+    document.documentElement.lang = language === "ha" ? "ha" : language === "fr" ? "fr" : "en";
+  }, [language]);
 
   const value = useMemo<ShellContextValue>(() => {
     const dictionary = dictionaries[language];
     return {
       activeMode,
       setMode: setActiveMode,
+      sidebarExpanded,
+      setSidebarExpanded,
+      toggleSidebarExpanded,
       historyOpen,
       settingsOpen,
+      settingsSection,
       helpOpen,
-      themeSwitcherOpen,
       openSidebar: () => setHistoryOpen(true),
+      openHistoryPanel: () => setHistoryOpen(true),
       closeSidebar: () => setHistoryOpen(false),
-      openSettings: () => setSettingsOpen(true),
-      closeSettings: () => setSettingsOpen(false),
+      openSettings: (section = "general") => {
+        setSettingsSection(section);
+        setSettingsOpen(true);
+      },
+      closeSettings: () => {
+        setSettingsOpen(false);
+        setSettingsSection("general");
+      },
       openHelp: () => setHelpOpen(true),
       closeHelp: () => setHelpOpen(false),
-      openThemeSwitcher: () => setThemeSwitcherOpen(true),
-      closeThemeSwitcher: () => setThemeSwitcherOpen(false),
-      toggleThemeSwitcher: () => setThemeSwitcherOpen((current) => !current),
       toasts,
       pushToast,
       removeToast,
@@ -158,15 +201,18 @@ export function ShellProvider({ children }: { children: React.ReactNode }): JSX.
     activeMode,
     helpOpen,
     historyOpen,
+    setSidebarExpanded,
+    sidebarExpanded,
+    toggleSidebarExpanded,
     language,
     offline,
     pushToast,
     removeToast,
     settingsOpen,
+    settingsSection,
     setLanguage,
     setTheme,
     theme,
-    themeSwitcherOpen,
     toasts
   ]);
 

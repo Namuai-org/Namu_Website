@@ -1,7 +1,7 @@
 "use client";
 
-import { ArrowRight, Mic, Sparkles, Square } from "lucide-react";
-import { useEffect, useMemo, useRef } from "react";
+import { ArrowRight, Plus, Sparkles, X } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { streamCodeResponse } from "@/lib/ai/aiService";
 import { CodeEditor } from "@/components/modes/code/CodeEditor";
@@ -11,8 +11,11 @@ import { useAuth } from "@/hooks/useAuth";
 import { useStudio } from "@/hooks/useStudio";
 import { useTranslation } from "@/lib/i18n/useTranslation";
 import { upsertCodeFile } from "@/lib/studio/codeService";
+import { augmentPromptWithFiles } from "@/lib/utils/promptAttachments";
 import { useCodeStore } from "@/lib/studio/codeStore";
+import { MicWithSettings } from "@/components/modes/chat/MicWithSettings";
 import { useVoice } from "@/hooks/useVoice";
+import { useVoiceDictationMerge } from "@/hooks/useVoiceDictationMerge";
 import type { CodeFile } from "@/types";
 
 export function CodeMode(): JSX.Element {
@@ -36,18 +39,24 @@ export function CodeMode(): JSX.Element {
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
   const streamBufferRef = useRef("");
+  const promptFileRef = useRef<HTMLInputElement>(null);
+  const [promptFiles, setPromptFiles] = useState<File[]>([]);
   const files = activeSession?.files ?? [];
   const promptValue = activeSession?.codePrompt ?? draftInput;
   const activeFile = useMemo(() => files.find((file) => file.id === activeFileId) ?? files[0], [activeFileId, files]);
 
-  useEffect(() => {
-    if (!voice.transcript) return;
-    if (activeSession) {
-      setCodePrompt(voice.transcript);
-    } else {
-      setDraftInput(voice.transcript);
-    }
-  }, [activeSession, setCodePrompt, setDraftInput, voice.transcript]);
+  const setPromptValue = useCallback(
+    (next: string): void => {
+      if (activeSession) {
+        setCodePrompt(next);
+        return;
+      }
+      setDraftInput(next);
+    },
+    [activeSession, setCodePrompt, setDraftInput]
+  );
+
+  const { beginTapDictation, beginHoldDictation } = useVoiceDictationMerge(voice, promptValue, setPromptValue);
 
   useEffect(() => {
     return () => {
@@ -67,16 +76,41 @@ export function CodeMode(): JSX.Element {
     ];
   };
 
+  const addPromptFiles = (list: FileList | File[]): void => {
+    const next = Array.from(list);
+    const merged = [...promptFiles];
+    const max = 8;
+    const maxBytes = 12 * 1024 * 1024;
+    for (const file of next) {
+      if (file.size > maxBytes) {
+        pushToast({ title: t("workspace.fileTooLarge"), description: file.name, type: "warning" });
+        continue;
+      }
+      if (merged.length >= max) {
+        pushToast({ title: t("workspace.tooManyFiles"), description: String(max), type: "warning" });
+        break;
+      }
+      merged.push(file);
+    }
+    setPromptFiles(merged);
+    if (promptFileRef.current) {
+      promptFileRef.current.value = "";
+    }
+  };
+
   const run = async (): Promise<void> => {
     const prompt = promptValue.trim();
-    if (!prompt || !user?.id) return;
+    const augmented = await augmentPromptWithFiles(prompt, promptFiles);
+    if (!augmented.trim() || !user?.id) {
+      return;
+    }
 
     abortControllerRef.current?.abort();
     abortControllerRef.current = new AbortController();
     setProcessing(true);
     streamBufferRef.current = "";
 
-    const sessionId = activeSession?.id ?? (await startSession(prompt, "code"));
+    const sessionId = activeSession?.id ?? (await startSession(augmented.slice(0, 120), "code"));
     if (!sessionId) {
       setProcessing(false);
       pushToast({ title: t("common.somethingWrong"), description: t("toasts.sessionLoadFailed"), type: "error" });
@@ -84,7 +118,7 @@ export function CodeMode(): JSX.Element {
     }
 
     await streamCodeResponse(
-      prompt,
+      augmented,
       activeFile?.content ?? "",
       activeFile?.language ?? "html",
       (token) => {
@@ -97,6 +131,7 @@ export function CodeMode(): JSX.Element {
         const nextFiles = sanitizeFiles(fullText);
         setFiles(nextFiles);
         setProcessing(false);
+        setPromptFiles([]);
         markSaved(t("workspace.saved"));
       },
       (error) => {
@@ -160,6 +195,19 @@ export function CodeMode(): JSX.Element {
       </div>
 
       <div className="flex min-h-0 flex-col">
+        <input
+          ref={promptFileRef}
+          type="file"
+          className="hidden"
+          multiple
+          accept="image/*,.pdf,.txt,.md,.csv,.json,application/pdf"
+          onChange={(event) => {
+            const files = event.target.files;
+            if (files?.length) {
+              addPromptFiles(files);
+            }
+          }}
+        />
         <div className="flex gap-2 border-b border-bg-elevated p-2 md:hidden">
           {tabs.map((tab) => (
             <button
@@ -191,32 +239,65 @@ export function CodeMode(): JSX.Element {
           </div>
 
           <div className={`${mobileCodeTab === "prompt" ? "flex" : "hidden"} h-full flex-col md:hidden`}>
-            <div className="flex h-[52px] items-center gap-3 border-t border-bg-elevated px-4" style={{ background: "var(--actbar-bg)" }}>
-              <Sparkles className="h-4 w-4 text-brand-orange" />
+            {promptFiles.length > 0 ? (
+              <div className="flex flex-wrap gap-1.5 border-b border-bg-elevated px-3 py-2" style={{ background: "var(--actbar-bg)" }}>
+                {promptFiles.map((file, index) => (
+                  <span
+                    key={`${file.name}-${index}`}
+                    className="inline-flex max-w-full items-center gap-1 rounded-full border px-2.5 py-1 text-[11px]"
+                    style={{
+                      borderColor: "var(--border)",
+                      background: "var(--bg-panel)",
+                      color: "var(--text-secondary)"
+                    }}
+                  >
+                    <span className="truncate">{file.name}</span>
+                    <button
+                      type="button"
+                      onClick={() => setPromptFiles((prev) => prev.filter((_, i) => i !== index))}
+                      className="rounded-full p-0.5 hover:bg-bg-active"
+                      aria-label={t("workspace.removeAttachment")}
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </span>
+                ))}
+              </div>
+            ) : null}
+            <div className="flex min-h-[40px] items-center gap-2 border-t border-bg-elevated px-3 py-2" style={{ background: "var(--actbar-bg)" }}>
+              <Sparkles className="h-4 w-4 shrink-0 self-center text-brand-orange" />
+              <MicWithSettings
+                voice={voice}
+                supported={voice.supported}
+                onTapDictation={beginTapDictation}
+                onBeginHoldDictation={beginHoldDictation}
+              />
               <button
                 type="button"
-                onClick={() => (voice.recording ? voice.stop() : voice.start())}
-                className="grid h-12 w-12 place-items-center rounded-lg border transition"
+                onClick={() => promptFileRef.current?.click()}
+                className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border transition"
                 style={{
-                  borderColor: voice.recording ? "var(--orange)" : "var(--input-border)",
-                  background: voice.recording ? "var(--orange-subtle)" : "var(--bg-elevated)",
-                  color: voice.recording ? "var(--orange)" : "var(--text-secondary)"
+                  borderColor: "var(--input-border)",
+                  background: "var(--bg-elevated)",
+                  color: "var(--text-secondary)"
                 }}
-                aria-label={voice.recording ? t("workspace.stop") : t("workspace.voiceIdle")}
+                aria-label={t("workspace.attachFiles")}
               >
-                {voice.recording ? <Square className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                <Plus className="h-[18px] w-[18px]" strokeWidth={2.25} />
               </button>
               <input
                 value={promptValue}
-                onChange={(event) => (activeSession ? setCodePrompt(event.target.value) : setDraftInput(event.target.value))}
+                onChange={(event) => setPromptValue(event.target.value)}
                 placeholder={t("workspace.codePlaceholder")}
-                className="h-12 flex-1 rounded-md border px-3 text-sm outline-none"
+                className="box-border h-9 min-h-9 min-w-0 flex-1 rounded-lg border px-3 py-2 text-sm leading-5 outline-none"
                 style={{ borderColor: "var(--input-border)", background: "var(--input-bg)", color: "var(--input-text)" }}
               />
               <button
                 type="button"
                 onClick={() => void run()}
-                className={`grid h-12 w-12 place-items-center rounded-lg ${promptValue.trim() ? "bg-brand-orange text-white" : "bg-bg-elevated text-text-muted"}`}
+                className={`inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
+                  promptValue.trim() || promptFiles.length ? "bg-brand-orange text-white" : "bg-bg-elevated text-text-muted"
+                }`}
               >
                 <ArrowRight className="h-4 w-4" />
               </button>
@@ -224,35 +305,70 @@ export function CodeMode(): JSX.Element {
           </div>
         </div>
 
-        <div className="hidden h-[52px] items-center gap-3 border-t border-bg-elevated px-4 md:flex" style={{ background: "var(--actbar-bg)" }}>
-          <Sparkles className="h-4 w-4 text-brand-orange" />
-          <button
-            type="button"
-            onClick={() => (voice.recording ? voice.stop() : voice.start())}
-            className="grid h-9 w-9 place-items-center rounded-lg border transition"
-            style={{
-              borderColor: voice.recording ? "var(--orange)" : "var(--input-border)",
-              background: voice.recording ? "var(--orange-subtle)" : "var(--bg-elevated)",
-              color: voice.recording ? "var(--orange)" : "var(--text-secondary)"
-            }}
-            aria-label={voice.recording ? t("workspace.stop") : t("workspace.voiceIdle")}
-          >
-            {voice.recording ? <Square className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
-          </button>
-          <input
-            value={promptValue}
-            onChange={(event) => (activeSession ? setCodePrompt(event.target.value) : setDraftInput(event.target.value))}
-            placeholder={t("workspace.codePlaceholder")}
-            className="h-9 flex-1 rounded-md border px-3 text-sm outline-none"
-            style={{ borderColor: "var(--input-border)", background: "var(--input-bg)", color: "var(--input-text)" }}
-          />
-          <button
-            type="button"
-            onClick={() => void run()}
-            className={`grid h-9 w-9 place-items-center rounded-lg ${promptValue.trim() ? "bg-brand-orange text-white" : "bg-bg-elevated text-text-muted"}`}
-          >
-            <ArrowRight className="h-4 w-4" />
-          </button>
+        <div className="hidden flex-col border-t border-bg-elevated md:flex" style={{ background: "var(--actbar-bg)" }}>
+          {promptFiles.length > 0 ? (
+            <div className="flex flex-wrap gap-1.5 border-b border-bg-elevated px-4 py-2">
+              {promptFiles.map((file, index) => (
+                <span
+                  key={`${file.name}-${index}-d`}
+                  className="inline-flex max-w-full items-center gap-1 rounded-full border px-2.5 py-1 text-[11px]"
+                  style={{
+                    borderColor: "var(--border)",
+                    background: "var(--bg-panel)",
+                    color: "var(--text-secondary)"
+                  }}
+                >
+                  <span className="truncate">{file.name}</span>
+                  <button
+                    type="button"
+                    onClick={() => setPromptFiles((prev) => prev.filter((_, i) => i !== index))}
+                    className="rounded-full p-0.5 hover:bg-bg-active"
+                    aria-label={t("workspace.removeAttachment")}
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </span>
+              ))}
+            </div>
+          ) : null}
+          <div className="flex min-h-[40px] items-center gap-2 px-4 py-2">
+            <Sparkles className="h-4 w-4 shrink-0 self-center text-brand-orange" />
+            <MicWithSettings
+              voice={voice}
+              supported={voice.supported}
+              onTapDictation={beginTapDictation}
+              onBeginHoldDictation={beginHoldDictation}
+            />
+            <button
+              type="button"
+              onClick={() => promptFileRef.current?.click()}
+              className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border transition"
+              style={{
+                borderColor: "var(--input-border)",
+                background: "var(--bg-elevated)",
+                color: "var(--text-secondary)"
+              }}
+              aria-label={t("workspace.attachFiles")}
+            >
+              <Plus className="h-[18px] w-[18px]" strokeWidth={2.25} />
+            </button>
+            <input
+              value={promptValue}
+              onChange={(event) => setPromptValue(event.target.value)}
+              placeholder={t("workspace.codePlaceholder")}
+              className="box-border h-9 min-h-9 min-w-0 flex-1 rounded-lg border px-3 py-2 text-sm leading-5 outline-none"
+              style={{ borderColor: "var(--input-border)", background: "var(--input-bg)", color: "var(--input-text)" }}
+            />
+            <button
+              type="button"
+              onClick={() => void run()}
+              className={`inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
+                promptValue.trim() || promptFiles.length ? "bg-brand-orange text-white" : "bg-bg-elevated text-text-muted"
+              }`}
+            >
+              <ArrowRight className="h-4 w-4" />
+            </button>
+          </div>
         </div>
       </div>
 

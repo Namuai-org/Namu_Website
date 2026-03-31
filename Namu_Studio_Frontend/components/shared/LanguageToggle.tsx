@@ -7,13 +7,13 @@ export function LanguageToggle({ dark = false }: { dark?: boolean }): JSX.Elemen
   const { language, setLanguage } = useTranslation();
   return (
     <div className={cn("inline-flex rounded-full border p-1", dark ? "border-border bg-bg-panel" : "border-border bg-bg-elevated")}>
-      {(["en", "ha"] as const).map((value) => (
+      {(["en", "ha", "fr"] as const).map((value) => (
         <button
           key={value}
           type="button"
           onClick={() => setLanguage(value)}
           className={cn(
-            "rounded-full px-3 py-1.5 text-xs font-medium transition",
+            "rounded-full px-2.5 py-1.5 text-xs font-medium transition",
             language === value
               ? "bg-brand-orange text-white"
               : dark
@@ -21,7 +21,7 @@ export function LanguageToggle({ dark = false }: { dark?: boolean }): JSX.Elemen
                 : "text-text-muted hover:text-brand-orange"
           )}
         >
-          {value.toUpperCase()}
+          {value === "en" ? "EN" : value === "ha" ? "HA" : "FR"}
         </button>
       ))}
     </div>

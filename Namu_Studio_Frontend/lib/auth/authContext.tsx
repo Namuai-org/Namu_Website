@@ -4,12 +4,19 @@ import type { AuthChangeEvent, Session } from "@supabase/supabase-js";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import type { AuthContextValue, SignupPayload } from "@/lib/auth/authTypes";
+import type { AuthContextValue, DeleteAccountResult, SignupPayload } from "@/lib/auth/authTypes";
 import { supabase } from "@/lib/supabase/client";
 import type { Profile } from "@/lib/supabase/types";
 import type { UserProfile } from "@/types";
 
 const AuthContext = createContext<AuthContextValue | null>(null);
+
+function clearNamuLocalStorage(): void {
+  window.localStorage.removeItem("namu_theme");
+  window.localStorage.removeItem("namu_language");
+  window.localStorage.removeItem("namu_sidebar_expanded");
+  window.localStorage.removeItem("namu_prefs_notify_complete");
+}
 
 function mapProfile(profile: Profile): UserProfile {
   return {
@@ -134,8 +141,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }): JSX.E
         try {
           const { error } = await supabase.auth.signOut();
           if (error) throw error;
-          window.localStorage.removeItem("namu_theme");
-          window.localStorage.removeItem("namu_language");
+          clearNamuLocalStorage();
           setUser(null);
           router.replace("/login");
           router.refresh();
@@ -143,6 +149,44 @@ export function AuthProvider({ children }: { children: React.ReactNode }): JSX.E
         } finally {
           setLoading(false);
         }
+      },
+      signOutEverywhere: async () => {
+        setLoading(true);
+        try {
+          const { error } = await supabase.auth.signOut({ scope: "global" });
+          if (error) throw error;
+          clearNamuLocalStorage();
+          setUser(null);
+          router.replace("/login");
+          router.refresh();
+          window.location.assign("/login");
+        } finally {
+          setLoading(false);
+        }
+      },
+      deleteAccount: async (): Promise<DeleteAccountResult> => {
+        const { data: sessionData } = await supabase.auth.getSession();
+        const session = sessionData.session;
+        if (!session) {
+          return { ok: false, error: "no_session" };
+        }
+        const res = await fetch(`${window.location.origin}/api/account/delete`, {
+          method: "POST",
+          headers: { Authorization: `Bearer ${session.access_token}` }
+        });
+        const body = (await res.json().catch(() => ({}))) as { error?: string; code?: string };
+        if (res.status === 503 && body.code === "not_configured") {
+          return { ok: false, error: body.error ?? "not_configured", code: "not_configured" };
+        }
+        if (!res.ok) {
+          return { ok: false, error: body.error ?? "delete_failed", code: body.code };
+        }
+        clearNamuLocalStorage();
+        setUser(null);
+        router.replace("/login");
+        router.refresh();
+        window.location.assign("/login");
+        return { ok: true };
       }
     }),
     [initialized, loading, router, user]

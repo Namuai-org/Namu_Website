@@ -14,11 +14,13 @@ export function ToastViewport(): JSX.Element {
   }, [removeToast, toasts]);
 
   return (
-    <div className="fixed right-4 top-4 z-[1200] space-y-3">
+    <div className="namu-workspace-cream fixed right-4 top-4 z-[1200] space-y-3">
       {toasts.map((toast) => (
-        <div key={toast.id} className="w-80 rounded-xl border border-border bg-bg-panel p-4 text-text-primary shadow-xl">
-          <div className="text-sm font-semibold">{toast.title}</div>
-          <div className="mt-1 text-sm text-text-secondary">{toast.description}</div>
+        <div key={toast.id} className="studio-toast-frame w-80 p-4" style={{ color: "var(--text-primary)" }}>
+          <div className="font-sans text-sm font-semibold">{toast.title}</div>
+          <div className="mt-1 font-sans text-sm" style={{ color: "var(--text-secondary)" }}>
+            {toast.description}
+          </div>
           <div className="mt-3">
             <ProgressBar value={100} />
           </div>

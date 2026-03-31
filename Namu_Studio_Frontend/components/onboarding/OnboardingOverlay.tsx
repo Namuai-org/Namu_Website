@@ -46,8 +46,8 @@ export function OnboardingOverlay(): JSX.Element | null {
   const skip = (): void => complete();
 
   return (
-    <div className="fixed inset-0 z-[1000] bg-[rgba(10,16,8,0.85)] backdrop-blur-sm">
-      <div className="relative flex min-h-screen items-center justify-center p-6">
+    <div className="fixed inset-0 z-[1000] bg-[rgba(245,239,230,0.88)] backdrop-blur-md">
+      <div className="relative flex min-h-screen items-center justify-center p-6 font-sans">
         {currentStep === 1 ? (
           <OnboardingStep
             step={1}
@@ -57,9 +57,17 @@ export function OnboardingOverlay(): JSX.Element | null {
             continueLabel={t("onboarding.start")}
             onContinue={proceed}
           >
-            <div className="mt-3 flex gap-2 text-xs text-text-body">
+            <div className="mt-4 flex flex-wrap gap-2 font-sans text-[12px] font-medium">
               {["Chat", "Code", "Murya"].map((pill) => (
-                <span key={pill} className="rounded-full bg-surface-card px-3 py-1.5">
+                <span
+                  key={pill}
+                  className="rounded-full border px-3 py-1.5"
+                  style={{
+                    background: "var(--chip-bg)",
+                    borderColor: "var(--chip-border)",
+                    color: "var(--chip-text)"
+                  }}
+                >
                   {pill}
                 </span>
               ))}
@@ -76,7 +84,12 @@ export function OnboardingOverlay(): JSX.Element | null {
             onContinue={proceed}
             onSkip={skip}
           >
-            <Input value={input} onChange={(event) => setInput(event.target.value)} placeholder={t("onboarding.step2Placeholder")} />
+            <Input
+              value={input}
+              onChange={(event) => setInput(event.target.value)}
+              placeholder={t("onboarding.step2Placeholder")}
+              className="h-12 rounded-xl"
+            />
             <button type="button" onClick={() => setInput(t("prompts.home7"))} className="mt-2 text-xs text-brand-orange">
               {t("onboarding.step2Suggestion")}
             </button>
@@ -102,12 +115,12 @@ export function OnboardingOverlay(): JSX.Element | null {
             onSkip={skip}
           />
         ) : (
-          <div className="w-[340px] rounded-2xl bg-white p-7 text-center shadow-xl">
+          <div className="namu-workspace-cream studio-apple-frame w-full max-w-[min(400px,calc(100vw-2rem))] p-8 text-center">
             <div className="mx-auto mb-5 grid h-14 w-14 place-items-center rounded-full border-2 border-status-success text-status-success">
               <Sparkles className="h-6 w-6" />
             </div>
-            <h3 className="text-2xl font-bold text-text-dark">{t("onboarding.completeTitle")}</h3>
-            <p className="mt-2 text-sm leading-[1.65] text-text-quiet">{t("onboarding.completeBody")}</p>
+            <h3 className="studio-editorial max-w-none text-center">{t("onboarding.completeTitle")}</h3>
+            <p className="studio-editorial-sub mt-3 max-w-none text-center">{t("onboarding.completeBody")}</p>
             <div className="mt-4 flex flex-wrap justify-center gap-2">
               {["Chat da AI", "Gina code", "Koyo da Hausa"].map((pill) => (
                 <span key={pill} className="rounded-full border border-status-success bg-status-success/5 px-3 py-1.5 text-xs font-medium text-status-success">

@@ -1,5 +1,5 @@
-import { SignupForm } from "@/components/auth/SignupForm";
+import { AuthenticationForms } from "@/components/auth/AuthenticationForms";
 
 export default function SignupPage(): JSX.Element {
-  return <SignupForm />;
+  return <AuthenticationForms defaultMode="signup" />;
 }

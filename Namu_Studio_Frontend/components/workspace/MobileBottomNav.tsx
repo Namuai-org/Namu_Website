@@ -20,12 +20,14 @@ export function MobileBottomNav(): JSX.Element {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-[100] border-t md:hidden"
+      className="fixed bottom-0 left-0 right-0 z-[100] border-t font-sans md:hidden"
       style={{
         height: "calc(64px + env(safe-area-inset-bottom))",
-        background: "var(--actbar-bg)",
-        borderColor: "var(--border)",
-        paddingBottom: "env(safe-area-inset-bottom)"
+        background: "rgba(255, 255, 255, 0.78)",
+        borderColor: "rgba(26, 21, 16, 0.08)",
+        paddingBottom: "env(safe-area-inset-bottom)",
+        backdropFilter: "blur(18px) saturate(1.1)",
+        WebkitBackdropFilter: "blur(18px) saturate(1.1)"
       }}
     >
       <div className="flex h-16 items-center px-2">

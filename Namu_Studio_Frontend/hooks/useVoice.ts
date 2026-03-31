@@ -44,6 +44,7 @@ export function useVoice() {
   const [interimTranscript, setInterimTranscript] = useState("");
   const [supported, setSupported] = useState(false);
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
+  const holdRef = useRef(false);
 
   useEffect(() => {
     const Recognition = window.SpeechRecognition ?? window.webkitSpeechRecognition;
@@ -62,6 +63,7 @@ export function useVoice() {
   }, []);
 
   const reset = useCallback((): void => {
+    holdRef.current = false;
     stopRecognition();
     setRecording(false);
     setProcessing(false);
@@ -71,11 +73,20 @@ export function useVoice() {
   }, [stopRecognition]);
 
   const stop = useCallback((): void => {
+    holdRef.current = false;
     if (!recording) return;
     setRecording(false);
     setProcessing(true);
     stopRecognition();
   }, [recording, stopRecognition]);
+
+  const stopHold = useCallback((): void => {
+    holdRef.current = false;
+    stopRecognition();
+    setRecording(false);
+    setProcessing(false);
+    setInterimTranscript("");
+  }, [stopRecognition]);
 
   const start = useCallback((): void => {
     const Recognition = window.SpeechRecognition ?? window.webkitSpeechRecognition;
@@ -84,6 +95,7 @@ export function useVoice() {
       return;
     }
 
+    holdRef.current = false;
     reset();
     const recognition = new Recognition() as SpeechRecognitionLike;
     recognition.lang = language === "ha" ? "ha" : "en-US";
@@ -130,6 +142,72 @@ export function useVoice() {
     recognition.start();
   }, [language, reset]);
 
+  const startHold = useCallback((): void => {
+    const Recognition = window.SpeechRecognition ?? window.webkitSpeechRecognition;
+    if (!Recognition) {
+      setSupported(false);
+      return;
+    }
+
+    holdRef.current = true;
+    reset();
+    const recognition = new Recognition() as SpeechRecognitionLike;
+    recognition.lang = language === "ha" ? "ha" : "en-US";
+    recognition.continuous = true;
+    recognition.interimResults = true;
+
+    recognition.onstart = () => {
+      setRecording(true);
+      setProcessing(false);
+    };
+
+    recognition.onresult = (event: SpeechRecognitionEventLike) => {
+      let finalText = "";
+      let interimText = "";
+
+      for (let index = event.resultIndex; index < event.results.length; index += 1) {
+        const result = event.results[index];
+        const text = result[0]?.transcript ?? "";
+        if (result.isFinal) {
+          finalText += text;
+        } else {
+          interimText += text;
+        }
+      }
+
+      if (finalText) {
+        setTranscript((current) => `${current} ${finalText}`.trim());
+      }
+      setInterimTranscript(interimText.trim());
+    };
+
+    recognition.onerror = () => {
+      holdRef.current = false;
+      setRecording(false);
+      setProcessing(false);
+    };
+
+    recognition.onend = () => {
+      if (holdRef.current && recognitionRef.current) {
+        try {
+          recognitionRef.current.start();
+        } catch {
+          holdRef.current = false;
+          setRecording(false);
+          setProcessing(false);
+          setInterimTranscript("");
+        }
+      } else {
+        setRecording(false);
+        setProcessing(false);
+        setInterimTranscript("");
+      }
+    };
+
+    recognitionRef.current = recognition;
+    recognition.start();
+  }, [language, reset]);
+
   useEffect(() => stopRecognition, [stopRecognition]);
 
   const displayTranscript = useMemo(
@@ -146,7 +224,9 @@ export function useVoice() {
     displayTranscript,
     supported,
     start,
+    startHold,
     stop,
+    stopHold,
     reset,
     setTranscript
   };

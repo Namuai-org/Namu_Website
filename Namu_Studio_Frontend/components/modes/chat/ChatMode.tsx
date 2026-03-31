@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
 
 import { streamChatResponse } from "@/lib/ai/aiService";
+import { prepareChatAttachments } from "@/lib/ai/prepareAttachments";
 import { saveMessage } from "@/lib/studio/messageService";
 import { touchSession } from "@/lib/studio/sessionService";
 import { ChatInput } from "@/components/modes/chat/ChatInput";
@@ -14,6 +15,15 @@ import { useAuth } from "@/hooks/useAuth";
 import { useStudio } from "@/hooks/useStudio";
 import { useTranslation } from "@/lib/i18n/useTranslation";
 
+function buildChatUserContent(text: string, files: File[]): string {
+  const t = text.trim();
+  if (!files.length) {
+    return t;
+  }
+  const line = `[Attached: ${files.map((f) => f.name).join(", ")}]`;
+  return t ? `${t}\n\n${line}` : line;
+}
+
 export function ChatMode(): JSX.Element {
   const { user } = useAuth();
   const { t } = useTranslation();
@@ -22,6 +32,8 @@ export function ChatMode(): JSX.Element {
     activeSessionId,
     draftInput,
     setDraftInput,
+    chatAttachments,
+    setChatAttachments,
     addChatMessage,
     pushToast,
     setProcessing,
@@ -47,22 +59,31 @@ export function ChatMode(): JSX.Element {
   }, [abortControllerRef]);
 
   useEffect(() => {
-    if (!activeSession || activeSession.chatMessages.length || !draftInput.trim()) {
+    if (!activeSession || activeSession.chatMessages.length) {
+      return;
+    }
+    if (!draftInput.trim() && !chatAttachments.length) {
       return;
     }
     void handleSubmit(draftInput);
   }, [activeSession?.id]);
 
   const handleSubmit = async (submittedValue?: string): Promise<void> => {
-    const content = (submittedValue ?? draftInput).trim();
-    if (!content || !user?.id || isStreaming) return;
+    const raw = (submittedValue ?? draftInput).trim();
+    const files = chatAttachments;
+    if ((!raw && !files.length) || !user?.id || isStreaming) {
+      return;
+    }
 
     abortControllerRef.current?.abort();
     abortControllerRef.current = new AbortController();
 
+    const preparedAttachments = files.length ? await prepareChatAttachments(files) : undefined;
+    const contentForUi = buildChatUserContent(raw, files);
+
     let sessionId = activeSessionId;
     if (!sessionId) {
-      sessionId = await startSession(content, "chat");
+      sessionId = await startSession(raw || files[0]?.name || "", "chat");
       if (!sessionId) {
         pushToast({ title: t("common.somethingWrong"), description: t("toasts.sessionLoadFailed"), type: "error" });
         return;
@@ -73,23 +94,24 @@ export function ChatMode(): JSX.Element {
     const userMessage = {
       id: crypto.randomUUID(),
       role: "user" as const,
-      content,
+      content: contentForUi,
       createdAt: new Date().toISOString()
     };
     addChatMessage(userMessage);
     setDraftInput("");
+    setChatAttachments([]);
     setProcessing(true);
     setTyping(true);
     setIsStreaming(true);
     setInlineError("");
-    setLastSubmittedMessage(content);
+    setLastSubmittedMessage(raw || contentForUi);
 
-    await saveMessage(sessionId, user.id, "user", content);
+    await saveMessage(sessionId, user.id, "user", contentForUi);
 
     const priorMessages = (activeSession?.chatMessages ?? [])
       .slice(-10)
       .map((message) => ({ role: message.role, content: message.content }));
-    const contextMessages = [...priorMessages, { role: "user", content }];
+    const contextMessages = [...priorMessages, { role: "user", content: contentForUi }];
 
     const aiMessageId = crypto.randomUUID();
     addChatMessage({
@@ -141,7 +163,8 @@ export function ChatMode(): JSX.Element {
         setInlineError(error);
         pushToast({ title: t("common.aiUnavailable"), description: error, type: "error" });
       },
-      abortControllerRef.current.signal
+      abortControllerRef.current.signal,
+      preparedAttachments
     );
   };
 
@@ -164,18 +187,20 @@ export function ChatMode(): JSX.Element {
           ) : null}
           {!messagesLoading && messages.length === 0 ? (
             <div className="grid h-full place-items-center py-12 text-center">
-              <div>
-                <div className="mx-auto grid h-10 w-10 place-items-center rounded-[10px] bg-brand-orange text-lg font-bold text-white">N</div>
-                <h2 className="mt-4 text-xl font-semibold text-text-primary">{t("workspace.chatEmptyTitle")}</h2>
-                <p className="mt-2 text-sm text-text-secondary">{t("workspace.chatEmptyBody")}</p>
-                <div className="mt-5 flex flex-wrap justify-center gap-2">
+              <div className="studio-apple-frame w-full max-w-[min(520px,100%)] px-8 py-10 font-sans">
+                <div className="mx-auto grid h-11 w-11 place-items-center rounded-2xl bg-brand-orange text-lg font-bold text-white shadow-sm">
+                  N
+                </div>
+                <h2 className="studio-editorial mt-5 max-w-none">{t("workspace.chatEmptyTitle")}</h2>
+                <p className="studio-editorial-sub mt-3 max-w-none">{t("workspace.chatEmptyBody")}</p>
+                <div className="mt-6 flex flex-wrap justify-center gap-2">
                   {[t("prompts.chat1"), t("prompts.chat2"), t("prompts.chat3")].map((prompt) => (
                     <button
                       key={prompt}
                       type="button"
                       onClick={() => setDraftInput(prompt)}
-                      className="rounded-full border px-4 py-2 text-sm transition hover:border-brand-orange hover:text-text-primary"
-                      style={{ background: "var(--bg-panel)", borderColor: "var(--border)", color: "var(--text-secondary)" }}
+                      className="rounded-full border px-4 py-2 text-[13px] transition hover:border-brand-orange hover:text-text-primary"
+                      style={{ background: "var(--chip-bg)", borderColor: "var(--chip-border)", color: "var(--chip-text)" }}
                     >
                       {prompt}
                     </button>

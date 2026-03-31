@@ -26,6 +26,13 @@ export function useStudio() {
     ...chat,
     ...workspace,
     sidebarOpen: shell.historyOpen,
+    openSidebar: () => {
+      if (typeof window !== "undefined" && window.matchMedia("(min-width: 768px)").matches) {
+        shell.setSidebarExpanded(true);
+      } else {
+        shell.openHistoryPanel();
+      }
+    },
     activeSession,
     hasActiveSession: Boolean(activeSession),
     hasVisitedWorkspace: session.sessions.length > 0,
@@ -53,13 +60,20 @@ export function useStudio() {
       if (!session.activeSessionId) return;
       await session.renameSession(session.activeSessionId, name);
     },
+    renameSessionById: async (id: string, title: string) => {
+      const next = title.trim();
+      if (!next) return;
+      await session.renameSession(id, next);
+    },
     selectSession: async (id: string) => {
       const selected = session.sessions.find((item) => item.id === id);
       if (selected) {
         shell.setMode(selected.mode);
       }
       await session.selectSession(id);
-      shell.closeSidebar();
+      if (shell.historyOpen) {
+        shell.closeSidebar();
+      }
     },
     addChatMessage: (message: ChatMessage) => {
       if (!session.activeSessionId || !activeSession) return;

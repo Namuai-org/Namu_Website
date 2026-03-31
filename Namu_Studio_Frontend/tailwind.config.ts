@@ -11,6 +11,23 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        namu: {
+          black: "#1A1510",
+          orange: "#DA7756",
+          cream: "#F5EFE6",
+          void: "#0F0C09",
+          deeper: "#0A0806",
+          surface: "#2A2018",
+          elevated: "#3D2E1E",
+          panel: "#1A1510",
+          "orange-glow": "rgba(218, 119, 86, 0.22)",
+          "orange-soft": "rgba(218, 119, 86, 0.12)",
+          "cream-ghost": "rgba(245, 239, 230, 0.063)",
+          "cream-muted": "rgba(245, 239, 230, 0.38)",
+          "cream-dim": "rgba(245, 239, 230, 0.19)",
+          error: "#E05252",
+          rail: "#1E1810"
+        },
         bg: {
           base: "var(--bg-base)",
           panel: "var(--bg-panel)",
@@ -76,8 +93,12 @@ const config: Config = {
         orange: "var(--shadow-orange)"
       },
       fontFamily: {
-        sans: ["var(--font-dm-sans)"],
-        mono: ["var(--font-jetbrains-mono)"]
+        sans: ["var(--font-inter)", "Inter", "sans-serif"],
+        display: ["var(--font-barlow)", "Barlow", "sans-serif"],
+        /** Matches namu.ai marketing site */
+        website: ["var(--font-dm-sans)", "DM Sans", "sans-serif"],
+        "website-display": ["var(--font-lora)", "Lora", "serif"],
+        mono: ["var(--font-jetbrains-mono)", "JetBrains Mono", "monospace"]
       },
       fontSize: {
         xs: "var(--font-xs)",
@@ -126,10 +147,10 @@ const config: Config = {
         },
         pulseVoice: {
           "0%": {
-            boxShadow: "0 0 0 0 rgba(214,112,63,0.4), 0 0 0 0 rgba(214,112,63,0.2)"
+            boxShadow: "0 0 0 0 rgba(218,119,86,0.4), 0 0 0 0 rgba(218,119,86,0.2)"
           },
           "100%": {
-            boxShadow: "0 0 0 20px rgba(214,112,63,0), 0 0 0 40px rgba(214,112,63,0)"
+            boxShadow: "0 0 0 20px rgba(218,119,86,0), 0 0 0 40px rgba(218,119,86,0)"
           }
         },
         blink: {

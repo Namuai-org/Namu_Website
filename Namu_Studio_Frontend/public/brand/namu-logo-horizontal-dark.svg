@@ -1,0 +1,9 @@
+<svg width="760" height="220" viewBox="0 0 760 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path
+    fill-rule="evenodd"
+    clip-rule="evenodd"
+    d="M52 24H80V196H52L36 180V40L52 24ZM152 24H180L196 40V180L180 196H152V24ZM80 156H116L152 120V64H116L80 100V156ZM116 78L138 100L116 122L94 100L116 78Z"
+    fill="#DA7756"
+  />
+  <text x="236" y="136" fill="#F5EFE6" font-family="DM Sans, Arial, sans-serif" font-size="96" font-weight="600" letter-spacing="-3">Namu</text>
+</svg>

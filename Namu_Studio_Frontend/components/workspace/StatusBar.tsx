@@ -22,23 +22,25 @@ export function StatusBar(): JSX.Element {
               : t("workspace.recording");
 
   return (
-    <div
-      className="flex h-status items-center justify-between px-4 text-[11px]"
-      style={{ background: "var(--status-bg)", color: "var(--status-text)" }}
-    >
-      <div className="flex items-center gap-3">
+    <div className="studio-status-bar flex h-status items-center justify-between px-4 text-[11px]">
+      <div className="flex items-center gap-3 font-medium" style={{ color: "var(--text-primary)" }}>
         <span>Namu AI-Studio</span>
-        <span className="h-3 w-px bg-white/30" />
-        <span className="flex items-center gap-1 text-white/70">
+        <span className="h-3 w-px bg-[rgba(26,21,16,0.12)]" />
+        <span className="flex items-center gap-1 opacity-70">
           <GitBranch className="h-3 w-3" />
           main
         </span>
       </div>
-      <div className="italic">{processing ? t("workspace.processing") : ""}</div>
-      <div className="flex items-center gap-3">
+      <div className="italic opacity-80" style={{ color: "var(--text-muted)" }}>
+        {processing ? t("workspace.processing") : ""}
+      </div>
+      <div className="flex items-center gap-3" style={{ color: "var(--text-muted)" }}>
         {saveIndicator ? <span>{saveIndicator}</span> : null}
         <span>{contextText}</span>
-        <span className="rounded bg-white/20 px-2 py-0.5 text-[10px] font-medium">
+        <span
+          className="rounded-md px-2 py-0.5 text-[10px] font-semibold"
+          style={{ background: "rgba(26,21,16,0.06)", color: "var(--text-primary)" }}
+        >
           {language.toUpperCase()}
         </span>
       </div>

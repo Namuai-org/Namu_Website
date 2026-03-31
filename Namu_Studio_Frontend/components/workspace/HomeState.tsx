@@ -28,41 +28,27 @@ export function HomeState(): JSX.Element {
   const greeting = useMemo(() => {
     const key = getGreetingHour();
     const name = user?.fullName ?? "Namu";
-    if (key === "morning") return `Ina kwana, ${name}.`;
-    if (key === "afternoon") return `Barka da rana, ${name}.`;
-    return `Barka da yamma, ${name}.`;
-  }, [user?.fullName]);
+    if (key === "morning") return t("workspace.homeGreetingMorning", { name });
+    if (key === "afternoon") return t("workspace.homeGreetingAfternoon", { name });
+    return t("workspace.homeGreetingEvening", { name });
+  }, [t, user?.fullName]);
 
   return (
-    <div
-      className="flex h-full flex-col items-center justify-center px-4 py-8 md:px-6 md:py-10"
-      style={{
-        background:
-          "radial-gradient(ellipse 80% 60% at 50% 40%, var(--bg-panel) 0%, var(--bg-base) 60%, color-mix(in srgb, var(--bg-base) 80%, #000 20%) 100%)"
-      }}
-    >
+    <div className="flex h-full flex-col items-center justify-center bg-bg-base px-4 py-8 md:px-6 md:py-10">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="mb-8 text-center md:mb-12"
       >
-        <h1
-          className="text-[clamp(22px,6vw,42px)] font-bold leading-[1.2]"
-          style={{ color: "var(--text-primary)" }}
-        >
-          {greeting}
-        </h1>
+        <h1 className="studio-editorial text-center">{greeting}</h1>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.08, duration: 0.5 }}
-          className="mt-2 text-base"
-          style={{ color: "var(--text-muted)" }}
+          className="studio-editorial-sub mt-3 text-center"
         >
-          {hasVisitedWorkspace
-            ? "Mun yi maka shirye. Fara daga inda ka tsaya."
-            : "Za mu iya taimaka maka da komai a Hausa."}
+          {hasVisitedWorkspace ? t("workspace.homeSubtitleReturn") : t("workspace.homeSubtitleFirst")}
         </motion.p>
       </motion.div>
 
@@ -78,10 +64,10 @@ export function HomeState(): JSX.Element {
 
       <div className="mt-8 w-full max-w-[680px] md:mt-10">
         <div
-          className="mb-3 text-center text-[11px] uppercase tracking-[0.1em]"
+          className="mb-3 text-center font-sans text-[11px] font-medium uppercase tracking-[0.12em]"
           style={{ color: "var(--text-muted)" }}
         >
-          Ka iya gwada:
+          {t("workspace.homeTryLabel")}:
         </div>
         <div className="flex gap-2 overflow-x-auto pb-2 md:flex-wrap md:justify-center md:overflow-visible">
           {suggestions.map((chip, index) => (

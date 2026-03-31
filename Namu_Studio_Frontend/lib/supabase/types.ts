@@ -1,5 +1,5 @@
 export type ThemeName = "namu" | "gece" | "daji" | "sahara" | "dare";
-export type Language = "en" | "ha";
+export type Language = "en" | "ha" | "fr";
 export type StudioMode = "chat" | "create" | "code" | "voice";
 
 export type Profile = {

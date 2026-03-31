@@ -1,10 +1,13 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, type Dispatch, type SetStateAction } from "react";
 
 interface WorkspaceContextValue {
   draftInput: string;
   setDraftInput: (value: string) => void;
+  /** Pending files for chat composer (home + chat mode). Cleared after send / reset. */
+  chatAttachments: File[];
+  setChatAttachments: Dispatch<SetStateAction<File[]>>;
   processing: boolean;
   setProcessing: (value: boolean) => void;
   homeResetCount: number;
@@ -22,6 +25,7 @@ const WorkspaceContext = createContext<WorkspaceContextValue | null>(null);
 
 export function WorkspaceProvider({ children }: { children: React.ReactNode }): JSX.Element {
   const [draftInput, setDraftInput] = useState("");
+  const [chatAttachments, setChatAttachments] = useState<File[]>([]);
   const [processing, setProcessing] = useState(false);
   const [homeResetCount, setHomeResetCount] = useState(0);
   const [saveIndicator, setSaveIndicator] = useState("");
@@ -36,6 +40,7 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }): 
 
   const resetHome = useCallback(() => {
     setDraftInput("");
+    setChatAttachments([]);
     setProcessing(false);
     setHomeResetCount((current) => current + 1);
   }, []);
@@ -46,6 +51,7 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }): 
 
   const clearWorkspaceState = useCallback(() => {
     setDraftInput("");
+    setChatAttachments([]);
     setProcessing(false);
     setHomeResetCount(0);
     setSaveIndicator("");
@@ -56,6 +62,8 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }): 
   const value = useMemo<WorkspaceContextValue>(() => ({
     draftInput,
     setDraftInput,
+    chatAttachments,
+    setChatAttachments,
     processing,
     setProcessing,
     homeResetCount,
@@ -68,6 +76,7 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }): 
     createOptionsOpen,
     setCreateOptionsOpen
   }), [
+    chatAttachments,
     clearWorkspaceState,
     createOptionsOpen,
     draftInput,

@@ -1,5 +1,6 @@
 "use client";
 
+import type { ChatAttachmentPayload } from "@/lib/ai/prepareAttachments";
 import { parseAIStream } from "@/lib/ai/streamParser";
 
 const aiBaseUrl = process.env.NEXT_PUBLIC_AI_API_URL;
@@ -48,9 +49,17 @@ export async function streamChatResponse(
   onToken: (token: string) => void,
   onComplete: (fullText: string) => void,
   onError: (error: string) => void,
-  signal?: AbortSignal
+  signal?: AbortSignal,
+  attachments?: ChatAttachmentPayload[]
 ): Promise<void> {
-  await streamResponse("/api/ai/chat", { messages }, onToken, onComplete, onError, signal);
+  await streamResponse(
+    "/api/ai/chat",
+    attachments?.length ? { messages, attachments } : { messages },
+    onToken,
+    onComplete,
+    onError,
+    signal
+  );
 }
 
 export async function streamCreateResponse(

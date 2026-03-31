@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 
 import { OnboardingOverlay } from "@/components/onboarding/OnboardingOverlay";
 import { ToastViewport } from "@/components/shared/ToastViewport";
-import { Logo } from "@/components/shared/Logo";
+import { WorkspaceLoadingScreen } from "@/components/workspace/WorkspaceLoadingScreen";
 import { HelpModal } from "@/components/workspace/HelpModal";
 import { HomeState } from "@/components/workspace/HomeState";
 import { ActivityBar } from "@/components/workspace/ActivityBar";
@@ -57,21 +57,11 @@ export function WorkspaceShell(): JSX.Element {
   }, [activeMode, hasActiveSession, params, startSession]);
 
   if (!initialized || workspaceLoading) {
-    return (
-      <div className="grid h-screen place-items-center bg-bg-base">
-        <div className="flex flex-col items-center">
-          <Logo />
-          <div className="mt-6 h-2 w-[200px] overflow-hidden rounded-full bg-border">
-            <div className="h-full w-1/2 animate-[shimmer_1.5s_ease-in-out_infinite] rounded-full bg-brand-orange" />
-          </div>
-          <p className="mt-3 text-[13px] text-text-muted">Ana lodi...</p>
-        </div>
-      </div>
-    );
+    return <WorkspaceLoadingScreen />;
   }
 
   return (
-    <div className="flex h-screen flex-col bg-bg-base">
+    <div className="namu-workspace-cream flex h-screen flex-col bg-bg-base font-sans">
       {offline ? (
         <div className="px-4 py-2 text-center text-xs text-[var(--navy)]" style={{ background: "var(--warning)" }}>
           Babu haɗin intanet

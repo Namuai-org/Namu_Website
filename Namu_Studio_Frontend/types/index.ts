@@ -1,4 +1,4 @@
-export type Language = "en" | "ha";
+export type Language = "en" | "ha" | "fr";
 
 export type AppMode = "chat" | "create" | "code" | "voice";
 
@@ -8,7 +8,7 @@ export interface UserProfile {
   email: string;
   avatarUrl?: string;
   theme?: "namu" | "gece" | "daji" | "sahara" | "dare";
-  language?: "en" | "ha";
+  language?: "en" | "ha" | "fr";
   onboardingComplete?: boolean;
 }
 

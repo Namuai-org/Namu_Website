@@ -1,7 +1,7 @@
 "use client";
 
-import { ChevronDown, Copy, Download, Mic, Sparkles, Square } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { ChevronDown, Copy, Download, Plus, Sparkles, X } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { streamCreateResponse } from "@/lib/ai/aiService";
 import { CreateCanvas } from "@/components/modes/create/CreateCanvas";
@@ -9,11 +9,14 @@ import { TemplateCard } from "@/components/modes/create/TemplateCard";
 import { Button } from "@/components/shared/Button";
 import { Textarea } from "@/components/shared/Textarea";
 import { useAuth } from "@/hooks/useAuth";
+import { MicWithSettings } from "@/components/modes/chat/MicWithSettings";
 import { useVoice } from "@/hooks/useVoice";
+import { useVoiceDictationMerge } from "@/hooks/useVoiceDictationMerge";
 import { useStudio } from "@/hooks/useStudio";
 import { useTranslation } from "@/lib/i18n/useTranslation";
 import { saveCreateOutput } from "@/lib/studio/createService";
 import { touchSession } from "@/lib/studio/sessionService";
+import { augmentPromptWithFiles } from "@/lib/utils/promptAttachments";
 
 const templates = ["Wasiƙa", "Shirin aiki", "CV / Résumé", "Post na social media", "Rahoto", "Imel"];
 
@@ -36,21 +39,25 @@ export function CreateMode(): JSX.Element {
   const [length, setLength] = useState(t("workspace.medium"));
   const [wordCount, setWordCount] = useState(0);
   const abortControllerRef = useRef<AbortController | null>(null);
+  const promptFileRef = useRef<HTMLInputElement>(null);
+  const [promptFiles, setPromptFiles] = useState<File[]>([]);
   const outputRef = useRef("");
   const voice = useVoice();
-
   const promptValue = useMemo(() => (activeSession ? activeSession.createPrompt : draftInput), [activeSession, draftInput]);
   const outputValue = activeSession?.createOutput ?? "";
 
-  useEffect(() => {
-    if (!voice) return;
-    if (!voice.transcript) return;
-    if (activeSession) {
-      setCreatePrompt(voice.transcript);
-    } else {
-      setDraftInput(voice.transcript);
-    }
-  }, [activeSession, setCreatePrompt, setDraftInput, voice]);
+  const updatePrompt = useCallback(
+    (next: string): void => {
+      if (activeSession) {
+        setCreatePrompt(next);
+        return;
+      }
+      setDraftInput(next);
+    },
+    [activeSession, setCreatePrompt, setDraftInput]
+  );
+
+  const { beginTapDictation, beginHoldDictation } = useVoiceDictationMerge(voice, promptValue, updatePrompt);
 
   useEffect(() => {
     setWordCount(outputValue.trim().split(/\s+/).filter(Boolean).length);
@@ -63,17 +70,33 @@ export function CreateMode(): JSX.Element {
     };
   }, []);
 
-  const updatePrompt = (value: string): void => {
-    if (activeSession) {
-      setCreatePrompt(value);
-      return;
+  const addPromptFiles = (list: FileList | File[]): void => {
+    const next = Array.from(list);
+    const merged = [...promptFiles];
+    const max = 8;
+    const maxBytes = 12 * 1024 * 1024;
+    for (const file of next) {
+      if (file.size > maxBytes) {
+        pushToast({ title: t("workspace.fileTooLarge"), description: file.name, type: "warning" });
+        continue;
+      }
+      if (merged.length >= max) {
+        pushToast({ title: t("workspace.tooManyFiles"), description: String(max), type: "warning" });
+        break;
+      }
+      merged.push(file);
     }
-    setDraftInput(value);
+    setPromptFiles(merged);
+    if (promptFileRef.current) {
+      promptFileRef.current.value = "";
+    }
   };
 
   const generate = async (): Promise<void> => {
-    const basePrompt = promptValue.trim();
-    if (!basePrompt || !user?.id) return;
+    const basePrompt = await augmentPromptWithFiles(promptValue.trim(), promptFiles);
+    if (!basePrompt.trim() || !user?.id) {
+      return;
+    }
 
     abortControllerRef.current?.abort();
     abortControllerRef.current = new AbortController();
@@ -81,7 +104,7 @@ export function CreateMode(): JSX.Element {
     outputRef.current = "";
     setCreateOutput("");
 
-    const sessionId = activeSession?.id ?? (await startSession(basePrompt, "create"));
+    const sessionId = activeSession?.id ?? (await startSession(basePrompt.slice(0, 120), "create"));
     if (!sessionId) {
       setProcessing(false);
       pushToast({ title: t("common.somethingWrong"), description: t("toasts.sessionLoadFailed"), type: "error" });
@@ -102,6 +125,7 @@ export function CreateMode(): JSX.Element {
         setCreateOutput(fullText);
         setWordCount(fullText.trim().split(/\s+/).filter(Boolean).length);
         setProcessing(false);
+        setPromptFiles([]);
         await saveCreateOutput(sessionId, user.id, basePrompt, fullText, { tone, length });
         await touchSession(sessionId);
       },
@@ -127,24 +151,69 @@ export function CreateMode(): JSX.Element {
           </div>
 
           <div className="mt-6 rounded-2xl border border-border bg-bg-elevated p-4 shadow-sm">
-            <div className="mb-3 flex items-center justify-between gap-3">
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
               <div className="text-sm font-semibold text-text-primary">{t("workspace.prompt")}</div>
-              {voice ? (
+              <div className="flex items-center gap-2">
+                <MicWithSettings
+                  voice={voice}
+                  supported={voice.supported}
+                  onTapDictation={beginTapDictation}
+                  onBeginHoldDictation={beginHoldDictation}
+                />
                 <button
                   type="button"
-                  onClick={() => (voice.recording ? voice.stop() : voice.start())}
-                  className="inline-flex min-h-11 items-center gap-2 rounded-lg border px-3 py-2 text-xs transition"
+                  onClick={() => promptFileRef.current?.click()}
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-lg border transition"
                   style={{
-                    borderColor: voice.recording ? "var(--orange)" : "var(--input-border)",
-                    background: voice.recording ? "var(--orange-subtle)" : "var(--bg-panel)",
-                    color: voice.recording ? "var(--orange)" : "var(--text-secondary)"
+                    borderColor: "var(--input-border)",
+                    background: "var(--bg-panel)",
+                    color: "var(--text-secondary)"
                   }}
+                  aria-label={t("workspace.attachFiles")}
                 >
-                  {voice.recording ? <Square className="h-3.5 w-3.5" /> : <Mic className="h-3.5 w-3.5" />}
-                  {voice.recording ? `${t("workspace.stop")} 0:${voice.seconds.toString().padStart(2, "0")}` : t("workspace.voiceIdle")}
+                  <Plus className="h-[18px] w-[18px]" strokeWidth={2.25} />
                 </button>
-              ) : null}
+                <input
+                  ref={promptFileRef}
+                  type="file"
+                  className="hidden"
+                  multiple
+                  accept="image/*,.pdf,.txt,.md,.csv,.json,application/pdf"
+                  onChange={(event) => {
+                    const files = event.target.files;
+                    if (files?.length) {
+                      addPromptFiles(files);
+                    }
+                  }}
+                />
+              </div>
             </div>
+
+            {promptFiles.length > 0 ? (
+              <div className="mb-3 flex flex-wrap gap-1.5">
+                {promptFiles.map((file, index) => (
+                  <span
+                    key={`${file.name}-${index}`}
+                    className="inline-flex max-w-full items-center gap-1 rounded-full border px-2.5 py-1 text-[11px]"
+                    style={{
+                      borderColor: "var(--border)",
+                      background: "var(--bg-panel)",
+                      color: "var(--text-secondary)"
+                    }}
+                  >
+                    <span className="truncate">{file.name}</span>
+                    <button
+                      type="button"
+                      onClick={() => setPromptFiles((prev) => prev.filter((_, i) => i !== index))}
+                      className="rounded-full p-0.5 hover:bg-bg-active"
+                      aria-label={t("workspace.removeAttachment")}
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </span>
+                ))}
+              </div>
+            ) : null}
 
             <Textarea
               className="min-h-[220px] border-[var(--input-border)] bg-[var(--input-bg)] text-[var(--input-text)] placeholder:text-[var(--input-placeholder)]"
@@ -152,11 +221,9 @@ export function CreateMode(): JSX.Element {
               onChange={(event) => updatePrompt(event.target.value)}
               placeholder={t("workspace.createPlaceholder")}
             />
-            {voice ? (
-              <div className="mt-3 text-xs text-text-muted">
-                {!voice.supported ? t("workspace.unsupportedVoice") : t("workspace.hausaVoiceNote")}
-              </div>
-            ) : null}
+            <div className="mt-3 text-xs text-text-muted">
+              {!voice.supported ? t("workspace.unsupportedVoice") : t("workspace.hausaVoiceNote")}
+            </div>
           </div>
 
           <button
