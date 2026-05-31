@@ -1,50 +1,33 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import Image from "next/image";
 import { HeroEntrance } from "@/components/landing/HeroEntrance";
+import { HeroTicker } from "@/components/landing/HeroTicker";
+import { useTypewriter } from "@/hooks/useTypewriter";
 import { useTranslation } from "@/hooks/useTranslation";
 
 export function HeroSection() {
   const { t } = useTranslation();
   const heroBody = t("hero.body");
-  const [typedLength, setTypedLength] = useState(0);
-
-  useEffect(() => {
-    setTypedLength(0);
-  }, [heroBody]);
-
-  useEffect(() => {
-    let len = 0;
-    let nextAt = performance.now();
-    let raf = 0;
-    let cancelled = false;
-
-    const step = (now: number) => {
-      if (cancelled) return;
-      if (len >= heroBody.length) return;
-      if (now < nextAt) {
-        raf = requestAnimationFrame(step);
-        return;
-      }
-      const nextCharacter = heroBody[len];
-      const delay = nextCharacter === " " ? 16 : len < 10 ? 34 : 22;
-      len += 1;
-      setTypedLength(len);
-      nextAt = now + delay;
-      raf = requestAnimationFrame(step);
-    };
-
-    raf = requestAnimationFrame(step);
-    return () => {
-      cancelled = true;
-      cancelAnimationFrame(raf);
-    };
-  }, [heroBody]);
+  const typed = useTypewriter(heroBody);
 
   return (
     <section className="hero-section" id="hero">
-      <div className="hero-glow" />
-      <div className="hero-silhouette" aria-hidden="true" />
+      {/* Full-bleed background image */}
+      <Image
+        src="/hero_image.webp"
+        alt=""
+        fill
+        priority
+        unoptimized
+        sizes="100vw"
+        className="hero-bg-image"
+      />
+      {/* Gradient overlay — darkens edges for text legibility */}
+      <div className="hero-overlay" aria-hidden="true" />
+
+      {/* African art symbol ticker at bottom */}
+      <HeroTicker />
 
       <HeroEntrance className="hero-content hero-content-home">
         <span className="section-label section-label-center hero-child">{t("hero.kicker")}</span>
@@ -53,18 +36,10 @@ export function HeroSection() {
           <span className="hero-title-line hero-title-line-bottom">{t("hero.titleBottom")}</span>
         </h1>
         <p className="hero-body-home hero-child">
-          {heroBody.slice(0, typedLength)}
-          {typedLength < heroBody.length ? <span className="hero-body-caret" aria-hidden="true" /> : null}
+          {typed}
+          {typed.length < heroBody.length ? <span className="hero-body-caret" aria-hidden="true" /> : null}
         </p>
 
-        <div className="hero-actions hero-child hero-actions-home">
-          <a href="#waitlist" className="btn-primary hero-primary">
-            {t("hero.primaryCta")}
-          </a>
-          <a href="/login" className="btn-secondary hero-secondary">
-            {t("hero.secondaryCta")}
-          </a>
-        </div>
       </HeroEntrance>
     </section>
   );

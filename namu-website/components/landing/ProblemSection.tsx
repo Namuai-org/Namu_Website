@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useTypewriter } from "@/hooks/useTypewriter";
 import { useTranslation } from "@/hooks/useTranslation";
 
 type ProblemCardProps = {
@@ -14,11 +15,7 @@ type ProblemCardProps = {
 function ProblemCard({ id, body, align, total }: ProblemCardProps) {
   const ref = useRef<HTMLElement | null>(null);
   const [hasStarted, setHasStarted] = useState(false);
-  const [typedLength, setTypedLength] = useState(0);
-
-  useEffect(() => {
-    setTypedLength(0);
-  }, [body]);
+  const typed = useTypewriter(body, hasStarted, 24, 12);
 
   useEffect(() => {
     const node = ref.current;
@@ -41,35 +38,6 @@ function ProblemCard({ id, body, align, total }: ProblemCardProps) {
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    if (!hasStarted) return;
-
-    let len = 0;
-    let nextAt = performance.now();
-    let raf = 0;
-    let cancelled = false;
-
-    const step = (now: number) => {
-      if (cancelled) return;
-      if (len >= body.length) return;
-      if (now < nextAt) {
-        raf = requestAnimationFrame(step);
-        return;
-      }
-      const delay = body[len] === " " ? 12 : 24;
-      len += 1;
-      setTypedLength(len);
-      nextAt = now + delay;
-      raf = requestAnimationFrame(step);
-    };
-
-    raf = requestAnimationFrame(step);
-    return () => {
-      cancelled = true;
-      cancelAnimationFrame(raf);
-    };
-  }, [hasStarted, body]);
-
   return (
     <article
       ref={ref}
@@ -86,8 +54,8 @@ function ProblemCard({ id, body, align, total }: ProblemCardProps) {
         <div className="problem-scroll-window">
           <span className="problem-card-number">{id}</span>
           <p>
-            {hasStarted ? body.slice(0, typedLength) : ""}
-            {hasStarted && typedLength < body.length ? (
+            {typed}
+            {hasStarted && typed.length < body.length ? (
               <span className="problem-card-caret" aria-hidden="true" />
             ) : null}
           </p>

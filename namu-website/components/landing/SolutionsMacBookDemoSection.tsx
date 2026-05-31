@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useInView } from "@/hooks/useInView";
 import { useTranslation } from "@/hooks/useTranslation";
 import { NamuLogoMark } from "@/components/brand/NamuLogoMark";
 import styles from "./solutions-macbook-demo.module.css";
@@ -51,27 +52,7 @@ export function SolutionsMacBookDemoSection() {
     };
   }, []);
 
-  useEffect(() => {
-    const card = cardRef.current;
-    if (!card || typeof window === "undefined") return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      card.classList.add(styles.requestCardVisible);
-      return;
-    }
-    const io = new IntersectionObserver(
-      ([e]) => {
-        // Start the request-demo “visible” state slightly earlier so the background
-        // motion feels alive as soon as the section arrives.
-        if (e.isIntersecting && e.intersectionRatio >= 0.15) {
-          card.classList.add(styles.requestCardVisible);
-          io.disconnect();
-        }
-      },
-      { threshold: [0, 0.15, 0.3, 0.6] },
-    );
-    io.observe(card);
-    return () => io.disconnect();
-  }, []);
+  const cardInView = useInView(cardRef, 0.15);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -290,7 +271,7 @@ export function SolutionsMacBookDemoSection() {
       </div>
 
       <div className={styles.requestCardOuter}>
-        <div ref={cardRef} className={styles.requestCard}>
+        <div ref={cardRef} className={`${styles.requestCard}${cardInView ? ` ${styles.requestCardVisible}` : ""}`}>
           <div className={styles.requestAnimWrap} aria-hidden>
             <div className={styles.requestBlobs}>
               <span className={styles.requestBlob} />

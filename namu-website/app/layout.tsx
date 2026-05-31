@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { DM_Sans, JetBrains_Mono, Lora } from "next/font/google";
-import { PageTransition } from "@/components/PageTransition";
 import "./globals.css";
 
 const lora = Lora({

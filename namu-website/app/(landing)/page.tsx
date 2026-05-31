@@ -4,7 +4,6 @@ import { FAQSection } from "@/components/landing/FAQSection";
 import { FuturePlansSection } from "@/components/landing/FuturePlansSection";
 import { HeroSection } from "@/components/landing/HeroSection";
 import { MissionSection } from "@/components/landing/MissionSection";
-import { NavBar } from "@/components/landing/NavBar";
 import { ProblemSection } from "@/components/landing/ProblemSection";
 import { SolutionsSection } from "@/components/landing/SolutionsSection";
 

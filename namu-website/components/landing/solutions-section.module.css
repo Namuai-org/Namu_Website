@@ -1,0 +1,229 @@
+/* ─── Wrapper: 400vh = 100vh display + 300vh for 3 transitions (4 panels) ─── */
+.wrapper {
+  height: 400vh;
+  background: #0c0b09; /* matches panels — no white flash if sticky timing is off */
+}
+
+/* ─── Stage: CSS sticky pins it to the top — no JS needed for this part ─── */
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ─── Track: horizontal row of all panels, GSAP drives the x translation ─── */
+.track {
+  display: flex;
+  width: 400vw; /* 4 panels × 100vw */
+  height: 100%;
+  will-change: transform;
+}
+
+/* ─── Individual panel ─── */
+.panel {
+  position: relative;
+  width: 100vw;
+  height: 100%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 max(2rem, 8vw);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.panel:nth-child(1) { background: #0c0b09; } /* intro */
+.panel:nth-child(2) { background: #0f0e0c; } /* step 01 */
+.panel:nth-child(3) { background: #0c0b09; } /* step 02 */
+.panel:nth-child(4) { background: #0f0e0c; } /* step 03 */
+
+/* ─── Intro panel: wider content, no watermark number ─── */
+.introPanel .content {
+  max-width: 780px;
+}
+
+.introTitle {
+  font-size: clamp(2.25rem, 4.2vw, 3.75rem);
+}
+
+/* ─── Large faded step number watermark ─── */
+.bigNum {
+  position: absolute;
+  right: max(2rem, 6vw);
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-display);
+  font-size: clamp(160px, 22vw, 300px);
+  font-weight: 700;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(214, 112, 63, 0.12);
+  user-select: none;
+  pointer-events: none;
+  letter-spacing: -0.04em;
+}
+
+/* ─── Content block ─── */
+.content {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+  width: 100%;
+}
+
+.label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #d6703f;
+  margin-bottom: 1rem;
+}
+
+.rule {
+  display: block;
+  width: 2rem;
+  height: 1px;
+  background: rgba(214, 112, 63, 0.4);
+  margin-bottom: 1.5rem;
+}
+
+.stepNum {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: rgba(245, 239, 230, 0.3);
+  letter-spacing: 0.12em;
+  margin-bottom: 1.25rem;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.6vw, 3.25rem);
+  font-weight: 600;
+  line-height: 1.1;
+  color: #f5efe6;
+  margin: 0 0 1.75rem 0;
+  letter-spacing: -0.02em;
+}
+
+.body {
+  font-family: var(--font-body);
+  font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+  line-height: 1.75;
+  color: rgba(245, 239, 230, 0.55);
+  max-width: 480px;
+  margin: 0;
+}
+
+/* ─── Progress dots ─── */
+.dots {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+  z-index: 10;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(245, 239, 230, 0.2);
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.dotActive {
+  background: #d6703f;
+  transform: scale(1.4);
+}
+
+/* ─── Scroll hint ─── */
+.scrollHint {
+  position: absolute;
+  bottom: 2.5rem;
+  right: max(2rem, 8vw);
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(245, 239, 230, 0.2);
+}
+
+/* ─── Mobile: stack panels vertically, CSS sticky still works ─── */
+@media (max-width: 767px) {
+  .wrapper {
+    height: auto;
+  }
+
+  .stage {
+    position: relative; /* disable sticky */
+    height: auto;
+    overflow: visible;
+  }
+
+  .track {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .panel {
+    width: 100%;
+    height: auto;
+    min-height: 100svh;
+    padding: 5rem 1.75rem;
+  }
+
+  .bigNum {
+    font-size: clamp(100px, 40vw, 160px);
+    top: auto;
+    bottom: -1rem;
+    right: 0;
+    transform: none;
+  }
+
+  .title {
+    font-size: clamp(1.75rem, 7vw, 2.5rem);
+  }
+
+  .dots,
+  .scrollHint {
+    display: none;
+  }
+}
+
+/* ─── Reduced motion: same stacked layout ─── */
+@media (prefers-reduced-motion: reduce) {
+  .wrapper {
+    height: auto;
+  }
+
+  .stage {
+    position: relative;
+    height: auto;
+    overflow: visible;
+  }
+
+  .track {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .panel {
+    width: 100%;
+    height: auto;
+    min-height: 80vh;
+    padding: 5rem max(2rem, 8vw);
+  }
+
+  .dots,
+  .scrollHint {
+    display: none;
+  }
+}

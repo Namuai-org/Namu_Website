@@ -14,6 +14,7 @@ function hubSlotTransform(index: number, radius: number): CSSProperties {
   };
 }
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useTypewriter } from "@/hooks/useTypewriter";
 import { useTranslation } from "@/hooks/useTranslation";
 
 type FutureNodeProps = {
@@ -25,39 +26,7 @@ type FutureNodeProps = {
 
 function FutureNode({ className, title, detail, delayClass }: FutureNodeProps) {
   const [active, setActive] = useState(false);
-  const [typedLength, setTypedLength] = useState(0);
-
-  useEffect(() => {
-    if (!active) {
-      setTypedLength(0);
-      return;
-    }
-
-    let len = 0;
-    let nextAt = performance.now();
-    let raf = 0;
-    let cancelled = false;
-
-    const step = (now: number) => {
-      if (cancelled) return;
-      if (len >= detail.length) return;
-      if (now < nextAt) {
-        raf = requestAnimationFrame(step);
-        return;
-      }
-      const delay = detail[len] === " " ? 10 : 18;
-      len += 1;
-      setTypedLength(len);
-      nextAt = now + delay;
-      raf = requestAnimationFrame(step);
-    };
-
-    raf = requestAnimationFrame(step);
-    return () => {
-      cancelled = true;
-      cancelAnimationFrame(raf);
-    };
-  }, [active, detail]);
+  const typed = useTypewriter(detail, active, 18, 10);
 
   return (
     <button
@@ -73,7 +42,7 @@ function FutureNode({ className, title, detail, delayClass }: FutureNodeProps) {
       <span className="future-node-label">{title}</span>
       <span className={`future-node-detail ${active ? "is-visible" : ""}`}>
         <span className="future-node-detail-inner">
-          {active ? detail.slice(0, typedLength) : ""}
+          {typed}
           <span className="future-node-caret" aria-hidden="true" />
         </span>
       </span>
