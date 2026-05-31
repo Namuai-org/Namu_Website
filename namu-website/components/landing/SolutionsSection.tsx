@@ -14,51 +14,6 @@ const STEP_IMAGES = {
   "3": { src: "/step3.webp", alt: "Real interactions improving the system"         },
 } as const;
 
-/* ─── Intro cycle diagram ─── */
-function CycleDiagram() {
-  return (
-    <svg viewBox="0 0 360 360" className={styles.cycleSvg} aria-hidden="true">
-      <defs>
-        <radialGradient id="ng" cx="40%" cy="35%" r="60%">
-          <stop offset="0%"   stopColor="#dd8053" />
-          <stop offset="100%" stopColor="#b85a28" />
-        </radialGradient>
-      </defs>
-
-      <circle cx="180" cy="177" r="120"
-        fill="none" stroke="rgba(15,12,9,0.05)" strokeWidth="1" strokeDasharray="3 5" />
-
-      {[
-        "M 180 52 C 305 72 348 188 310 278",
-        "M 310 278 C 292 352 68 352 50 278",
-        "M 50 278 C 12 188 55 72 180 52",
-      ].map((d, i) => (
-        <path key={i} d={d} fill="none"
-          stroke="rgba(15,12,9,0.12)" strokeWidth="1"
-          strokeDasharray="0.03 0.05" pathLength="1" />
-      ))}
-
-      {([
-        [180, 52,  "01", "Products"],
-        [310, 278, "02", "Infrastructure"],
-        [50,  278, "03", "Real Data"],
-      ] as [number, number, string, string][]).map(([cx, cy, num, label], i) => (
-        <g key={i}>
-          <circle cx={cx} cy={cy} r="38"
-            fill="rgba(15,12,9,0.03)" stroke="rgba(15,12,9,0.10)" strokeWidth="2" />
-          <text x={cx} y={cy + 5} textAnchor="middle" dominantBaseline="middle"
-            className={styles.nodeNum} style={{ fill: "rgba(15,12,9,0.25)" }}>
-            {num}
-          </text>
-          <text x={cx} y={cy + 56} textAnchor="middle" className={styles.nodeLabel}>
-            {label}
-          </text>
-        </g>
-      ))}
-    </svg>
-  );
-}
-
 /* ─── Step image card ─── */
 function StepImage({ step }: { step: "1" | "2" | "3" }) {
   const img = STEP_IMAGES[step];
@@ -191,15 +146,11 @@ export function SolutionsSection() {
                   {panel.text}
                 </div>
 
-                <div className={styles.diagramCol}>
-                  {panel.stepId === null ? (
-                    <div className={styles.diagramCard}>
-                      <CycleDiagram />
-                    </div>
-                  ) : (
+                {panel.stepId !== null && (
+                  <div className={styles.diagramCol}>
                     <StepImage step={panel.stepId} />
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
             ))}
           </div>
