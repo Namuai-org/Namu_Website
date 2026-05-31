@@ -94,7 +94,6 @@ export function SolutionsSection() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    if (window.innerWidth < 768) return;
 
     const wrapper = wrapperRef.current;
     const track   = trackRef.current;
@@ -102,9 +101,12 @@ export function SolutionsSection() {
 
     const panelEls = Array.from(track.querySelectorAll<HTMLElement>("[data-panel]"));
 
+    // Use visualViewport for accurate height on mobile (handles iOS address bar)
+    const vh = () => window.visualViewport?.height ?? window.innerHeight;
+
     const update = () => {
       const rect  = wrapper.getBoundingClientRect();
-      const range = wrapper.offsetHeight - window.innerHeight;
+      const range = wrapper.offsetHeight - vh();
       if (range <= 0) return;
       const progress = Math.max(0, Math.min(1, -rect.top / range));
 
@@ -122,10 +124,13 @@ export function SolutionsSection() {
 
     window.addEventListener("scroll", update, { passive: true });
     window.addEventListener("resize", update);
+    // visualViewport fires when the mobile keyboard or address bar resizes the view
+    window.visualViewport?.addEventListener("resize", update);
     update();
     return () => {
       window.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
+      window.visualViewport?.removeEventListener("resize", update);
     };
   }, []);
 
