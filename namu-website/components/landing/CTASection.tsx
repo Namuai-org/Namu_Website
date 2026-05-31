@@ -1,5 +1,3 @@
-"use client";
-
 const CHIPS = [
   { label: "Hausa",    cls: "try-chip-1" },
   { label: "Rubutu",   cls: "try-chip-2" },
@@ -26,7 +24,7 @@ export function CTASection() {
       <div className="try-content">
         <h2 className="try-title">Try out our Hausa Models today</h2>
         <p className="try-sub">No sign-up or login required</p>
-        <a href="#" className="try-btn">Try</a>
+        <a href="/playground" className="try-btn">Try</a>
       </div>
 
     </section>

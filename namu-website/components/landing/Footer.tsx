@@ -57,7 +57,6 @@ const COLUMNS = [
     label: "Company",
     items: [
       { label: "About",    href: "/"                          },
-      { label: "Blog",     href: "/blog"                      },
       { label: "FAQ",      href: "/#faq"                      },
       { label: "Investor", href: "#"                          },
       { label: "Contact",  href: "mailto:contact@namuai.org"  },
@@ -67,19 +66,18 @@ const COLUMNS = [
     label: "Resources",
     items: [
       { label: "Blog",              href: "/blog" },
-      { label: "Download",          href: "#"     },
-      { label: "Namu Playground",   href: "#"     },
+      { label: "Namu Playground",            href: "/playground", external: true },
       { label: "Documentation",     href: "#"     },
+      { label: "Downloads",   href: "#",    external: true },
       { label: "Research",          href: "#"     },
-      { label: "Our Models",        href: "#"     },
+      { label: "Models",        href: "#"     },
     ],
   },
   {
     label: "API Platform",
     items: [
       { label: "Platform Overview", href: "#" },
-      { label: "API Login",         href: "#" },
-      { label: "Documentation",     href: "#" },
+      { label: "API Login",         href: "#", external: true },
       { label: "Pricing",           href: "#" },
     ],
   },

@@ -42,12 +42,13 @@ function useDropdown() {
 }
 
 export function NavBar() {
-  const scrolled = useNavScroll(100);
+  const pathname = usePathname();
+  // Playground always shows the opaque cream nav so text stays readable over the page bg
+  const scrolled = useNavScroll(100) || pathname === "/playground";
   const logoRevealProgress = useScrollRevealLogo();
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
   const [mobileModelsOpen, setMobileModelsOpen] = useState(false);
-  const pathname = usePathname();
   const { t } = useTranslation();
   const brandName = t("brand.name");
   const brandSuffix = brandName.slice(1);
@@ -122,7 +123,7 @@ export function NavBar() {
         {/* Actions */}
         <div className="nav-actions">
           <div className="desktop-only"><LanguageToggle /></div>
-          <a href="mailto:thenamu.ai@gmail.com" className="nav-contact desktop-only">{t("nav.contactSales")}</a>
+          <a href="mailto:contact@namuai.org" className="nav-contact desktop-only">{t("nav.contactSales")}</a>
           <a href="/#waitlist" className="nav-cta desktop-only">{t("nav.tryFree")}</a>
           <button type="button" className="menu-toggle mobile-only"
             onClick={() => setMenuOpen(p => !p)} aria-label={t("nav.menu")} aria-expanded={menuOpen}>
@@ -219,7 +220,7 @@ export function NavBar() {
           </div>
 
           <Link href="/blog" onClick={() => setMenuOpen(false)}>Blog</Link>
-          <a href="mailto:thenamu.ai@gmail.com" onClick={() => setMenuOpen(false)}>{t("nav.contactSales")}</a>
+          <a href="mailto:contact@namuai.org" onClick={() => setMenuOpen(false)}>{t("nav.contactSales")}</a>
           <a href="/#waitlist" className="nav-cta" onClick={() => setMenuOpen(false)}>{t("nav.tryFree")}</a>
         </div>
       </aside>

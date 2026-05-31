@@ -3,9 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 
+/** Scroll distance (px) over which the logo reveal completes (0 → 1). */
+const REVEAL_DISTANCE = 120;
+
 /**
- * Scroll-driven progress 0–1 over the first 120px of vertical scroll.
- * Updates are coalesced with requestAnimationFrame; scroll listener is passive.
+ * Returns scroll progress 0–1 over the first REVEAL_DISTANCE px.
+ * RAF-coalesced for performance.
  */
 export function useScrollRevealLogo(): number {
   const pathname = usePathname();
@@ -15,8 +18,7 @@ export function useScrollRevealLogo(): number {
   useEffect(() => {
     const readScroll = () => {
       rafIdRef.current = null;
-      const y = window.scrollY;
-      const p = Math.min(y / 120, 1);
+      const p = Math.min(window.scrollY / REVEAL_DISTANCE, 1);
       setProgress(p);
     };
 

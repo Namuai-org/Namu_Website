@@ -7,3 +7,5 @@ coverage/
 *.log
 tsconfig.tsbuildinfo
 .video-temp/
+.agents
+.claude

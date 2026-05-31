@@ -34,6 +34,7 @@ export function useTypewriter(
         raf = requestAnimationFrame(step);
         return;
       }
+      // First 10 chars are slightly slower (+12ms) to give a "wind-up" feel.
       const delay = text[len] === " " ? delayPerSpace : len < 10 ? delayPerChar + 12 : delayPerChar;
       len += 1;
       setTypedLength(len);

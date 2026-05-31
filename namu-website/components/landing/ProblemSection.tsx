@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
+import { useInView } from "@/hooks/useInView";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useTypewriter } from "@/hooks/useTypewriter";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -13,30 +14,9 @@ type ProblemCardProps = {
 };
 
 function ProblemCard({ id, body, align, total }: ProblemCardProps) {
-  const ref = useRef<HTMLElement | null>(null);
-  const [hasStarted, setHasStarted] = useState(false);
+  const ref = useRef<HTMLElement>(null);
+  const hasStarted = useInView(ref, 0.1);
   const typed = useTypewriter(body, hasStarted, 24, 12);
-
-  useEffect(() => {
-    const node = ref.current;
-    if (!node) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setHasStarted(true);
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    observer.observe(node);
-
-    return () => observer.disconnect();
-  }, []);
 
   return (
     <article
@@ -70,9 +50,9 @@ export function ProblemSection() {
   const { t } = useTranslation();
 
   const items = [
-    { id: "01", body: t("problem.1.body"), align: "left" as const },
+    { id: "01", body: t("problem.1.body"), align: "left"  as const },
     { id: "02", body: t("problem.2.body"), align: "right" as const },
-    { id: "03", body: t("problem.3.body"), align: "left" as const },
+    { id: "03", body: t("problem.3.body"), align: "left"  as const },
   ];
 
   return (

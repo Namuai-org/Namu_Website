@@ -39,7 +39,6 @@ export function HeroSection() {
           {typed}
           {typed.length < heroBody.length ? <span className="hero-body-caret" aria-hidden="true" /> : null}
         </p>
-
       </HeroEntrance>
     </section>
   );
