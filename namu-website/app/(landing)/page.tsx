@@ -5,7 +5,6 @@ import { FuturePlansSection } from "@/components/landing/FuturePlansSection";
 import { HeroSection } from "@/components/landing/HeroSection";
 import { MissionSection } from "@/components/landing/MissionSection";
 import { ProblemSection } from "@/components/landing/ProblemSection";
-import { SolutionsSection } from "@/components/landing/SolutionsSection";
 
 export default function HomePage() {
   return (
@@ -13,7 +12,6 @@ export default function HomePage() {
       <HeroSection />
       <ProblemSection />
       <MissionSection />
-      <SolutionsSection />
       <FuturePlansSection />
       <FAQSection />
       <CTASection />
