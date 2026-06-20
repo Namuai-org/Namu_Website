@@ -360,9 +360,75 @@
 .cardDark .assetMeta { color: rgba(247, 240, 227, 0.64); }
 
 .downloadRow {
-  margin-top: 72px;
+  margin-top: 88px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
+}
+
+.agreeRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 26px;
+  border-radius: 16px;
+  border: 1px solid var(--rule-soft);
+  background: var(--paper);
+  box-shadow: 0 1px 2px rgba(28, 20, 16, 0.03);
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.agreeRow:hover {
+  border-color: var(--rule);
+  box-shadow: 0 10px 24px rgba(28, 20, 16, 0.06);
+}
+
+.agreeCheckbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  flex-shrink: 0;
+  border-radius: 6px;
+  border: 1.5px solid rgba(28, 20, 16, 0.26);
+  background: var(--cream);
+  cursor: pointer;
+  position: relative;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.agreeCheckbox:hover {
+  border-color: rgba(28, 20, 16, 0.5);
+}
+
+.agreeCheckbox:checked {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.agreeCheckbox:checked::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 9px;
+  border: solid var(--cream);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.agreeText {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.agreeText a {
+  color: var(--ink);
+  text-decoration: underline;
 }
 
 .downloadAction {
@@ -388,6 +454,19 @@
   background: var(--ink);
   border-color: var(--ink);
   color: var(--cream);
+}
+
+.downloadActionDisabled {
+  border-color: transparent;
+  background: rgba(28, 20, 16, 0.06);
+  color: rgba(28, 20, 16, 0.32);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.downloadActionDisabled:hover {
+  background: rgba(28, 20, 16, 0.06);
+  color: rgba(28, 20, 16, 0.32);
 }
 
 /* ─── Clear space ─── */

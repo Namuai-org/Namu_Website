@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import styles from "./brand.module.css";
 import { Footer } from "@/components/landing/Footer";
 
@@ -92,6 +92,8 @@ function BrandGallery() {
 
 /* ─── Main page ─── */
 export function BrandPage() {
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
+
   return (
     <div className={styles.page}>
 
@@ -112,11 +114,11 @@ export function BrandPage() {
         <div className={`${styles.sectionHead} ${styles.sectionHeadFlush}`}>
           <div className={styles.sectionKicker}>Introduction</div>
           <div className={styles.introStatement}>
-            <p>
+            <p className={styles.introStatementP}>
               The "Namu" name, the Namu logo, the Namu wordmark, the Blossom,
               and other Namu trademarks are property of Namu.
             </p>
-            <p>
+            <p className={styles.introStatementPMuted}>
               These guidelines are intended to help our partners, customers, developers,
               collaborators, publishers, and any other third parties understand how to use
               and display our trademarks, visual identity, and copyrighted work in their
@@ -210,11 +212,27 @@ export function BrandPage() {
         </div>
 
         <div className={styles.downloadRow}>
+          <label className={styles.agreeRow}>
+            <input
+              type="checkbox"
+              className={styles.agreeCheckbox}
+              checked={agreedToTerms}
+              onChange={(e) => setAgreedToTerms(e.target.checked)}
+            />
+            <span className={styles.agreeText}>
+              By using our logos, you agree to our Marks <a href="#usage-terms">usage terms</a>.
+            </span>
+          </label>
           <a
             href="/brand/namu%20branding/README.txt"
             target="_blank"
             rel="noreferrer"
-            className={styles.downloadAction}
+            aria-disabled={!agreedToTerms}
+            tabIndex={agreedToTerms ? 0 : -1}
+            className={`${styles.downloadAction} ${!agreedToTerms ? styles.downloadActionDisabled : ""}`}
+            onClick={(e) => {
+              if (!agreedToTerms) e.preventDefault();
+            }}
           >
             Download logos
           </a>

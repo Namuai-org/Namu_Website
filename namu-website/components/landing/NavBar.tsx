@@ -112,7 +112,7 @@ export function NavBar() {
         </div>
       </header>
 
-      {/* ── OpenAI-style full-width dropdowns ── */}
+      {/* ── Compact left-anchored dropdowns ── */}
       {NAV_ITEMS.map((item) => (
         <div
           key={item.label}

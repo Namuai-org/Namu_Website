@@ -177,18 +177,19 @@
   font-size: 26px;
   color: #0f0c09;
 }
- /* ─── Nav links: left-aligned after logo (OpenAI-style) ─── */
+ /* ─── Nav links: centered in the bar ─── */
  .nav-links {
   display: flex;
   align-items: baseline;
   gap: 2px;
-  margin-left: 32px;
-  position: relative;
-  top: 10px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
  }
  .nav-brand,
  .nav-link {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 400;
  }
  .nav-brand {
@@ -196,10 +197,15 @@
   align-items: center;
   gap: 10px;
  }
+ /* Logo art has built-in empty space above the wordmark (room for the ring icon) — nudge up so "namu" sits on the same line as the nav links */
+ .nav-brand img {
+  position: relative;
+  top: -10px;
+ }
  .nav-link {
   display: inline-flex;
   align-items: baseline;
-  padding: 10px 20px;
+  padding: 8px 16px;
   border-radius: 8px;
   color: rgba(15, 12, 9, 0.45);
   transition: color 0.2s ease;
@@ -229,9 +235,9 @@
   background: transparent;
   color: rgba(15, 12, 9, 0.38);
   font-family: var(--font-body), sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 400;
-  padding: 4px 8px;
+  padding: 4px 6px;
   cursor: pointer;
   transition: color 0.2s;
  }
@@ -247,9 +253,9 @@
  .nav-contact {
   display: inline-flex;
   align-items: center;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 400;
-  padding: 9px 20px;
+  padding: 7px 16px;
   border-radius: 999px;
   border: 1px solid rgba(15, 12, 9, 0.22);
   color: rgba(15, 12, 9, 0.68);
@@ -267,9 +273,9 @@
   align-items: center;
   gap: 6px;
   justify-content: center;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 500;
-  padding: 9px 20px;
+  padding: 7px 16px;
   border-radius: 999px;
   white-space: nowrap;
   background: #0f0c09;
@@ -486,7 +492,7 @@
   background: rgba(0, 0, 0, 0.15);
  }
 
- /* ─── OpenAI-style full-width dropdown ─── */
+ /* ─── Compact left-anchored dropdown ─── */
  .nav-dropdown {
   position: fixed;
   top: 64px;
@@ -497,8 +503,8 @@
   border-bottom: 1px solid #ece4d9;
   opacity: 0;
   pointer-events: none;
-  transform: translateY(-8px);
-  transition: opacity 0.18s ease, transform 0.18s ease;
+  transform: translateY(-6px);
+  transition: opacity 0.16s ease, transform 0.16s ease;
  }
  .nav-dropdown-open {
   opacity: 1;
@@ -506,9 +512,9 @@
   transform: translateY(0);
  }
  .nav-dropdown-inner {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 48px max(40px, 5vw) 56px;
+  display: flex;
+  flex-direction: column;
+  padding: 24px max(40px, 5vw) 32px;
  }
  .nav-dropdown-eyebrow {
   font-family: var(--font-body), sans-serif;
@@ -517,20 +523,25 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: rgba(28, 20, 16, 0.38);
-  margin: 0 0 28px;
+  margin: 0 0 12px;
  }
+ /* Same family/weight/tracking as the FAQ title, sized down for a menu */
  .nav-dropdown-link {
-  display: block;
-  font-family: var(--font-display), serif;
-  font-size: clamp(28px, 3vw, 40px);
-  font-weight: 400;
-  line-height: 1.18;
+  display: inline-flex;
+  align-items: baseline;
+  font-family: var(--font-body), sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
   color: #1c1410;
-  padding: 10px 0;
+  padding: 6px 0;
   text-decoration: none;
-  transition: color 0.14s ease;
+  transition: color 0.14s ease, transform 0.2s ease;
  }
- .nav-dropdown-link:hover { color: #e8935a; }
+ .nav-dropdown-link:hover {
+  color: #e8935a;
+  transform: translateX(4px);
+ }
 
  /* Mobile accordion */
  .mobile-dd { display: flex; flex-direction: column; }
