@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Namu Brand</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f7f0e3;
+  --paper:#fffaf1;
+  --clay:#edd9b0;
+  --sahel:#e8935a;
+  --kola:#6b3e1e;
+  --forest:#1a3a2e;
+  --ink:#1c1410;
+  --muted:#7a6352;
+  --rule:rgba(28,20,16,.14);
+  --rule-soft:rgba(28,20,16,.08);
+  --white:#ffffff;
+  --black:#000000;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:"DM Sans",Arial,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.site-header{position:sticky;top:0;z-index:20;display:grid;grid-template-columns:auto 1fr auto;gap:34px;align-items:center;padding:20px 48px;border-bottom:1px solid var(--rule);background:rgba(247,240,227,.88);backdrop-filter:blur(18px)}
+.brand-logo{width:116px;height:auto;display:block}
+.nav{display:flex;gap:18px;justify-content:center;font-size:13px;color:var(--muted)}
+.nav a:hover{color:var(--ink)}
+.download{display:inline-flex;align-items:center;justify-content:center;height:36px;padding:0 16px;border:1px solid var(--ink);border-radius:999px;font-size:13px;font-weight:600}
+.download.dark{background:var(--ink);color:var(--cream)}
+.page{overflow:hidden}
+.hero{min-height:min(860px,calc(100vh - 77px));display:grid;grid-template-columns:1.08fr .92fr;align-items:end;gap:120px;padding:132px 88px 104px;border-bottom:1px solid var(--rule);position:relative}
+.hero>*,
+.section-head>*,
+.split>*,
+.two-up>*,
+.three-up>*,
+.grid2>*,
+.grid3>*,
+.gallery>*,
+.usage-row>*,
+.rule-grid>*{min-width:0}
+.hero::after{content:"";position:absolute;right:-18vw;top:-16vw;width:56vw;height:56vw;border:1px solid rgba(232,147,90,.22);border-radius:50%;pointer-events:none}
+.hero::before{display:none}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--sahel)}
+h1,h2,h3{font-family:"Playfair Display",Georgia,serif;font-weight:400;letter-spacing:0;margin:0}
+h1{font-size:clamp(56px,8.4vw,128px);line-height:.9;max-width:900px}
+h1 span{display:block}
+.hero-copy{max-width:580px;margin-top:46px;color:var(--muted);font-size:18px;line-height:1.64}
+.hero-panel{align-self:end;display:grid;align-content:end;gap:52px;position:relative;z-index:1;min-height:360px}
+.hero-panel::before{content:"";position:absolute;right:-12vw;top:-140px;width:min(620px,48vw);height:min(620px,48vw);border:1px solid rgba(232,147,90,.28);border-radius:50%;pointer-events:none}
+.hero-panel::after{display:none}
+.section{padding:190px 88px;border-bottom:1px solid var(--rule);position:relative}
+.section::before{content:"";position:absolute;left:88px;top:0;width:132px;height:1px;background:var(--ink);opacity:.22}
+#introduction::before{display:none}
+.section-head{display:grid;grid-template-columns:minmax(220px,360px) 1fr;gap:132px;margin-bottom:122px}
+.section-kicker{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--sahel)}
+.section-title{font-family:"DM Sans",Arial,sans-serif;font-size:clamp(24px,2.4vw,38px);line-height:1.32;font-weight:400}
+.section-intro{max-width:720px;color:var(--muted);font-size:17px;line-height:1.62}
+.intro-statement{max-width:920px;margin-left:auto;color:var(--ink);font-size:clamp(24px,2.4vw,38px);line-height:1.32;font-weight:400}
+.intro-statement p{margin:0}
+.intro-statement p + p{margin-top:30px;color:var(--muted);font-size:clamp(17px,1.3vw,22px);line-height:1.58}
+.two-up{display:grid;grid-template-columns:1fr 1fr;gap:42px}
+.three-up{display:grid;grid-template-columns:repeat(3,1fr);gap:42px}
+.card{border:1px solid var(--rule);background:rgba(255,250,241,.55);border-radius:8px;min-height:240px;padding:32px;position:relative;overflow:hidden}
+.card.dark{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.card.forest{background:var(--forest);color:var(--cream);border-color:var(--forest)}
+.card.sahel{background:var(--sahel);color:var(--ink);border-color:var(--sahel)}
+.card h3{font-size:26px;line-height:1.08}
+.card p{color:var(--muted);font-size:13px;line-height:1.58;margin:18px 0 0}
+.card.dark p,.card.forest p{color:rgba(247,240,227,.72)}
+.asset-card{min-height:380px;display:grid;grid-template-rows:1fr auto;gap:30px}
+.asset-stage{display:grid;place-items:center;border-radius:6px;background:var(--paper);border:1px solid rgba(28,20,16,.08);padding:38px}
+.dark .asset-stage{background:transparent;border-color:rgba(247,240,227,.12)}
+.asset-stage img{max-width:70%;max-height:130px}
+.meta{display:flex;justify-content:space-between;gap:18px;color:var(--muted);font-size:13px}
+.dark .meta{color:rgba(247,240,227,.64)}
+.download-row{margin-top:72px;display:flex;justify-content:center}
+.download-action{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 22px;border:1px solid rgba(107,62,30,.44);border-radius:999px;background:transparent;color:var(--ink);font-size:13px;font-weight:700;white-space:nowrap;transition:background .2s ease,border-color .2s ease,color .2s ease}
+.download-action:hover{background:var(--ink);border-color:var(--ink);color:var(--cream)}
+.legal-section{background:var(--paper)}
+.legal-content{max-width:760px;margin:0 auto}
+.legal-content h2{font-family:"DM Sans",Arial,sans-serif;font-size:clamp(28px,2.4vw,38px);font-weight:400;line-height:1.18;margin:0 0 46px}
+#usage-terms .legal-content h2{text-align:center}
+#contact .legal-content h2{text-align:center}
+.legal-content p,.legal-content li{font-size:16px;line-height:1.72;color:var(--ink)}
+.legal-content p{margin:0 0 28px}
+.legal-content ul{margin:0 0 36px;padding-left:24px}
+.legal-content li + li{margin-top:12px}
+.legal-content a{border-bottom:1px solid currentColor}
+.clearspace{display:grid;grid-template-columns:1.2fr .8fr;gap:42px;align-items:stretch}
+.clear-demo{background:var(--paper);border:1px dashed rgba(28,20,16,.32);padding:54px;border-radius:8px;display:grid;place-items:center;min-height:370px;position:relative}
+.clear-demo::before,.clear-demo::after{content:"";position:absolute;border:1px solid rgba(232,147,90,.28);border-radius:50%;pointer-events:none}
+.clear-demo::before{width:74%;height:74%}
+.clear-demo::after{width:48%;height:48%}
+.clear-demo img{width:72%;max-width:360px}
+.clear-note{padding:30px;border:1px solid var(--rule);border-radius:8px}
+.clear-note h3{font-size:30px}
+.clear-note p{font-size:14px;line-height:1.68;color:var(--muted)}
+.rules-section{padding:190px 0 20px}
+.rules-section:first-child{padding-top:0}
+.rules-section + .rules-section{margin-top:150px;border-top:1px solid var(--rule);padding-top:178px}
+.rules-title{font-family:"DM Sans",Arial,sans-serif;font-size:clamp(24px,2.4vw,38px);line-height:1.32;font-weight:400;text-align:center;margin:0 0 88px;letter-spacing:0}
+.rules-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:92px 54px;max-width:1480px;margin:0 auto;align-items:start}
+.example{display:grid;grid-template-rows:315px minmax(48px,auto);gap:24px}
+.example-visual{height:315px;border:1px solid rgba(28,20,16,.1);border-radius:10px;background:rgba(255,250,241,.82);display:grid;place-items:center;padding:38px;position:relative;overflow:hidden}
+.example-visual.dark{background:var(--ink)}
+.example-visual.mist{background:#d9d6cf}
+.example-visual.sahel-bg{background:var(--sahel)}
+.example-visual.busy{background:linear-gradient(115deg,#1a3a2e 0%,#24351c 25%,#e8935a 52%,#6b3e1e 78%,#1c1410 100%)}
+.example-visual.busy::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,250,241,.18) 0 16px,transparent 16px 34px),repeating-linear-gradient(0deg,rgba(28,20,16,.22) 0 7px,transparent 7px 19px);mix-blend-mode:soft-light}
+.example-visual img{max-width:78%;max-height:168px;position:relative;z-index:1}
+.example-visual.blossom img{width:150px}
+.example-visual.wordmark img{width:300px;max-width:88%}
+.example-caption{font-size:15px;line-height:1.5;color:var(--ink);margin:0}
+.example-caption strong{font-weight:800}
+.status{position:absolute;right:24px;bottom:22px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:white;font-size:22px;font-weight:800;line-height:1;z-index:3}
+.status.good{background:#27b955}
+.status.bad{background:#ee140c}
+.status::before{transform:translateY(-1px)}
+.status.good::before{content:"✓"}
+.status.bad::before{content:"×"}
+.bad-stretch{transform:scaleX(1.7)}
+.example-visual.wordmark .bad-stretch{width:220px;transform:scaleX(1.55)}
+.bad-rotate{transform:rotate(-10deg)}
+.bad-crop{transform:scale(2.05)}
+.bad-shadow{filter:drop-shadow(14px 14px 8px rgba(28,20,16,.34))}
+.bad-opacity{opacity:.24}
+.bad-color{filter:invert(25%) sepia(93%) saturate(4315%) hue-rotate(350deg) brightness(99%) contrast(112%)}
+.seal{width:150px;height:150px;border:7px solid var(--ink);border-radius:50%;display:grid;place-items:center;position:relative;color:var(--ink);font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.seal::before{content:"NAMU RESEARCH";position:absolute;top:18px}
+.seal::after{content:"EST. 2026 NIGER";position:absolute;bottom:18px}
+.seal img{width:64px}
+.spacing-demo{width:230px;height:230px;display:grid;place-items:center;position:relative;background:linear-gradient(var(--rule-soft) 1px,transparent 1px),linear-gradient(90deg,var(--rule-soft) 1px,transparent 1px);background-size:76px 76px;border:1px solid var(--rule)}
+.spacing-demo img{width:84px}
+.spacing-dot{position:absolute;width:48px;height:48px;border-radius:50%;background:rgba(28,20,16,.12)}
+.spacing-dot.top{top:20px}.spacing-dot.right{right:20px}.spacing-dot.bottom{bottom:20px}.spacing-dot.left{left:20px}
+.open-space-paper{width:205px;height:260px;background:var(--paper);display:grid;place-items:center;box-shadow:0 1px 0 rgba(28,20,16,.06)}
+.open-space-paper img{width:106px}
+.mask-word{font-size:78px;font-weight:700;line-height:1;letter-spacing:0;background:linear-gradient(120deg,var(--kola),var(--sahel) 38%,#216f91 55%,var(--ink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.alt-word{font-size:72px;font-weight:300;line-height:1;color:var(--ink);font-family:Arial,sans-serif}
+.distorted-wordmark{display:flex;align-items:center;gap:18px;transform:scaleX(1.6);transform-origin:center}
+.distorted-wordmark img{width:94px!important;max-width:none}
+.distorted-wordmark span{font-family:Georgia,"Times New Roman",serif;font-size:52px;letter-spacing:2px;color:var(--ink)}
+.brand-gallery{padding:170px 0 190px;background:var(--paper);border-bottom:1px solid var(--rule);overflow:hidden}
+.brand-gallery::before{display:none}
+.gallery-top{text-align:center;margin-bottom:52px}
+.gallery-top h2{font-family:"DM Sans",Arial,sans-serif;font-size:clamp(24px,2.4vw,38px);line-height:1.32;font-weight:400;margin:0;color:var(--black)}
+.gallery-controls{display:flex;justify-content:center;gap:22px;margin-top:26px}
+.gallery-control{appearance:none;border:0;background:transparent;color:var(--ink);font-size:18px;line-height:1;cursor:pointer;width:28px;height:28px;border-radius:50%}
+.gallery-control:hover{background:rgba(28,20,16,.07)}
+.brand-gallery-rail{display:flex;gap:30px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 88px 12px;scrollbar-width:none}
+.brand-gallery-rail::-webkit-scrollbar{display:none}
+.gallery-tile{flex:0 0 calc((100vw - 236px) / 3);height:min(40vw,600px);min-height:480px;background:#ecebea;border-radius:6px;display:grid;place-items:center;overflow:hidden;scroll-snap-align:start;position:relative}
+.gallery-tile img{display:block;max-width:78%;max-height:82%;object-fit:contain;box-shadow:0 10px 16px rgba(28,20,16,.12)}
+.gallery-tile.landscape img{max-width:88%;max-height:78%}
+.gallery-tile.portrait img{max-width:68%;max-height:84%}
+.gallery-tile.full img{width:100%;height:100%;max-width:none;max-height:none;object-fit:cover;box-shadow:none}
+.gallery-tile.soft{background:#efeee9}
+.gallery-tile.warm{background:#f2ede3}
+.gallery-tile.deep{background:#e2dfd8}
+.palette{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:34px}
+.swatch{min-height:280px;border-radius:8px;padding:24px;display:flex;flex-direction:column;justify-content:space-between;border:1px solid rgba(28,20,16,.1)}
+.swatch strong{font-size:16px}
+.swatch code{font-family:"DM Sans",Arial,sans-serif;font-size:13px}
+.harmattan{background:var(--cream)}.ink{background:var(--ink);color:var(--cream)}.sahel{background:var(--sahel)}.kola{background:var(--kola);color:var(--cream)}.forest{background:var(--forest);color:var(--cream)}.clay{background:var(--clay)}
+.type-sample{display:grid;grid-template-columns:1.2fr .8fr;gap:42px}
+.type-display{padding:42px;border:1px solid var(--rule);border-radius:8px;background:var(--paper)}
+.type-display .sample{font-family:"Playfair Display",Georgia,serif;font-size:clamp(46px,5.8vw,88px);line-height:.94}
+.type-body{padding:42px;border:1px solid var(--rule);border-radius:8px;background:rgba(255,250,241,.55)}
+.type-body p{font-size:15px;line-height:1.72;color:var(--muted);margin:0}
+.voice-grid{display:grid;grid-template-columns:1fr 1fr;gap:42px}
+.write-card{border:1px solid var(--rule);border-radius:8px;overflow:hidden;background:var(--paper)}
+.write-head{padding:16px 20px;border-bottom:1px solid var(--rule);font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
+.write-head.good{color:var(--forest)}.write-head.bad{color:#9b2f22}
+.write-card ul{margin:0;padding:28px 32px 30px 44px;color:var(--muted);font-size:14px;line-height:1.7}
+.gallery{display:grid;grid-template-columns:1.25fr .75fr;gap:42px}
+.poster{min-height:520px;border-radius:8px;background:var(--ink);color:var(--cream);padding:40px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.poster::after{content:"";position:absolute;right:-160px;top:-160px;width:420px;height:420px;border:1px solid rgba(232,147,90,.42);border-radius:50%}
+.poster img{width:140px;position:relative;z-index:1}
+.poster h3{font-size:62px;line-height:.95;max-width:620px;position:relative;z-index:1}
+.poster p{color:rgba(247,240,227,.66);max-width:500px;font-size:14px;line-height:1.6;position:relative;z-index:1}
+.stack{display:grid;gap:30px}
+.mini-app{min-height:245px;border:1px solid var(--rule);border-radius:8px;background:var(--paper);padding:26px;display:grid;align-content:space-between}
+.mini-app.dark{background:var(--forest);color:var(--cream);border-color:var(--forest)}
+.mini-app p{color:var(--muted);font-size:13px;line-height:1.56}
+.mini-app.dark p{color:rgba(247,240,227,.68)}
+.footer{padding:64px 56px;display:flex;justify-content:space-between;gap:48px;background:var(--ink);color:var(--cream)}
+.footer p{max-width:640px;color:rgba(247,240,227,.62);font-size:14px;line-height:1.65;margin:0}
+.footer img{width:128px;height:auto}
+@media (max-width:900px){
+  .site-header{grid-template-columns:1fr;padding:18px 24px;gap:12px;width:100vw;max-width:100vw;overflow:hidden}.brand-logo{width:96px}.site-header .download{display:none}.nav{display:none}.page,.hero,.section,.footer{width:100vw;max-width:100vw;overflow:hidden}.hero,.split,.section-head,.two-up,.three-up,.clearspace,.palette,.type-sample,.voice-grid,.gallery,.rules-grid{grid-template-columns:1fr}.hero{min-height:auto;padding:72px 24px 64px;gap:42px}.hero>*,.hero-panel,.hero-copy{width:calc(100vw - 88px);max-width:calc(100vw - 88px);min-width:0}.hero-copy{font-size:16px;line-height:1.72;overflow-wrap:anywhere}.section{padding:122px 24px}.section::before{left:24px}.section-head{gap:42px;margin-bottom:74px}.section-head>*{width:min(100%,300px);max-width:300px}.intro-statement{margin-left:0;width:min(100%,300px);max-width:300px;font-size:22px}.intro-statement p + p{font-size:15px}.download-row{margin-top:58px}.download-action{width:max-content}.legal-content{max-width:300px;margin:0}.legal-content h2{font-size:30px;margin-bottom:36px}.legal-content p,.legal-content li{font-size:15px;line-height:1.72}.legal-content ul{padding-left:22px}.top-label{display:none}.footer{flex-direction:column}.hero-panel{min-height:120px;gap:34px}.hero-panel::before{right:-120px;top:-72px;width:270px;height:270px}h1{font-size:clamp(44px,12.5vw,52px);line-height:.94}.section-title{font-size:clamp(22px,6.6vw,30px);line-height:1.28}.section-intro{font-size:14px;line-height:1.7}.card{min-height:210px;padding:28px}.card h3{font-size:24px}.rules-section{padding:112px 0 0}.rules-section + .rules-section{margin-top:96px;padding-top:104px}.rules-title{text-align:left;margin-bottom:52px;font-size:30px}.rules-grid{gap:54px}.example{grid-template-rows:230px auto;gap:20px}.example-visual{height:230px;padding:24px}.example-visual.wordmark img{width:230px}.example-visual.wordmark .bad-stretch{width:150px}.example-visual.blossom img{width:112px}.example-caption{font-size:14px}.status{width:30px;height:30px;right:16px;bottom:16px;font-size:20px}.spacing-demo{width:190px;height:190px;background-size:63px 63px}.spacing-dot{width:42px;height:42px}.open-space-paper{width:170px;height:216px}.mask-word,.alt-word{font-size:52px}.distorted-wordmark{gap:9px;transform:scaleX(1.16)}.distorted-wordmark img{width:52px!important}.distorted-wordmark span{font-size:30px}.brand-gallery{padding:112px 0 130px}.gallery-top{margin-bottom:42px}.gallery-top h2{font-size:30px}.brand-gallery-rail{gap:22px;padding:0 24px 10px}.gallery-tile{flex-basis:78vw;min-height:360px;height:360px}.gallery-tile.portrait img{max-width:72%}.type-display,.type-body{padding:32px}.type-display .sample{font-size:44px}.poster{min-height:430px}.poster h3{font-size:42px}.footer{padding:48px 24px}
+  main.page .hero > div:first-child,main.page .hero .hero-panel,main.page .hero .hero-copy{width:min(100%,300px)!important;max-width:300px!important}
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a href="#"><img class="brand-logo" src="namu%20branding/svg/logo/namu-logo-transparent-dark.svg" alt="Namu"></a>
+  <nav class="nav" aria-label="Brand sections">
+    <a href="#logos">Logo</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#color">Color</a>
+    <a href="#type">Typography</a>
+    <a href="#voice">Voice</a>
+    <a href="#applications">Applications</a>
+  </nav>
+  <a class="download dark" href="namu%20branding/README.txt">Asset guide</a>
+</header>
+
+<main class="page">
+  <section class="hero">
+    <div>
+      <h1><span>Design</span><span>guidelines</span></h1>
+      <p class="hero-copy">Namu is an African AI research and Technology company building speech-native models, datasets, and products that make technology accessible through natural conversation in every language and every community.</p>
+    </div>
+    <div class="hero-panel" aria-hidden="true"></div>
+  </section>
+
+  <section class="section" id="introduction">
+    <div class="section-head" style="margin-bottom:0">
+      <div class="section-kicker">Introduction</div>
+      <div class="intro-statement">
+        <p>The “Namu” name, the Namu logo, the Namu wordmark, the Blossom, and other Namu trademarks are property of Namu.</p>
+        <p>These guidelines are intended to help our partners, customers, developers, collaborators, publishers, and any other third parties understand how to use and display our trademarks, visual identity, and copyrighted work in their own assets and materials.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="brand-foundation">
+    <div class="section-head">
+      <div class="section-kicker">Brand foundation</div>
+      <div>
+        <h2 class="section-title">A brand built for language, access, and trust.</h2>
+        <p class="section-intro">Namu’s identity should feel precise, grounded, and human. It carries the seriousness of infrastructure and the warmth of community: technology that does not ask people to become someone else before they can participate.</p>
+      </div>
+    </div>
+    <div class="three-up">
+      <article class="card">
+        <span class="idx">01</span>
+        <h3>Native</h3>
+        <p>We start by deeply understanding the languages, cultures, and realities of the communities we serve.</p>
+      </article>
+      <article class="card">
+        <span class="idx">02</span>
+        <h3>Access</h3>
+        <p>Language should never be a barrier to knowledge, opportunity, or participation.</p>
+      </article>
+      <article class="card">
+        <span class="idx">03</span>
+        <h3>Together</h3>
+        <p>We succeed when communities, partners, and team members grow alongside us.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="logos">
+    <div class="section-head">
+      <div class="section-kicker">Logo</div>
+      <div>
+        <h2 class="section-title">Wordmark and symbol</h2>
+        <p class="section-intro">The Namu wordmark is the primary expression of the brand. Use the full wordmark for most communications. Use the icon only when space is limited or when Namu is already clearly identified.</p>
+      </div>
+    </div>
+    <div class="two-up">
+      <article class="card asset-card">
+        <div class="asset-stage"><img src="namu%20branding/svg/logo/namu-logo-transparent-dark.svg" alt="Namu dark wordmark"></div>
+        <div class="meta"><strong>Primary wordmark</strong><span>Light backgrounds</span></div>
+      </article>
+      <article class="card dark asset-card">
+        <div class="asset-stage"><img src="namu%20branding/svg/logo/namu-logo-transparent-light.svg" alt="Namu light wordmark"></div>
+        <div class="meta"><strong>Reverse wordmark</strong><span>Dark backgrounds</span></div>
+      </article>
+    </div>
+    <div class="three-up" style="margin-top:18px">
+      <article class="card asset-card">
+        <div class="asset-stage"><img src="namu%20branding/svg/icon/namu-icon-transparent-dark.svg" alt="Namu icon dark"></div>
+        <div class="meta"><strong>Icon</strong><span>Transparent</span></div>
+      </article>
+      <article class="card forest asset-card">
+        <div class="asset-stage"><img src="namu%20branding/svg/icon/namu-icon-on-ink.svg" alt="Namu icon on ink"></div>
+        <div class="meta"><strong>App mark</strong><span>Depth contexts</span></div>
+      </article>
+      <article class="card sahel asset-card">
+        <div class="asset-stage"><img src="namu%20branding/svg/icon/namu-icon-app-on-sahel.svg" alt="Namu app icon"></div>
+        <div class="meta"><strong>Accent mark</strong><span>High emphasis</span></div>
+      </article>
+    </div>
+    <div class="download-row">
+      <a class="download-action" href="namu-logo-assets.zip" download>Download logos</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <div class="section-kicker">Clear space</div>
+      <div>
+        <h2 class="section-title">Give the mark room to speak.</h2>
+        <p class="section-intro">The logo should never feel crowded. Keep a generous margin around the wordmark and avoid placing it inside busy visual areas.</p>
+      </div>
+    </div>
+    <div class="clearspace">
+      <div class="clear-demo"><img src="namu%20branding/svg/logo/namu-logo-transparent-dark.svg" alt="Namu clear space demo"></div>
+      <div class="clear-note">
+        <h3>Minimum clear space</h3>
+        <p>Use at least the height of the orange dot as a minimum margin around the mark. For premium layouts, use more space than the minimum. The Namu identity is strongest when it is quiet, legible, and allowed to breathe.</p>
+        <p>Do not rebuild, redraw, stretch, recolor, or crop the logo. Always use approved assets from the brand folder.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="dos-donts">
+    <div class="rules-section">
+      <h2 class="rules-title">Dos and Don’ts: Blossom</h2>
+      <div class="rules-grid">
+        <article class="example">
+          <div class="example-visual blossom">
+            <img class="bad-color" src="namu%20branding/svg/icon/namu-icon-transparent-dark.svg" alt="">
+            <span class="status bad" aria-label="Do not"></span>
+          </div>
+          <p class="example-caption"><strong>DON’T</strong> add any colors to the Blossom</p>
+        </article>
+        <article class="example">
+          <div class="example-visual blossom">
+            <img src="namu%20branding/svg/icon/namu-icon-transparent-dark.svg" alt="">
+            <span class="status bad" aria-label="Do not"></span>
+          </div>
+          <p class="example-caption"><strong>DON’T</strong> use the Blossom as the primary branding</p>
+        </article>
+        <article class="example">
+          <div class="example-visual blossom">
+            <div class="seal"><img src="namu%20branding/svg/icon/namu-icon-transparent-dark.svg" alt=""></div>
+            <span class="status bad" aria-label="Do not"></span>
+          </div>
+          <p class="example-caption"><strong>DON’T</strong> add any unauthorized elements</p>
+        </article>
+        <article class="example">
+          <div class="example-visual blossom busy">
+            <img src="namu%20branding/svg/icon/namu-icon-transparent-light.svg" alt="">
+            <span class="status bad" aria-label="Do not"></span>
+          </div>
+          <p class="example-caption"><strong>DON’T</strong> use the Blossom over a busy image</p>
+        </article>
+        <article class="example">
+          <div class="example-visual blossom">
+            <div class="spacing-demo">
+              <span class="spacing-dot top"></span>
+              <span class="spacing-dot right"></span>
+              <span class="spacing-dot bottom"></span>
+              <span class="spacing-dot left"></span>
+              <img src="namu%20branding/svg/icon/namu-icon-transparent-dark.svg" alt="">
+            </div>
+            <span class="status good" aria-label="Do"></span>
+          </div>
+          <p class="example-caption"><strong>DO</strong> use the established spacing rules</p>
+        </article>
+        <article class="example">
+          <div class="example-visual blossom mist">
+            <div class="open-space-paper"><img src="namu%20branding/svg/icon/namu-icon-transparent-dark.svg" alt=""></div>
+            <span class="status good" aria-label="Do"></span>
+          </div>
+          <p class="example-caption"><strong>DO</strong> use the Blossom with lots of open space</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="rules-section">
+      <h2 class="rules-title">Dos and Don’ts: Wordmark</h2>
+      <div class="rules-grid">
+        <article class="example">
+          <div class="example-visual wordmark">
+            <div class="distorted-wordmark">
+              <img src="namu%20branding/svg/icon/namu-icon-transparent-dark.svg" alt="">
+              <span>namu</span>
+            </div>
+            <span class="status bad" aria-label="Do not"></span>
+          </div>
+          <p class="example-caption"><strong>DON’T</strong> stretch or alter wordmark in any way</p>
+        </article>
+        <article class="example">
+          <div class="example-visual wordmark">
+            <img src="namu%20branding/svg/icon/namu-icon-transparent-dark.svg" alt="" style="width:96px">
+            <span class="status bad" aria-label="Do not"></span>
+          </div>
+          <p class="example-caption"><strong>DON’T</strong> use the Blossom as the primary branding</p>
+        </article>
+        <article class="example">
+          <div class="example-visual wordmark">
+            <img class="bad-crop" src="namu%20branding/svg/logo/namu-logo-transparent-dark.svg" alt="">
+            <span class="status bad" aria-label="Do not"></span>
+          </div>
+          <p class="example-caption"><strong>DON’T</strong> crop wordmarks</p>
+        </article>
+        <article class="example">
+          <div class="example-visual wordmark">
+            <span class="mask-word">Namu</span>
+            <span class="status bad" aria-label="Do not"></span>
+          </div>
+          <p class="example-caption"><strong>DON’T</strong> use wordmarks as masks</p>
+        </article>
+        <article class="example">
+          <div class="example-visual wordmark">
+            <span class="alt-word">Namu</span>
+            <span class="status bad" aria-label="Do not"></span>
+          </div>
+          <p class="example-caption"><strong>DON’T</strong> use any unapproved variations</p>
+        </article>
+        <article class="example">
+          <div class="example-visual wordmark">
+            <img class="bad-shadow" src="namu%20branding/svg/logo/namu-logo-transparent-dark.svg" alt="">
+            <span class="status bad" aria-label="Do not"></span>
+          </div>
+          <p class="example-caption"><strong>DON’T</strong> use any effects or textures</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="brand-gallery" id="gallery" aria-label="Namu brand gallery">
+    <div class="gallery-top">
+      <h2>Gallery</h2>
+      <div class="gallery-controls" aria-label="Gallery controls">
+        <button class="gallery-control" type="button" data-gallery-prev aria-label="Previous gallery items">←</button>
+        <button class="gallery-control" type="button" data-gallery-next aria-label="Next gallery items">→</button>
+      </div>
+    </div>
+    <div class="brand-gallery-rail" data-gallery-rail>
+      <figure class="gallery-tile portrait deep">
+        <img src="public/Namu/1ee9fbb5-4d83-4dfa-bc8f-eb6ef1886b33.jpg" alt="Namu tote bag mockup">
+      </figure>
+      <figure class="gallery-tile landscape soft">
+        <img src="public/Namu/727ee443-42f1-44bd-8a1e-21439e0f8836.jpg" alt="Namu stationery and desk objects">
+      </figure>
+      <figure class="gallery-tile landscape warm">
+        <img src="public/Namu/8bf76e1a-a6b5-48c5-a19b-608765eda325.jpg" alt="Namu business cards">
+      </figure>
+      <figure class="gallery-tile landscape soft">
+        <img src="public/Namu/b75ed8f0-5194-4b65-a315-19b9957bcde4.jpg" alt="Namu card and pen mockup">
+      </figure>
+      <figure class="gallery-tile portrait deep">
+        <img src="public/Namu/4a5f465b-6fbb-4fa7-8bde-658ae98091ea.jpg" alt="Namu vertical brand application">
+      </figure>
+      <figure class="gallery-tile portrait soft">
+        <img src="public/Namu/bc41d20a-79de-4580-8752-430cd0f8d5c2.jpg" alt="Namu vertical mockup">
+      </figure>
+      <figure class="gallery-tile portrait warm">
+        <img src="public/Namu/e80c3dda-fe2b-4c3b-b48b-d87f10888f41.jpg" alt="Namu printed brand item">
+      </figure>
+      <figure class="gallery-tile landscape deep">
+        <img src="public/Namu/ee4173f2-7cdf-4f24-8a78-76588280d51c.jpg" alt="Namu landscape brand mockup">
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="color">
+    <div class="section-head">
+      <div class="section-kicker">Color</div>
+      <div>
+        <h2 class="section-title">Warmth, depth, and restraint.</h2>
+        <p class="section-intro">Namu’s palette is designed for editorial clarity and cultural warmth. Harmattan cream and Ink carry the system; Sahel, Kola, Forest, and Dry Clay add emphasis and depth.</p>
+      </div>
+    </div>
+    <div class="palette">
+      <div class="swatch harmattan"><strong>Harmattan</strong><code>#F7F0E3</code></div>
+      <div class="swatch ink"><strong>Ink</strong><code>#1C1410</code></div>
+      <div class="swatch sahel"><strong>Sahel</strong><code>#E8935A</code></div>
+      <div class="swatch kola"><strong>Kola</strong><code>#6B3E1E</code></div>
+      <div class="swatch forest"><strong>Forest</strong><code>#1A3A2E</code></div>
+      <div class="swatch clay"><strong>Dry Clay</strong><code>#EDD9B0</code></div>
+    </div>
+  </section>
+
+  <section class="section" id="type">
+    <div class="section-head">
+      <div class="section-kicker">Typography</div>
+      <div>
+        <h2 class="section-title">Expressive, clear, and measured.</h2>
+        <p class="section-intro">Use Playfair Display for high-emphasis brand moments and DM Sans for utility, body copy, interface labels, and documentation.</p>
+      </div>
+    </div>
+    <div class="type-sample">
+      <div class="type-display">
+        <div class="sample">Every language, every community.</div>
+      </div>
+      <div class="type-body">
+        <p>Namu builds speech-native models, datasets, and products that enable people to access technology through natural conversation in their own language. The typography should feel precise enough for research and warm enough for people.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="voice">
+    <div class="section-head">
+      <div class="section-kicker">Voice</div>
+      <div>
+        <h2 class="section-title">Speak with clarity and conviction.</h2>
+        <p class="section-intro">Namu’s voice is grounded, direct, and inclusive. We explain infrastructure through human access, and we avoid hype that makes the mission feel temporary.</p>
+      </div>
+    </div>
+    <div class="voice-grid">
+      <div class="write-card">
+        <div class="write-head good">Write this</div>
+        <ul>
+          <li>Making AI work for every language and every community.</li>
+          <li>Technology should meet people where they are.</li>
+          <li>Speech-native AI infrastructure for African languages.</li>
+          <li>Access should not depend on speaking a global language.</li>
+        </ul>
+      </div>
+      <div class="write-card">
+        <div class="write-head bad">Not this</div>
+        <ul>
+          <li>The next revolutionary AI platform for everyone.</li>
+          <li>We are disrupting African language markets.</li>
+          <li>Just translate everything into local languages.</li>
+          <li>Low-resource users need simplified tools.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="applications">
+    <div class="section-head">
+      <div class="section-kicker">Applications</div>
+      <div>
+        <h2 class="section-title">The system in use.</h2>
+        <p class="section-intro">Namu applications should feel calm, legible, and trustworthy. The brand should support the content rather than overpowering it.</p>
+      </div>
+    </div>
+    <div class="gallery">
+      <div class="poster">
+        <img src="namu%20branding/svg/logo/namu-logo-transparent-light.svg" alt="Namu">
+        <div>
+          <h3>Speech-native AI for African languages.</h3>
+          <p>Models, datasets, and products designed around the way people naturally communicate.</p>
+        </div>
+      </div>
+      <div class="stack">
+        <div class="mini-app">
+          <div class="eyebrow">Document cover</div>
+          <h3>Company overview</h3>
+          <p>A quiet page system for reports, briefs, and partner documents.</p>
+        </div>
+        <div class="mini-app dark">
+          <div class="eyebrow">Presentation</div>
+          <h3>Making AI work for every language.</h3>
+          <p>Use high-contrast moments for pitches, talks, and strategic storytelling.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <div class="section-kicker">Partnerships</div>
+      <div>
+        <h2 class="section-title">Using Namu with partners.</h2>
+        <p class="section-intro">When Namu appears with another organization, keep the relationship clear. Do not imply endorsement, sponsorship, or product partnership unless formally approved.</p>
+      </div>
+    </div>
+    <div class="two-up">
+      <div class="card">
+        <h3>Approved language</h3>
+        <p>Use “in partnership with Namu” only for active collaborations. Use “built with Namu technology” only when the integration has been reviewed and approved.</p>
+      </div>
+      <div class="card">
+        <h3>Lockups</h3>
+        <p>Partner lockups should use equal visual weight, generous spacing, and neutral alignment. Do not place Namu inside another brand’s shape or color system.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section legal-section" id="usage-terms">
+    <div class="legal-content">
+      <h2>Usage terms</h2>
+      <p>The term “Marks” includes anything we use to identify our goods or services, including our names, logos, icons, wordmarks, visual identity, and design elements. By using Namu’s Marks, you agree that Namu owns them and that any goodwill generated by your use benefits Namu.</p>
+      <p>Permission to use our Marks is limited in the following ways:</p>
+      <ul>
+        <li>Only use our Marks if they adhere to these brand guidelines.</li>
+        <li>The permission we grant is non-exclusive and non-transferable.</li>
+        <li>Do not feature our Marks more prominently than your own company’s name or marks.</li>
+        <li>Do not imply endorsement, partnership, sponsorship, or approval unless Namu has formally authorized it.</li>
+        <li>We may update this guide, review uses of our Marks, require changes, or end permission at any time.</li>
+      </ul>
+      <p>Please make sure your product, communication, dataset, model, application, or public material describes Namu accurately and does not confuse people about your relationship with Namu. Do not use Namu’s name, logo, Blossom, wordmark, or other Marks in your app, product, developer, organization, or company name unless you have written permission from Namu.</p>
+    </div>
+  </section>
+
+  <section class="section legal-section" id="contact">
+    <div class="legal-content">
+      <h2>Contact</h2>
+      <p>For legal inquiries, please contact <a href="mailto:legal@namuai.org">legal@namuai.org</a>.</p>
+      <p>For everything else, including permission requests for the use of our logos, questions about these guidelines, or communications that go beyond the cases outlined above, please contact <a href="mailto:legal@namuai.org">legal@namuai.org</a>.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div>
+    <img src="namu%20branding/svg/logo/namu-logo-transparent-light.svg" alt="Namu">
+  </div>
+  <p>Namu is an African AI research and Technology company. These guidelines help keep the identity consistent across documents, presentations, web pages, partner materials, and product experiences.</p>
+  <a class="download" href="namu%20branding/README.txt">View assets</a>
+</footer>
+<script>
+  const galleryRail = document.querySelector('[data-gallery-rail]');
+  const galleryPrev = document.querySelector('[data-gallery-prev]');
+  const galleryNext = document.querySelector('[data-gallery-next]');
+
+  if (galleryRail && galleryPrev && galleryNext) {
+    const galleryStep = () => {
+      const firstTile = galleryRail.querySelector('.gallery-tile');
+      return firstTile ? firstTile.getBoundingClientRect().width + 18 : galleryRail.clientWidth;
+    };
+
+    galleryPrev.addEventListener('click', () => {
+      galleryRail.scrollBy({ left: -galleryStep(), behavior: 'smooth' });
+    });
+
+    galleryNext.addEventListener('click', () => {
+      galleryRail.scrollBy({ left: galleryStep(), behavior: 'smooth' });
+    });
+  }
+</script>
+</body>
+</html>

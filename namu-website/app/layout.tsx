@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
-import { DM_Sans, JetBrains_Mono, Lora } from "next/font/google";
+import { DM_Sans, JetBrains_Mono, Lora, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
 const lora = Lora({
   subsets: ["latin"],
   weight: ["400", "600", "700"],
   variable: "--font-display",
+});
+
+const playfairDisplay = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-pd",
 });
 
 const dmSans = DM_Sans({
@@ -34,21 +41,21 @@ export const metadata: Metadata = {
     title: "Namu - AI in the languages of Africa",
     description:
       "Namu builds AI tools for Hausa speakers. Write, plan, code, and create using AI in your own language.",
-    images: ["/og-image.png"],
+    images: ["/brand/namu%20branding/png/icon/namu-icon-app-on-ink_1024px.png"],
   },
   twitter: {
-    card: "summary_large_image",
+    card: "summary",
     title: "Namu - AI in the languages of Africa",
     description:
       "Namu builds AI tools for Hausa speakers. Write, plan, code, and create using AI in your own language.",
-    images: ["/og-image.png"],
+    images: ["/brand/namu%20branding/png/icon/namu-icon-app-on-ink_1024px.png"],
   },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ha">
-      <body className={`${lora.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}>{children}</body>
+      <body className={`${lora.variable} ${dmSans.variable} ${jetbrainsMono.variable} ${playfairDisplay.variable}`}>{children}</body>
     </html>
   );
 }

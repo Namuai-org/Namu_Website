@@ -1,33 +1,42 @@
 "use client";
 
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { useTranslation } from "@/hooks/useTranslation";
 import styles from "./solutions-section.module.css";
 
-const STEP_IDS = ["1", "2", "3"] as const;
+const STEP_IDS = ["1", "2", "3", "4"] as const;
 const PANEL_COUNT = STEP_IDS.length + 1;
 
-const STEP_IMAGES = {
-  "1": { src: "/step1.jpeg", alt: "Namu Studio — AI workspace for Hausa speakers" },
-  "2": { src: "/step2.webp", alt: "Infrastructure and model hosting"               },
-  "3": { src: "/step3.webp", alt: "Real interactions improving the system"         },
-} as const;
+const PIPELINE_STAGES = ["Data", "Models", "Platform", "Applications"];
 
-/* ─── Step image card ─── */
-function StepImage({ step }: { step: "1" | "2" | "3" }) {
-  const img = STEP_IMAGES[step];
+const STEP_ITEMS: Record<"1" | "2" | "3" | "4", readonly string[]> = {
+  "1": ["Speech recordings", "Text corpora", "Translations", "Evaluation benchmarks"],
+  "2": ["Speech-to-text", "Text-to-speech", "Multilingual LLMs", "Translation systems"],
+  "3": ["APIs", "SDKs", "Integrations", "Deployment tools"],
+  "4": ["Schools", "Healthcare systems", "Local businesses", "Governments", "African startups"],
+};
+
+const STEP_CARD_LABELS: Record<"1" | "2" | "3" | "4", string> = {
+  "1": "Key components",
+  "2": "Model types",
+  "3": "Developer tools",
+  "4": "Deployment channels",
+};
+
+/* ─── Items card shown in the right column of each step panel ─── */
+function ItemsCard({ step }: { step: "1" | "2" | "3" | "4" }) {
   return (
-    <div className={styles.imageCard}>
-      <Image
-        src={img.src}
-        alt={img.alt}
-        fill
-        unoptimized
-        className={styles.stepImage}
-        sizes="(max-width: 767px) 100vw, 55vw"
-      />
-      <div className={styles.imageOverlay} aria-hidden="true" />
+    <div className={styles.diagramCard}>
+      <p className={styles.cardLabel}>{STEP_CARD_LABELS[step]}</p>
+      <hr className={styles.cardRule} />
+      <ul className={styles.itemsList}>
+        {STEP_ITEMS[step].map((item) => (
+          <li key={item} className={styles.itemsListItem}>
+            <span className={styles.itemsDot} aria-hidden="true" />
+            {item}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
@@ -102,13 +111,23 @@ export function SolutionsSection() {
             {t("solution.intro.title")}
           </h2>
           <p className={styles.body}>{t("solution.intro.body")}</p>
+          <div className={styles.pipeline}>
+            {PIPELINE_STAGES.map((stage, i) => (
+              <Fragment key={stage}>
+                <span className={styles.pipelineStage}>{stage}</span>
+                {i < PIPELINE_STAGES.length - 1 && (
+                  <span className={styles.pipelineArrow} aria-hidden="true">→</span>
+                )}
+              </Fragment>
+            ))}
+          </div>
         </div>
       ),
     },
     ...steps.map((step) => ({
       key: step.id,
       bg: styles[`bg${step.id}` as keyof typeof styles],
-      stepId: step.id as "1" | "2" | "3",
+      stepId: step.id as "1" | "2" | "3" | "4",
       ghost: step.num,
       text: (
         <div className={styles.content}>
@@ -148,7 +167,7 @@ export function SolutionsSection() {
 
                 {panel.stepId !== null && (
                   <div className={styles.diagramCol}>
-                    <StepImage step={panel.stepId} />
+                    <ItemsCard step={panel.stepId} />
                   </div>
                 )}
               </div>

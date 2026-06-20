@@ -1,0 +1,1144 @@
+/* ─── Brand-page design tokens ─── */
+.page {
+  --cream:     #f7f0e3;
+  --paper:     #fffaf1;
+  --clay:      #edd9b0;
+  --sahel:     #e8935a;
+  --kola:      #6b3e1e;
+  --forest:    #1a3a2e;
+  --ink:       #1c1410;
+  --muted:     #7a6352;
+  --rule:      rgba(28, 20, 16, 0.14);
+  --rule-soft: rgba(28, 20, 16, 0.08);
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  background: var(--cream);
+  color: var(--ink);
+  min-height: 100vh;
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+}
+
+/* ─── Sticky section nav (sits under the fixed 80px NavBar) ─── */
+.subNav {
+  position: sticky;
+  top: 64px;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 32px;
+  padding: 0 48px;
+  height: 56px;
+  background: rgba(247, 240, 227, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--rule);
+}
+
+.subNavLinks {
+  display: flex;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
+.subNavLink {
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.14s ease;
+}
+
+.subNavLink:hover { color: var(--ink); }
+
+.subNavAction {
+  display: inline-flex;
+  align-items: center;
+  height: 34px;
+  padding: 0 16px;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--ink);
+  color: var(--cream);
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: opacity 0.14s ease;
+}
+
+.subNavAction:hover { opacity: 0.82; }
+
+/* ─── Hero ─── */
+.hero {
+  min-height: min(860px, calc(100vh - 136px));
+  display: grid;
+  grid-template-columns: 1.08fr 0.92fr;
+  align-items: end;
+  gap: 120px;
+  padding: 132px 88px 104px;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero > * { min-width: 0; }
+
+.hero::after {
+  content: "";
+  position: absolute;
+  right: -18vw;
+  top: -16vw;
+  width: 56vw;
+  height: 56vw;
+  border: 1px solid rgba(232, 147, 90, 0.22);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Centered hero variant */
+.heroCentered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 132px 88px 104px;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  overflow: hidden;
+}
+
+.heroCentered::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -20vw;
+  transform: translateX(-50%);
+  width: 56vw;
+  height: 56vw;
+  border: 1px solid rgba(232, 147, 90, 0.16);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* The heroH1 must beat the global h1 { font-family: var(--font-display) } rule */
+.heroH1 {
+  font-family: var(--font-pd), "Playfair Display", Georgia, serif !important;
+  font-weight: 400;
+  font-size: clamp(56px, 8.4vw, 128px);
+  line-height: 0.9;
+  letter-spacing: 0;
+  max-width: 900px;
+  margin: 0;
+  color: var(--ink);
+}
+
+.heroH1 span { display: block; }
+
+.heroCopy {
+  max-width: 580px;
+  margin-top: 46px;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.64;
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+  font-weight: 400;
+}
+
+.heroPanel {
+  align-self: end;
+  display: grid;
+  align-content: end;
+  gap: 52px;
+  position: relative;
+  z-index: 1;
+  min-height: 360px;
+}
+
+.heroPanel::before {
+  content: "";
+  position: absolute;
+  right: -12vw;
+  top: -140px;
+  width: min(620px, 48vw);
+  height: min(620px, 48vw);
+  border: 1px solid rgba(232, 147, 90, 0.28);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* ─── Generic section ─── */
+.section {
+  padding: 190px 88px;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+}
+
+.section::before {
+  content: "";
+  position: absolute;
+  left: 88px;
+  top: 0;
+  width: 132px;
+  height: 1px;
+  background: var(--ink);
+  opacity: 0.22;
+}
+
+.sectionNoTopRule::before { display: none; }
+.legalBg { background: var(--paper); }
+
+/* ─── Section header ─── */
+.sectionHead {
+  display: grid;
+  grid-template-columns: minmax(220px, 360px) 1fr;
+  gap: 132px;
+  margin-bottom: 122px;
+}
+
+.sectionHead > * { min-width: 0; }
+.sectionHeadFlush { margin-bottom: 0; }
+
+.sectionKicker {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sahel);
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+}
+
+/* Section titles use DM Sans — same as the HTML which explicitly overrides h2 */
+.sectionTitle {
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif !important;
+  font-size: clamp(24px, 2.4vw, 38px);
+  line-height: 1.32;
+  font-weight: 400;
+  margin: 0 0 24px;
+  color: var(--ink);
+}
+
+.sectionIntro {
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.62;
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+  margin: 0;
+  max-width: 640px;
+  font-weight: 400;
+}
+
+.introStatement {
+  max-width: 920px;
+  margin-left: auto;
+}
+
+.introStatementP {
+  color: var(--ink);
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+  font-size: clamp(24px, 2.4vw, 38px);
+  line-height: 1.32;
+  font-weight: 400;
+  margin: 0;
+}
+
+.introStatementPMuted {
+  margin-top: 30px;
+  color: var(--muted);
+  font-size: clamp(17px, 1.3vw, 22px);
+  line-height: 1.58;
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+  font-weight: 400;
+}
+
+/* ─── Grids ─── */
+.twoUp {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 42px;
+}
+
+.threeUp {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 42px;
+}
+
+.twoUp > *,
+.threeUp > * { min-width: 0; }
+
+.gridGapTop { margin-top: 18px; }
+
+/* ─── Cards ─── */
+.card {
+  border: 1px solid var(--rule);
+  background: rgba(255, 250, 241, 0.55);
+  border-radius: 8px;
+  min-height: 240px;
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cardDark   { background: var(--ink);    color: var(--cream); border-color: var(--ink);    }
+.cardForest { background: var(--forest); color: var(--cream); border-color: var(--forest); }
+.cardSahel  { background: var(--sahel);  color: var(--ink);   border-color: var(--sahel);  }
+
+.cardIdx {
+  display: block;
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--sahel);
+  margin-bottom: 20px;
+}
+
+.cardDark   .cardIdx,
+.cardForest .cardIdx { color: rgba(232, 147, 90, 0.75); }
+
+/* card H3 → Playfair Display */
+.cardH3 {
+  font-family: var(--font-pd), "Playfair Display", Georgia, serif !important;
+  font-size: 26px;
+  line-height: 1.08;
+  margin: 0;
+  font-weight: 400;
+  color: inherit;
+}
+
+.cardP {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.58;
+  margin: 18px 0 0;
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+}
+
+.cardDark   .cardP,
+.cardForest .cardP { color: rgba(247, 240, 227, 0.72); }
+
+/* ─── Asset cards ─── */
+.assetCard {
+  min-height: 380px;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 30px;
+}
+
+.assetStage {
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  background: var(--paper);
+  border: 1px solid rgba(28, 20, 16, 0.08);
+  padding: 38px;
+}
+
+.cardDark   .assetStage { background: transparent; border-color: rgba(247, 240, 227, 0.12); }
+.cardForest .assetStage { background: rgba(255, 250, 241, 0.05); border-color: rgba(247, 240, 227, 0.12); }
+.cardSahel  .assetStage { background: rgba(255, 250, 241, 0.25); border-color: rgba(28, 20, 16, 0.12); }
+
+.assetStage img {
+  max-width: 70%;
+  max-height: 130px;
+  display: block;
+}
+
+.assetMeta {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  color: var(--muted);
+  font-size: 13px;
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+}
+
+.cardDark .assetMeta { color: rgba(247, 240, 227, 0.64); }
+
+.downloadRow {
+  margin-top: 72px;
+  display: flex;
+  justify-content: center;
+}
+
+.downloadAction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 24px;
+  border: 1px solid rgba(107, 62, 30, 0.44);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 700;
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.downloadAction:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--cream);
+}
+
+/* ─── Clear space ─── */
+.clearspace {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 42px;
+  align-items: stretch;
+}
+
+.clearDemo {
+  background: var(--paper);
+  border: 1px dashed rgba(28, 20, 16, 0.32);
+  padding: 54px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  min-height: 370px;
+  position: relative;
+}
+
+.clearDemo::before,
+.clearDemo::after {
+  content: "";
+  position: absolute;
+  border: 1px solid rgba(232, 147, 90, 0.28);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.clearDemo::before { width: 74%; height: 74%; }
+.clearDemo::after  { width: 48%; height: 48%; }
+
+.clearDemo img {
+  width: 72%;
+  max-width: 360px;
+  position: relative;
+  z-index: 1;
+  display: block;
+}
+
+.clearNote {
+  padding: 36px;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: rgba(255, 250, 241, 0.55);
+}
+
+/* clear note H3 → Playfair Display */
+.clearNoteH3 {
+  font-family: var(--font-pd), "Playfair Display", Georgia, serif !important;
+  font-size: 30px;
+  line-height: 1.08;
+  margin: 0 0 20px;
+  font-weight: 400;
+  color: var(--ink);
+}
+
+.clearNoteP {
+  font-size: 14px;
+  line-height: 1.68;
+  color: var(--muted);
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+  margin: 0 0 16px;
+}
+
+.clearNoteP:last-child { margin-bottom: 0; }
+
+/* ─── Dos & Don'ts ─── */
+.rulesSection { padding: 190px 0 20px; }
+
+.rulesSection + .rulesSection {
+  margin-top: 150px;
+  border-top: 1px solid var(--rule);
+  padding-top: 178px;
+}
+
+/* rules titles → DM Sans (same as HTML) */
+.rulesTitle {
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif !important;
+  font-size: clamp(24px, 2.4vw, 38px);
+  line-height: 1.32;
+  font-weight: 400;
+  text-align: center;
+  margin: 0 0 88px;
+  letter-spacing: 0;
+  color: var(--ink);
+}
+
+.rulesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 92px 54px;
+  max-width: 1480px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+.example {
+  display: grid;
+  grid-template-rows: 315px minmax(48px, auto);
+  gap: 24px;
+}
+
+.exampleVisual {
+  height: 315px;
+  border: 1px solid rgba(28, 20, 16, 0.1);
+  border-radius: 10px;
+  background: rgba(255, 250, 241, 0.82);
+  display: grid;
+  place-items: center;
+  padding: 38px;
+  position: relative;
+  overflow: hidden;
+}
+
+.visualDark  { background: var(--ink); }
+.visualMist  { background: #d9d6cf; }
+.visualSahel { background: var(--sahel); }
+.visualBusy {
+  background: linear-gradient(115deg,
+    #1a3a2e 0%, #24351c 25%, #e8935a 52%, #6b3e1e 78%, #1c1410 100%);
+}
+
+.visualBusy::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(90deg, rgba(255,250,241,.18) 0 16px, transparent 16px 34px),
+    repeating-linear-gradient(0deg,  rgba(28,20,16,.22)    0  7px, transparent  7px 19px);
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+
+.exampleVisual img {
+  max-width: 78%;
+  max-height: 168px;
+  position: relative;
+  z-index: 1;
+  display: block;
+}
+
+.blossomImg  { width: 150px; max-height: none; }
+.wordmarkImg { width: 300px; max-width: 88%; max-height: none; }
+
+.exampleCaption {
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink);
+  margin: 0;
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+}
+
+.exampleCaption strong { font-weight: 800; }
+
+.status {
+  position: absolute;
+  right: 24px;
+  bottom: 22px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1;
+  z-index: 3;
+  transform: translateY(-1px);
+}
+
+.statusGood { background: #27b955; color: #fff; }
+.statusBad  { background: #ee140c; color: #fff; }
+
+/* bad example effects */
+.badStretch { transform: scaleX(1.7); }
+.badRotate  { transform: rotate(-10deg); }
+.badCrop    { transform: scale(2.05); }
+.badShadow  { filter: drop-shadow(14px 14px 8px rgba(28,20,16,.34)); }
+.badOpacity { opacity: 0.24; }
+.badColor   { filter: invert(25%) sepia(93%) saturate(4315%) hue-rotate(350deg) brightness(99%) contrast(112%); }
+
+/* special demo elements */
+.seal {
+  width: 150px;
+  height: 150px;
+  border: 7px solid var(--ink);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  color: var(--ink);
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.sealTop    { position: absolute; top: 18px; }
+.sealBottom { position: absolute; bottom: 18px; }
+.sealImg    { width: 54px; display: block; }
+
+.spacingDemo {
+  width: 230px;
+  height: 230px;
+  display: grid;
+  place-items: center;
+  position: relative;
+  background:
+    linear-gradient(var(--rule-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--rule-soft) 1px, transparent 1px);
+  background-size: 76px 76px;
+  border: 1px solid var(--rule);
+}
+
+.spacingDemo img { width: 84px; display: block; }
+
+.spacingDot {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(28, 20, 16, 0.12);
+}
+
+.dotTop    { top: 20px; }
+.dotRight  { right: 20px; }
+.dotBottom { bottom: 20px; }
+.dotLeft   { left: 20px; }
+
+.openSpacePaper {
+  width: 205px;
+  height: 260px;
+  background: var(--paper);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 1px 0 rgba(28, 20, 16, 0.06);
+}
+
+.openSpacePaper img { width: 106px; display: block; }
+
+.maskWord {
+  font-size: 78px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+  background: linear-gradient(120deg, var(--kola), var(--sahel) 38%, #216f91 55%, var(--ink));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+}
+
+.altWord {
+  font-size: 72px;
+  font-weight: 300;
+  line-height: 1;
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.distorted {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  transform: scaleX(1.6);
+  transform-origin: center;
+}
+
+.distorted img {
+  width: 94px;
+  max-width: none;
+  display: block;
+}
+
+.distorted span {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 52px;
+  letter-spacing: 2px;
+  color: var(--ink);
+}
+
+/* ─── Gallery ─── */
+.brandGallery {
+  padding: 170px 0 190px;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+  overflow: hidden;
+}
+
+.galleryTop {
+  text-align: center;
+  margin-bottom: 52px;
+  padding: 0 88px;
+}
+
+/* gallery title → DM Sans */
+.galleryTitle {
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif !important;
+  font-size: clamp(24px, 2.4vw, 38px);
+  line-height: 1.32;
+  font-weight: 400;
+  margin: 0;
+  color: var(--ink);
+  letter-spacing: 0;
+}
+
+.galleryControls {
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+  margin-top: 26px;
+}
+
+.galleryControl {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: 18px;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  transition: background 0.15s ease;
+}
+
+.galleryControl:hover { background: rgba(28, 20, 16, 0.07); }
+
+.galleryRail {
+  display: flex;
+  gap: 30px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 0 88px 12px;
+  scrollbar-width: none;
+}
+
+.galleryRail::-webkit-scrollbar { display: none; }
+
+.galleryTile {
+  flex: 0 0 calc((100vw - 236px) / 3);
+  height: min(40vw, 600px);
+  min-height: 480px;
+  background: #ecebea;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  scroll-snap-align: start;
+  position: relative;
+}
+
+.galleryTile img {
+  display: block;
+  max-width: 78%;
+  max-height: 82%;
+  object-fit: contain;
+  box-shadow: 0 10px 16px rgba(28, 20, 16, 0.12);
+}
+
+.tileLandscape img { max-width: 88%; max-height: 78%; }
+.tilePortrait  img { max-width: 68%; max-height: 84%; }
+.tileSoft { background: #efeee9; }
+.tileWarm { background: #f2ede3; }
+.tileDeep { background: #e2dfd8; }
+
+/* ─── Color palette ─── */
+.palette {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr 1fr;
+  gap: 34px;
+}
+
+.swatch {
+  min-height: 280px;
+  border-radius: 8px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid rgba(28, 20, 16, 0.1);
+}
+
+.swatch strong {
+  font-size: 16px;
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+  font-weight: 600;
+}
+
+.swatch code {
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+  font-size: 13px;
+}
+
+.swHarmattan { background: #f7f0e3; }
+.swInk       { background: #1c1410; color: #f7f0e3; }
+.swSahel     { background: #e8935a; }
+.swKola      { background: #6b3e1e; color: #f7f0e3; }
+.swForest    { background: #1a3a2e; color: #f7f0e3; }
+.swClay      { background: #edd9b0; }
+
+/* ─── Typography ─── */
+.typeSample {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 42px;
+}
+
+.typeDisplay {
+  padding: 42px;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--paper);
+}
+
+/* Typography showcase → Playfair Display, exactly matching HTML */
+.typeDisplaySample {
+  font-family: var(--font-pd), "Playfair Display", Georgia, serif !important;
+  font-size: clamp(46px, 5.8vw, 88px);
+  line-height: 0.94;
+  font-weight: 400;
+  margin: 0;
+  color: var(--ink);
+  letter-spacing: 0;
+}
+
+.typeBody {
+  padding: 42px;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: rgba(255, 250, 241, 0.55);
+}
+
+.typeBodyP {
+  font-size: 15px;
+  line-height: 1.72;
+  color: var(--muted);
+  margin: 0;
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+}
+
+/* ─── Voice ─── */
+.voiceGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 42px;
+}
+
+.writeCard {
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--paper);
+}
+
+.writeHead {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--rule);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+}
+
+.writeHeadGood { color: var(--forest); }
+.writeHeadBad  { color: #9b2f22; }
+
+.writeCardUl {
+  margin: 0;
+  padding: 28px 32px 30px 44px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+}
+
+/* ─── Applications ─── */
+.applicationsGallery {
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: 42px;
+}
+
+.poster {
+  min-height: 520px;
+  border-radius: 8px;
+  background: var(--ink);
+  color: var(--cream);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.poster::after {
+  content: "";
+  position: absolute;
+  right: -160px;
+  top: -160px;
+  width: 420px;
+  height: 420px;
+  border: 1px solid rgba(232, 147, 90, 0.42);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.posterLogo {
+  width: 140px;
+  position: relative;
+  z-index: 1;
+  display: block;
+}
+
+/* poster H3 → Playfair Display */
+.posterH3 {
+  font-family: var(--font-pd), "Playfair Display", Georgia, serif !important;
+  font-size: 62px;
+  line-height: 0.95;
+  max-width: 620px;
+  position: relative;
+  z-index: 1;
+  font-weight: 400;
+  margin: 0;
+  color: var(--cream);
+  letter-spacing: 0;
+}
+
+.posterP {
+  color: rgba(247, 240, 227, 0.66);
+  max-width: 500px;
+  font-size: 14px;
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
+  margin: 14px 0 0;
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+}
+
+.stack { display: grid; gap: 30px; }
+
+.miniApp {
+  min-height: 245px;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--paper);
+  padding: 26px;
+  display: grid;
+  align-content: space-between;
+}
+
+.miniAppDark {
+  background: var(--forest);
+  color: var(--cream);
+  border-color: var(--forest);
+}
+
+.miniAppEyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sahel);
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+}
+
+/* mini app H3 → Playfair Display */
+.miniAppH3 {
+  font-family: var(--font-pd), "Playfair Display", Georgia, serif !important;
+  font-size: 22px;
+  line-height: 1.2;
+  font-weight: 400;
+  margin: 14px 0 0;
+  color: inherit;
+  letter-spacing: 0;
+}
+
+.miniAppP {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.56;
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+  margin: 12px 0 0;
+}
+
+.miniAppDark .miniAppP { color: rgba(247, 240, 227, 0.68); }
+
+/* ─── Legal ─── */
+.legalSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.legalContent {
+  max-width: 760px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* legal H2 → DM Sans */
+.legalH2 {
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif !important;
+  font-size: clamp(28px, 2.4vw, 38px);
+  font-weight: 400;
+  line-height: 1.18;
+  margin: 0 0 46px;
+  text-align: center;
+  color: var(--ink);
+  letter-spacing: 0;
+}
+
+.legalP {
+  font-size: 16px;
+  line-height: 1.72;
+  color: var(--ink);
+  margin: 0 0 28px;
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+}
+
+.legalP:last-child { margin-bottom: 0; }
+
+.legalUl {
+  margin: 0 0 36px;
+  padding-left: 24px;
+}
+
+.legalLi {
+  font-size: 16px;
+  line-height: 1.72;
+  color: var(--ink);
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+}
+
+.legalLi + .legalLi { margin-top: 12px; }
+
+.legalA {
+  border-bottom: 1px solid currentColor;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+/* ─── Brand footer (the brand-guide closing bar) ─── */
+.brandFooter {
+  padding: 64px 88px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 48px;
+  background: var(--ink);
+  color: var(--cream);
+}
+
+.brandFooterLogo {
+  width: 128px;
+  height: auto;
+  flex-shrink: 0;
+  display: block;
+}
+
+.brandFooterP {
+  max-width: 640px;
+  color: rgba(247, 240, 227, 0.62);
+  font-size: 14px;
+  line-height: 1.65;
+  margin: 0;
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+}
+
+.brandFooterLink {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 16px;
+  border: 1px solid rgba(247, 240, 227, 0.36);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cream);
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+  white-space: nowrap;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: border-color 0.15s ease;
+}
+
+.brandFooterLink:hover { border-color: rgba(247, 240, 227, 0.68); }
+
+/* ─── Mobile ─── */
+@media (max-width: 900px) {
+  .subNav { padding: 0 24px; top: 64px; }
+  .subNavLinks { display: none; }
+
+  .hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    padding: 72px 24px 64px;
+    gap: 0;
+  }
+
+  .heroCentered { padding: 72px 24px 64px; }
+
+  .heroPanel { display: none; }
+
+  .heroH1 { font-size: clamp(44px, 12.5vw, 52px); line-height: 0.94; }
+  .heroCopy { font-size: 16px; max-width: 100%; margin-top: 28px; }
+
+  .section { padding: 88px 24px; }
+  .section::before { left: 24px; }
+
+  .sectionHead {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    margin-bottom: 52px;
+  }
+
+  .introStatement { margin-left: 0; }
+
+  .twoUp,
+  .threeUp,
+  .clearspace,
+  .palette,
+  .typeSample,
+  .voiceGrid,
+  .applicationsGallery { grid-template-columns: 1fr; }
+
+  .rulesSection { padding: 72px 0 0; }
+  .rulesSection + .rulesSection { margin-top: 64px; padding-top: 80px; }
+  .rulesTitle { text-align: left; margin-bottom: 42px; font-size: 26px; }
+  .rulesGrid { grid-template-columns: 1fr; gap: 48px; }
+
+  .example { grid-template-rows: 230px auto; gap: 16px; }
+  .exampleVisual { height: 230px; padding: 24px; }
+  .wordmarkImg { width: 200px; }
+  .blossomImg  { width: 112px; }
+
+  .brandGallery { padding: 88px 0 104px; }
+  .galleryTop { padding: 0 24px; margin-bottom: 36px; }
+  .galleryRail { gap: 18px; padding: 0 24px 10px; }
+  .galleryTile { flex-basis: 78vw; min-height: 320px; height: 320px; }
+
+  .posterH3 { font-size: 40px; }
+
+  .brandFooter { flex-direction: column; padding: 48px 24px; align-items: flex-start; }
+}

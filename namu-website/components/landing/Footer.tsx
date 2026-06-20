@@ -58,6 +58,7 @@ const COLUMNS = [
     items: [
       { label: "About",    href: "/"                          },
       { label: "FAQ",      href: "/#faq"                      },
+      { label: "Brand",    href: "/brand"                     },
       { label: "Investor", href: "#"                          },
       { label: "Contact",  href: "mailto:contact@namuai.org"  },
     ],
@@ -107,10 +108,7 @@ export function Footer() {
       {/* Logo */}
       <div className="footer-logo-row">
         <Link href="/" className="footer-brand" aria-label="Namu">
-          <NamuLogoMark variant="onLight" height={28} />
-          <span className="footer-wordmark">
-            <span className="footer-wordmark-amu">amu</span>
-          </span>
+          <NamuLogoMark variant="onLight" height={40} />
         </Link>
       </div>
 

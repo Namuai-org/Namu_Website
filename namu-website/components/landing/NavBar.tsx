@@ -3,121 +3,101 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { useNavScroll } from "@/hooks/useNavScroll";
-import { useScrollRevealLogo } from "@/hooks/useScrollRevealLogo";
+import { NamuLogoMark } from "@/components/brand/NamuLogoMark";
 import { useTranslation } from "@/hooks/useTranslation";
 import { LanguageToggle } from "@/components/landing/LanguageToggle";
-import { NamuLogoMark } from "@/components/brand/NamuLogoMark";
 
-const PRODUCTS = [
-  { name: "Namu Studio",   desc: "AI workspace for Hausa speakers",     href: "/#waitlist" },
-  { name: "Muryar Manoma", desc: "Voice AI for farmers and agriculture", href: "#"          },
-  { name: "KudiSauti",     desc: "Financial voice assistant",            href: "#"          },
-  { name: "Muryar Ilimi",  desc: "AI education platform",                href: "#"          },
+const NAV_ITEMS = [
+  {
+    label: "Company",
+    eyebrow: "Explore Company",
+    links: [
+      { label: "About",   href: "/"                         },
+      { label: "Blog",    href: "/blog"                     },
+      { label: "Brand",   href: "/brand"                    },
+      { label: "Contact", href: "mailto:contact@namuai.org" },
+    ],
+  },
+  {
+    label: "Products",
+    eyebrow: "Explore Products",
+    links: [
+      { label: "Namu Studio",   href: "/#waitlist" },
+      { label: "Muryar Manoma", href: "#"          },
+      { label: "KudiSauti",     href: "#"          },
+      { label: "Muryar Ilimi",  href: "#"          },
+    ],
+  },
+  {
+    label: "Models",
+    eyebrow: "Explore Models",
+    links: [
+      { label: "Namu TTS",    href: "#" },
+      { label: "Namu ASR",    href: "#" },
+      { label: "Namu LLM",    href: "#" },
+      { label: "Namu Frausa", href: "#" },
+    ],
+  },
 ] as const;
 
-const MODELS = [
-  { name: "Namu_tts",    desc: "Text-to-speech in Hausa",      href: "#" },
-  { name: "Namu_asr",    desc: "Automatic speech recognition", href: "#" },
-  { name: "Namu_llm",    desc: "Large language model",         href: "#" },
-  { name: "Namu_Frausa", desc: "French–Hausa translation",     href: "#" },
-] as const;
+type NavLabel = typeof NAV_ITEMS[number]["label"];
 
-function Chevron({ open }: { open: boolean }) {
-  return (
-    <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true"
-      style={{ transition: "transform 0.22s ease", transform: open ? "rotate(180deg)" : "none", opacity: 0.55, flexShrink: 0 }}>
-      <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-/* small delay stops flicker when moving between trigger and panel */
-function useDropdown() {
-  const [open, setOpen] = useState(false);
+function useNavDropdown() {
+  const [open, setOpen] = useState<NavLabel | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const show = () => { if (timer.current) clearTimeout(timer.current); setOpen(true); };
-  const hide = () => { timer.current = setTimeout(() => setOpen(false), 110); };
-  return { open, show, hide, close: () => setOpen(false) };
+  const show = (label: NavLabel) => { if (timer.current) clearTimeout(timer.current); setOpen(label); };
+  const hide = () => { timer.current = setTimeout(() => setOpen(null), 120); };
+  const cancel = () => { if (timer.current) clearTimeout(timer.current); };
+  const close = () => setOpen(null);
+  return { open, show, hide, cancel, close };
 }
 
 export function NavBar() {
   const pathname = usePathname();
-  // Playground always shows the opaque cream nav so text stays readable over the page bg
-  const scrolled = useNavScroll(100) || pathname === "/playground";
-  const logoRevealProgress = useScrollRevealLogo();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
-  const [mobileModelsOpen, setMobileModelsOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState<string | null>(null);
   const { t } = useTranslation();
   const brandName = t("brand.name");
-  const brandSuffix = brandName.slice(1);
-
-  const products = useDropdown();
-  const models = useDropdown();
+  const dropdown = useNavDropdown();
 
   useEffect(() => {
     setMenuOpen(false);
-    products.close();
-    models.close();
-    setMobileProductsOpen(false);
-    setMobileModelsOpen(false);
+    setMobileOpen(null);
+    dropdown.close();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   useEffect(() => {
-    const fn = (e: KeyboardEvent) => {
-      if (e.key === "Escape") { products.close(); models.close(); }
-    };
+    const fn = (e: KeyboardEvent) => { if (e.key === "Escape") dropdown.close(); };
     window.addEventListener("keydown", fn);
     return () => window.removeEventListener("keydown", fn);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const anyOpen = products.open || models.open;
-
   return (
     <>
-      <header className={`nav-shell ${scrolled ? "scrolled" : ""}`}>
+      <header className="nav-shell">
 
         {/* Logo */}
         <Link href="/" className="nav-brand" aria-label={brandName} onClick={() => setMenuOpen(false)}>
-          <span className="nav-logo-dark"><NamuLogoMark variant="onDark"  height={28} /></span>
-          <span className="nav-logo-light"><NamuLogoMark variant="onLight" height={28} /></span>
-          <span className="nav-name nav-name-wordmark" aria-hidden>
-            <span className="nav-name-amu" style={{ opacity: logoRevealProgress, transform: `translate(${(1 - logoRevealProgress) * -8}px, 0.14em)` }}>
-              {brandSuffix}
-            </span>
-          </span>
+          <NamuLogoMark variant="onLight" height={42} />
         </Link>
 
-        {/* Desktop nav */}
+        {/* Desktop nav — 3 items only */}
         <nav className="nav-links desktop-only" aria-label="Main navigation">
-
-          <Link href="/" className={`nav-link ${pathname === "/" ? "nav-link-active" : ""}`}>
-            {t("nav.home")}
-          </Link>
-
-          {/* Products */}
-          <button type="button"
-            className={`nav-link nav-link-btn ${products.open ? "nav-link-active" : ""}`}
-            onMouseEnter={products.show} onMouseLeave={products.hide}
-            aria-expanded={products.open} aria-haspopup="true">
-            {t("nav.products")} <Chevron open={products.open} />
-          </button>
-
-          {/* Models */}
-          <button type="button"
-            className={`nav-link nav-link-btn ${models.open ? "nav-link-active" : ""}`}
-            onMouseEnter={models.show} onMouseLeave={models.hide}
-            aria-expanded={models.open} aria-haspopup="true">
-            {t("nav.models")} <Chevron open={models.open} />
-          </button>
-
-          <Link href="/blog" className={`nav-link ${pathname.startsWith("/blog") ? "nav-link-active" : ""}`}>
-            Blog
-          </Link>
-
+          {NAV_ITEMS.map((item) => (
+            <button
+              key={item.label}
+              type="button"
+              className={`nav-link nav-link-btn ${dropdown.open === item.label ? "nav-link-active" : ""}`}
+              onMouseEnter={() => dropdown.show(item.label)}
+              onMouseLeave={dropdown.hide}
+              aria-expanded={dropdown.open === item.label}
+              aria-haspopup="true"
+            >
+              {item.label}
+            </button>
+          ))}
         </nav>
 
         {/* Actions */}
@@ -132,94 +112,62 @@ export function NavBar() {
         </div>
       </header>
 
-      {/* ── Products mega-dropdown ── */}
-      <div className={`mega-dropdown ${products.open ? "mega-dropdown-open" : ""}`}
-        onMouseEnter={products.show} onMouseLeave={products.hide} aria-hidden={!products.open}>
-        <div className="mega-inner">
-          <p className="mega-eyebrow">Our Products</p>
-          <div className="mega-product-grid">
-            {PRODUCTS.map(p => (
-              <a key={p.name} href={p.href} className="mega-product-card">
-                <span className="mega-product-dot" aria-hidden="true" />
-                <span className="mega-product-body">
-                  <span className="mega-product-name">{p.name}</span>
-                  <span className="mega-product-desc">{p.desc}</span>
-                </span>
-                <svg className="mega-product-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
+      {/* ── OpenAI-style full-width dropdowns ── */}
+      {NAV_ITEMS.map((item) => (
+        <div
+          key={item.label}
+          className={`nav-dropdown ${dropdown.open === item.label ? "nav-dropdown-open" : ""}`}
+          onMouseEnter={dropdown.cancel}
+          onMouseLeave={dropdown.hide}
+          aria-hidden={dropdown.open !== item.label}
+        >
+          <div className="nav-dropdown-inner">
+            <p className="nav-dropdown-eyebrow">{item.eyebrow}</p>
+            {item.links.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                className="nav-dropdown-link"
+                onClick={dropdown.close}
+              >
+                {link.label}
               </a>
             ))}
           </div>
         </div>
-      </div>
+      ))}
 
-      {/* ── Models mega-dropdown ── */}
-      <div className={`mega-dropdown ${models.open ? "mega-dropdown-open" : ""}`}
-        onMouseEnter={models.show} onMouseLeave={models.hide} aria-hidden={!models.open}>
-        <div className="mega-inner">
-          <p className="mega-eyebrow">Our Models</p>
-          <div className="mega-model-grid">
-            {MODELS.map(m => (
-              <a key={m.name} href={m.href} className="mega-model-card">
-                <span className="mega-model-dot" aria-hidden="true" />
-                <span className="mega-model-body">
-                  <span className="mega-model-name">{m.name}</span>
-                  <span className="mega-model-desc">{m.desc}</span>
-                </span>
-              </a>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Blurred backdrop */}
-      {anyOpen && (
-        <div className="mega-backdrop" aria-hidden="true"
-          onClick={() => { products.close(); models.close(); }} />
+      {/* Backdrop */}
+      {dropdown.open && (
+        <div className="mega-backdrop" aria-hidden="true" onClick={dropdown.close} />
       )}
 
       {/* Mobile drawer */}
       <aside className={`mobile-menu ${menuOpen ? "open" : ""}`} aria-hidden={!menuOpen}>
         <div className="mobile-menu-inner">
           <div className="mobile-lang-wrap"><LanguageToggle /></div>
-          <Link href="/" onClick={() => setMenuOpen(false)}>{t("nav.home")}</Link>
 
-          {/* Mobile Products */}
-          <div className="mobile-dd">
-            <button type="button" className="mobile-dd-toggle"
-              onClick={() => setMobileProductsOpen(p => !p)} aria-expanded={mobileProductsOpen}>
-              {t("nav.products")}
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
-                style={{ transform: mobileProductsOpen ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}>
-                <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-            {mobileProductsOpen && (
-              <div className="mobile-dd-list">
-                {PRODUCTS.map(p => <a key={p.name} href={p.href} onClick={() => setMenuOpen(false)}>{p.name}</a>)}
-              </div>
-            )}
-          </div>
+          {NAV_ITEMS.map((item) => (
+            <div key={item.label} className="mobile-dd">
+              <button type="button" className="mobile-dd-toggle"
+                onClick={() => setMobileOpen(p => p === item.label ? null : item.label)}
+                aria-expanded={mobileOpen === item.label}>
+                {item.label}
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
+                  style={{ transform: mobileOpen === item.label ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}>
+                  <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+              {mobileOpen === item.label && (
+                <div className="mobile-dd-list">
+                  {item.links.map(link => (
+                    <a key={link.label} href={link.href} onClick={() => setMenuOpen(false)}>{link.label}</a>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
 
-          {/* Mobile Models */}
-          <div className="mobile-dd">
-            <button type="button" className="mobile-dd-toggle"
-              onClick={() => setMobileModelsOpen(p => !p)} aria-expanded={mobileModelsOpen}>
-              {t("nav.models")}
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
-                style={{ transform: mobileModelsOpen ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}>
-                <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-            {mobileModelsOpen && (
-              <div className="mobile-dd-list">
-                {MODELS.map(m => <a key={m.name} href={m.href} onClick={() => setMenuOpen(false)}>{m.name}</a>)}
-              </div>
-            )}
-          </div>
-
-          <Link href="/blog" onClick={() => setMenuOpen(false)}>Blog</Link>
           <a href="mailto:contact@namuai.org" onClick={() => setMenuOpen(false)}>{t("nav.contactSales")}</a>
           <a href="/#waitlist" className="nav-cta" onClick={() => setMenuOpen(false)}>{t("nav.tryFree")}</a>
         </div>
