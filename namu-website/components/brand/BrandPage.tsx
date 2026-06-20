@@ -98,15 +98,18 @@ export function BrandPage() {
     <div className={styles.page}>
 
       {/* ── Hero ── */}
-      <section className={styles.heroCentered}>
-        <h1 className={styles.heroH1}>
-          <span>Brand</span>
-          <span>guidelines</span>
-        </h1>
-        <p className={styles.heroCopy}>
-          Namu is an African AI research and technology company building speech-native models, datasets,
-          and products that make technology accessible through natural conversation in every language and every community.
-        </p>
+      <section className={styles.hero}>
+        <div className={styles.heroContent}>
+          <h1 className={styles.heroH1}>
+            <span>Brand</span>
+            <span>guidelines</span>
+          </h1>
+          <p className={styles.heroCopy}>
+            Namu is an African AI research and technology company building speech-native models, datasets,
+            and products that make technology accessible through natural conversation in every language and every community.
+          </p>
+        </div>
+        <div className={styles.heroPanel} aria-hidden="true" />
       </section>
 
       {/* ── Introduction ── */}
@@ -541,7 +544,7 @@ export function BrandPage() {
       </section>
 
       {/* ── Usage terms ── */}
-      <section className={`${styles.section} ${styles.legalBg} ${styles.legalSection}`} id="usage-terms">
+      <section className={`${styles.section} ${styles.legalSection}`} id="usage-terms">
         <div className={styles.legalContent}>
           <h2 className={styles.legalH2}>Usage terms</h2>
           <p className={styles.legalP}>
@@ -571,7 +574,7 @@ export function BrandPage() {
       </section>
 
       {/* ── Contact ── */}
-      <section className={`${styles.section} ${styles.legalBg} ${styles.legalSection}`} id="contact">
+      <section className={`${styles.section} ${styles.legalSection}`} id="contact">
         <div className={styles.legalContent}>
           <h2 className={styles.legalH2}>Contact</h2>
           <p className={styles.legalP}>
