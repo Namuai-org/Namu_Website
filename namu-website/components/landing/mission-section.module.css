@@ -36,7 +36,7 @@
 .quoteMark {
   display: block;
   margin: 0 auto 0.35rem;
-  font-family: var(--font-display), serif;
+  font-family: var(--font-pd), serif;
   font-size: clamp(2.75rem, 7vw, 3.5rem);
   line-height: 1;
   color: rgba(214, 112, 63, 0.88);
@@ -65,7 +65,7 @@
 
 .quoteText {
   margin: 0;
-  font-family: var(--font-display), serif;
+  font-family: var(--font-pd), serif;
   font-size: clamp(1.65rem, 2.8vw, 2.35rem);
   font-style: italic;
   font-weight: 400;

@@ -71,7 +71,6 @@ const COLUMNS = [
       { label: "Documentation",     href: "#"     },
       { label: "Downloads",   href: "#",    external: true },
       { label: "Research",          href: "#"     },
-      { label: "Models",        href: "#"     },
     ],
   },
   {
@@ -88,15 +87,6 @@ const COLUMNS = [
       { label: "Help Center",         href: "#",                            external: true  },
       { label: "support@namuai.org",  href: "mailto:support@namuai.org"                    },
       { label: "WhatsApp",            href: "https://wa.me/"                               },
-    ],
-  },
-  {
-    label: "Products",
-    items: [
-      { label: "Namu Studio",    href: "#" },
-      { label: "Muryar Manoma",  href: "#" },
-      { label: "KudiSauti",      href: "#" },
-      { label: "Muryar Ilimi",   href: "#" },
     ],
   },
 ] as const;
@@ -170,8 +160,8 @@ export function Footer() {
         </div>
 
         <div className="footer-legal">
-          <a href="#">Terms</a>
-          <a href="#">Privacy</a>
+          <a href="/terms">Terms</a>
+          <a href="/privacy">Privacy</a>
         </div>
       </div>
 

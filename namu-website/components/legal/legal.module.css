@@ -1,0 +1,225 @@
+.page {
+  --cream: #f7f0e3;
+  --paper: #fffaf1;
+  --sahel: #e8935a;
+  --ink: #1c1410;
+  --muted: #7a6352;
+  --rule: rgba(28, 20, 16, 0.14);
+  --rule-soft: rgba(28, 20, 16, 0.08);
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--cream);
+  color: var(--ink);
+  min-height: 100vh;
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+}
+
+/* ─── Hero ─── */
+.hero {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 152px 88px 64px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.kicker {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sahel);
+  margin: 0 0 22px;
+}
+
+.title {
+  font-family: var(--font-pd), "Playfair Display", Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(44px, 6vw, 76px);
+  line-height: 0.98;
+  letter-spacing: 0;
+  margin: 0;
+  color: var(--ink);
+}
+
+.meta {
+  margin-top: 22px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.meta span + span {
+  padding-left: 18px;
+  border-left: 1px solid var(--rule);
+}
+
+.intro {
+  margin: 28px 0 0;
+  max-width: 640px;
+  font-size: 17px;
+  line-height: 1.62;
+  color: var(--muted);
+}
+
+/* ─── Body layout: sticky TOC + content ─── */
+.layout {
+  max-width: 1320px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 230px 1fr;
+  gap: 96px;
+  padding: 88px 88px 160px;
+  align-items: start;
+}
+
+.toc {
+  position: sticky;
+  top: 96px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tocLabel {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 16px;
+}
+
+.tocLink {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 7px 0 7px 14px;
+  border-left: 2px solid var(--rule-soft);
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.tocLink:hover {
+  color: var(--ink);
+  border-color: var(--sahel);
+}
+
+.content {
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  min-width: 0;
+}
+
+/* ─── Numbered entry ─── */
+.entry { scroll-margin-top: 96px; }
+
+.entryHead {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin: 0 0 20px;
+}
+
+.entryNum {
+  font-family: var(--font-pd), "Playfair Display", Georgia, serif;
+  font-size: 22px;
+  color: var(--sahel);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.entryTitle {
+  font-family: var(--font-body), "DM Sans", Arial, sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+  color: var(--ink);
+}
+
+.entryP {
+  font-size: 16px;
+  line-height: 1.72;
+  color: var(--ink);
+  margin: 0 0 18px;
+}
+
+.entryP:last-child { margin-bottom: 0; }
+
+.entryUl {
+  margin: 0 0 18px;
+  padding-left: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.entryLi {
+  font-size: 16px;
+  line-height: 1.66;
+  color: var(--ink);
+}
+
+.entryA {
+  color: var(--ink);
+  border-bottom: 1px solid currentColor;
+  text-decoration: none;
+}
+
+.entryA:hover { color: var(--sahel); }
+
+.footNote {
+  margin-top: 8px;
+  padding-top: 32px;
+  border-top: 1px solid var(--rule);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.footNote a {
+  color: var(--ink);
+  border-bottom: 1px solid currentColor;
+  text-decoration: none;
+}
+
+.footNote a:hover { color: var(--sahel); }
+
+/* ─── Mobile ─── */
+@media (max-width: 900px) {
+  .hero { padding: 132px 24px 48px; }
+
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 40px 24px 120px;
+  }
+
+  .toc {
+    position: static;
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 20px;
+    padding-bottom: 14px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .tocLabel { display: none; }
+
+  .tocLink {
+    border-left: none;
+    border-bottom: 2px solid transparent;
+    padding: 0 0 10px;
+    white-space: nowrap;
+  }
+
+  .tocLink:hover { border-color: var(--sahel); }
+
+  .content { max-width: 100%; gap: 48px; }
+}

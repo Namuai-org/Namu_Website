@@ -76,6 +76,7 @@ export function FuturePlansSection() {
       <div className="container">
         <span className="section-label section-label-center reveal reveal-fade">{t("future.label")}</span>
         <p className="future-vision-copy reveal reveal-up">{t("future.body")}</p>
+        <p className="future-vision-roadmap reveal reveal-up">{t("future.roadmap")}</p>
 
         <div className="future-scene reveal reveal-fade">
           <div className="future-scene-aura future-scene-aura-1" aria-hidden="true" />

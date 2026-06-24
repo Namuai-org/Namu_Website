@@ -1,16 +1,10 @@
 import type { Metadata } from "next";
-import { DM_Sans, JetBrains_Mono, Lora, Playfair_Display } from "next/font/google";
+import { DM_Sans, JetBrains_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
-
-const lora = Lora({
-  subsets: ["latin"],
-  weight: ["400", "600", "700"],
-  variable: "--font-display",
-});
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
+  weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
   variable: "--font-pd",
 });
@@ -55,7 +49,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ha">
-      <body className={`${lora.variable} ${dmSans.variable} ${jetbrainsMono.variable} ${playfairDisplay.variable}`}>{children}</body>
+      <body className={`${dmSans.variable} ${jetbrainsMono.variable} ${playfairDisplay.variable}`}>{children}</body>
     </html>
   );
 }

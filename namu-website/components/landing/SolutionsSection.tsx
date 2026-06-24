@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "@/hooks/useTranslation";
 import styles from "./solutions-section.module.css";
 
@@ -8,6 +8,24 @@ const STEP_IDS = ["1", "2", "3", "4"] as const;
 const PANEL_COUNT = STEP_IDS.length + 1;
 
 const PIPELINE_STAGES = ["Data", "Models", "Platform", "Applications"];
+
+/* ─── Pipeline diagram shown in the right column of the intro panel ─── */
+function PipelineDiagram() {
+  return (
+    <div className={styles.diagramCard}>
+      <p className={styles.cardLabel}>How it flows</p>
+      <hr className={styles.cardRule} />
+      <ol className={styles.flowList}>
+        {PIPELINE_STAGES.map((stage, i) => (
+          <li key={stage} className={styles.flowItem}>
+            <span className={styles.flowNum}>{String(i + 1).padStart(2, "0")}</span>
+            <span className={styles.flowLabel}>{stage}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
 
 const STEP_ITEMS: Record<"1" | "2" | "3" | "4", readonly string[]> = {
   "1": ["Speech recordings", "Text corpora", "Translations", "Evaluation benchmarks"],
@@ -100,7 +118,7 @@ export function SolutionsSection() {
 
   const panels = [
     {
-      key: "intro", bg: styles.bg0, stepId: null as null, ghost: null,
+      key: "intro", bg: styles.bg0, ghost: null,
       text: (
         <div className={styles.content}>
           <div className={styles.badge}>
@@ -111,23 +129,14 @@ export function SolutionsSection() {
             {t("solution.intro.title")}
           </h2>
           <p className={styles.body}>{t("solution.intro.body")}</p>
-          <div className={styles.pipeline}>
-            {PIPELINE_STAGES.map((stage, i) => (
-              <Fragment key={stage}>
-                <span className={styles.pipelineStage}>{stage}</span>
-                {i < PIPELINE_STAGES.length - 1 && (
-                  <span className={styles.pipelineArrow} aria-hidden="true">→</span>
-                )}
-              </Fragment>
-            ))}
-          </div>
+          <p className={styles.positioning}>{t("solution.positioning")}</p>
         </div>
       ),
+      diagram: <PipelineDiagram />,
     },
     ...steps.map((step) => ({
       key: step.id,
       bg: styles[`bg${step.id}` as keyof typeof styles],
-      stepId: step.id as "1" | "2" | "3" | "4",
       ghost: step.num,
       text: (
         <div className={styles.content}>
@@ -141,6 +150,7 @@ export function SolutionsSection() {
           <p className={styles.body}>{step.body}</p>
         </div>
       ),
+      diagram: <ItemsCard step={step.id} />,
     })),
   ];
 
@@ -165,11 +175,9 @@ export function SolutionsSection() {
                   {panel.text}
                 </div>
 
-                {panel.stepId !== null && (
-                  <div className={styles.diagramCol}>
-                    <ItemsCard step={panel.stepId} />
-                  </div>
-                )}
+                <div className={styles.diagramCol}>
+                  {panel.diagram}
+                </div>
               </div>
             ))}
           </div>

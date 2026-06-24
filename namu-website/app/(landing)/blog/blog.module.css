@@ -60,7 +60,7 @@
   line-height: 0.94;
   letter-spacing: -0.06em;
   font-weight: 700;
-  color: #d6703f;
+  color: #e8935a;
 }
 
 .heroSubtitle {
@@ -397,9 +397,9 @@
 }
 
 .filterPillActive {
-  background: #d6703f;
+  background: #e8935a;
   color: #fff;
-  border-color: #d6703f;
+  border-color: #e8935a;
 }
 
 .timeline {
@@ -536,7 +536,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  background: linear-gradient(160deg, #f5c39f, #d6703f);
+  background: linear-gradient(160deg, #f5c39f, #e8935a);
   color: #fff;
   font-size: 0.72rem;
   font-weight: 700;
@@ -627,7 +627,7 @@
 }
 
 .ctaPrimary {
-  background: linear-gradient(180deg, #df8257, #d6703f);
+  background: linear-gradient(180deg, #df8257, #e8935a);
   color: #fff;
 }
 
