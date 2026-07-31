@@ -3,304 +3,172 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Footer } from "@/components/editorial/Footer";
-import { NamuLogoMark } from "@/components/brand/NamuLogoMark";
+import { Button } from "@/components/editorial/Button";
+import { Dropdown } from "@/components/editorial/Dropdown";
+import { ScrollObject } from "@/components/editorial/ScrollObject";
+import { SplitText } from "@/components/editorial/SplitText";
+import { CATEGORIES, postsByDate, type PostCategory } from "@/lib/blog";
 import styles from "./blog.module.css";
 
-type ArticleCategory = "Product" | "Story" | "Press";
+type SubjectValue = "all" | PostCategory;
+type SortValue = "newest" | "oldest";
 
-type Article = {
-  slug: string;
-  title: string;
-  category: ArticleCategory;
-  monthLabel: string;
-  dateLabel: string;
-  readTime: string;
-  author: string;
-  authorInitials: string;
-  accent: "dune" | "river" | "copper" | "sun";
-};
-
-const articles: Article[] = [
-  {
-    slug: "shipping-hausa-writing-tools",
-    title: "Shipping writing tools that sound natural in Hausa.",
-    category: "Product",
-    monthLabel: "October",
-    dateLabel: "October 12, 2025",
-    readTime: "4 min read",
-    author: "Mouhamad",
-    authorInitials: "MO",
-    accent: "dune",
-  },
-  {
-    slug: "the-mother-who-typed-first",
-    title: "Why did we start this",
-    category: "Story",
-    monthLabel: "October",
-    dateLabel: "October 4, 2025",
-    readTime: "3 min read",
-    author: "Mouhamad",
-    authorInitials: "MO",
-    accent: "copper",
-  },
-  {
-    slug: "building-ai-for-niger",
-    title: "What building AI for Niger teaches you about trust.",
-    category: "Story",
-    monthLabel: "September",
-    dateLabel: "September 19, 2025",
-    readTime: "5 min read",
-    author: "Mouhamad",
-    authorInitials: "AI",
-    accent: "river",
-  },
-  {
-    slug: "namu-ai-studio-early-access",
-    title: "Opening early access to Namu AI-Studio.",
-    category: "Product",
-    monthLabel: "September",
-    dateLabel: "September 8, 2025",
-    readTime: "2 min read",
-    author: "Mouhamad",
-    authorInitials: "MO",
-    accent: "sun",
-  },
-  {
-    slug: "west-africa-language-infrastructure",
-    title: "Why language infrastructure matters in West Africa.",
-    category: "Press",
-    monthLabel: "August",
-    dateLabel: "August 22, 2025",
-    readTime: "4 min read",
-    author: "Mouhamad",
-    authorInitials: "NA",
-    accent: "river",
-  },
-  {
-    slug: "designing-for-hausa-speakers",
-    title: "Designing product experiences for Hausa speakers first.",
-    category: "Product",
-    monthLabel: "August",
-    dateLabel: "August 10, 2025",
-    readTime: "6 min read",
-    author: "Mouhamad",
-    authorInitials: "AI",
-    accent: "dune",
-  },
+const SUBJECT_OPTIONS = [
+  { value: "all" as const, label: "All subjects" },
+  ...CATEGORIES.map((c) => ({ value: c, label: c })),
 ];
 
-const filters: Array<"All" | ArticleCategory> = ["All", "Product", "Story", "Press"];
+const SORT_OPTIONS = [
+  { value: "newest" as const, label: "Newest first" },
+  { value: "oldest" as const, label: "Oldest first" },
+];
 
-function SearchIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" strokeWidth="1.8" />
-      <path d="M16 16l4.5 4.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function FilterIcon({ kind }: { kind: "All" | ArticleCategory }) {
-  if (kind === "Product") {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M6 5h12l-4.5 7.2V18l-3 1v-6.8z" fill="currentColor" />
-      </svg>
-    );
-  }
-
-  if (kind === "Story") {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M6 5.5A2.5 2.5 0 0 0 3.5 8V18A2.5 2.5 0 0 0 6 20.5h11A3.5 3.5 0 0 1 20.5 17V8A2.5 2.5 0 0 0 18 5.5z" fill="none" stroke="currentColor" strokeWidth="1.6" />
-        <path d="M8 9h8M8 12h8M8 15h5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-      </svg>
-    );
-  }
-
-  if (kind === "Press") {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" strokeWidth="1.6" />
-        <path d="M4 12h16M12 4c2.4 2.1 3.6 4.8 3.6 8S14.4 17.9 12 20M12 4c-2.4 2.1-3.6 4.8-3.6 8s1.2 5.9 3.6 8" fill="none" stroke="currentColor" strokeWidth="1.6" />
-      </svg>
-    );
-  }
-
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <circle cx="12" cy="12" r="8" fill="currentColor" />
-    </svg>
-  );
-}
+/* The grid places cards rather than flowing them; the run of four repeats. */
+const SLOTS = [styles.slotA, styles.slotB, styles.slotC, styles.slotD];
 
 export default function BlogPage() {
-  const [query, setQuery] = useState("");
-  const [activeFilter, setActiveFilter] = useState<(typeof filters)[number]>("All");
+  const [subject, setSubject] = useState<SubjectValue>("all");
+  const [sort, setSort] = useState<SortValue>("newest");
 
-  const filtered = useMemo(() => {
-    const lowered = query.trim().toLowerCase();
+  const visible = useMemo(() => {
+    const filtered =
+      subject === "all"
+        ? postsByDate
+        : postsByDate.filter((p) => p.category === subject);
+    return sort === "newest" ? filtered : [...filtered].reverse();
+  }, [subject, sort]);
 
-    return articles.filter((article) => {
-      const matchesFilter = activeFilter === "All" ? true : article.category === activeFilter;
-      const matchesQuery =
-        lowered.length === 0
-          ? true
-          : [article.title, article.author, article.monthLabel, article.category]
-              .join(" ")
-              .toLowerCase()
-              .includes(lowered);
-
-      return matchesFilter && matchesQuery;
-    });
-  }, [query, activeFilter]);
-
-  const grouped = useMemo(() => {
-    const map = new Map<string, Article[]>();
-    for (const article of filtered) {
-      const existing = map.get(article.monthLabel) ?? [];
-      existing.push(article);
-      map.set(article.monthLabel, existing);
-    }
-    return Array.from(map.entries());
-  }, [filtered]);
-
-  const featured = articles[0];
+  // The lead only makes sense on an unfiltered, newest-first view — otherwise
+  // it would silently promote whichever post happens to sort first.
+  const showLead = subject === "all" && sort === "newest";
+  const lead = showLead ? visible[0] : undefined;
+  const rest = showLead ? visible.slice(1) : visible;
 
   return (
     <>
-      <main className={styles.page}>
-        <section className={styles.hero}>
-          <div className={styles.heroMarkWrap}>
-            <div className={styles.heroMarkTile}>
-              <NamuLogoMark variant="onLight" height={64} />
-            </div>
-          </div>
-          <h1 className={styles.heroTitle}>Blog</h1>
-          <p className={styles.heroSubtitle}>
-            Product updates, founder notes, and stories from building AI for Hausa speakers.
-          </p>
-        </section>
+      <main id="main-content" className={`ds-container ds-outer ${styles.page}`}>
+        <ScrollObject as="header" className={styles.head}>
+          <h1 className="h3">
+            <SplitText
+              immediate
+              srText="Journal — research, language, progress."
+              lines={[
+                "Journal",
+                <em key="sub">Research. Language. Progress.</em>,
+              ]}
+            />
+          </h1>
+        </ScrollObject>
 
-        <section className={styles.featuredWrap}>
-          <article className={styles.featuredCard}>
-            <div className={styles.featuredCopy}>
-              <div className={styles.featuredMeta}>
-                <span className={styles.featuredPill}>{featured.category}</span>
-                <span>{featured.dateLabel}</span>
-                <span>{featured.readTime}</span>
-              </div>
-              <h2 className={styles.featuredTitle}>Shipping writing tools that sound natural in Hausa.</h2>
-              <Link href="/login" className={styles.featuredButton}>
-                Read Article
-                <span aria-hidden="true">-&gt;</span>
+        <div className={styles.controls}>
+          <Dropdown
+            label="Subject"
+            value={subject}
+            options={SUBJECT_OPTIONS}
+            onChange={setSubject}
+          />
+          <Dropdown
+            label="Sort"
+            value={sort}
+            options={SORT_OPTIONS}
+            onChange={setSort}
+          />
+        </div>
+
+        {subject !== "all" ? (
+          <p className={`text-caption ${styles.count}`}>
+            {visible.length} {visible.length === 1 ? "post" : "posts"} in{" "}
+            {subject.toLowerCase()}
+          </p>
+        ) : null}
+
+        {lead ? (
+          <ScrollObject className={styles.featured}>
+            <div className={styles.featuredMedia}>
+              <Link
+                href={`/blog/${lead.slug}`}
+                className={styles.featuredFrame}
+                tabIndex={-1}
+                aria-hidden="true"
+              >
+                <img src={lead.image} alt="" loading="eager" />
               </Link>
             </div>
 
-            <div className={styles.featuredArt} aria-hidden="true">
-              <div className={styles.featuredCanvas} />
-              <div className={styles.featuredGlow} />
-              <div className={styles.featuredLamp} />
-              <div className={styles.featuredDune} />
-              <div className={styles.featuredRibbon} />
-              <div className={styles.featuredFigure} />
-              <div className={styles.featuredTable} />
-              <div className={styles.featuredVase} />
-              <div className={styles.featuredBrushTexture} />
-            </div>
-          </article>
-        </section>
-
-        <section className={styles.listSection}>
-          <div className={styles.searchShell}>
-            <SearchIcon />
-            <input
-              type="search"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search writings..."
-              className={styles.searchInput}
-              aria-label="Search writings"
-            />
-          </div>
-
-          <div className={styles.filterRow}>
-            {filters.map((filter) => {
-              const isActive = filter === activeFilter;
-              return (
-                <button
-                  key={filter}
-                  type="button"
-                  className={`${styles.filterPill} ${isActive ? styles.filterPillActive : ""}`}
-                  onClick={() => setActiveFilter(filter)}
-                >
-                  <FilterIcon kind={filter} />
-                  <span>{filter}</span>
-                </button>
-              );
-            })}
-          </div>
-
-          <div className={styles.timeline}>
-            {grouped.length === 0 ? (
-              <div className={styles.emptyState}>
-                <p>No writings match that search yet.</p>
+            <div className={styles.featuredBody}>
+              <span className={`text-small ${styles.featuredKicker}`}>
+                Latest
+              </span>
+              <h2 className="h5">
+                <Link href={`/blog/${lead.slug}`} className="link-underline">
+                  {lead.title}
+                </Link>
+              </h2>
+              <p className={`text-regular ${styles.featuredExcerpt}`}>
+                {lead.excerpt}
+              </p>
+              <div className={styles.cardMeta}>
+                <span className={`text-small ${styles.tag}`}>
+                  {lead.category}
+                </span>
+                <p className={`text-small ${styles.readTime}`}>
+                  {lead.readTime}
+                </p>
               </div>
-            ) : (
-              grouped.map(([month, monthArticles], groupIndex) => (
-                <section key={month} className={styles.monthGroup}>
-                  <h3 className={styles.monthLabel}>{month}</h3>
-                  <div className={styles.monthStack}>
-                    {monthArticles.map((article, articleIndex) => {
-                      const isLast = articleIndex === monthArticles.length - 1;
-                      return (
-                        <article
-                          key={article.slug}
-                          className={styles.articleRow}
-                          style={{ ["--stagger" as string]: `${groupIndex * 120 + articleIndex * 80}ms` }}
-                        >
-                          <div className={styles.articleRail}>
-                            <div className={`${styles.thumb} ${styles[`thumb${article.accent[0].toUpperCase()}${article.accent.slice(1)}`]}`}>
-                              <span className={styles.thumbGlyph} />
-                            </div>
-                            {!isLast ? <span className={styles.railLine} aria-hidden="true" /> : null}
-                          </div>
+            </div>
+          </ScrollObject>
+        ) : null}
 
-                          <div className={styles.articleContent}>
-                            <h4 className={styles.articleTitle}>{article.title}</h4>
-                            <div className={styles.articleMeta}>
-                              <span className={styles.avatar}>{article.authorInitials}</span>
-                              <span className={styles.authorName}>{article.author}</span>
-                              <span className={styles.metaDot}>•</span>
-                              <span className={styles.articleDate}>{article.dateLabel}</span>
-                            </div>
-                          </div>
-                        </article>
-                      );
-                    })}
+        {rest.length ? (
+          <div className={styles.grid}>
+            {rest.map((post, i) => (
+              <ScrollObject
+                key={post.slug}
+                as="article"
+                className={`${styles.card} ${SLOTS[i % SLOTS.length]}`}
+              >
+                <div className="slide-up">
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    className={styles.cardFrame}
+                    tabIndex={-1}
+                    aria-hidden="true"
+                  >
+                    <img src={post.image} alt="" loading="lazy" />
+                  </Link>
+
+                  <h2 className={`h7 ${styles.cardTitle}`}>
+                    <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+                  </h2>
+
+                  <div className={styles.cardMeta}>
+                    <span className={`text-small ${styles.tag}`}>
+                      {post.category}
+                    </span>
+                    <p className={`text-small ${styles.readTime}`}>
+                      {post.readTime}
+                    </p>
                   </div>
-                </section>
-              ))
-            )}
+                </div>
+              </ScrollObject>
+            ))}
           </div>
-        </section>
+        ) : null}
 
-        <section className={styles.ctaSection}>
-          <div className={styles.ctaMarkTile}>
-            <NamuLogoMark variant="onLight" height={56} />
+        {!visible.length ? (
+          <div className={styles.empty}>
+            <p className="h6">
+              Nothing filed under {subject.toLowerCase()} yet.
+            </p>
+            <div className={styles.emptyAction}>
+              <Button onClick={() => setSubject("all")} simple>
+                Show everything
+              </Button>
+            </div>
           </div>
-          <h2 className={styles.ctaTitle}>Stay close.</h2>
-          <p className={styles.ctaBody}>Get updates on Namu AI-Studio and early access.</p>
-          <div className={styles.ctaActions}>
-            <a href="/login" className={styles.ctaPrimary}>
-              Join Waitlist
-            </a>
-            <a href="https://x.com" target="_blank" rel="noreferrer" className={styles.ctaSecondary}>
-              Follow on X
-            </a>
-          </div>
-        </section>
+        ) : null}
       </main>
+
       <Footer />
     </>
   );

@@ -1,0 +1,217 @@
+/* ==========================================================================
+   Blog article
+   ========================================================================== */
+
+.page {
+  padding-top: calc(190 * var(--unit-fx));
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(10 * var(--unit-fx));
+  color: var(--ds-text-soft);
+  margin-bottom: calc(56 * var(--unit-fx));
+  transition: color 0.4s var(--ease-out);
+}
+
+.back:hover {
+  color: var(--ds-text);
+}
+
+.backArrow {
+  width: calc(18 * var(--unit-fx));
+  min-width: 13px;
+  transform: rotate(180deg);
+  transition: transform 0.5s var(--ease-out);
+}
+
+.back:hover .backArrow {
+  transform: rotate(180deg) translateX(calc(4 * var(--unit-fx)));
+}
+
+/* ---- Header -------------------------------------------------------------- */
+
+.header {
+  margin-inline: auto;
+  width: calc(var(--col24) * 16 + var(--gutter24) * 15);
+  text-align: center;
+  margin-bottom: calc(64 * var(--unit-fx));
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(16 * var(--unit-fx));
+  margin-bottom: calc(32 * var(--unit-fx));
+  color: var(--ds-text-soft);
+}
+
+.tag {
+  display: inline-block;
+  color: var(--ds-text);
+  text-transform: lowercase;
+  padding: calc(4 * var(--unit-fx)) calc(20 * var(--unit-fx));
+  border-radius: calc(3 * var(--unit-fx));
+  background: var(--ds-surface-2);
+}
+
+.dot {
+  opacity: 0.4;
+}
+
+.excerpt {
+  color: var(--ds-text-soft);
+  margin-top: calc(28 * var(--unit-fx));
+  margin-inline: auto;
+  max-width: calc(var(--col24) * 13 + var(--gutter24) * 12);
+}
+
+/* ---- Hero image ---------------------------------------------------------- */
+
+.hero {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1660 / 780;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  margin-bottom: calc(96 * var(--unit-fx));
+}
+
+.hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---- Body ---------------------------------------------------------------- */
+
+.body {
+  margin-inline: auto;
+  /* Around 68 characters per line at the reference width — the range prose
+     stays comfortable to read at this size. */
+  width: calc(var(--col24) * 12 + var(--gutter24) * 11);
+}
+
+.body p {
+  margin: 0 0 1.1em;
+}
+
+.body p:last-child {
+  margin-bottom: 0;
+}
+
+/* A paragraph ending in a colon is treated as a subheading. */
+.subhead {
+  display: block;
+  margin: calc(56 * var(--unit-fx)) 0 calc(24 * var(--unit-fx)) !important;
+  color: var(--ds-text);
+}
+
+.signoff {
+  margin-top: calc(96 * var(--unit-fx));
+  padding-top: calc(40 * var(--unit-fx));
+  border-top: 1px solid var(--rule-soft);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: calc(20 * var(--unit-fx));
+  color: var(--ds-text-soft);
+}
+
+/* ---- More posts ---------------------------------------------------------- */
+
+.more {
+  margin-top: calc(160 * var(--unit-fx));
+  margin-bottom: calc(140 * var(--unit-fx));
+}
+
+.moreHead {
+  margin-bottom: calc(48 * var(--unit-fx));
+}
+
+.moreGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: calc(26 * var(--unit-fx));
+}
+
+.moreCard {
+  display: block;
+  color: inherit;
+  min-width: 0;
+}
+
+.moreFrame {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1052 / 1117;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  margin-bottom: calc(20 * var(--unit-fx));
+}
+
+.moreFrame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s var(--ease-out);
+}
+
+.moreCard:hover .moreFrame img {
+  transform: scale(1.05);
+}
+
+.moreCard:hover .moreTitle {
+  text-decoration: underline;
+  text-underline-offset: 0.14em;
+}
+
+.moreMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: calc(12 * var(--unit-fx));
+  margin-top: calc(16 * var(--unit-fx));
+  color: var(--ds-text-soft);
+}
+
+/* -------------------------------------------------------------------------- */
+
+@media (max-width: 860px) {
+  .header,
+  .body {
+    width: 100%;
+  }
+  .excerpt {
+    max-width: 100%;
+  }
+  .hero {
+    aspect-ratio: 16 / 10;
+  }
+  .moreGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .page {
+    padding-top: calc(150 * var(--unit-fx));
+  }
+  .hero {
+    aspect-ratio: 340 / 300;
+    margin-bottom: calc(60 * var(--unit-fx));
+  }
+  .meta {
+    flex-wrap: wrap;
+  }
+  .moreGrid {
+    grid-template-columns: 1fr;
+    gap: calc(50 * var(--unit-fx));
+  }
+  .signoff {
+    display: block;
+  }
+}
