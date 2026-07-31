@@ -13,16 +13,17 @@ import { Quote } from "@/components/editorial/home/Quote";
 import { StoryRail, type Story } from "@/components/editorial/home/StoryRail";
 import { Values } from "@/components/editorial/home/Values";
 
-/* Namu's own photography and product shots, interleaved with the generated
-   Sahel plates so the flight through the portal stays warm and varied. */
+/* Photography and painting alternating, so the flight never reads as a stock
+   slideshow. Order is positional — index N lands in LAYOUT slot N, whose
+   aspect ratio is cut to match these exact files. */
 const PORTAL_IMAGES = [
-  { src: "/editorial/panel-canyon-01.jpg", alt: "" },
-  { src: "/editorial/panel-valley-gold.jpg", alt: "" },
-  { src: "/editorial/panel-canyon-02.jpg", alt: "" },
-  { src: "/namu_app.jpg", alt: "" },
-  { src: "/editorial/panel-desert-dusk.jpg", alt: "" },
-  { src: "/editorial/panel-canyon-03.jpg", alt: "" },
-  { src: "/editorial/panel-caravan.jpg", alt: "" },
+  { src: "/editorial/panel-children-dusk.jpg", alt: "Children standing together in low golden light" },
+  { src: "/editorial/panel-portrait-headwrap.jpg", alt: "Painted portrait of a woman in a patterned headwrap" },
+  { src: "/editorial/panel-baskets-wall.jpg", alt: "Women carrying woven baskets along a sunlit wall" },
+  { src: "/editorial/panel-acacia-sunset.jpg", alt: "Painted acacia grove against a red sun" },
+  { src: "/editorial/panel-elephants-crossing.jpg", alt: "A herd crossing a river at dawn, seen from above" },
+  { src: "/editorial/panel-boys-shallows.jpg", alt: "Two boys running through golden shallows" },
+  { src: "/editorial/panel-oryx-dune.jpg", alt: "An oryx standing below a vivid orange dune" },
 ];
 
 const LANGUAGE_IMAGES = [

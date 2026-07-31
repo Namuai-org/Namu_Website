@@ -13,14 +13,16 @@ export type PortalImage = { src: string; alt: string };
 /** Where each panel sits in the frame, and how big it is. */
 /* All seven hug the frame edges: the middle of the viewport has to stay
    clear for the copy the panels are flying past. */
+/* Each ratio is the true aspect ratio of the image in that slot, so `cover`
+   never has anything to crop. Change one, change the other. */
 const LAYOUT = [
-  { left: "-2vmax", top: "4vmax", width: "15vmax", ratio: "646 / 865" },
-  { right: "-4vmax", top: "10vmax", width: "20vmax", ratio: "506 / 759" },
-  { left: "-7vmax", top: "34vmax", width: "22vmax", ratio: "501 / 515" },
-  { left: "-3vmax", bottom: "-12vmax", width: "17vmax", ratio: "536 / 781" },
-  { right: "-6vmax", bottom: "-10vmax", width: "19vmax", ratio: "560 / 700" },
-  { left: "11vmax", top: "-10vmax", width: "14vmax", ratio: "520 / 690" },
-  { right: "9vmax", bottom: "-18vmax", width: "15vmax", ratio: "600 / 800" },
+  { left: "-2vmax", top: "4vmax", width: "15vmax", ratio: "736 / 1022" },
+  { right: "-4vmax", top: "10vmax", width: "20vmax", ratio: "736 / 1104" },
+  { left: "-7vmax", top: "34vmax", width: "22vmax", ratio: "736 / 736" },
+  { left: "-3vmax", bottom: "-12vmax", width: "17vmax", ratio: "736 / 1041" },
+  { right: "-6vmax", bottom: "-10vmax", width: "19vmax", ratio: "736 / 920" },
+  { left: "11vmax", top: "-10vmax", width: "14vmax", ratio: "736 / 920" },
+  { right: "9vmax", bottom: "-18vmax", width: "15vmax", ratio: "600 / 965" },
 ] as const;
 
 const PERSPECTIVE = 250; // vh — must match --perspective in the stylesheet
@@ -134,7 +136,7 @@ export function Portal({ images }: { images: PortalImage[] }) {
                 aspectRatio: ratio,
               }}
             >
-              <img src={img.src} alt="" loading="lazy" />
+              <img src={img.src} alt={img.alt} loading="lazy" />
             </div>
           );
         })}
@@ -153,6 +155,9 @@ export function Portal({ images }: { images: PortalImage[] }) {
           </p>
           <p className="text-large">
             <SplitText text={t("home.join.body2")} delay={0.2} />
+          </p>
+          <p className="text-large">
+            <SplitText text={t("home.join.body3")} delay={0.3} />
           </p>
           <Button href="mailto:contact@namuai.org">{t("home.join.cta")}</Button>
         </ScrollObject>

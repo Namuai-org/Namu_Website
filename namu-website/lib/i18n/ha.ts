@@ -60,8 +60,9 @@ export const ha = {
   "home.loop.body":  "Maganar da aka bayar da yarda tana horar da samfura. Samfura na karfafa dandamali. Dandamali na kai ga masu amfani, amfaninsu kuma ya koma sabon bayani.",
 
   "home.join.title": "Ku shiga tare da mu",
-  "home.join.body":  "Namu na farkon tafiya. Tawagar karama ce da gangan, kusa da al'ummomin da muke gini domin su, tana mai da hankali kan kafa tushe yadda ya kamata kafin fadadawa.",
-  "home.join.body2": "Idan wannan aikin ya burge ka, muna son jin ta bakinka.",
+  "home.join.body":  "Mu karamar tawaga ce mai buri, ta masu bincike, injiniyoyi da masu gine-gine, muna aiki domin sanya AI ta kai ga al'ummomin Afirka.",
+  "home.join.body2": "Muna aiki da sauri, muna kula sosai da mutanen da muke gini domin su, kuma mun yi imani cewa fasaha mafi kyau tana farawa ne da fahimtar al'ummomi na gaskiya. A Namu, za ka yi aiki a kan matsaloli masu wuya na magana, harshe, bayanai da samfuri, tare da taimakawa wajen gina fasahar da za ta iya kai ga miliyoyin mutanen da aka bar su a baya a juyin AI.",
+  "home.join.body3": "Idan manufarmu ta burge ka, za mu yi farin cikin jin ta bakinka.",
   "home.join.cta":   "Tuntube mu",
 
   "home.langs.title":  "Inda muke farawa",

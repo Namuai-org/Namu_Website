@@ -60,8 +60,9 @@ export const en = {
   "home.loop.body":  "Consented speech trains the models. The models power the platform. The platform reaches real users, and their usage becomes the next round of data.",
 
   "home.join.title": "Join us",
-  "home.join.body":  "Namu is early. The team is small on purpose, close to the communities we build for, and focused on getting the foundation right before we widen it.",
-  "home.join.body2": "If this work resonates with you, we would like to hear from you.",
+  "home.join.body":  "We're a small, ambitious team of researchers, engineers, and builders working to make AI accessible to African communities.",
+  "home.join.body2": "We move fast, care deeply about the people we are building for, and believe the best technology starts with understanding real communities. At Namu, you'll work on hard problems in speech, language, data, and product while helping build technology that can reach millions of people who have been left out of the AI revolution.",
+  "home.join.body3": "If our mission speaks to you, we'd love to hear from you.",
   "home.join.cta":   "Get in touch",
 
   "home.langs.title":  "Where we start",
