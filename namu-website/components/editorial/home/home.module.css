@@ -519,7 +519,11 @@
   stroke-width: 3;
   fill: none;
   stroke-linecap: round;
-  transition: stroke-dashoffset 1.4s var(--ease-out);
+  /* Linear, deliberately. An eased curve front-loads the progress so the line
+     is essentially complete within the first fraction of the duration, which
+     reads as the stroke appearing rather than being drawn. A constant rate is
+     what makes it look like a pen moving. 700ms matches the reference. */
+  transition: stroke-dashoffset 0.7s linear;
 }
 
 @media (max-width: 900px) {

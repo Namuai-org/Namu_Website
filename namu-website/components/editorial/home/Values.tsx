@@ -79,29 +79,34 @@ export function Values() {
       const l0 = list.getBoundingClientRect();
       const mode = DOODLES[index].mode;
 
+      // Placement rules follow the reference: connect runs from the end of the
+      // term across to where the definition starts; underline sits under the
+      // term at 1.2x its width; circled is centred on the term's midline.
       if (mode === "connect") {
         const defs = defsRef.current;
-        const right = defs ? defs.getBoundingClientRect().left : t0.right + 200;
-        // Path starts at ~55% of the viewBox height, so anchoring the box a
-        // third of a line above the term puts that start on its baseline.
+        const termEnd = t0.right - l0.left;
+        const defStart = defs
+          ? defs.getBoundingClientRect().left - l0.left
+          : termEnd + 220;
         setBox({
-          left: t0.left - l0.left + t0.width * 0.34,
-          top: t0.top - l0.top + t0.height * 0.30,
-          width: Math.max(200, right - l0.left - (t0.left - l0.left) - t0.width * 0.34 + 30),
+          left: termEnd,
+          top: t0.top - l0.top + t0.height * 0.28,
+          width: Math.max(180, defStart - termEnd),
           height: t0.height * 1.15,
         });
       } else if (mode === "circled") {
+        const height = t0.height * 1.5;
         setBox({
-          left: t0.left - l0.left - t0.width * 0.14,
-          top: t0.top - l0.top - t0.height * 0.22,
-          width: t0.width * 1.3,
-          height: t0.height * 1.5,
+          left: t0.left - l0.left - t0.width * 0.12,
+          top: t0.top - l0.top + t0.height / 2 - height / 2,
+          width: t0.width * 1.28,
+          height,
         });
       } else {
         setBox({
-          left: t0.left - l0.left - t0.width * 0.03,
-          top: t0.top - l0.top + t0.height * 0.82,
-          width: t0.width * 1.08,
+          left: t0.left - l0.left,
+          top: t0.top - l0.top + t0.height * 0.84,
+          width: t0.width * 1.2,
           height: t0.height * 0.42,
         });
       }
