@@ -65,7 +65,10 @@ export function Values() {
   const defsRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
   const [box, setBox] = useState<DoodleBox | null>(null);
-  const [drawn, setDrawn] = useState(false);
+  /** Which value's annotation has been told to draw. Never a boolean: it has to
+      be false for the incoming value in the very same render that `active`
+      changes, which a boolean toggled from an effect cannot do. */
+  const [drawnFor, setDrawnFor] = useState<number | null>(null);
   const [hasEntered, setHasEntered] = useState(false);
 
   // Position the annotation against whichever term is currently active.
@@ -134,16 +137,21 @@ export function Values() {
   }, []);
 
   useLayoutEffect(() => {
-    setDrawn(false);
     placeDoodle(active);
+  }, [active, placeDoodle]);
+
+  useEffect(() => {
     if (!hasEntered) return;
-    // Let the reposition paint before the stroke starts drawing, otherwise
-    // the line animates from its previous location.
+    // Two frames, and both are load-bearing. The <svg> is keyed by `active`, so
+    // the incoming annotation is a brand-new element mounted at full offset —
+    // but a transition needs a *painted* starting value to animate away from.
+    // One frame lets it paint undrawn (and lets the reposition land, so the
+    // line never draws from where the previous one sat); the second flips it.
     const id = requestAnimationFrame(() =>
-      requestAnimationFrame(() => setDrawn(true)),
+      requestAnimationFrame(() => setDrawnFor(active)),
     );
     return () => cancelAnimationFrame(id);
-  }, [active, placeDoodle, hasEntered]);
+  }, [active, hasEntered]);
 
   useRafScroll((scrollY, viewportH) => {
     const section = sectionRef.current;
@@ -197,7 +205,13 @@ export function Values() {
                 ))}
 
                 {box ? (
+                  // Keyed by `active` so each value gets its own element. Reusing
+                  // one <svg> meant the offset went 0 -> 1 -> 0 across two frames,
+                  // and the browser simply reversed a transition that had barely
+                  // left 0 — so every annotation after the first arrived looking
+                  // already drawn.
                   <svg
+                    key={active}
                     aria-hidden="true"
                     className={`${styles.doodle} ${styles.doodleActive}`}
                     viewBox={doodle.viewBox}
@@ -213,7 +227,7 @@ export function Values() {
                       d={doodle.d}
                       pathLength={1}
                       strokeDasharray={1}
-                      strokeDashoffset={drawn ? 0 : 1}
+                      strokeDashoffset={drawnFor === active ? 0 : 1}
                     />
                   </svg>
                 ) : null}

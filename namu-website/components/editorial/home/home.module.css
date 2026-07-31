@@ -576,8 +576,10 @@
 
 .portal {
   position: relative;
-  /* 0.3 viewports of runway per panel. */
-  padding-top: 210vh;
+  /* Scroll runway. The copy pins for all of it, so this is purely how long the
+     stream of panels lasts — roughly 0.2 viewports per panel. Height rather
+     than padding-top: the sticky child needs a taller parent to travel in. */
+  height: 320vh;
 }
 
 .portalSlides {
@@ -607,35 +609,54 @@
   object-fit: cover;
 }
 
-.portalContent {
-  position: relative;
+/* Pins the copy to the middle of the screen for the whole section, so the
+   panels stream past it instead of it sliding in underneath them. */
+.portalStick {
+  position: sticky;
+  top: 0;
   height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
   /* Must sit above the flying panels, which build their own stacking
      context and raise individual z-indexes as they approach the camera. */
   z-index: 3;
 }
 
-/* A soft halo of page colour so the copy stays readable when a panel drifts
-   behind it. Radial rather than a box, so it never reads as a card. */
+.portalContent {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* A soft wash of page colour so the copy stays readable when a panel drifts
+   behind it.
+
+   It has to reach zero well inside its own box. An `ellipse` gradient is sized
+   so 100% lands on the farthest corner, which puts the left and right edges at
+   ~71% — so a gradient that only reaches transparent at 100% is still partly
+   opaque where the element ends, and paints a hard-edged rectangle across the
+   flight. That rectangle is what read as a card sliding in. Ending at 58%
+   leaves every edge fully transparent, so the wash has no boundary at all. */
 .portalContent::before {
   content: "";
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: calc(var(--col24) * 18 + var(--gutter24) * 17);
-  height: 78%;
+  width: 150vw;
+  height: 380%;
   pointer-events: none;
   background: radial-gradient(
     ellipse at center,
-    var(--ds-bg) 0%,
-    var(--ds-bg) 42%,
-    rgba(255, 250, 241, 0.82) 62%,
-    rgba(255, 250, 241, 0) 100%
+    rgba(255, 250, 241, 1) 0%,
+    rgba(255, 250, 241, 0.96) 16%,
+    rgba(255, 250, 241, 0.8) 28%,
+    rgba(255, 250, 241, 0.4) 42%,
+    rgba(255, 250, 241, 0) 58%
   );
   z-index: -1;
 }
@@ -645,14 +666,21 @@
   margin-inline: auto;
   display: flex;
   flex-direction: column;
-  gap: calc(40 * var(--unit-fx));
+  gap: calc(28 * var(--unit-fx));
   align-items: center;
 }
 
 @media (max-width: 900px) {
   .portal {
-    padding-top: 0;
+    height: auto;
     margin-block: calc(120 * var(--unit-fx));
+  }
+
+  /* No flight down here, so nothing to pin against. */
+  .portalStick {
+    position: static;
+    height: auto;
+    display: block;
   }
   .portalSlides {
     position: relative;
@@ -674,9 +702,6 @@
     width: 100% !important;
     transform: none !important;
     filter: none !important;
-  }
-  .portalContent {
-    height: auto;
   }
   .portalContent::before {
     display: none;

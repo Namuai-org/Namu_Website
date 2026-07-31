@@ -3,16 +3,12 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useLayoutEffect, useState, type ReactNode } from "react";
 
-const ENTER_MS = 600;
-
 export function PageTransition({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const [isReady, setIsReady] = useState(false);
-  const [isDone, setIsDone] = useState(false);
 
   useLayoutEffect(() => {
     setIsReady(false);
-    setIsDone(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -28,20 +24,15 @@ export function PageTransition({ children }: { children: ReactNode }) {
     };
   }, [pathname]);
 
-  // Once the entrance has played out, drop the transform/filter/will-change.
-  // While any of them are set this wrapper is a containing block, which
-  // silently breaks every position:sticky and position:fixed descendant.
-  useEffect(() => {
-    if (!isReady) return;
-    const id = setTimeout(() => setIsDone(true), ENTER_MS + 50);
-    return () => clearTimeout(id);
-  }, [isReady, pathname]);
-
+  // There used to be a second phase here that added `page-enter-done` to drop
+  // the wrapper's transform/filter once the entrance had played. It never
+  // worked: no stylesheet ever defined `.page-enter-done`, so the identity
+  // `scale(1)`/`blur(0px)` stayed on forever and kept this element a
+  // containing block for every position:fixed descendant. The transform and
+  // filter are gone from the stylesheet now, so there is nothing to undo.
   return (
     <div
-      className={`page-enter${isReady ? " page-enter-active" : ""}${
-        isDone ? " page-enter-done" : ""
-      }`}
+      className={`page-enter${isReady ? " page-enter-active" : ""}`}
       style={{ width: "100%" }}
     >
       {children}
