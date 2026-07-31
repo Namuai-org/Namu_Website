@@ -645,7 +645,7 @@
   margin-inline: auto;
   display: flex;
   flex-direction: column;
-  gap: calc(40 * var(--unit-fx));
+  gap: calc(28 * var(--unit-fx));
   align-items: center;
 }
 

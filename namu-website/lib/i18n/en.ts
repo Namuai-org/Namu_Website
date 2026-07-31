@@ -61,7 +61,7 @@ export const en = {
 
   "home.join.title": "Join us",
   "home.join.body":  "We're a small, ambitious team of researchers, engineers, and builders working to make AI accessible to African communities.",
-  "home.join.body2": "We move fast, care deeply about the people we are building for, and believe the best technology starts with understanding real communities. At Namu, you'll work on hard problems in speech, language, data, and product while helping build technology that can reach millions of people who have been left out of the AI revolution.",
+  "home.join.body2": "You'll work on hard problems in speech, language, data, and product, and help reach millions of people the AI revolution has left out.",
   "home.join.body3": "If our mission speaks to you, we'd love to hear from you.",
   "home.join.cta":   "Get in touch",
 

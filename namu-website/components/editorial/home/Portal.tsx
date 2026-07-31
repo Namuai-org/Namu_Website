@@ -145,18 +145,18 @@ export function Portal({ images }: { images: PortalImage[] }) {
       <div className={styles.portalContent} ref={contentRef}>
         <ScrollObject
           className={`ds-span ${styles.portalCopy}`}
-          style={{ "--span": 12 } as React.CSSProperties}
+          style={{ "--span": 10 } as React.CSSProperties}
         >
           <h2 className="h4">
             <SplitText text={t("home.join.title")} />
           </h2>
-          <p className="text-large">
+          <p className="text-regular">
             <SplitText text={t("home.join.body")} delay={0.1} />
           </p>
-          <p className="text-large">
+          <p className="text-regular">
             <SplitText text={t("home.join.body2")} delay={0.2} />
           </p>
-          <p className="text-large">
+          <p className="text-regular">
             <SplitText text={t("home.join.body3")} delay={0.3} />
           </p>
           <Button href="mailto:contact@namuai.org">{t("home.join.cta")}</Button>

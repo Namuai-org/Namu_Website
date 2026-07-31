@@ -61,7 +61,7 @@ export const ha = {
 
   "home.join.title": "Ku shiga tare da mu",
   "home.join.body":  "Mu karamar tawaga ce mai buri, ta masu bincike, injiniyoyi da masu gine-gine, muna aiki domin sanya AI ta kai ga al'ummomin Afirka.",
-  "home.join.body2": "Muna aiki da sauri, muna kula sosai da mutanen da muke gini domin su, kuma mun yi imani cewa fasaha mafi kyau tana farawa ne da fahimtar al'ummomi na gaskiya. A Namu, za ka yi aiki a kan matsaloli masu wuya na magana, harshe, bayanai da samfuri, tare da taimakawa wajen gina fasahar da za ta iya kai ga miliyoyin mutanen da aka bar su a baya a juyin AI.",
+  "home.join.body2": "Za ka yi aiki a kan matsaloli masu wuya na magana, harshe, bayanai da samfuri, tare da taimakawa wajen kai ga miliyoyin mutanen da aka bar su a baya a juyin AI.",
   "home.join.body3": "Idan manufarmu ta burge ka, za mu yi farin cikin jin ta bakinka.",
   "home.join.cta":   "Tuntube mu",
 
