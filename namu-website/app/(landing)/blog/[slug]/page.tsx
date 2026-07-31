@@ -6,6 +6,7 @@ import { ArrowRight } from "@/components/editorial/icons";
 import { ScrollObject } from "@/components/editorial/ScrollObject";
 import { SplitText } from "@/components/editorial/SplitText";
 import { formatDate, getPost, posts, postsByDate } from "@/lib/blog";
+import { breadcrumbJsonLd, postJsonLd } from "@/lib/structuredData";
 import styles from "./article.module.css";
 
 type Params = { params: Promise<{ slug: string }> };
@@ -23,6 +24,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   return {
     title: `${post.title} | Namu`,
     description: post.excerpt,
+    alternates: { canonical: `/blog/${post.slug}` },
     openGraph: {
       title: post.title,
       description: post.excerpt,
@@ -48,6 +50,14 @@ export default async function ArticlePage({ params }: Params) {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        // Content is built from our own data, never user input.
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([postJsonLd(post), breadcrumbJsonLd(post)]),
+        }}
+      />
+
       <main id="main-content" className={`ds-container ds-outer ${styles.page}`}>
         <Link href="/blog" className={`text-ui ${styles.back}`}>
           <ArrowRight className={styles.backArrow} />
