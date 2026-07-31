@@ -2,7 +2,13 @@
 
 import Link from "next/link";
 import { useTranslation } from "@/hooks/useTranslation";
-import { NamuMark } from "./icons";
+import {
+  IconGitHub,
+  IconInstagram,
+  IconLinkedIn,
+  IconX,
+  NamuMark,
+} from "./icons";
 import styles from "./footer.module.css";
 
 const COLUMNS = [
@@ -19,7 +25,7 @@ const COLUMNS = [
     title: "nav.products",
     links: [
       { label: "nav.tryFree", href: "/playground" },
-      { label: "nav.contactSales", href: "mailto:contact@namu.ai" },
+      { label: "nav.contactSales", href: "mailto:contact@namuai.org" },
     ],
   },
   {
@@ -29,6 +35,14 @@ const COLUMNS = [
       { label: "footer.terms", href: "/terms" },
     ],
   },
+] as const;
+
+/* Real handles, carried over from the footer this replaces. */
+const SOCIALS = [
+  { label: "Instagram", href: "https://instagram.com/namuai", Icon: IconInstagram },
+  { label: "LinkedIn", href: "https://linkedin.com/company/namuai", Icon: IconLinkedIn },
+  { label: "X", href: "https://x.com/namuai", Icon: IconX },
+  { label: "GitHub", href: "https://github.com/namuai", Icon: IconGitHub },
 ] as const;
 
 export function Footer() {
@@ -86,14 +100,37 @@ export function Footer() {
             <ul className={styles.list}>
               <li>
                 <a
-                  href="mailto:contact@namu.ai"
+                  href="mailto:contact@namuai.org"
                   className="text-ui link-underline"
                 >
-                  contact@namu.ai
+                  contact@namuai.org
+                </a>
+              </li>
+              <li>
+                <a
+                  href="mailto:support@namuai.org"
+                  className="text-ui link-underline"
+                >
+                  support@namuai.org
                 </a>
               </li>
             </ul>
           </nav>
+        </div>
+
+        <div className={styles.socials}>
+          {SOCIALS.map(({ label, href, Icon }) => (
+            <a
+              key={label}
+              href={href}
+              className={styles.social}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={label}
+            >
+              <Icon />
+            </a>
+          ))}
         </div>
 
         <div className={`text-caption ${styles.bottom}`}>

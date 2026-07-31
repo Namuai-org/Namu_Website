@@ -173,7 +173,7 @@ export function Nav() {
                 </span>
               </button>
 
-              <a href="mailto:contact@namu.ai" className={styles.feature}>
+              <a href="mailto:contact@namuai.org" className={styles.feature}>
                 {t("nav.contactSales")}
                 <ArrowUpRight className={styles.featureArrow} />
               </a>

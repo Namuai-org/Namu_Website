@@ -75,7 +75,7 @@ export const NAV_PANELS: Record<string, NavPanel> = {
         title: "nav.product.app.title",
         body: "nav.product.app.body",
         href: "/playground",
-        image: "/namu_app.png",
+        image: "/namu_app.jpg",
       },
       {
         title: "nav.product.api.title",

@@ -19,7 +19,7 @@ const PORTAL_IMAGES = [
   { src: "/editorial/panel-canyon-01.jpg", alt: "" },
   { src: "/editorial/panel-valley-gold.jpg", alt: "" },
   { src: "/editorial/panel-canyon-02.jpg", alt: "" },
-  { src: "/namu_app.png", alt: "" },
+  { src: "/namu_app.jpg", alt: "" },
   { src: "/editorial/panel-desert-dusk.jpg", alt: "" },
   { src: "/editorial/panel-canyon-03.jpg", alt: "" },
   { src: "/editorial/panel-caravan.jpg", alt: "" },

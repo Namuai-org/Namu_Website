@@ -102,3 +102,27 @@
     gap: calc(18 * var(--unit-fx));
   }
 }
+
+.socials {
+  display: flex;
+  align-items: center;
+  gap: calc(18 * var(--unit-fx));
+  padding-bottom: calc(30 * var(--unit-fx));
+}
+
+.social {
+  display: inline-flex;
+  width: calc(22 * var(--unit-fx));
+  min-width: 18px;
+  color: var(--ds-text-soft);
+  transition: color 0.4s var(--ease-out);
+}
+
+.social svg {
+  width: 100%;
+  height: auto;
+}
+
+.social:hover {
+  color: var(--ds-text);
+}

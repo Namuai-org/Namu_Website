@@ -154,7 +154,7 @@ export function Portal({ images }: { images: PortalImage[] }) {
           <p className="text-large">
             <SplitText text={t("home.join.body2")} delay={0.2} />
           </p>
-          <Button href="mailto:namu.ai@gmail.com">{t("home.join.cta")}</Button>
+          <Button href="mailto:contact@namuai.org">{t("home.join.cta")}</Button>
         </ScrollObject>
       </div>
     </section>
