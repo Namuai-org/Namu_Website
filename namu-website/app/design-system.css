@@ -596,7 +596,11 @@
   transform: none !important;
 }
 
-/* Blanket kill-switch — anything animated anywhere settles instantly. */
+/* Blanket kill-switch — anything animated anywhere settles instantly.
+   Note this is intentionally sweeping; components that still want a plain
+   cross-fade opt back in with a more specific `html.accessibility-mode`
+   selector, since an element that teleports reads as a bug rather than as
+   respect for the preference. */
 .accessibility-mode *,
 .accessibility-mode *::before,
 .accessibility-mode *::after {
