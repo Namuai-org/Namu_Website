@@ -1,0 +1,631 @@
+/* ==========================================================================
+   Namu — Editorial design system
+   --------------------------------------------------------------------------
+   A fluid, reference-width design system. Every dimension is expressed as a
+   multiple of --unit-fx, which equals 1px at the 1728px reference width and
+   scales down proportionally on narrower screens. Above 1728px the scale
+   locks at 1:1 and the content container simply centres.
+
+   Brand palette is Namu's own: Harmattan, Paper, Ink, Sahel, Kola, Forest,
+   Dry Clay.
+   ========================================================================== */
+
+:root {
+  /* ---- Fluid scaling ---------------------------------------------------- */
+  --ref-width: 1728;
+  --ref-width-m: 402;
+  /* --vw is refreshed by useFluidScale() to the scrollbar-free client width.
+     The min() keeps the layout sane before hydration and above the ref width. */
+  --vw: min(100vw, 1728px);
+  --unit-fx: calc(var(--vw) / var(--ref-width));
+  --unit-fx-type: var(--unit-fx);
+
+  /* ---- 24 column grid --------------------------------------------------- */
+  --col24: calc(50 * var(--unit-fx));
+  --gutter24: calc(20 * var(--unit-fx));
+  /* 24 columns + the 23 gutters between them = 1660 at the reference width */
+  --container: calc(24 * var(--col24) + 23 * var(--gutter24));
+  --outer-gutter: calc(15 * var(--unit-fx));
+
+  /* ---- Brand palette ---------------------------------------------------- */
+  --paper: #fffaf1; /* page background  */
+  --harmattan: #f7f0e3; /* card / raised surface */
+  --dry-clay: #edd9b0; /* sand accent surface */
+  --sahel: #e8935a; /* warm orange accent */
+  --kola: #6b3e1e; /* deep brown — primary text */
+  --forest: #1a3a2e; /* deep green — inverted sections */
+  --ink: #1c1410; /* near-black brown */
+  --muted: #7a6352; /* secondary text */
+
+  --rule: rgba(28, 20, 16, 0.14);
+  --rule-soft: rgba(28, 20, 16, 0.08);
+
+  /* Semantic roles */
+  --ds-bg: var(--paper);
+  --ds-text: var(--kola);
+  --ds-text-soft: var(--muted);
+  --ds-surface: var(--harmattan);
+  --ds-surface-2: #f3e7d1; /* button / pill fill, between Harmattan and Dry Clay */
+  --ds-accent: var(--sahel);
+  --nav-background: rgba(255, 250, 241, 0.92);
+
+  /* ---- Easing ----------------------------------------------------------- */
+  --ease-out: cubic-bezier(0.43, 0.195, 0.02, 1);
+  --ease-in: cubic-bezier(0.98, 0, 0.57, 0);
+  --ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-out-back: cubic-bezier(0.9, 0.1, 0.15, 1.05);
+  --ease-out-3: cubic-bezier(0.63, 0.195, 0.01, 1);
+  --ease-out-snap: cubic-bezier(0.835, 0.085, 0.005, 1);
+  --ease-out-unspun: cubic-bezier(0.745, 0.065, 0.17, 1);
+  --ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
+
+  /* ---- Radius ----------------------------------------------------------- */
+  --radius-card: calc(5 * var(--unit-fx));
+  --radius-pill: calc(32 * var(--unit-fx));
+
+  /* ---- Grain ------------------------------------------------------------ */
+  --noise-tile: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Type does not scale continuously with layout. Between 861 and 1536 it is
+   deliberately frozen, so headline sizes stay put across the whole laptop
+   range instead of creeping with every window resize. The joins at 860/861
+   and 1536/1537 are continuous; only the 600/601 phone-to-tablet step jumps. */
+@media (min-width: 601px) and (max-width: 860px) {
+  :root {
+    --unit-fx-type: calc(100vw / 967.5);
+  }
+}
+
+@media (min-width: 861px) and (max-width: 1536px) {
+  :root {
+    --unit-fx-type: 0.888889px;
+  }
+}
+
+@media (max-width: 600px) {
+  :root {
+    --unit-fx: calc(100vw / var(--ref-width-m));
+    --unit-fx-type: calc(100vw / var(--ref-width-m));
+    --col24: calc(100vw / 24);
+    --gutter24: 0px;
+    --container: calc(100vw - 32 * var(--unit-fx));
+    --outer-gutter: calc(16 * var(--unit-fx));
+  }
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+.ds-root {
+  background: var(--ds-bg);
+  color: var(--ds-text);
+  font-family: var(--font-serif), Georgia, "Times New Roman", serif;
+  font-weight: 450;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
+  /* Sections re-tint --ds-bg / --ds-text as they pass the viewport midpoint,
+     giving the page a slow colour rhythm as you scroll. */
+  transition:
+    background-color 1.1s var(--ease-out),
+    color 1.1s var(--ease-out);
+}
+
+.ds-root ::selection {
+  background: rgba(232, 147, 90, 0.28);
+  color: var(--ink);
+}
+
+/* ==========================================================================
+   Layout helpers
+   ========================================================================== */
+
+.ds-container {
+  max-width: var(--container);
+  margin-inline: auto;
+  width: 100%;
+}
+
+.ds-outer {
+  padding-inline: var(--outer-gutter);
+}
+
+/* Column span: N columns plus the N-1 gutters between them */
+.ds-span {
+  width: calc(var(--col24) * var(--span) + var(--gutter24) * (var(--span) - 1));
+}
+
+/* Column offset: N columns plus N gutters — used for indenting content */
+.ds-offset-left {
+  padding-left: calc(var(--col24) * var(--offset) + var(--gutter24) * var(--offset));
+}
+
+.ds-offset-x {
+  padding-inline: calc(var(--col24) * var(--offset) + var(--gutter24) * var(--offset));
+}
+
+@media (max-width: 600px) {
+  .ds-span {
+    width: 100%;
+  }
+  .ds-offset-left,
+  .ds-offset-x {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+/* ==========================================================================
+   Typography
+   --------------------------------------------------------------------------
+   Sizes are the measured values at the 1728px reference width.
+   ========================================================================== */
+
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+.text-large,
+.text-large-alt,
+.text-regular {
+  font-family: var(--font-serif), Georgia, serif;
+  margin: 0;
+  text-wrap: pretty;
+}
+
+.h1 {
+  font-size: calc(150 * var(--unit-fx-type));
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-weight: 450;
+}
+
+.h2 {
+  font-size: calc(120 * var(--unit-fx-type));
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-weight: 450;
+}
+
+.h3 {
+  font-size: calc(64 * var(--unit-fx-type));
+  line-height: 1;
+  letter-spacing: -0.005em;
+  font-weight: 400;
+}
+
+.h4 {
+  font-size: calc(54 * var(--unit-fx-type));
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  font-weight: 450;
+}
+
+.h5 {
+  font-size: calc(48 * var(--unit-fx-type));
+  line-height: 1.125;
+  letter-spacing: -0.02em;
+  font-weight: 450;
+}
+
+.h6 {
+  font-size: calc(42 * var(--unit-fx-type));
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-weight: 450;
+}
+
+.h7 {
+  font-size: calc(32 * var(--unit-fx-type));
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-weight: 450;
+  font-family: var(--font-serif), Georgia, serif;
+  margin: 0;
+}
+
+.text-large {
+  font-size: calc(30 * var(--unit-fx-type));
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  font-weight: 450;
+}
+
+.text-large-alt {
+  font-size: calc(32 * var(--unit-fx-type));
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-weight: 450;
+}
+
+.text-regular {
+  font-size: calc(24 * var(--unit-fx-type));
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  font-weight: 450;
+}
+
+/* Mono — UI, labels, metadata */
+.text-ui,
+.text-caption,
+.text-small {
+  font-family: var(--font-mono-ui), ui-monospace, "SF Mono", Menlo, monospace;
+  margin: 0;
+}
+
+.text-ui {
+  font-size: calc(16 * var(--unit-fx-type));
+  line-height: 1;
+  font-weight: 500;
+}
+
+.text-caption {
+  font-size: calc(16 * var(--unit-fx-type));
+  line-height: 1.4;
+  letter-spacing: 0.05em;
+  font-weight: 400;
+}
+
+.text-small {
+  font-size: calc(15 * var(--unit-fx-type));
+  line-height: 1;
+  letter-spacing: 0.1em;
+  font-weight: 400;
+}
+
+.text-soft {
+  color: var(--ds-text-soft);
+}
+.text-accent {
+  color: var(--ds-accent);
+}
+.text-center {
+  text-align: center;
+}
+.italic {
+  font-style: italic;
+}
+
+@media (max-width: 600px) {
+  .h1 {
+    font-size: calc(64 * var(--unit-fx-type));
+    letter-spacing: -0.035em;
+  }
+  .h2 {
+    font-size: calc(52 * var(--unit-fx-type));
+  }
+  .h3 {
+    font-size: calc(40 * var(--unit-fx-type));
+  }
+  .h4 {
+    font-size: calc(38 * var(--unit-fx-type));
+  }
+  .h5 {
+    font-size: calc(32 * var(--unit-fx-type));
+  }
+  .h6 {
+    font-size: calc(30 * var(--unit-fx-type));
+  }
+  .h7 {
+    font-size: calc(24 * var(--unit-fx-type));
+  }
+  .text-large {
+    font-size: calc(22 * var(--unit-fx-type));
+  }
+  .text-large-alt {
+    font-size: calc(22 * var(--unit-fx-type));
+  }
+  .text-regular {
+    font-size: calc(18 * var(--unit-fx-type));
+  }
+  .text-ui,
+  .text-caption {
+    font-size: calc(13 * var(--unit-fx-type));
+  }
+  .text-small {
+    font-size: calc(12 * var(--unit-fx-type));
+  }
+}
+
+/* ==========================================================================
+   Buttons & links
+   ========================================================================== */
+
+/* A button is a pill plus a detached square tile holding the arrow. On hover
+   the colours invert and the tile rounds itself into a circle. */
+.button {
+  display: inline-flex;
+  align-items: stretch;
+  gap: 3px;
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  font-size: calc(16 * var(--unit-fx-type));
+  font-weight: 500;
+  line-height: 1;
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--ds-text);
+}
+
+.button__pill,
+.button__tile {
+  background: var(--ds-surface-2);
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 3em;
+  transition:
+    background-color 0.6s var(--ease-out-cubic),
+    color 0.6s var(--ease-out-cubic),
+    border-radius 0.6s var(--ease-out-cubic);
+}
+
+.button__pill {
+  padding-inline: 3em;
+  border-radius: 2em;
+  white-space: nowrap;
+}
+
+.button__tile {
+  width: 3em;
+  border-radius: calc(6 * var(--unit-fx));
+  flex: 0 0 auto;
+}
+
+.button__tile svg {
+  width: 1.1em;
+  height: auto;
+  display: block;
+}
+
+.button:hover .button__pill,
+.button:hover .button__tile {
+  background: var(--kola);
+  color: var(--paper);
+}
+
+.button:hover .button__tile {
+  border-radius: 50%;
+}
+
+.button:active {
+  transform: scale(0.98);
+}
+
+/* Label-only pill, no arrow tile */
+.button--simple .button__pill {
+  padding-inline: 3em;
+}
+
+.button--accent .button__pill,
+.button--accent .button__tile {
+  background: var(--sahel);
+  color: var(--paper);
+}
+.button--accent:hover .button__pill,
+.button--accent:hover .button__tile {
+  background: var(--kola);
+}
+
+.button--invert .button__pill,
+.button--invert .button__tile {
+  background: var(--kola);
+  color: var(--paper);
+}
+.button--invert:hover .button__pill,
+.button--invert:hover .button__tile {
+  background: var(--sahel);
+  color: var(--paper);
+}
+
+@media (max-width: 600px) {
+  .button {
+    font-size: calc(14 * var(--unit-fx-type));
+  }
+  .button__pill {
+    padding-inline: 2em;
+  }
+}
+
+/* Animated underline on inline links */
+.link-underline {
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.08em;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform-origin: right center;
+  transform: scaleX(0);
+  transition: transform 0.6s var(--ease-out);
+}
+
+.link-underline:hover::after {
+  transform-origin: left center;
+  transform: scaleX(1);
+}
+
+/* ==========================================================================
+   Split text — line-by-line masked reveal
+   ========================================================================== */
+
+.split-text {
+  display: block;
+}
+
+.split-text .line-wrapper {
+  display: block;
+  overflow: hidden;
+  /* A hair of vertical padding so descenders/ascenders are not clipped */
+  padding-block: 0.06em;
+  margin-block: -0.06em;
+}
+
+.split-text .line {
+  display: block;
+  transform: translateY(110%);
+  opacity: 0;
+  transition:
+    transform 1.3s var(--ease-out),
+    opacity 1.3s var(--ease-out);
+  transition-delay: calc(
+    (var(--delay, 0) * 1s) + (var(--line-index, 0) * 0.07s)
+  );
+  will-change: transform, opacity;
+}
+
+.split-text.in-view .line {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ==========================================================================
+   Scroll reveal primitive
+   ========================================================================== */
+
+.scroll-object {
+  display: block;
+}
+
+.scroll-object [data-fade] {
+  opacity: 0;
+  transform: translateY(calc(20 * var(--unit-fx)));
+  transition:
+    opacity 1.8s var(--ease-out),
+    transform 1.8s var(--ease-out);
+}
+
+.scroll-object.in-view [data-fade] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(calc(16 * var(--unit-fx)));
+  transition:
+    opacity 1.8s var(--ease-out),
+    transform 1.8s var(--ease-out);
+}
+
+.in-view .fade-in,
+.fade-in.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Images reveal by scaling back from a slight zoom */
+.scale-out {
+  transform: scale(1.14);
+  transition: transform 2.3s var(--ease-out);
+}
+
+.in-view .scale-out {
+  transform: scale(1);
+}
+
+/* Staggered card entrance — --i is the card's index in its row */
+.slide-up {
+  opacity: 0;
+  transform: translateY(calc(40 * var(--unit-fx)));
+  transition:
+    opacity 1.8s var(--ease-out),
+    transform 1.8s var(--ease-out);
+  transition-delay: calc(0.1s + var(--i, 0) * 0.1s);
+}
+
+.in-view .slide-up {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   Accessibility / reduced motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .split-text .line,
+  .scroll-object [data-fade],
+  .fade-in {
+    transform: none !important;
+    opacity: 1 !important;
+    transition: none !important;
+  }
+  .scale-out {
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+.accessibility-mode .split-text .line,
+.accessibility-mode .scroll-object [data-fade],
+.accessibility-mode .fade-in {
+  transform: none !important;
+  opacity: 1 !important;
+  transition: none !important;
+}
+
+.accessibility-mode .scale-out {
+  transform: none !important;
+}
+
+/* Blanket kill-switch — anything animated anywhere settles instantly. */
+.accessibility-mode *,
+.accessibility-mode *::before,
+.accessibility-mode *::after {
+  transition-duration: 0s !important;
+  animation-duration: 0s !important;
+  animation-iteration-count: 1 !important;
+}
+
+
+/* ==========================================================================
+   Grain
+   --------------------------------------------------------------------------
+   A fixed film of noise over the whole page. It is what keeps large flat
+   areas of cream from banding and gives the palette its papery quality.
+   ========================================================================== */
+
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.15;
+  mix-blend-mode: soft-light;
+  background-image: var(--noise-tile);
+  background-size: 256px 256px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .noise-overlay {
+    opacity: 0.08;
+  }
+}

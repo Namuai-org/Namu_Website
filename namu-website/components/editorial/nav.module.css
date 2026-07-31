@@ -1,0 +1,533 @@
+.header {
+  position: fixed;
+  top: calc(33 * var(--unit-fx));
+  left: 0;
+  width: 100%;
+  padding-inline: calc(15 * var(--unit-fx));
+  z-index: 999;
+  pointer-events: none;
+  color: var(--ds-text);
+  transition: transform 0.7s var(--ease-out);
+  will-change: transform;
+}
+
+/* Hidden state slides the bar up by exactly its own height plus its offset,
+   so it clears the viewport without over-travelling. */
+.hidden {
+  transform: translateY(calc(-100% - 33 * var(--unit-fx)));
+}
+
+.shell {
+  max-width: var(--container);
+  margin-inline: auto;
+  width: 100%;
+  filter: drop-shadow(0 4px 80px rgba(107, 62, 30, 0.22));
+}
+
+.bar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding-inline: calc(22 * var(--unit-fx));
+  border-radius: 5px;
+  background: var(--nav-background);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  pointer-events: auto;
+  position: relative;
+}
+
+.logo {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: calc(9 * var(--unit-fx));
+  padding-block: calc(22 * var(--unit-fx));
+  position: relative;
+  z-index: 2;
+  color: inherit;
+}
+
+.logoMark {
+  width: calc(26 * var(--unit-fx));
+  height: auto;
+  display: block;
+}
+
+.logoWord {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(30 * var(--unit-fx-type));
+  line-height: 1;
+  letter-spacing: 0.01em;
+  font-weight: 450;
+}
+
+/* Links sit in the middle column; the right cluster is pinned to the end of
+   the third. The two outer columns are 1fr each, so the links land on the
+   true horizontal centre regardless of how wide the logo or CTA get. */
+.menu {
+  display: contents;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: calc(40 * var(--unit-fx));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+  grid-column: 2;
+}
+
+.link {
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  font-size: calc(16 * var(--unit-fx-type));
+  font-weight: 500;
+  line-height: 1;
+  color: inherit;
+  position: relative;
+  padding-block: calc(10 * var(--unit-fx));
+  transition: opacity 0.4s var(--ease-out);
+}
+
+.link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: calc(4 * var(--unit-fx));
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.6s var(--ease-out);
+}
+
+.link:hover::after,
+.linkActive::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: calc(24 * var(--unit-fx));
+  justify-self: end;
+  grid-column: 3;
+}
+
+/* The editorial slot: small-caps serif, letterspaced, with a 45° arrow. */
+.feature {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(8 * var(--unit-fx));
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(17 * var(--unit-fx-type));
+  font-variant-caps: small-caps;
+  text-transform: lowercase;
+  letter-spacing: 0.04em;
+  color: inherit;
+  white-space: nowrap;
+}
+
+.featureArrow {
+  width: calc(11 * var(--unit-fx));
+  height: auto;
+  transition: transform 0.5s var(--ease-out);
+}
+
+.feature:hover .featureArrow {
+  transform: translate(2px, -2px);
+}
+
+.langToggle {
+  display: inline-flex;
+  align-items: center;
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  font-size: calc(13 * var(--unit-fx-type));
+  letter-spacing: 0.08em;
+  gap: calc(5 * var(--unit-fx));
+}
+
+.langOn {
+  opacity: 1;
+}
+
+.langOff {
+  opacity: 0.42;
+  transition: opacity 0.4s var(--ease-out);
+}
+
+.langToggle:hover .langOff {
+  opacity: 0.7;
+}
+
+.burger {
+  display: none;
+}
+
+/* -------------------------------------------------------------------------- */
+
+@media (max-width: 600px) {
+  .header {
+    top: calc(20 * var(--unit-fx));
+    padding-inline: calc(12 * var(--unit-fx));
+  }
+
+  .hidden {
+    transform: translateY(calc(-100% - 20 * var(--unit-fx)));
+  }
+
+  .bar {
+    grid-template-columns: 1fr auto;
+    padding-inline: calc(19 * var(--unit-fx));
+  }
+  .logo {
+    grid-column: 1;
+  }
+
+  .logoWord {
+    font-size: calc(26 * var(--unit-fx-type));
+  }
+
+  .logoMark {
+    width: calc(22 * var(--unit-fx));
+  }
+
+  .burger {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: calc(5 * var(--unit-fx));
+    width: calc(30 * var(--unit-fx));
+    height: calc(30 * var(--unit-fx));
+    border: 0;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    position: relative;
+    z-index: 3;
+  }
+
+  .burgerLine {
+    display: block;
+    width: 100%;
+    height: 1.5px;
+    background: currentColor;
+    border-radius: 2px;
+    transition: transform 0.5s var(--ease-out), opacity 0.3s var(--ease-out);
+  }
+
+  .burgerOpen .burgerLine:nth-child(1) {
+    transform: translateY(calc(3.25 * var(--unit-fx))) rotate(45deg);
+  }
+
+  .burgerOpen .burgerLine:nth-child(2) {
+    opacity: 0;
+  }
+
+  .burgerOpen .burgerLine:nth-child(3) {
+    transform: translateY(calc(-3.25 * var(--unit-fx))) rotate(-45deg);
+  }
+
+  .menu {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100dvh;
+    background: var(--ds-bg);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: calc(110 * var(--unit-fx)) calc(34 * var(--unit-fx))
+      calc(40 * var(--unit-fx));
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s var(--ease-out);
+  }
+
+  .menuOpen {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .links {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: calc(18 * var(--unit-fx));
+    justify-content: flex-start;
+    grid-column: auto;
+  }
+
+  .link {
+    font-family: var(--font-serif), Georgia, serif;
+    font-size: calc(40 * var(--unit-fx-type));
+    letter-spacing: -0.02em;
+  }
+
+  .link::after {
+    display: none;
+  }
+
+  .right {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: calc(20 * var(--unit-fx));
+    justify-self: start;
+    width: 100%;
+    grid-column: auto;
+  }
+
+  .feature {
+    font-size: calc(20 * var(--unit-fx-type));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header,
+  .link::after,
+  .featureArrow {
+    transition: none;
+  }
+}
+
+/* ==========================================================================
+   Mega panels
+   --------------------------------------------------------------------------
+   Two columns: a hoverable list on the left, one large preview on the right
+   that cross-fades between items over 0.8s. The panel itself unfolds via
+   clip-path from the centre, so its contents are revealed rather than moved.
+   ========================================================================== */
+
+.panelStack {
+  display: grid;
+}
+
+.panelStack > * {
+  grid-area: 1 / 1;
+}
+
+.panelHost {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(728 * var(--unit-fx));
+  min-width: 400px;
+  max-width: calc(100% - 30 * var(--unit-fx));
+  padding-top: calc(12 * var(--unit-fx));
+  pointer-events: none;
+  z-index: 50;
+}
+
+.panel {
+  background: var(--paper);
+  border-radius: calc(8 * var(--unit-fx));
+  box-shadow: 0 24px 80px rgba(107, 62, 30, 0.18);
+  padding: calc(20 * var(--unit-fx));
+  clip-path: inset(0 50% 100% 50% round calc(3 * var(--unit-fx)));
+  opacity: 0;
+  /* Both properties run together over 0.8s on a plain decelerating curve.
+     The reference uses Tailwind's `ease-out`, not its own sharper house
+     easing — that gentler curve is what makes the unfold feel unhurried. */
+  transition:
+    opacity 0.8s cubic-bezier(0, 0, 0.2, 1),
+    clip-path 0.8s cubic-bezier(0, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.panelOpen {
+  clip-path: inset(0 0 0 0 round calc(8 * var(--unit-fx)));
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.panelCols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(16 * var(--unit-fx));
+  align-items: stretch;
+}
+
+.panelLeft {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: calc(20 * var(--unit-fx));
+}
+
+/* Mono, tight — the reference uses one small type size across the whole panel. */
+.metaTitle {
+  display: block;
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  font-size: max(12px, calc(15 * var(--unit-fx-type)));
+  font-weight: 500;
+  line-height: 1;
+  margin: 0;
+  color: var(--ds-text);
+}
+
+.metaDesc {
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  font-size: max(10px, calc(13 * var(--unit-fx-type)));
+  font-weight: 500;
+  line-height: 1.6;
+  margin: 0.7em 0 0;
+  color: var(--ds-text-soft);
+}
+
+.panelList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: calc(24 * var(--unit-fx));
+  width: 100%;
+}
+
+.panelRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: calc(6 * var(--unit-fx));
+  padding-right: calc(18 * var(--unit-fx));
+  background: transparent;
+  border-radius: calc(3 * var(--unit-fx));
+  color: inherit;
+  transition: background-color 0.45s var(--ease-out);
+}
+
+.panelRowActive {
+  background: #fbf0dc;
+}
+
+.panelRowLead {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-width: 0;
+}
+
+.panelRowThumb {
+  display: block;
+  width: 40px;
+  aspect-ratio: 1 / 1;
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px;
+  flex: 0 0 auto;
+}
+
+.panelRowThumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.panelRowArrow {
+  width: calc(7 * var(--unit-fx));
+  min-width: 9px;
+  flex: 0 0 auto;
+  opacity: 0;
+  transition: opacity 0.2s var(--ease-out);
+}
+
+.panelRow:hover .panelRowArrow,
+.panelRowActive .panelRowArrow {
+  opacity: 1;
+}
+
+.panelAll {
+  text-decoration: none;
+}
+
+.panelAll:hover {
+  text-decoration: underline;
+}
+
+/* All previews occupy the same grid cell and cross-fade between them. */
+.panelRight {
+  display: grid;
+  background: #fbf0dc;
+  border-radius: calc(3 * var(--unit-fx));
+  padding: calc(20 * var(--unit-fx));
+}
+
+.panelPreview {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transition: opacity 0.8s var(--ease-out);
+  pointer-events: none;
+}
+
+.panelPreviewActive {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.panelPreviewMedia {
+  display: block;
+  width: 100%;
+  aspect-ratio: 290 / 270;
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px;
+  margin-bottom: calc(20 * var(--unit-fx));
+}
+
+.panelPreviewMedia img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.panelPreviewHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.panelPreview:hover .panelPreviewHead .metaTitle {
+  text-decoration: underline;
+}
+
+/* The trigger keeps its underline while its panel is open. */
+.linkOpen::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+@media (max-width: 900px) {
+  .panelStack {
+  display: grid;
+}
+
+.panelStack > * {
+  grid-area: 1 / 1;
+}
+
+.panelHost {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel,
+  .panelPreview {
+    transition: opacity 0.2s linear;
+  }
+}

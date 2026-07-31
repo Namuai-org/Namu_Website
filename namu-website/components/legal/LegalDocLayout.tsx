@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Footer } from "@/components/landing/Footer";
+import { Footer } from "@/components/editorial/Footer";
 import styles from "./legal.module.css";
 
 export type LegalTocItem = { id: string; label: string };

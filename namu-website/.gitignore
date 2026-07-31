@@ -9,3 +9,11 @@ tsconfig.tsbuildinfo
 .video-temp/
 .agents
 .claude
+
+# OS cruft
+.DS_Store
+
+# Never commit credentials. This file sits in public/, so committing it would
+# also publish it at the site root on every deploy.
+public/*_accessKeys.csv
+public/**/*accessKeys*

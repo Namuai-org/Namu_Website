@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { NamuLogoMark } from "@/components/brand/NamuLogoMark";
-import { Footer } from "@/components/landing/Footer";
+import { Footer } from "@/components/editorial/Footer";
 import styles from "./playground.module.css";
 
 // ─────────────────────────────────────────────
@@ -730,7 +730,7 @@ export default function PlaygroundPage() {
                 <div className={styles.dynamicIsland} aria-hidden="true" />
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/namu_app.png"
+                  src="/namu_app.jpg"
                   alt="Namu app interface"
                   className={styles.screenImg}
                 />

@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Footer } from "@/components/landing/Footer";
+import { Footer } from "@/components/editorial/Footer";
 import { NamuLogoMark } from "@/components/brand/NamuLogoMark";
 import styles from "./blog.module.css";
 

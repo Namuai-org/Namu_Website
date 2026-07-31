@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import styles from "./brand.module.css";
-import { Footer } from "@/components/landing/Footer";
+import { Footer } from "@/components/editorial/Footer";
 
 /* ─── Asset path helpers ─── */
 const SVG  = (p: string) => `/brand/namu%20branding/svg/${p}`;

@@ -33,6 +33,13 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
+  // Keep the document language in step with the toggle. Without this the page
+  // stays advertised as English after switching to Hausa, so screen readers
+  // keep reading Hausa copy with an English voice (WCAG 3.1.1).
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
+
   const setLanguage = useCallback(
     (next: Language) => {
       if (next === language) return;
