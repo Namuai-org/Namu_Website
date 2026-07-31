@@ -1,0 +1,129 @@
+.root {
+  position: relative;
+  display: block;
+  z-index: 10;
+  width: calc(var(--col24) * 6 + var(--gutter24) * 5);
+  background: var(--ds-surface-2);
+  border-radius: calc(3 * var(--unit-fx));
+}
+
+/* Raises the open dropdown above its sibling so the panel is never clipped. */
+.open {
+  z-index: 20;
+}
+
+.triggerClip {
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.trigger {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  color: var(--ds-text);
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  font-size: calc(16 * var(--unit-fx-type));
+  font-weight: 500;
+  line-height: 1;
+  padding: calc(25 * var(--unit-fx)) calc(33 * var(--unit-fx));
+  text-align: left;
+}
+
+.chevron {
+  width: calc(20 * var(--unit-fx));
+  min-width: 14px;
+  height: auto;
+  flex: 0 0 auto;
+  transition: transform 0.4s var(--ease-out);
+}
+
+.open .trigger .chevron {
+  transform: rotate(180deg);
+}
+
+.chevronUp {
+  transform: rotate(180deg);
+}
+
+.panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: var(--paper);
+  border-radius: calc(3 * var(--unit-fx));
+  box-shadow: 0 4px 80px 0 rgba(107, 62, 30, 0.3);
+  overflow: hidden;
+}
+
+/* Same box as the trigger, invisible — reserves the space the button occupies. */
+.ghost {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  opacity: 0;
+  pointer-events: none;
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  font-size: calc(16 * var(--unit-fx-type));
+  font-weight: 500;
+  line-height: 1;
+  padding: calc(25 * var(--unit-fx)) calc(33 * var(--unit-fx));
+}
+
+.options {
+  padding-bottom: calc(12 * var(--unit-fx));
+}
+
+.option {
+  display: block;
+  width: 100%;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  color: var(--ds-text);
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  font-size: calc(16 * var(--unit-fx-type));
+  font-weight: 500;
+  line-height: 1;
+  padding: calc(14 * var(--unit-fx)) calc(33 * var(--unit-fx));
+  transition: background-color 0.35s var(--ease-out), color 0.35s var(--ease-out);
+}
+
+.option:hover {
+  background: var(--ds-surface);
+}
+
+.optionActive {
+  color: var(--ds-accent);
+}
+
+@media (max-width: 600px) {
+  .root {
+    width: 100%;
+  }
+  .trigger,
+  .ghost {
+    padding: calc(20 * var(--unit-fx)) calc(22 * var(--unit-fx));
+    font-size: calc(14 * var(--unit-fx-type));
+  }
+  .option {
+    padding: calc(13 * var(--unit-fx)) calc(22 * var(--unit-fx));
+    font-size: calc(14 * var(--unit-fx-type));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chevron,
+  .option {
+    transition: none;
+  }
+}
