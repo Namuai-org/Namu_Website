@@ -5499,6 +5499,16 @@
     transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* After the entrance settles, stop being a containing block. A lingering
+   transform/filter/will-change here re-anchors every position:sticky and
+   position:fixed descendant to this wrapper instead of the viewport. */
+.page-enter-done {
+  transform: none;
+  filter: none;
+  will-change: auto;
+  transition: none;
+}
+
 .hero-child {
   opacity: 0;
   transform: translateY(16px);

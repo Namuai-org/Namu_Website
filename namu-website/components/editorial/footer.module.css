@@ -1,0 +1,104 @@
+.footer {
+  padding-top: calc(120 * var(--unit-fx));
+  padding-bottom: calc(40 * var(--unit-fx));
+  border-top: 1px solid var(--rule-soft);
+}
+
+.top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: calc(20 * var(--unit-fx));
+  padding-bottom: calc(100 * var(--unit-fx));
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: calc(24 * var(--unit-fx));
+  align-items: flex-start;
+}
+
+.brandRow {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(12 * var(--unit-fx));
+}
+
+.mark {
+  width: calc(34 * var(--unit-fx));
+  height: auto;
+}
+
+.word {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(40 * var(--unit-fx-type));
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.tagline {
+  color: var(--ds-text-soft);
+  max-width: calc(var(--col24) * 6 + var(--gutter24) * 5);
+}
+
+.colTitle {
+  color: var(--ds-text-soft);
+  margin-bottom: calc(26 * var(--unit-fx));
+  display: block;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(14 * var(--unit-fx));
+}
+
+.bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(20 * var(--unit-fx));
+  padding-top: calc(30 * var(--unit-fx));
+  border-top: 1px solid var(--rule-soft);
+  color: var(--ds-text-soft);
+  flex-wrap: wrap;
+}
+
+.bottomLinks {
+  display: flex;
+  gap: calc(28 * var(--unit-fx));
+}
+
+@media (max-width: 900px) {
+  .top {
+    grid-template-columns: 1fr 1fr;
+    gap: calc(40 * var(--unit-fx)) calc(20 * var(--unit-fx));
+  }
+  .brand {
+    grid-column: 1 / -1;
+  }
+  .tagline {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer {
+    padding-top: calc(70 * var(--unit-fx));
+  }
+  .top {
+    padding-bottom: calc(50 * var(--unit-fx));
+  }
+  .bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: calc(14 * var(--unit-fx));
+  }
+  .bottomLinks {
+    flex-wrap: wrap;
+    gap: calc(18 * var(--unit-fx));
+  }
+}

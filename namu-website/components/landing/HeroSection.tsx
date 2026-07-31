@@ -32,7 +32,7 @@ export function HeroSection() {
       <HeroEntrance className="hero-content hero-content-home">
         <span className="section-label section-label-center hero-child">{t("hero.kicker")}</span>
         <h1 className="hero-title hero-child">
-          <span className="hero-title-line hero-title-line-bottom">{t("hero.titleTop")}</span>
+          <span className="hero-title-line">{t("hero.titleTop")}</span>
           <span className="hero-title-line hero-title-line-bottom">{t("hero.titleBottom")}</span>
         </h1>
         <p className="hero-body-home hero-child">
