@@ -529,9 +529,4 @@
   }
 }
 
-/* :global() is required — `accessibility-mode` is set on <html> by JS, so a
-   bare class here would be hashed by CSS Modules and never match. */
-html:global(.accessibility-mode) .panel,
-html:global(.accessibility-mode) .panelPreview {
-  transition: opacity 0.25s linear !important;
-}
+
