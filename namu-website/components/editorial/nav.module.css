@@ -512,22 +512,26 @@
 }
 
 @media (max-width: 900px) {
-  .panelStack {
-  display: grid;
-}
-
-.panelStack > * {
-  grid-area: 1 / 1;
-}
-
-.panelHost {
+  .panelHost {
     display: none;
   }
 }
 
+/* Reduced motion drops the clip-path unfold — that is the actual motion — but
+   keeps a short cross-fade. A panel that teleports into place reads as broken,
+   and an opacity fade is not the kind of movement the preference is about.
+   The selectors are deliberately more specific than the global kill-switch in
+   design-system.css so they survive it. */
 @media (prefers-reduced-motion: reduce) {
   .panel,
   .panelPreview {
-    transition: opacity 0.2s linear;
+    transition: opacity 0.25s linear !important;
   }
+}
+
+/* :global() is required — `accessibility-mode` is set on <html> by JS, so a
+   bare class here would be hashed by CSS Modules and never match. */
+html:global(.accessibility-mode) .panel,
+html:global(.accessibility-mode) .panelPreview {
+  transition: opacity 0.25s linear !important;
 }
