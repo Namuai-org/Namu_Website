@@ -570,66 +570,32 @@
    Accessibility / reduced motion
    ========================================================================== */
 
+/* Motion is always on. There is no site-level switch to turn it off — the one
+   that existed persisted "off" per-origin in localStorage, which meant a
+   single stray click left the site permanently static with no obvious cause.
+
+   The OS-level preference is still honoured, but it *reduces* motion rather
+   than removing it: travel and scale are dropped, cross-fades are kept and
+   shortened. An element that teleports into place reads as a broken page, not
+   as respect for the setting. */
 @media (prefers-reduced-motion: reduce) {
   .split-text .line,
   .scroll-object [data-fade],
-  .fade-in {
+  .fade-in,
+  .slide-up {
     transform: none !important;
-    opacity: 1 !important;
-    transition: none !important;
+    transition: opacity 0.3s linear !important;
+    transition-delay: 0s !important;
   }
+
   .scale-out {
     transform: none !important;
     transition: none !important;
   }
-}
 
-.accessibility-mode .split-text .line,
-.accessibility-mode .scroll-object [data-fade],
-.accessibility-mode .fade-in {
-  transform: none !important;
-  opacity: 1 !important;
-  transition: none !important;
-}
-
-.accessibility-mode .scale-out {
-  transform: none !important;
-}
-
-/* Blanket kill-switch — anything animated anywhere settles instantly.
-   Note this is intentionally sweeping; components that still want a plain
-   cross-fade opt back in with a more specific `html.accessibility-mode`
-   selector, since an element that teleports reads as a bug rather than as
-   respect for the preference. */
-.accessibility-mode *,
-.accessibility-mode *::before,
-.accessibility-mode *::after {
-  transition-duration: 0s !important;
-  animation-duration: 0s !important;
-  animation-iteration-count: 1 !important;
-}
-
-
-/* ==========================================================================
-   Grain
-   --------------------------------------------------------------------------
-   A fixed film of noise over the whole page. It is what keeps large flat
-   areas of cream from banding and gives the palette its papery quality.
-   ========================================================================== */
-
-.noise-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  pointer-events: none;
-  opacity: 0.15;
-  mix-blend-mode: soft-light;
-  background-image: var(--noise-tile);
-  background-size: 256px 256px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .noise-overlay {
-    opacity: 0.08;
+  /* Long scroll-linked pieces have nothing meaningful to show at a reduced
+     amplitude, so they simply rest in their settled state. */
+  .doodle path {
+    transition: stroke-dashoffset 0.3s linear !important;
   }
 }

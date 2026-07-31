@@ -2,7 +2,6 @@
 
 import type { ReactNode } from "react";
 import { Nav } from "@/components/editorial/Nav";
-import { MotionToggle } from "@/components/editorial/MotionToggle";
 import { PageTransition } from "@/components/PageTransition";
 import { LanguageProvider, useTranslation } from "@/hooks/useTranslation";
 import { useFluidScale } from "@/hooks/useFluidScale";
@@ -26,7 +25,6 @@ export default function LandingLayout({ children }: { children: ReactNode }) {
       <LandingContent>
         <PageTransition>{children}</PageTransition>
       </LandingContent>
-      <MotionToggle />
     </LanguageProvider>
   );
 }
