@@ -39,10 +39,18 @@ const COLUMNS = [
 
 /* Real handles, carried over from the footer this replaces. */
 const SOCIALS = [
-  { label: "Instagram", href: "https://instagram.com/namuai", Icon: IconInstagram },
-  { label: "LinkedIn", href: "https://linkedin.com/company/namuai", Icon: IconLinkedIn },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/namuai.inc",
+    Icon: IconInstagram,
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/company/namu-a",
+    Icon: IconLinkedIn,
+  },
   { label: "X", href: "https://x.com/namuai", Icon: IconX },
-  { label: "GitHub", href: "https://github.com/namuai", Icon: IconGitHub },
+  { label: "GitHub", href: "https://github.com/Namuai-org", Icon: IconGitHub },
 ] as const;
 
 export function Footer() {
