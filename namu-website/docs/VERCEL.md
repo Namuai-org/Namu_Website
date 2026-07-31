@@ -2,6 +2,30 @@
 
 This app is **Next.js 15** (`namu-website`). Vercel runs `next build` and hosts the result.
 
+## Only ever commit ONE lockfile
+
+Vercel picks its package manager by **which lockfile it finds**, not by the
+install command written here. If `pnpm-lock.yaml` is present it runs
+`pnpm install --frozen-lockfile`; with `package-lock.json` it runs `npm ci`.
+Both are *frozen*, so they fail the build the moment a lockfile drifts from
+`package.json` — for example after a dependency is removed:
+
+```
+ERR_PNPM_OUTDATED_LOCKFILE  Cannot install with "frozen-lockfile" because
+pnpm-lock.yaml is not up to date with <ROOT>/package.json
+```
+
+This project uses **npm**, pinned via `"packageManager"` in `package.json`.
+Keep `package-lock.json` and do not add a second lockfile.
+
+Whenever you change dependencies, commit the regenerated lockfile in the same
+change, and verify with the command Vercel actually runs:
+
+```bash
+npm ci        # frozen — fails on any drift, exactly like the build does
+npm run build
+```
+
 ## Build stuck or fails at "Collecting build traces"
 
 If **`outputFileTracingRoot`** is set to the **repo root** while Vercel’s **Root Directory** is `namu-website`, Next can try to trace **sibling folders** (other apps, `node_modules`), which can **slow, hang, or fail** the build. Keep the default tracing (app folder only) unless you use a **hoisted** monorepo install (e.g. npm workspaces at repo root).

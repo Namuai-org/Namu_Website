@@ -2,6 +2,7 @@
   "name": "namu-ai-studio",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "npm@11.11.0",
   "scripts": {
     "dev": "next dev --hostname localhost",
     "build": "next build",
