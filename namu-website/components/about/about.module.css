@@ -1,0 +1,415 @@
+/* ==========================================================================
+   About
+   --------------------------------------------------------------------------
+   Same foundation as the rest of the site: every dimension a multiple of
+   --unit-fx, colour from the --ds-* roles so sections re-tint through BgFade,
+   type from the global .h* / .text-* scale.
+   ========================================================================== */
+
+.page {
+  padding-top: calc(190 * var(--unit-fx));
+}
+
+/* ---- Hero --------------------------------------------------------------- */
+
+.hero {
+  padding-bottom: calc(120 * var(--unit-fx));
+}
+
+.heroEyebrow {
+  color: var(--ds-text-soft);
+  text-transform: uppercase;
+  margin-bottom: calc(28 * var(--unit-fx));
+}
+
+.heroTitle {
+  margin-bottom: calc(56 * var(--unit-fx));
+}
+
+.heroTitle em {
+  font-style: italic;
+  color: var(--ds-accent);
+}
+
+.heroLead {
+  width: calc(var(--col24) * 12 + var(--gutter24) * 11);
+  margin-bottom: calc(96 * var(--unit-fx));
+}
+
+.heroStage {
+  display: block;
+}
+
+/* The plate that brought them here, shown again full width — the headline
+   above it is the line printed on the image, so it reads as arrival. */
+.heroFrame {
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  aspect-ratio: 1086 / 724;
+  background: var(--ink);
+}
+
+.heroFrame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ---- Section scaffold --------------------------------------------------- */
+
+.section {
+  padding-block: calc(130 * var(--unit-fx));
+}
+
+.head {
+  display: grid;
+  grid-template-columns: calc(var(--col24) * 5 + var(--gutter24) * 4) 1fr;
+  gap: var(--gutter24);
+  align-items: start;
+  padding-top: calc(28 * var(--unit-fx));
+  border-top: 1px solid var(--rule);
+  margin-bottom: calc(72 * var(--unit-fx));
+}
+
+.headMeta {
+  display: flex;
+  align-items: baseline;
+  gap: calc(14 * var(--unit-fx));
+  color: var(--ds-text-soft);
+}
+
+.index {
+  color: var(--ds-accent);
+}
+
+.kicker {
+  text-transform: uppercase;
+}
+
+.headBody {
+  max-width: calc(var(--col24) * 14 + var(--gutter24) * 13);
+}
+
+.title {
+  margin-bottom: calc(24 * var(--unit-fx));
+}
+
+.intro {
+  color: var(--ds-text-soft);
+  max-width: calc(var(--col24) * 12 + var(--gutter24) * 11);
+}
+
+.body {
+  display: block;
+}
+
+/* ---- 01 The gap --------------------------------------------------------- */
+
+.gap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(var(--gutter24) * 2);
+  align-items: center;
+}
+
+.gapDiagram {
+  display: grid;
+  place-items: center;
+  background: var(--ds-surface);
+  border-radius: var(--radius-card);
+  padding: calc(40 * var(--unit-fx));
+}
+
+.loop {
+  width: 100%;
+  max-width: calc(420 * var(--unit-fx));
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+/* Drawn on rather than listed: the argument is the shape. */
+.loop path {
+  fill: none;
+  stroke: var(--ds-accent);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.9s linear;
+}
+
+.gap:global(.in-view) .loop path {
+  stroke-dashoffset: 0;
+}
+
+.loopNode {
+  opacity: 0;
+  transition: opacity 0.7s var(--ease-out);
+}
+
+.gap:global(.in-view) .loopNode {
+  opacity: 1;
+}
+
+.loopNode circle {
+  fill: var(--ds-text);
+}
+
+.loopNode text {
+  fill: var(--ds-text);
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  font-size: 15px;
+  letter-spacing: 0.04em;
+}
+
+.gapNote {
+  display: flex;
+  flex-direction: column;
+  gap: calc(22 * var(--unit-fx));
+}
+
+.gapP {
+  color: var(--ds-text-soft);
+}
+
+/* ---- 02 What we build --------------------------------------------------- */
+
+.pillars {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gutter24);
+}
+
+.pillar {
+  background: var(--paper);
+  border-radius: var(--radius-card);
+  padding: calc(40 * var(--unit-fx));
+  display: flex;
+  flex-direction: column;
+  gap: calc(16 * var(--unit-fx));
+  min-height: calc(300 * var(--unit-fx));
+}
+
+.pillarIdx {
+  color: var(--ds-accent);
+}
+
+.pillarBody {
+  color: var(--ds-text-soft);
+  margin-top: auto;
+}
+
+/* ---- 03 Languages ------------------------------------------------------- */
+
+.languages {
+  display: flex;
+  flex-direction: column;
+}
+
+/* A ladder rather than cards: the order is the point. */
+.language {
+  display: grid;
+  grid-template-columns: calc(var(--col24) * 7 + var(--gutter24) * 6) 1fr;
+  gap: var(--gutter24);
+  align-items: start;
+  padding-block: calc(36 * var(--unit-fx));
+  border-top: 1px solid var(--rule);
+}
+
+.language:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+
+.languageTop {
+  display: flex;
+  align-items: baseline;
+  gap: calc(18 * var(--unit-fx));
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  height: calc(28 * var(--unit-fx));
+  min-height: 22px;
+  padding-inline: calc(14 * var(--unit-fx));
+  border-radius: var(--radius-pill);
+  background: var(--ds-surface);
+  color: var(--ds-text-soft);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.language:first-child .status {
+  background: var(--ds-accent);
+  color: var(--paper);
+}
+
+.languageNote {
+  color: var(--ds-text-soft);
+  max-width: calc(var(--col24) * 12 + var(--gutter24) * 11);
+}
+
+/* ---- 04 Principles ------------------------------------------------------ */
+
+.principles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gutter24) calc(var(--gutter24) * 2);
+}
+
+.principle {
+  padding-top: calc(22 * var(--unit-fx));
+  border-top: 1px solid rgba(74, 42, 18, 0.22);
+}
+
+.principleName {
+  margin-bottom: calc(12 * var(--unit-fx));
+}
+
+.principleBody {
+  opacity: 0.78;
+}
+
+/* ---- 05 People ---------------------------------------------------------- */
+
+.people {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: calc(var(--gutter24) * 2);
+  max-width: calc(var(--col24) * 16 + var(--gutter24) * 15);
+}
+
+.person {
+  margin: 0;
+}
+
+.personFrame {
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  aspect-ratio: 4 / 3;
+  background: var(--ds-surface);
+}
+
+.personFrame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 1.2s var(--ease-out);
+}
+
+.person:hover .personFrame img {
+  transform: scale(1.03);
+}
+
+.personMeta {
+  display: flex;
+  flex-direction: column;
+  gap: calc(6 * var(--unit-fx));
+  margin-top: calc(18 * var(--unit-fx));
+}
+
+.personMeta strong {
+  font-weight: 450;
+}
+
+.personRole {
+  color: var(--ds-text-soft);
+  text-transform: uppercase;
+}
+
+.quote {
+  margin-top: calc(96 * var(--unit-fx));
+  padding-top: calc(40 * var(--unit-fx));
+  border-top: 1px solid var(--rule);
+  max-width: calc(var(--col24) * 15 + var(--gutter24) * 14);
+}
+
+.quoteText {
+  margin: 0 0 calc(24 * var(--unit-fx));
+  font-style: italic;
+  letter-spacing: -0.02em;
+}
+
+.quoteAttr {
+  color: var(--ds-text-soft);
+  text-transform: uppercase;
+}
+
+/* ---- 06 Work with us ---------------------------------------------------- */
+
+.cta {
+  display: flex;
+  flex-direction: column;
+  gap: calc(40 * var(--unit-fx));
+  max-width: calc(var(--col24) * 14 + var(--gutter24) * 13);
+}
+
+.ctaP {
+  color: var(--ds-text-soft);
+}
+
+.ctaActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(16 * var(--unit-fx));
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+@media (max-width: 900px) {
+  .head {
+    grid-template-columns: 1fr;
+    gap: calc(20 * var(--unit-fx));
+  }
+
+  .heroLead {
+    width: 100%;
+  }
+
+  .gap,
+  .language {
+    grid-template-columns: 1fr;
+    gap: calc(28 * var(--unit-fx));
+  }
+
+  .pillars,
+  .principles {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .people {
+    max-width: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .page {
+    padding-top: calc(140 * var(--unit-fx));
+  }
+
+  .section {
+    padding-block: calc(80 * var(--unit-fx));
+  }
+
+  .pillars,
+  .principles,
+  .people {
+    grid-template-columns: 1fr;
+  }
+
+  .pillar {
+    padding: calc(28 * var(--unit-fx));
+    min-height: 0;
+  }
+
+  .gapDiagram {
+    padding: calc(24 * var(--unit-fx));
+  }
+
+  .loopNode text {
+    font-size: 13px;
+  }
+}
