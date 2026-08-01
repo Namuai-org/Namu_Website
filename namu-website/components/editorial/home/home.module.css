@@ -75,8 +75,9 @@
   position: relative;
   width: 100%;
   /* Both are driven from JS as the section scrolls: the frame widens from
-     80% to full bleed while its corners square off. */
-  max-width: 80%;
+     60% to 80% while its corners square off. It stops short of full bleed —
+     the plate reads as a picture on the page rather than a takeover. */
+  max-width: 60%;
   border-radius: calc(6 * var(--unit-fx));
   overflow: hidden;
   background: var(--ink);
@@ -97,20 +98,23 @@
 .featuredCaptionWrap {
   position: relative;
   z-index: 3;
-  width: calc(var(--col24) * 15 + var(--gutter24) * 14);
-  max-width: 84%;
-  margin-top: calc(-96 * var(--unit-fx));
+  width: calc(var(--col24) * 9 + var(--gutter24) * 8);
+  max-width: 46%;
+  margin-top: calc(-64 * var(--unit-fx));
 }
 
-/* One link, not a row of small ones: the whole card is the target. */
+/* One link, not a row of small ones: the whole card is the target, and
+   everything in it is centred on the route label at the top. */
 .featuredCard {
   display: block;
+  text-align: center;
   background: var(--ds-bg);
   border-radius: var(--radius-card);
-  padding: calc(34 * var(--unit-fx)) calc(38 * var(--unit-fx));
+  padding: calc(26 * var(--unit-fx)) calc(30 * var(--unit-fx))
+    calc(28 * var(--unit-fx));
   color: var(--ds-text);
   text-decoration: none;
-  box-shadow: 0 calc(18 * var(--unit-fx)) calc(56 * var(--unit-fx))
+  box-shadow: 0 calc(14 * var(--unit-fx)) calc(44 * var(--unit-fx))
     rgba(28, 20, 16, 0.18);
   transition:
     transform 0.7s var(--ease-out),
@@ -129,20 +133,21 @@
   outline-offset: calc(4 * var(--unit-fx));
 }
 
+/* The label is a route — "/namu" — so it reads as somewhere to go. */
 .featuredEyebrow {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: calc(10 * var(--unit-fx));
-  color: var(--ds-text-soft);
-  text-transform: uppercase;
-  margin-bottom: calc(18 * var(--unit-fx));
+  justify-content: center;
+  gap: calc(9 * var(--unit-fx));
+  color: var(--ds-accent);
+  margin-bottom: calc(14 * var(--unit-fx));
 }
 
 .featuredDot {
-  width: calc(7 * var(--unit-fx));
-  height: calc(7 * var(--unit-fx));
-  min-width: 5px;
-  min-height: 5px;
+  width: calc(6 * var(--unit-fx));
+  height: calc(6 * var(--unit-fx));
+  min-width: 4px;
+  min-height: 4px;
   border-radius: 50%;
   background: var(--ds-accent);
   transition: transform 0.6s var(--ease-out);
@@ -153,24 +158,21 @@
 }
 
 .featuredTitle {
-  margin: 0 0 calc(30 * var(--unit-fx));
-  max-width: calc(var(--col24) * 11 + var(--gutter24) * 10);
+  margin: 0 auto calc(22 * var(--unit-fx));
+  max-width: calc(var(--col24) * 8 + var(--gutter24) * 7);
 }
 
-.featuredAction {
-  display: flex;
-  align-items: center;
-  gap: calc(20 * var(--unit-fx));
-}
-
-/* Fills with accent left-to-right on hover — the clearest signal in the card
-   that something happens if you click it. */
+/* A short centred hairline that lengthens and fills with accent on hover —
+   the signal that the card is a door, without a label spelling it out. */
 .featuredRule {
   position: relative;
-  flex: 1;
+  display: block;
+  width: calc(40 * var(--unit-fx));
   height: 1px;
+  margin: 0 auto calc(20 * var(--unit-fx));
   background: var(--rule);
   overflow: hidden;
+  transition: width 0.8s var(--ease-out);
 }
 
 .featuredRule::after {
@@ -183,24 +185,24 @@
   transition: transform 0.8s var(--ease-out);
 }
 
+.featuredCard:hover .featuredRule,
+.featuredCard:focus-visible .featuredRule {
+  width: calc(104 * var(--unit-fx));
+}
+
 .featuredCard:hover .featuredRule::after,
 .featuredCard:focus-visible .featuredRule::after {
   transform: scaleX(1);
 }
 
-.featuredCta {
-  color: var(--ds-text);
-  white-space: nowrap;
-}
-
 .featuredArrowTile {
-  flex: 0 0 auto;
   display: grid;
   place-items: center;
-  width: calc(52 * var(--unit-fx));
-  height: calc(52 * var(--unit-fx));
-  min-width: 40px;
-  min-height: 40px;
+  width: calc(42 * var(--unit-fx));
+  height: calc(42 * var(--unit-fx));
+  min-width: 34px;
+  min-height: 34px;
+  margin-inline: auto;
   border: 1px solid var(--rule);
   border-radius: 50%;
   transition:
@@ -215,8 +217,8 @@
 }
 
 .featuredArrow {
-  width: calc(18 * var(--unit-fx));
-  min-width: 14px;
+  width: calc(15 * var(--unit-fx));
+  min-width: 12px;
   height: auto;
   color: var(--ds-accent);
   transition:
@@ -231,9 +233,12 @@
 }
 
 @media (max-width: 900px) {
+  .featuredFrame {
+    max-width: 84% !important;
+  }
   .featuredCaptionWrap {
-    max-width: 92%;
     width: 100%;
+    max-width: 72%;
   }
 }
 
@@ -248,15 +253,14 @@
   }
   .featuredCaptionWrap {
     width: 100%;
-    max-width: 100%;
+    max-width: 88%;
     margin-top: calc(-40 * var(--unit-fx));
-    padding-inline: calc(12 * var(--unit-fx));
   }
   .featuredCard {
-    padding: calc(24 * var(--unit-fx));
+    padding: calc(22 * var(--unit-fx));
   }
-  .featuredAction {
-    gap: calc(14 * var(--unit-fx));
+  .featuredTitle {
+    max-width: 100%;
   }
 }
 

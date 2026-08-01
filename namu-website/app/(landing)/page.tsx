@@ -75,10 +75,10 @@ export default function HomePage() {
 
         <FeaturedStory
           href="/about"
-          image="/namu1.jpeg"
+          image="/namu_im.jpg"
           /* The frame takes the plate's own ratio so nothing is cropped — the
-             mark, the tagline and the walking figures all have to survive. */
-          ratio="1086 / 724"
+             mark, the tagline and the acacia all have to survive. */
+          ratio="1536 / 1024"
         />
 
         <StoryRail stories={stories} />

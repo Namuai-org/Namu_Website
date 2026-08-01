@@ -47,7 +47,7 @@ export function FeaturedStory({ href, image, ratio }: Props) {
     const start = top - viewportH;
     const p = clamp((scrollY - start) / viewportH);
 
-    frame.style.maxWidth = `${80 + p * 20}%`;
+    frame.style.maxWidth = `${60 + p * 20}%`;
     frame.style.borderRadius = `calc(${(1 - p) * 6} * var(--unit-fx))`;
     img.style.transform = `scale(${1.2 - p * 0.2})`;
   });
@@ -70,24 +70,29 @@ export function FeaturedStory({ href, image, ratio }: Props) {
         </div>
 
         <ScrollObject className={styles.featuredCaptionWrap}>
-          <Link href={href} className={styles.featuredCard}>
-            <span className={`text-small ${styles.featuredEyebrow}`}>
-              <span className={styles.featuredDot} aria-hidden="true" />
+          {/* The visible label is a route, not a sentence, so it is hidden from
+              assistive tech and the link is named by its destination instead. */}
+          <Link
+            href={href}
+            className={styles.featuredCard}
+            aria-label={`${t("home.featured.title")} — about Namu`}
+          >
+            <span
+              className={`text-small ${styles.featuredEyebrow}`}
+              aria-hidden="true"
+            >
+              <span className={styles.featuredDot} />
               {t("home.featured.category")}
             </span>
 
-            <h2 className={`h6 ${styles.featuredTitle}`}>
+            <h2 className={`h7 ${styles.featuredTitle}`}>
               <SplitText text={t("home.featured.title")} />
             </h2>
 
-            <span className={styles.featuredAction}>
-              <span className={styles.featuredRule} aria-hidden="true" />
-              <span className={`text-ui ${styles.featuredCta}`}>
-                {t("home.featured.cta")}
-              </span>
-              <span className={styles.featuredArrowTile} aria-hidden="true">
-                <ArrowRight className={styles.featuredArrow} />
-              </span>
+            <span className={styles.featuredRule} aria-hidden="true" />
+
+            <span className={styles.featuredArrowTile} aria-hidden="true">
+              <ArrowRight className={styles.featuredArrow} />
             </span>
           </Link>
         </ScrollObject>

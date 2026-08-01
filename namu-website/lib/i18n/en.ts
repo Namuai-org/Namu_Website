@@ -29,10 +29,9 @@ export const en = {
   "home.hero.line1": "Speech-native",
   "home.hero.line2": "Intelligence",
 
-  "home.featured.category":  "our story",
-  "home.featured.cta":       "Step inside",
-  "home.featured.title":     "Speech first, because that is how the language is actually used",
-  "home.featured.alt":       "The Namu mark above a line of walkers crossing open country at dusk",
+  "home.featured.category":  "/namu",
+  "home.featured.title":     "For the languages the world's models never learned",
+  "home.featured.alt":       "The Namu mark above an acacia on the plain at sunrise",
 
   "home.stories.drag": "Drag to explore",
   "home.story1.title": "Why African languages need speech-native models, not translations",
