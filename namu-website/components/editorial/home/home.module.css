@@ -57,26 +57,29 @@
 .featured {
   position: relative;
   z-index: 2;
-  overflow: hidden;
-  height: 100vh;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding-bottom: calc(80 * var(--unit-fx));
+  padding-bottom: calc(120 * var(--unit-fx));
 }
 
+.featuredStage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* The frame carries the plate's own aspect ratio rather than filling a
+   viewport-height box. The image is a designed composition — mark, tagline,
+   figures on a horizon — and `cover` against an arbitrary box was cropping
+   parts of it away on anything but one screen shape. */
 .featuredFrame {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
   width: 100%;
-  height: 100%;
-  overflow: hidden;
   /* Both are driven from JS as the section scrolls: the frame widens from
      80% to full bleed while its corners square off. */
   max-width: 80%;
   border-radius: calc(6 * var(--unit-fx));
+  overflow: hidden;
+  background: var(--ink);
   will-change: max-width, border-radius;
 }
 
@@ -90,68 +93,170 @@
   will-change: transform;
 }
 
+/* Overhangs the bottom edge of the picture, so the card belongs to it. */
 .featuredCaptionWrap {
   position: relative;
-  margin-inline: auto;
+  z-index: 3;
+  width: calc(var(--col24) * 15 + var(--gutter24) * 14);
+  max-width: 84%;
+  margin-top: calc(-96 * var(--unit-fx));
 }
 
-/* The card overhangs its column on both sides, so it reads as pinned on top
-   of the image rather than contained by it. */
-.featuredCaption {
+/* One link, not a row of small ones: the whole card is the target. */
+.featuredCard {
+  display: block;
   background: var(--ds-bg);
-  padding: calc(30 * var(--unit-fx));
-  margin-inline: calc(-35 * var(--unit-fx));
   border-radius: var(--radius-card);
+  padding: calc(34 * var(--unit-fx)) calc(38 * var(--unit-fx));
   color: var(--ds-text);
+  text-decoration: none;
+  box-shadow: 0 calc(18 * var(--unit-fx)) calc(56 * var(--unit-fx))
+    rgba(28, 20, 16, 0.18);
+  transition:
+    transform 0.7s var(--ease-out),
+    box-shadow 0.7s var(--ease-out);
 }
 
-.featuredRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: calc(20 * var(--unit-fx));
+.featuredCard:hover,
+.featuredCard:focus-visible {
+  transform: translateY(calc(-8 * var(--unit-fx)));
+  box-shadow: 0 calc(28 * var(--unit-fx)) calc(72 * var(--unit-fx))
+    rgba(28, 20, 16, 0.24);
 }
 
-.featuredMeta {
-  display: flex;
+.featuredCard:focus-visible {
+  outline: 2px solid var(--ds-accent);
+  outline-offset: calc(4 * var(--unit-fx));
+}
+
+.featuredEyebrow {
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  gap: calc(16 * var(--unit-fx));
+  gap: calc(10 * var(--unit-fx));
+  color: var(--ds-text-soft);
+  text-transform: uppercase;
+  margin-bottom: calc(18 * var(--unit-fx));
 }
 
-.featuredArrow {
-  width: calc(20 * var(--unit-fx));
-  color: var(--ds-accent);
+.featuredDot {
+  width: calc(7 * var(--unit-fx));
+  height: calc(7 * var(--unit-fx));
+  min-width: 5px;
+  min-height: 5px;
+  border-radius: 50%;
+  background: var(--ds-accent);
   transition: transform 0.6s var(--ease-out);
 }
 
-.featuredCaption a:hover .featuredArrow {
-  transform: translateX(calc(6 * var(--unit-fx)));
+.featuredCard:hover .featuredDot {
+  transform: scale(1.7);
+}
+
+.featuredTitle {
+  margin: 0 0 calc(30 * var(--unit-fx));
+  max-width: calc(var(--col24) * 11 + var(--gutter24) * 10);
+}
+
+.featuredAction {
+  display: flex;
+  align-items: center;
+  gap: calc(20 * var(--unit-fx));
+}
+
+/* Fills with accent left-to-right on hover — the clearest signal in the card
+   that something happens if you click it. */
+.featuredRule {
+  position: relative;
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+  overflow: hidden;
+}
+
+.featuredRule::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--ds-accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.8s var(--ease-out);
+}
+
+.featuredCard:hover .featuredRule::after,
+.featuredCard:focus-visible .featuredRule::after {
+  transform: scaleX(1);
+}
+
+.featuredCta {
+  color: var(--ds-text);
+  white-space: nowrap;
+}
+
+.featuredArrowTile {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: calc(52 * var(--unit-fx));
+  height: calc(52 * var(--unit-fx));
+  min-width: 40px;
+  min-height: 40px;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  transition:
+    background-color 0.6s var(--ease-out),
+    border-color 0.6s var(--ease-out);
+}
+
+.featuredCard:hover .featuredArrowTile,
+.featuredCard:focus-visible .featuredArrowTile {
+  background: var(--ds-accent);
+  border-color: var(--ds-accent);
+}
+
+.featuredArrow {
+  width: calc(18 * var(--unit-fx));
+  min-width: 14px;
+  height: auto;
+  color: var(--ds-accent);
+  transition:
+    color 0.6s var(--ease-out),
+    transform 0.6s var(--ease-out);
+}
+
+.featuredCard:hover .featuredArrow,
+.featuredCard:focus-visible .featuredArrow {
+  color: var(--paper);
+  transform: translateX(calc(4 * var(--unit-fx)));
+}
+
+@media (max-width: 900px) {
+  .featuredCaptionWrap {
+    max-width: 92%;
+    width: 100%;
+  }
 }
 
 @media (max-width: 600px) {
   .featured {
-    display: block;
-    height: auto;
     padding-bottom: 0;
     margin-bottom: calc(60 * var(--unit-fx));
   }
   .featuredFrame {
-    position: relative;
-    left: 0;
-    top: 0;
-    transform: none;
-    aspect-ratio: 400 / 620;
-    height: auto;
     max-width: 100% !important;
     border-radius: 0 !important;
   }
-  .featuredCaption {
-    margin-inline: 0;
-    padding-inline: calc(16 * var(--unit-fx));
+  .featuredCaptionWrap {
+    width: 100%;
+    max-width: 100%;
+    margin-top: calc(-40 * var(--unit-fx));
+    padding-inline: calc(12 * var(--unit-fx));
   }
-  .featuredRow {
-    flex-wrap: wrap;
+  .featuredCard {
+    padding: calc(24 * var(--unit-fx));
+  }
+  .featuredAction {
+    gap: calc(14 * var(--unit-fx));
   }
 }
 

@@ -73,7 +73,13 @@ export default function HomePage() {
       <main id="main-content">
         <Hero />
 
-        <FeaturedStory href="/about" image="/namu.jpeg" />
+        <FeaturedStory
+          href="/about"
+          image="/namu1.jpeg"
+          /* The frame takes the plate's own ratio so nothing is cropped — the
+             mark, the tagline and the walking figures all have to survive. */
+          ratio="1086 / 724"
+        />
 
         <StoryRail stories={stories} />
 

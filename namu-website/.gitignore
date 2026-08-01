@@ -28,7 +28,5 @@ public/*.pptx
 public/*.xlsx
 public/*.pdf
 
-# Unused reference material kept locally. namu.jpeg is the plate the lead card
-# and the About hero use and is committed; namu1.jpeg is a different image
-# nothing references.
-public/namu1.jpeg
+# Both namu plates are now in use — namu1.jpeg on the lead card, namu.jpeg on
+# the About hero — so neither is ignored.

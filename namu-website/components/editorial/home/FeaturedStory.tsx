@@ -12,14 +12,21 @@ import styles from "./home.module.css";
 type Props = {
   href: string;
   image: string;
+  /** The image's true aspect ratio. The frame takes it so nothing is cropped. */
+  ratio: string;
 };
 
 /**
- * The lead story. As the section crosses the viewport its frame widens from
- * 80% to full bleed and its corners square off, while the photograph inside
- * eases back from a 1.2 zoom — so the image appears to settle into place.
+ * The lead card. As the section crosses the viewport the frame widens from 80%
+ * to full bleed and its corners square off, while the photograph inside eases
+ * back from a 1.2 zoom — so the image appears to settle into place.
+ *
+ * The caption is one link rather than a row with two small ones. It overhangs
+ * the bottom of the frame so it reads as pinned to the picture, and everything
+ * in it responds on hover — the dot swells, a rule sweeps across in accent, the
+ * arrow tile fills — so it is obvious the whole thing is a door.
  */
-export function FeaturedStory({ href, image }: Props) {
+export function FeaturedStory({ href, image, ratio }: Props) {
   const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
@@ -46,53 +53,43 @@ export function FeaturedStory({ href, image }: Props) {
   });
 
   return (
-    <section
-      ref={sectionRef}
-      className={styles.featured}
-      aria-label={t("home.featured.title")}
-    >
-      <div ref={frameRef} className={styles.featuredFrame}>
-        <img
-          ref={imgRef}
-          src={image}
-          alt={t("home.featured.alt")}
-          className={styles.featuredImage}
-          loading="eager"
-        />
-      </div>
+    <section ref={sectionRef} className={styles.featured}>
+      <div className={styles.featuredStage}>
+        <div
+          ref={frameRef}
+          className={styles.featuredFrame}
+          style={{ aspectRatio: ratio }}
+        >
+          <img
+            ref={imgRef}
+            src={image}
+            alt={t("home.featured.alt")}
+            className={styles.featuredImage}
+            loading="eager"
+          />
+        </div>
 
-      <div
-        className={`ds-span ${styles.featuredCaptionWrap}`}
-        style={{ "--span": 16 } as React.CSSProperties}
-      >
-        <ScrollObject className={styles.featuredCaption}>
-          <div className={styles.featuredRow}>
-            <h2
-              className="h6 ds-span"
-              style={{ "--span": 10 } as React.CSSProperties}
-            >
-              <Link href={href}>
-                <SplitText text={t("home.featured.title")} />
-              </Link>
+        <ScrollObject className={styles.featuredCaptionWrap}>
+          <Link href={href} className={styles.featuredCard}>
+            <span className={`text-small ${styles.featuredEyebrow}`}>
+              <span className={styles.featuredDot} aria-hidden="true" />
+              {t("home.featured.category")}
+            </span>
+
+            <h2 className={`h6 ${styles.featuredTitle}`}>
+              <SplitText text={t("home.featured.title")} />
             </h2>
 
-            <div
-              className="text-caption ds-span"
-              style={{ "--span": 3 } as React.CSSProperties}
-            >
-              {t("home.featured.category")}
-            </div>
-
-            <div
-              className={`ds-span ${styles.featuredMeta}`}
-              style={{ "--span": 3 } as React.CSSProperties}
-            >
-              <div className="text-caption">{t("home.featured.readTime")}</div>
-              <Link href={href} aria-label={t("home.featured.title")}>
+            <span className={styles.featuredAction}>
+              <span className={styles.featuredRule} aria-hidden="true" />
+              <span className={`text-ui ${styles.featuredCta}`}>
+                {t("home.featured.cta")}
+              </span>
+              <span className={styles.featuredArrowTile} aria-hidden="true">
                 <ArrowRight className={styles.featuredArrow} />
-              </Link>
-            </div>
-          </div>
+              </span>
+            </span>
+          </Link>
         </ScrollObject>
       </div>
     </section>
