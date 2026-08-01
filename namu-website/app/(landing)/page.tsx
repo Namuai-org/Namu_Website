@@ -73,7 +73,7 @@ export default function HomePage() {
       <main id="main-content">
         <Hero />
 
-        <FeaturedStory href="/#approach" image="/editorial/canyon-ochre-wide.jpg" />
+        <FeaturedStory href="/about" image="/namu.jpeg" />
 
         <StoryRail stories={stories} />
 
