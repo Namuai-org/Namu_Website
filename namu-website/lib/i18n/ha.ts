@@ -33,15 +33,6 @@ export const ha = {
   "home.featured.alt":       "Alamar Namu bisa bishiyar kirya a fili da safiya",
 
   "home.stories.drag": "Ja domin gani",
-  "home.story1.title": "Dalilin da ya sa harsunan Afirka ke bukatar samfuran da ke jin magana, ba fassara ba",
-  "home.story1.cat":   "bincike",
-  "home.story1.time":  "karatun minti 6",
-  "home.story2.title": "Tattara bayanan magana da yarda, ba da kwace ba",
-  "home.story2.cat":   "hanya",
-  "home.story2.time":  "karatun minti 5",
-  "home.story3.title": "Farawa da Hausa, da abin da zai biyo baya",
-  "home.story3.cat":   "tsari",
-  "home.story3.time":  "karatun minti 4",
 
   "home.stack.title": "Tsarin da muke ginawa",
   "home.stack.body":  "Matakai hudu da ke karfafa juna, daga maganar da mutane ke yi zuwa kayan aikin da take karfafawa.",
