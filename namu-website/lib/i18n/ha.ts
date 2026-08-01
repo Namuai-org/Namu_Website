@@ -29,7 +29,6 @@ export const ha = {
   "home.hero.line1": "Basira Mai",
   "home.hero.line2": "Jin Magana",
 
-  "home.featured.category":  "/namu",
   "home.featured.title":     "Mayar da AI abin isa ga sauranmu",
   "home.featured.alt":       "Alamar Namu bisa bishiyar kirya a fili da safiya",
 

@@ -91,20 +91,13 @@ export function FeaturedStory({ href, image, image2x, ratio }: Props) {
               defined as a fraction of the frame, so it clears "our language.
               our future." at every size the frame animates through. */}
           <ScrollObject className={styles.featuredCaptionWrap}>
-            {/* The visible label is a route, not a sentence, so it is hidden
-                from assistive tech and the link is named by its destination. */}
+            {/* Named by its destination: the card carries a statement, not a
+                label saying where it goes. */}
             <Link
               href={href}
               className={styles.featuredCard}
               aria-label={`${t("home.featured.title")} — about Namu`}
             >
-              <span
-                className={`text-small ${styles.featuredEyebrow}`}
-                aria-hidden="true"
-              >
-                {t("home.featured.category")}
-              </span>
-
               <h2 className={styles.featuredTitle}>
                 <SplitText text={t("home.featured.title")} />
               </h2>

@@ -29,7 +29,6 @@ export const en = {
   "home.hero.line1": "Speech-native",
   "home.hero.line2": "Intelligence",
 
-  "home.featured.category":  "/namu",
   "home.featured.title":     "Making AI accessible to the rest of us",
   "home.featured.alt":       "The Namu mark above an acacia on the plain at sunrise",
 
