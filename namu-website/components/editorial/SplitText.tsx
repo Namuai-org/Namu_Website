@@ -22,6 +22,12 @@ type Props = {
   delay?: number;
   /** Reveal as soon as it mounts instead of waiting for a parent ScrollObject. */
   immediate?: boolean;
+  /**
+   * Drive the reveal from outside. For copy that is pinned on screen for a
+   * whole section, "has entered the viewport" fires almost immediately and the
+   * lines finish animating long before anyone can see them.
+   */
+  active?: boolean;
   className?: string;
   /** Accessible string when `lines` contains markup. Defaults to `text`. */
   srText?: string;
@@ -40,6 +46,7 @@ export function SplitText({
   lines,
   delay = 0,
   immediate = false,
+  active,
   className = "",
   srText,
 }: Props) {
@@ -119,7 +126,7 @@ export function SplitText({
     return () => ro.disconnect();
   }, [text]);
 
-  const revealed = immediate ? mounted : parentInView;
+  const revealed = active ?? (immediate ? mounted : parentInView);
   const renderLines: ReactNode[] = lines ?? measured ?? [];
   const accessibleText = srText ?? text ?? "";
 

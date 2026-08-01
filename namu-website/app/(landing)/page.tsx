@@ -25,15 +25,11 @@ import { Values } from "@/components/editorial/home/Values";
 const PORTAL_IMAGES = [
   { src: "/editorial/panel-children-dusk.jpg", alt: "Children standing together in low golden light" },
   { src: "/editorial/panel-portrait-headwrap.jpg", alt: "Painted portrait of a woman in a patterned headwrap" },
-  { src: "/editorial/panel-baskets-wall.jpg", alt: "Women carrying woven baskets along a sunlit wall" },
   { src: "/mouhamad.jpeg", alt: "Mouhamad Mamane speaking at a podium" },
+  { src: "/editorial/panel-baskets-wall.jpg", alt: "Women carrying woven baskets along a sunlit wall" },
+  { src: "/editorial/panel-cofounder.jpg", alt: "Namu co-founder portrait" },
   { src: "/editorial/panel-acacia-sunset.jpg", alt: "Painted acacia grove against a red sun" },
   { src: "/editorial/panel-elephants-crossing.jpg", alt: "A herd crossing a river at dawn, seen from above" },
-  { src: "/editorial/panel-cofounder.jpg", alt: "Namu co-founder portrait" },
-  { src: "/editorial/panel-boys-shallows.jpg", alt: "Two boys running through golden shallows" },
-  { src: "/editorial/panel-drummer.jpg", alt: "Painted figure playing a drum in terracotta tones" },
-  { src: "/editorial/panel-oryx-dune.jpg", alt: "An oryx standing below a vivid orange dune" },
-  { src: "/editorial/panel-highlands.jpg", alt: "Ridged highlands under a low golden sun" },
 ];
 
 const LANGUAGE_IMAGES = [
