@@ -125,28 +125,52 @@
 }
 
 /* One link, not a row of small ones: the whole card is the target, and
-   everything in it is centred on the route label at the top. */
+   everything in it is centred on the route label at the top.
+
+   Frosted rather than solid. It sits on the plate now, and an opaque panel
+   punched a hole in the picture; blurring what is behind it keeps the sunrise
+   readable through the card and ties the two together. The 1px inner highlight
+   is what stops it reading as flat translucency. */
 .featuredCard {
   display: block;
   text-align: center;
-  background: var(--ds-bg);
-  border-radius: var(--radius-card);
-  padding: calc(26 * var(--unit-fx)) calc(30 * var(--unit-fx))
-    calc(28 * var(--unit-fx));
+  padding: calc(20 * var(--unit-fx)) calc(28 * var(--unit-fx))
+    calc(22 * var(--unit-fx));
+  border-radius: calc(20 * var(--unit-fx));
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  background: rgba(255, 250, 241, 0.76);
+  -webkit-backdrop-filter: blur(30px) saturate(165%);
+  backdrop-filter: blur(30px) saturate(165%);
   color: var(--ds-text);
   text-decoration: none;
-  box-shadow: 0 calc(14 * var(--unit-fx)) calc(44 * var(--unit-fx))
-    rgba(28, 20, 16, 0.18);
+  box-shadow:
+    0 calc(12 * var(--unit-fx)) calc(40 * var(--unit-fx)) rgba(28, 20, 16, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
   transition:
     transform 0.7s var(--ease-out),
+    background-color 0.7s var(--ease-out),
     box-shadow 0.7s var(--ease-out);
 }
 
 .featuredCard:hover,
 .featuredCard:focus-visible {
   transform: translateY(calc(-8 * var(--unit-fx)));
-  box-shadow: 0 calc(28 * var(--unit-fx)) calc(72 * var(--unit-fx))
-    rgba(28, 20, 16, 0.24);
+  background: rgba(255, 250, 241, 0.88);
+  box-shadow:
+    0 calc(22 * var(--unit-fx)) calc(60 * var(--unit-fx)) rgba(28, 20, 16, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+/* Browsers without backdrop-filter would show the raw 76% wash over a busy
+   photograph, which is unreadable. Give those a solid panel instead. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .featuredCard {
+    background: var(--ds-bg);
+  }
+  .featuredCard:hover,
+  .featuredCard:focus-visible {
+    background: var(--ds-bg);
+  }
 }
 
 .featuredCard:focus-visible {
@@ -160,12 +184,20 @@
 .featuredEyebrow {
   display: block;
   color: inherit;
-  margin-bottom: calc(14 * var(--unit-fx));
+  opacity: 0.72;
+  margin-bottom: calc(10 * var(--unit-fx));
 }
 
+/* Sized here rather than borrowed from .h7 — the card is small and the type
+   has to come down with it. */
 .featuredTitle {
-  margin: 0 auto calc(22 * var(--unit-fx));
+  margin: 0 auto calc(16 * var(--unit-fx));
   max-width: calc(var(--col24) * 8 + var(--gutter24) * 7);
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(26 * var(--unit-fx-type));
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-weight: 450;
 }
 
 /* A short centred hairline that lengthens and fills with accent on hover —
@@ -173,10 +205,10 @@
 .featuredRule {
   position: relative;
   display: block;
-  width: calc(40 * var(--unit-fx));
+  width: calc(36 * var(--unit-fx));
   height: 1px;
-  margin: 0 auto calc(20 * var(--unit-fx));
-  background: var(--rule);
+  margin: 0 auto calc(14 * var(--unit-fx));
+  background: rgba(28, 20, 16, 0.28);
   overflow: hidden;
   transition: width 0.8s var(--ease-out);
 }
@@ -204,12 +236,12 @@
 .featuredArrowTile {
   display: grid;
   place-items: center;
-  width: calc(42 * var(--unit-fx));
-  height: calc(42 * var(--unit-fx));
-  min-width: 34px;
-  min-height: 34px;
+  width: calc(34 * var(--unit-fx));
+  height: calc(34 * var(--unit-fx));
+  min-width: 28px;
+  min-height: 28px;
   margin-inline: auto;
-  border: 1px solid var(--rule);
+  border: 1px solid rgba(28, 20, 16, 0.3);
   border-radius: 50%;
   transition:
     background-color 0.6s var(--ease-out),

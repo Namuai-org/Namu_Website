@@ -76,6 +76,7 @@ export default function HomePage() {
         <FeaturedStory
           href="/about"
           image="/namu_im.jpg"
+          image2x="/namu_im@2x.jpg"
           /* The frame takes the plate's own ratio so nothing is cropped — the
              mark, the tagline and the acacia all have to survive. */
           ratio="1536 / 1024"

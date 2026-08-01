@@ -12,6 +12,12 @@ import styles from "./home.module.css";
 type Props = {
   href: string;
   image: string;
+  /**
+   * Double-resolution file. The plate goes full bleed, so on a Retina screen a
+   * 1440px viewport asks for ~2880 device pixels — without this the browser
+   * upscales the 1x file by nearly 2x and the wordmark goes soft.
+   */
+  image2x?: string;
   /** The image's true aspect ratio. The frame takes it so nothing is cropped. */
   ratio: string;
 };
@@ -26,7 +32,7 @@ type Props = {
  * in it responds on hover — the dot swells, a rule sweeps across in accent, the
  * arrow tile fills — so it is obvious the whole thing is a door.
  */
-export function FeaturedStory({ href, image, ratio }: Props) {
+export function FeaturedStory({ href, image, image2x, ratio }: Props) {
   const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
@@ -73,9 +79,11 @@ export function FeaturedStory({ href, image, ratio }: Props) {
             <img
               ref={imgRef}
               src={image}
+              srcSet={image2x ? `${image} 1x, ${image2x} 2x` : undefined}
               alt={t("home.featured.alt")}
               className={styles.featuredImage}
               loading="eager"
+              decoding="async"
             />
           </div>
 
@@ -97,7 +105,7 @@ export function FeaturedStory({ href, image, ratio }: Props) {
                 {t("home.featured.category")}
               </span>
 
-              <h2 className={`h7 ${styles.featuredTitle}`}>
+              <h2 className={styles.featuredTitle}>
                 <SplitText text={t("home.featured.title")} />
               </h2>
 
