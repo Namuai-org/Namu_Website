@@ -1,10 +1,9 @@
 "use client";
 
-import { useCallback, useLayoutEffect, useRef } from "react";
+import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "@/hooks/useTranslation";
 import { clamp, useRafScroll } from "@/hooks/useRafScroll";
 import { Button } from "../Button";
-import { ScrollObject } from "../ScrollObject";
 import { SplitText } from "../SplitText";
 import styles from "./home.module.css";
 
@@ -41,17 +40,13 @@ type Slot = {
 };
 
 const LAYOUT: Slot[] = [
-  { cx: 0.11, cy: 0.18, w: 13, ratio: "736 / 1022" }, // children-dusk
-  { cx: 0.09, cy: 0.5, w: 13, ratio: "736 / 1104" }, // portrait-headwrap
-  { cx: 0.3, cy: 0.1, w: 13, ratio: "736 / 736" }, // baskets-wall
-  { cx: 0.2, cy: 0.76, w: 30, ratio: "1179 / 861", feature: true }, // Mouhamad
-  { cx: 0.9, cy: 0.16, w: 13, ratio: "736 / 1041" }, // acacia-sunset
-  { cx: 0.34, cy: 0.9, w: 12, ratio: "736 / 920" }, // elephants-crossing
-  { cx: 0.82, cy: 0.46, w: 24, ratio: "1179 / 1262", feature: true }, // co-founder
-  { cx: 0.7, cy: 0.12, w: 12, ratio: "736 / 920" }, // boys-shallows
-  { cx: 0.63, cy: 0.88, w: 12, ratio: "719 / 1079" }, // drummer
-  { cx: 0.91, cy: 0.8, w: 12, ratio: "600 / 965" }, // oryx-dune
-  { cx: 0.49, cy: 0.14, w: 9, ratio: "736 / 1303" }, // highlands
+  { cx: 0.11, cy: 0.2, w: 13, ratio: "736 / 1022" }, // children-dusk
+  { cx: 0.1, cy: 0.62, w: 13, ratio: "736 / 1104" }, // portrait-headwrap
+  { cx: 0.21, cy: 0.8, w: 30, ratio: "1179 / 861", feature: true }, // Mouhamad
+  { cx: 0.88, cy: 0.17, w: 13, ratio: "736 / 736" }, // baskets-wall
+  { cx: 0.83, cy: 0.5, w: 24, ratio: "1179 / 1262", feature: true }, // co-founder
+  { cx: 0.86, cy: 0.84, w: 13, ratio: "736 / 1041" }, // acacia-sunset
+  { cx: 0.45, cy: 0.11, w: 12, ratio: "736 / 920" }, // elephants-crossing
 ];
 
 const PERSPECTIVE = 250; // vh — must match --perspective in the stylesheet
@@ -70,12 +65,17 @@ const MID_SCALE = PERSPECTIVE / (PERSPECTIVE - MID_Z);
    to nothing and had to keep scrolling before anything showed up. */
 const LEAD_IN = 0.45;
 
+/* Progress at which the copy starts revealing. The section pins at roughly
+   0.17, so this lands the reveal just after the copy settles into the middle
+   of the screen rather than while it is still rising into place. */
+const REVEAL_AT = 0.2;
+
 export function Portal({ images }: { images: PortalImage[] }) {
   const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const slidesRef = useRef<HTMLDivElement>(null);
   const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const contentRef = useRef<HTMLDivElement>(null);
+  const [copyIn, setCopyIn] = useState(false);
 
   /* Resting position, solved from where the slot wants the panel to be when it
      is sharp. Runs on mount and on resize rather than per frame: it only
@@ -199,16 +199,13 @@ export function Portal({ images }: { images: PortalImage[] }) {
       el.style.zIndex = String(Math.round(local * 100));
     });
 
-    // The copy fades up shortly after the stream starts and then stays. It is
-    // pinned in the middle of the screen for the whole section, so it reads as
-    // something the panels are flying past rather than a panel of its own
-    // sliding in from below.
-    const content = contentRef.current;
-    if (content) {
-      const reveal = clamp((p - 0.16) / 0.26);
-      content.style.opacity = reveal.toFixed(3);
-      content.style.pointerEvents = reveal > 0.9 ? "auto" : "none";
-    }
+    // Reveal the copy just after the section pins, and latch it. This used to
+    // ramp the whole block's opacity with scroll, which meant the line-by-line
+    // reveal underneath ran — and finished — while the block was still at zero
+    // opacity. You never saw it: the text simply faded up already settled.
+    // Driving the reveal itself means the lines rise into place on screen, the
+    // way every other headline on the site does.
+    if (p > REVEAL_AT) setCopyIn((v) => v || true);
   });
 
   return (
@@ -240,27 +237,35 @@ export function Portal({ images }: { images: PortalImage[] }) {
           was what made it feel like a second frame landing on top of the
           flight rather than the thing the flight is happening around. */}
       <div className={styles.portalStick}>
-        <div className={styles.portalContent} ref={contentRef}>
-          <ScrollObject
-            className={`ds-span ${styles.portalCopy}`}
+        <div
+          className={styles.portalContent}
+          style={{ pointerEvents: copyIn ? "auto" : "none" }}
+        >
+          {/* `scroll-object` for the [data-fade] rule, but `in-view` comes from
+              scroll progress rather than an observer: this block is pinned on
+              screen for the whole section, so an observer fires immediately. */}
+          <div
+            className={`scroll-object ${copyIn ? "in-view" : ""} ds-span ${styles.portalCopy}`}
             style={{ "--span": 10 } as React.CSSProperties}
           >
             <h2 className="h4">
-              <SplitText text={t("home.join.title")} />
+              <SplitText active={copyIn} text={t("home.join.title")} />
             </h2>
             <p className="text-regular">
-              <SplitText text={t("home.join.body")} delay={0.1} />
+              <SplitText active={copyIn} text={t("home.join.body")} delay={0.1} />
             </p>
             <p className="text-regular">
-              <SplitText text={t("home.join.body2")} delay={0.2} />
+              <SplitText active={copyIn} text={t("home.join.body2")} delay={0.2} />
             </p>
             <p className="text-regular">
-              <SplitText text={t("home.join.body3")} delay={0.3} />
+              <SplitText active={copyIn} text={t("home.join.body3")} delay={0.3} />
             </p>
-            <Button href="mailto:contact@namuai.org">
-              {t("home.join.cta")}
-            </Button>
-          </ScrollObject>
+            <div data-fade style={{ transitionDelay: "0.5s" }}>
+              <Button href="mailto:contact@namuai.org">
+                {t("home.join.cta")}
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
