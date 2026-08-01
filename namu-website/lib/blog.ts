@@ -20,6 +20,12 @@ export type Post = {
   author: string;
   image: string;
   imageAlt: string;
+  /**
+   * Optional motion hero for the article page. `image` stays the poster and
+   * remains what every card, preview and OG image uses — only the article
+   * itself plays the clip.
+   */
+  video?: { webm: string; mp4: string };
   /** Body paragraphs. Plain strings; a subheading is any entry ending in ":". */
   body: string[];
 };
@@ -41,8 +47,13 @@ export const posts: Post[] = [
     date: "2025-10-12",
     readTime: "5 min read",
     author: "Mouhamad Mamane",
-    image: "/editorial/panel-children-dusk.jpg",
-    imageAlt: "Children standing together outside in low golden light",
+    image: "/editorial/voices-in-the-dark.jpg",
+    imageAlt:
+      "A dark street at dusk, rooftops in silhouette, and a glowing waveform passing between two points of light",
+    video: {
+      webm: "/editorial/voices-in-the-dark.webm",
+      mp4: "/editorial/voices-in-the-dark.mp4",
+    },
     body: [
       "One evening in Niamey, the electricity went out while my family was sitting together outside.",
       "The house went dark, and the voices coming from nearby homes and the occasional sound of a motorcycle passing through the street became more noticeable. Without a television or our phones to distract us, we began talking.",

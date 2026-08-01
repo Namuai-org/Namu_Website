@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Footer } from "@/components/editorial/Footer";
 import { ArrowRight } from "@/components/editorial/icons";
+import { MotionHero } from "@/components/editorial/MotionHero";
 import { ScrollObject } from "@/components/editorial/ScrollObject";
 import { SplitText } from "@/components/editorial/SplitText";
 import { formatDate, getPost, posts, postsByDate } from "@/lib/blog";
@@ -80,12 +81,22 @@ export default async function ArticlePage({ params }: Params) {
         </ScrollObject>
 
         <ScrollObject className={styles.hero}>
-          <img
-            src={post.image}
-            alt={post.imageAlt}
-            className="scale-out"
-            loading="eager"
-          />
+          {post.video ? (
+            <MotionHero
+              webm={post.video.webm}
+              mp4={post.video.mp4}
+              poster={post.image}
+              label={post.imageAlt}
+              className="scale-out"
+            />
+          ) : (
+            <img
+              src={post.image}
+              alt={post.imageAlt}
+              className="scale-out"
+              loading="eager"
+            />
+          )}
         </ScrollObject>
 
         <article className={`text-regular ${styles.body}`}>
