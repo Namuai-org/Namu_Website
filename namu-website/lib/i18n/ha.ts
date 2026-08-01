@@ -29,10 +29,9 @@ export const ha = {
   "home.hero.line1": "Basira Mai",
   "home.hero.line2": "Jin Magana",
 
-  "home.featured.category":  "hanyarmu",
-  "home.featured.readTime":  "karatun minti 4",
-  "home.featured.title":     "Magana da farko, domin haka ake amfani da harshen a zahiri",
-  "home.featured.alt":       "Manhajar Namu a bude a waya, a rike da hannu daya",
+  "home.featured.category":  "/namu",
+  "home.featured.title":     "Mayar da AI abin isa ga sauranmu",
+  "home.featured.alt":       "Alamar Namu bisa bishiyar kirya a fili da safiya",
 
   "home.stories.drag": "Ja domin gani",
   "home.story1.title": "Dalilin da ya sa harsunan Afirka ke bukatar samfuran da ke jin magana, ba fassara ba",

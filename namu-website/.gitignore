@@ -17,3 +17,16 @@ tsconfig.tsbuildinfo
 # also publish it at the site root on every deploy.
 public/*_accessKeys.csv
 public/**/*accessKeys*
+
+# Anything in public/ is served unauthenticated at the site root, so documents
+# staged there are published the moment they are committed. Keep internal
+# material out by default; add a specific negation if a document is genuinely
+# meant to be downloadable.
+public/*.docx
+public/*.doc
+public/*.pptx
+public/*.xlsx
+public/*.pdf
+
+# Both namu plates are now in use — namu1.jpeg on the lead card, namu.jpeg on
+# the About hero — so neither is ignored.

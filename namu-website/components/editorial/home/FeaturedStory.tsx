@@ -12,24 +12,39 @@ import styles from "./home.module.css";
 type Props = {
   href: string;
   image: string;
+  /**
+   * Double-resolution file. The plate goes full bleed, so on a Retina screen a
+   * 1440px viewport asks for ~2880 device pixels — without this the browser
+   * upscales the 1x file by nearly 2x and the wordmark goes soft.
+   */
+  image2x?: string;
+  /** The image's true aspect ratio. The frame takes it so nothing is cropped. */
+  ratio: string;
 };
 
 /**
- * The lead story. As the section crosses the viewport its frame widens from
- * 80% to full bleed and its corners square off, while the photograph inside
- * eases back from a 1.2 zoom — so the image appears to settle into place.
+ * The lead card. As the section crosses the viewport the frame widens from 80%
+ * to full bleed and its corners square off, while the photograph inside eases
+ * back from a 1.2 zoom — so the image appears to settle into place.
+ *
+ * The caption is one link rather than a row with two small ones. It overhangs
+ * the bottom of the frame so it reads as pinned to the picture, and everything
+ * in it responds on hover — the dot swells, a rule sweeps across in accent, the
+ * arrow tile fills — so it is obvious the whole thing is a door.
  */
-export function FeaturedStory({ href, image }: Props) {
+export function FeaturedStory({ href, image, image2x, ratio }: Props) {
   const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
+  const mediaRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
 
   useRafScroll((scrollY, viewportH) => {
     const section = sectionRef.current;
     const frame = frameRef.current;
+    const media = mediaRef.current;
     const img = imgRef.current;
-    if (!section || !frame || !img) return;
+    if (!section || !frame || !media || !img) return;
     if (window.innerWidth <= 600) return;
 
     const rect = section.getBoundingClientRect();
@@ -40,60 +55,68 @@ export function FeaturedStory({ href, image }: Props) {
     const start = top - viewportH;
     const p = clamp((scrollY - start) / viewportH);
 
-    frame.style.maxWidth = `${80 + p * 20}%`;
-    frame.style.borderRadius = `calc(${(1 - p) * 6} * var(--unit-fx))`;
+    // Ends at full bleed. The band the card sits in is a fraction of the frame,
+    // so the start has to stay high enough that the card still fits inside it
+    // while the frame is at its smallest.
+    frame.style.maxWidth = `${85 + p * 15}%`;
+    media.style.borderRadius = `calc(${(1 - p) * 6} * var(--unit-fx))`;
     img.style.transform = `scale(${1.2 - p * 0.2})`;
   });
 
   return (
-    <section
-      ref={sectionRef}
-      className={styles.featured}
-      aria-label={t("home.featured.title")}
-    >
-      <div ref={frameRef} className={styles.featuredFrame}>
-        <img
-          ref={imgRef}
-          src={image}
-          alt={t("home.featured.alt")}
-          className={styles.featuredImage}
-          loading="eager"
-        />
-      </div>
-
-      <div
-        className={`ds-span ${styles.featuredCaptionWrap}`}
-        style={{ "--span": 16 } as React.CSSProperties}
-      >
-        <ScrollObject className={styles.featuredCaption}>
-          <div className={styles.featuredRow}>
-            <h2
-              className="h6 ds-span"
-              style={{ "--span": 10 } as React.CSSProperties}
-            >
-              <Link href={href}>
-                <SplitText text={t("home.featured.title")} />
-              </Link>
-            </h2>
-
-            <div
-              className="text-caption ds-span"
-              style={{ "--span": 3 } as React.CSSProperties}
-            >
-              {t("home.featured.category")}
-            </div>
-
-            <div
-              className={`ds-span ${styles.featuredMeta}`}
-              style={{ "--span": 3 } as React.CSSProperties}
-            >
-              <div className="text-caption">{t("home.featured.readTime")}</div>
-              <Link href={href} aria-label={t("home.featured.title")}>
-                <ArrowRight className={styles.featuredArrow} />
-              </Link>
-            </div>
+    <section ref={sectionRef} className={styles.featured}>
+      <div className={styles.featuredStage}>
+        <div ref={frameRef} className={styles.featuredFrame}>
+          {/* The clip lives here rather than on the frame, so the card can be
+              overlaid on the plate on desktop and sit below it on a phone —
+              where there is no room to overlay without hiding the tagline —
+              without being cut off in either case. */}
+          <div
+            ref={mediaRef}
+            className={styles.featuredMedia}
+            style={{ aspectRatio: ratio }}
+          >
+            <img
+              ref={imgRef}
+              src={image}
+              srcSet={image2x ? `${image} 1x, ${image2x} 2x` : undefined}
+              alt={t("home.featured.alt")}
+              className={styles.featuredImage}
+              loading="eager"
+              decoding="async"
+            />
           </div>
-        </ScrollObject>
+
+          {/* Sits on the plate, in the band below the tagline. The band is
+              defined as a fraction of the frame, so it clears "our language.
+              our future." at every size the frame animates through. */}
+          <ScrollObject className={styles.featuredCaptionWrap}>
+            {/* The visible label is a route, not a sentence, so it is hidden
+                from assistive tech and the link is named by its destination. */}
+            <Link
+              href={href}
+              className={styles.featuredCard}
+              aria-label={`${t("home.featured.title")} — about Namu`}
+            >
+              <span
+                className={`text-small ${styles.featuredEyebrow}`}
+                aria-hidden="true"
+              >
+                {t("home.featured.category")}
+              </span>
+
+              <h2 className={styles.featuredTitle}>
+                <SplitText text={t("home.featured.title")} />
+              </h2>
+
+              <span className={styles.featuredRule} aria-hidden="true" />
+
+              <span className={styles.featuredArrowTile} aria-hidden="true">
+                <ArrowRight className={styles.featuredArrow} />
+              </span>
+            </Link>
+          </ScrollObject>
+        </div>
       </div>
     </section>
   );
