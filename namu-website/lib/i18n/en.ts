@@ -30,7 +30,7 @@ export const en = {
   "home.hero.line2": "Intelligence",
 
   "home.featured.category":  "/namu",
-  "home.featured.title":     "For the languages the world's models never learned",
+  "home.featured.title":     "Making AI accessible to the rest of us",
   "home.featured.alt":       "The Namu mark above an acacia on the plain at sunrise",
 
   "home.stories.drag": "Drag to explore",

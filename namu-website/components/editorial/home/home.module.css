@@ -74,14 +74,22 @@
 .featuredFrame {
   position: relative;
   width: 100%;
-  /* Both are driven from JS as the section scrolls: the frame widens from
-     60% to 80% while its corners square off. It stops short of full bleed —
-     the plate reads as a picture on the page rather than a takeover. */
-  max-width: 60%;
-  border-radius: calc(6 * var(--unit-fx));
+  /* Driven from JS as the section scrolls: widens from 85% to full bleed, so
+     the plate takes the whole screen by the time you are level with it. */
+  max-width: 85%;
+  will-change: max-width;
+}
+
+/* Carries the plate's aspect ratio and the clip. Keeping the clip off the
+   frame is what lets the card overlay the picture on desktop and drop below
+   it on a phone without being cut off either way. */
+.featuredMedia {
+  position: relative;
+  width: 100%;
   overflow: hidden;
+  border-radius: calc(6 * var(--unit-fx));
   background: var(--ink);
-  will-change: max-width, border-radius;
+  will-change: border-radius;
 }
 
 .featuredImage {
@@ -94,13 +102,26 @@
   will-change: transform;
 }
 
-/* Overhangs the bottom edge of the picture, so the card belongs to it. */
+/* Sits on the plate rather than under it.
+
+   The band starts at 70% of the frame's height. The plate's tagline — "our
+   language. our future." — sits at about 62% of it, and because the frame is
+   locked to the image's aspect ratio that fraction holds at every width the
+   frame animates through. A fixed pixel offset would not: it clears the
+   tagline at full bleed and lands on top of it at 85%. */
 .featuredCaptionWrap {
-  position: relative;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 70%;
+  bottom: 0;
   z-index: 3;
   width: calc(var(--col24) * 9 + var(--gutter24) * 8);
   max-width: 46%;
-  margin-top: calc(-64 * var(--unit-fx));
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 4.5%;
 }
 
 /* One link, not a row of small ones: the whole card is the target, and
@@ -133,28 +154,13 @@
   outline-offset: calc(4 * var(--unit-fx));
 }
 
-/* The label is a route — "/namu" — so it reads as somewhere to go. */
+/* The label is a route — "/namu" — so it reads as somewhere to go. It takes
+   the card's own text colour: the slash already does the work, and an accent
+   on it competed with the hairline below for the eye. */
 .featuredEyebrow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: calc(9 * var(--unit-fx));
-  color: var(--ds-accent);
+  display: block;
+  color: inherit;
   margin-bottom: calc(14 * var(--unit-fx));
-}
-
-.featuredDot {
-  width: calc(6 * var(--unit-fx));
-  height: calc(6 * var(--unit-fx));
-  min-width: 4px;
-  min-height: 4px;
-  border-radius: 50%;
-  background: var(--ds-accent);
-  transition: transform 0.6s var(--ease-out);
-}
-
-.featuredCard:hover .featuredDot {
-  transform: scale(1.7);
 }
 
 .featuredTitle {
@@ -232,13 +238,27 @@
   transform: translateX(calc(4 * var(--unit-fx)));
 }
 
+/* Below 900 the type scale stops shrinking with the layout, so the card no
+   longer fits in the band under the tagline. It drops out of the picture and
+   sits beneath it, overlapping the bottom edge. */
 @media (max-width: 900px) {
   .featuredFrame {
-    max-width: 84% !important;
+    max-width: 92% !important;
   }
   .featuredCaptionWrap {
+    position: relative;
+    left: auto;
+    top: auto;
+    bottom: auto;
+    transform: none;
+    display: block;
     width: 100%;
-    max-width: 72%;
+    max-width: 76%;
+    margin: calc(-52 * var(--unit-fx)) auto 0;
+    padding-bottom: 0;
+  }
+  .featuredTitle {
+    max-width: 100%;
   }
 }
 
@@ -249,18 +269,16 @@
   }
   .featuredFrame {
     max-width: 100% !important;
+  }
+  .featuredMedia {
     border-radius: 0 !important;
   }
   .featuredCaptionWrap {
-    width: 100%;
     max-width: 88%;
-    margin-top: calc(-40 * var(--unit-fx));
+    margin-top: calc(-36 * var(--unit-fx));
   }
   .featuredCard {
     padding: calc(22 * var(--unit-fx));
-  }
-  .featuredTitle {
-    max-width: 100%;
   }
 }
 

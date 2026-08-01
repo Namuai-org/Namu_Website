@@ -30,13 +30,15 @@ export function FeaturedStory({ href, image, ratio }: Props) {
   const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
+  const mediaRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
 
   useRafScroll((scrollY, viewportH) => {
     const section = sectionRef.current;
     const frame = frameRef.current;
+    const media = mediaRef.current;
     const img = imgRef.current;
-    if (!section || !frame || !img) return;
+    if (!section || !frame || !media || !img) return;
     if (window.innerWidth <= 600) return;
 
     const rect = section.getBoundingClientRect();
@@ -47,55 +49,66 @@ export function FeaturedStory({ href, image, ratio }: Props) {
     const start = top - viewportH;
     const p = clamp((scrollY - start) / viewportH);
 
-    frame.style.maxWidth = `${60 + p * 20}%`;
-    frame.style.borderRadius = `calc(${(1 - p) * 6} * var(--unit-fx))`;
+    // Ends at full bleed. The band the card sits in is a fraction of the frame,
+    // so the start has to stay high enough that the card still fits inside it
+    // while the frame is at its smallest.
+    frame.style.maxWidth = `${85 + p * 15}%`;
+    media.style.borderRadius = `calc(${(1 - p) * 6} * var(--unit-fx))`;
     img.style.transform = `scale(${1.2 - p * 0.2})`;
   });
 
   return (
     <section ref={sectionRef} className={styles.featured}>
       <div className={styles.featuredStage}>
-        <div
-          ref={frameRef}
-          className={styles.featuredFrame}
-          style={{ aspectRatio: ratio }}
-        >
-          <img
-            ref={imgRef}
-            src={image}
-            alt={t("home.featured.alt")}
-            className={styles.featuredImage}
-            loading="eager"
-          />
-        </div>
-
-        <ScrollObject className={styles.featuredCaptionWrap}>
-          {/* The visible label is a route, not a sentence, so it is hidden from
-              assistive tech and the link is named by its destination instead. */}
-          <Link
-            href={href}
-            className={styles.featuredCard}
-            aria-label={`${t("home.featured.title")} — about Namu`}
+        <div ref={frameRef} className={styles.featuredFrame}>
+          {/* The clip lives here rather than on the frame, so the card can be
+              overlaid on the plate on desktop and sit below it on a phone —
+              where there is no room to overlay without hiding the tagline —
+              without being cut off in either case. */}
+          <div
+            ref={mediaRef}
+            className={styles.featuredMedia}
+            style={{ aspectRatio: ratio }}
           >
-            <span
-              className={`text-small ${styles.featuredEyebrow}`}
-              aria-hidden="true"
+            <img
+              ref={imgRef}
+              src={image}
+              alt={t("home.featured.alt")}
+              className={styles.featuredImage}
+              loading="eager"
+            />
+          </div>
+
+          {/* Sits on the plate, in the band below the tagline. The band is
+              defined as a fraction of the frame, so it clears "our language.
+              our future." at every size the frame animates through. */}
+          <ScrollObject className={styles.featuredCaptionWrap}>
+            {/* The visible label is a route, not a sentence, so it is hidden
+                from assistive tech and the link is named by its destination. */}
+            <Link
+              href={href}
+              className={styles.featuredCard}
+              aria-label={`${t("home.featured.title")} — about Namu`}
             >
-              <span className={styles.featuredDot} />
-              {t("home.featured.category")}
-            </span>
+              <span
+                className={`text-small ${styles.featuredEyebrow}`}
+                aria-hidden="true"
+              >
+                {t("home.featured.category")}
+              </span>
 
-            <h2 className={`h7 ${styles.featuredTitle}`}>
-              <SplitText text={t("home.featured.title")} />
-            </h2>
+              <h2 className={`h7 ${styles.featuredTitle}`}>
+                <SplitText text={t("home.featured.title")} />
+              </h2>
 
-            <span className={styles.featuredRule} aria-hidden="true" />
+              <span className={styles.featuredRule} aria-hidden="true" />
 
-            <span className={styles.featuredArrowTile} aria-hidden="true">
-              <ArrowRight className={styles.featuredArrow} />
-            </span>
-          </Link>
-        </ScrollObject>
+              <span className={styles.featuredArrowTile} aria-hidden="true">
+                <ArrowRight className={styles.featuredArrow} />
+              </span>
+            </Link>
+          </ScrollObject>
+        </div>
       </div>
     </section>
   );
