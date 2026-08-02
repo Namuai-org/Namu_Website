@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { AboutPage } from "@/components/about/AboutPage";
 
 const DESCRIPTION =
-  "Namu is an African AI research and technology company building speech-native models, datasets and products for African languages, starting with Hausa.";
+  "Namu builds models that understand African languages, runs the infrastructure that serves them, and lets organizations reach the people they are already trying to serve. Starting with Hausa.";
 
 export const metadata: Metadata = {
   title: "About | Namu",

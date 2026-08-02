@@ -1,29 +1,48 @@
 /* ==========================================================================
    About
    --------------------------------------------------------------------------
-   Same foundation as the rest of the site: every dimension a multiple of
-   --unit-fx, colour from the --ds-* roles so sections re-tint through BgFade,
-   type from the global .h* / .text-* scale.
+   The page is a dependency proof, not a description. Three chapters, each
+   separated by the sentence that makes the next one necessary, then a section
+   that removes each layer in turn to show nothing survives alone.
+
+   Type contract, kept strictly:
+     .h1  hero only, once
+     .h2  exactly three times, and only on the sentences that ARE the argument
+     .h3  everything else
+   The hinges are therefore LARGER than the chapter headings they follow. That
+   inversion is the point: the claim is smaller than the reason it holds.
    ========================================================================== */
 
 .page {
   padding-top: calc(190 * var(--unit-fx));
 }
 
+.soft {
+  color: var(--ds-text-soft);
+}
+
 /* ---- Hero --------------------------------------------------------------- */
 
 .hero {
-  padding-bottom: calc(120 * var(--unit-fx));
+  padding-bottom: calc(150 * var(--unit-fx));
 }
 
-.heroEyebrow {
-  color: var(--ds-text-soft);
+.heroInner {
+  display: block;
+}
+
+.heroKicker {
+  color: var(--ds-accent);
   text-transform: uppercase;
-  margin-bottom: calc(28 * var(--unit-fx));
+  margin-bottom: calc(34 * var(--unit-fx));
 }
 
+/* .h1 at the frozen type step overflows a 20-column measure below 1537, so the
+   hero takes its own ramp rather than the global one. */
 .heroTitle {
-  margin-bottom: calc(56 * var(--unit-fx));
+  width: calc(var(--col24) * 20 + var(--gutter24) * 19);
+  max-width: 100%;
+  margin-bottom: calc(80 * var(--unit-fx));
 }
 
 .heroTitle em {
@@ -31,357 +50,337 @@
   color: var(--ds-accent);
 }
 
-.heroLead {
-  width: calc(var(--col24) * 12 + var(--gutter24) * 11);
-  margin-bottom: calc(96 * var(--unit-fx));
+/* Set flush right, diagonally opposite the headline, so the hero uses its
+   empty quadrant instead of stacking everything on one axis. */
+.heroSub {
+  width: calc(var(--col24) * 10 + var(--gutter24) * 9);
+  margin-left: auto;
 }
 
-.heroStage {
-  display: block;
-}
+/* ---- The 24-column bed -------------------------------------------------- */
 
-/* The plate that brought them here, shown again full width — the headline
-   above it is the line printed on the image, so it reads as arrival. */
-.heroFrame {
-  overflow: hidden;
-  border-radius: var(--radius-card);
-  aspect-ratio: 1086 / 724;
-  background: var(--ink);
-}
-
-.heroFrame img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* ---- Section scaffold --------------------------------------------------- */
-
-.section {
-  padding-block: calc(130 * var(--unit-fx));
-}
-
-.head {
+.gap,
+.chapter,
+.ledger,
+.remove,
+.close {
   display: grid;
-  grid-template-columns: calc(var(--col24) * 5 + var(--gutter24) * 4) 1fr;
-  gap: var(--gutter24);
-  align-items: start;
-  padding-top: calc(28 * var(--unit-fx));
-  border-top: 1px solid var(--rule);
-  margin-bottom: calc(72 * var(--unit-fx));
+  grid-template-columns: repeat(24, minmax(0, 1fr));
+  column-gap: var(--gutter24);
+  max-width: var(--container);
+  margin-inline: auto;
+  width: 100%;
+  padding-inline: var(--outer-gutter);
+  padding-block: calc(170 * var(--unit-fx));
 }
 
-.headMeta {
+/* ---- The premise -------------------------------------------------------- */
+/* An L: heading top left, body dropped low and right. The chapters repeat this
+   silhouette so the reader stops reading it as layout and starts reading it as
+   rhythm. */
+
+.gapHead {
+  grid-column: 3 / span 13;
+}
+
+.gapBody {
+  grid-column: 14 / span 9;
+  margin-top: calc(110 * var(--unit-fx));
+  display: flex;
+  flex-direction: column;
+  gap: calc(28 * var(--unit-fx));
+}
+
+/* ---- Chapters ----------------------------------------------------------- */
+
+.chapter {
+  position: relative;
+}
+
+.chapterHead {
+  grid-column: 3 / span 13;
+}
+
+.chapterBody {
+  grid-column: 14 / span 9;
+  grid-row: 2;
+  margin-top: calc(90 * var(--unit-fx));
+  display: flex;
+  flex-direction: column;
+  gap: calc(28 * var(--unit-fx));
+}
+
+.marker {
   display: flex;
   align-items: baseline;
-  gap: calc(14 * var(--unit-fx));
-  color: var(--ds-text-soft);
+  gap: calc(12 * var(--unit-fx));
+  margin-bottom: calc(38 * var(--unit-fx));
 }
 
-.index {
+.markerNum {
   color: var(--ds-accent);
 }
 
-.kicker {
-  text-transform: uppercase;
-}
-
-.headBody {
-  max-width: calc(var(--col24) * 14 + var(--gutter24) * 13);
-}
-
-.title {
-  margin-bottom: calc(24 * var(--unit-fx));
-}
-
-.intro {
-  color: var(--ds-text-soft);
-  max-width: calc(var(--col24) * 12 + var(--gutter24) * 11);
-}
-
-.body {
-  display: block;
-}
-
-/* ---- 01 The gap --------------------------------------------------------- */
-
-.gap {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: calc(var(--gutter24) * 2);
-  align-items: center;
-}
-
-.gapDiagram {
-  display: grid;
-  place-items: center;
-  background: var(--ds-surface);
-  border-radius: var(--radius-card);
-  padding: calc(40 * var(--unit-fx));
-}
-
-.loop {
-  width: 100%;
-  max-width: calc(420 * var(--unit-fx));
-  height: auto;
-  display: block;
-  overflow: visible;
-}
-
-/* Drawn on rather than listed: the argument is the shape. */
-.loop path {
-  fill: none;
-  stroke: var(--ds-accent);
-  stroke-width: 2.5;
-  stroke-linecap: round;
-  transition: stroke-dashoffset 0.9s linear;
-}
-
-.gap:global(.in-view) .loop path {
-  stroke-dashoffset: 0;
-}
-
-.loopNode {
-  opacity: 0;
-  transition: opacity 0.7s var(--ease-out);
-}
-
-.gap:global(.in-view) .loopNode {
-  opacity: 1;
-}
-
-.loopNode circle {
-  fill: var(--ds-text);
-}
-
-.loopNode text {
-  fill: var(--ds-text);
-  font-family: var(--font-mono-ui), ui-monospace, monospace;
-  font-size: 15px;
-  letter-spacing: 0.04em;
-}
-
-.gapNote {
-  display: flex;
-  flex-direction: column;
-  gap: calc(22 * var(--unit-fx));
-}
-
-.gapP {
-  color: var(--ds-text-soft);
-}
-
-/* ---- 02 What we build --------------------------------------------------- */
-
-.pillars {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--gutter24);
-}
-
-.pillar {
-  background: var(--paper);
-  border-radius: var(--radius-card);
-  padding: calc(40 * var(--unit-fx));
-  display: flex;
-  flex-direction: column;
-  gap: calc(16 * var(--unit-fx));
-  min-height: calc(300 * var(--unit-fx));
-}
-
-.pillarIdx {
-  color: var(--ds-accent);
-}
-
-.pillarBody {
-  color: var(--ds-text-soft);
-  margin-top: auto;
-}
-
-/* ---- 03 Languages ------------------------------------------------------- */
-
-.languages {
-  display: flex;
-  flex-direction: column;
-}
-
-/* A ladder rather than cards: the order is the point. */
-.language {
-  display: grid;
-  grid-template-columns: calc(var(--col24) * 7 + var(--gutter24) * 6) 1fr;
-  gap: var(--gutter24);
-  align-items: start;
-  padding-block: calc(36 * var(--unit-fx));
-  border-top: 1px solid var(--rule);
-}
-
-.language:last-child {
-  border-bottom: 1px solid var(--rule);
-}
-
-.languageTop {
-  display: flex;
-  align-items: baseline;
-  gap: calc(18 * var(--unit-fx));
-}
-
-.status {
-  display: inline-flex;
-  align-items: center;
-  height: calc(28 * var(--unit-fx));
-  min-height: 22px;
-  padding-inline: calc(14 * var(--unit-fx));
-  border-radius: var(--radius-pill);
-  background: var(--ds-surface);
+.markerName {
   color: var(--ds-text-soft);
   text-transform: uppercase;
-  white-space: nowrap;
 }
 
-.language:first-child .status {
-  background: var(--ds-accent);
-  color: var(--paper);
-}
-
-.languageNote {
-  color: var(--ds-text-soft);
-  max-width: calc(var(--col24) * 12 + var(--gutter24) * 11);
-}
-
-/* ---- 04 Principles ------------------------------------------------------ */
-
-.principles {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--gutter24) calc(var(--gutter24) * 2);
-}
-
-.principle {
-  padding-top: calc(22 * var(--unit-fx));
-  border-top: 1px solid rgba(74, 42, 18, 0.22);
-}
-
-.principleName {
-  margin-bottom: calc(12 * var(--unit-fx));
-}
-
-.principleBody {
-  opacity: 0.78;
-}
-
-/* ---- 05 People ---------------------------------------------------------- */
-
-.people {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: calc(var(--gutter24) * 2);
-  max-width: calc(var(--col24) * 16 + var(--gutter24) * 15);
-}
-
-.person {
+.chapterTitle {
   margin: 0;
 }
 
-.personFrame {
-  overflow: hidden;
-  border-radius: var(--radius-card);
-  aspect-ratio: 4 / 3;
-  background: var(--ds-surface);
+/* ---- The load path ------------------------------------------------------ */
+
+.spine {
+  grid-column: 2;
+  grid-row: 1 / -1;
+  justify-self: center;
+  position: relative;
+  width: 1px;
+  background: var(--rule-soft);
 }
 
-.personFrame img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 1.2s var(--ease-out);
+.spineLine {
+  position: absolute;
+  inset: 0;
+  background: var(--ds-accent);
+  transform: scaleY(0);
+  transform-origin: top center;
+  transition: transform 1.8s var(--ease-out);
 }
 
-.person:hover .personFrame img {
-  transform: scale(1.03);
+:global(.in-view) > .spine > .spineLine {
+  transform: scaleY(1);
 }
 
-.personMeta {
-  display: flex;
-  flex-direction: column;
-  gap: calc(6 * var(--unit-fx));
-  margin-top: calc(18 * var(--unit-fx));
+/* The stop is deliberate, so it gets a terminal mark. Without it a reader
+   reads a missing line rather than a broken one. */
+.spineCap {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: calc(14 * var(--unit-fx));
+  height: 1px;
+  transform: translateX(-50%);
+  background: var(--ds-accent);
+  opacity: 0;
+  transition: opacity 0.6s var(--ease-out) 1.4s;
 }
 
-.personMeta strong {
-  font-weight: 450;
+:global(.in-view) > .spine > .spineCap {
+  opacity: 1;
 }
 
-.personRole {
+/* ---- Hinges ------------------------------------------------------------- */
+/* No spine here. The gap in the left margin is the page's structure waiting on
+   the sentence that justifies the next layer. */
+
+.hinge {
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--outer-gutter);
+  padding-block: calc(120 * var(--unit-fx)) calc(150 * var(--unit-fx));
+}
+
+.hingeText {
+  color: var(--ds-accent);
+  width: calc(var(--col24) * 16 + var(--gutter24) * 15);
+  max-width: 100%;
+  /* Indented to the chapter body's column, so it sits in the empty track the
+     spine leaves behind rather than starting a new margin. */
+  margin-left: calc(var(--col24) * 2 + var(--gutter24) * 2);
+}
+
+/* ---- Ledger ------------------------------------------------------------- */
+
+.ledgerHead {
+  grid-column: 3 / span 14;
+  margin-bottom: calc(90 * var(--unit-fx));
+}
+
+.ledgerIntro {
   color: var(--ds-text-soft);
-  text-transform: uppercase;
+  margin-top: calc(24 * var(--unit-fx));
+  max-width: calc(var(--col24) * 10 + var(--gutter24) * 9);
 }
 
-.quote {
-  margin-top: calc(96 * var(--unit-fx));
-  padding-top: calc(40 * var(--unit-fx));
+.ledgerRows {
+  grid-column: 3 / span 20;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Struck cost on the left, what replaces it on the right. The rule between
+   rows is the ledger's only ornament. */
+.ledgerRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gutter24);
+  align-items: baseline;
+  padding-block: calc(28 * var(--unit-fx));
   border-top: 1px solid var(--rule);
-  max-width: calc(var(--col24) * 15 + var(--gutter24) * 14);
+  opacity: 0;
+  transform: translateY(calc(20 * var(--unit-fx)));
+  transition:
+    opacity 1.2s var(--ease-out),
+    transform 1.2s var(--ease-out);
+  transition-delay: calc(0.1s + var(--i, 0) * 0.09s);
 }
 
-.quoteText {
-  margin: 0 0 calc(24 * var(--unit-fx));
-  font-style: italic;
-  letter-spacing: -0.02em;
+:global(.in-view) .ledgerRow {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.quoteAttr {
+.ledgerRow:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+
+.ledgerCost {
   color: var(--ds-text-soft);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--ds-accent);
+}
+
+/* Set against the struck cost, not below it, so the eye reads the swap in one
+   movement rather than as two separate lists. */
+.ledgerInstead {
+  position: relative;
+  padding-left: calc(28 * var(--unit-fx));
+}
+
+.ledgerInstead::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: calc(14 * var(--unit-fx));
+  height: 1px;
+  background: var(--ds-accent);
+}
+
+.ledgerLanding {
+  grid-column: 3 / span 15;
+  margin-top: calc(90 * var(--unit-fx));
+}
+
+/* ---- Remove one layer --------------------------------------------------- */
+
+.removeTitle {
+  grid-column: 3 / span 14;
+  margin-bottom: calc(70 * var(--unit-fx));
+}
+
+.removeRows {
+  grid-column: 3 / span 18;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.removeRow {
+  display: grid;
+  grid-template-columns: calc(var(--col24) * 5 + var(--gutter24) * 4) 1fr;
+  gap: var(--gutter24);
+  align-items: baseline;
+  padding-block: calc(30 * var(--unit-fx));
+  border-top: 1px solid rgba(255, 250, 241, 0.2);
+  opacity: 0;
+  transform: translateY(calc(20 * var(--unit-fx)));
+  transition:
+    opacity 1.2s var(--ease-out),
+    transform 1.2s var(--ease-out);
+  transition-delay: calc(0.1s + var(--i, 0) * 0.1s);
+}
+
+:global(.in-view) .removeRow {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.removeRow:last-child {
+  border-bottom: 1px solid rgba(255, 250, 241, 0.2);
+}
+
+.removeLabel {
+  color: var(--sahel);
   text-transform: uppercase;
 }
 
-/* ---- 06 Work with us ---------------------------------------------------- */
+.removeText {
+  color: rgba(255, 250, 241, 0.82);
+}
 
-.cta {
+.removeLanding {
+  grid-column: 3 / span 16;
+  margin-top: calc(96 * var(--unit-fx));
+  color: var(--sahel);
+}
+
+/* ---- Close -------------------------------------------------------------- */
+
+.close > h2 {
+  grid-column: 3 / span 12;
+}
+
+.closeBody {
+  grid-column: 14 / span 9;
+  margin-top: calc(70 * var(--unit-fx));
   display: flex;
   flex-direction: column;
-  gap: calc(40 * var(--unit-fx));
-  max-width: calc(var(--col24) * 14 + var(--gutter24) * 13);
+  gap: calc(28 * var(--unit-fx));
+  align-items: flex-start;
 }
 
-.ctaP {
-  color: var(--ds-text-soft);
-}
-
-.ctaActions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: calc(16 * var(--unit-fx));
+.closeLine {
+  margin-top: calc(12 * var(--unit-fx));
 }
 
 /* ==========================================================================
    Responsive
    ========================================================================== */
 
-@media (max-width: 900px) {
-  .head {
-    grid-template-columns: 1fr;
-    gap: calc(20 * var(--unit-fx));
-  }
-
-  .heroLead {
+@media (max-width: 1024px) {
+  .heroTitle {
     width: 100%;
   }
-
-  .gap,
-  .language {
-    grid-template-columns: 1fr;
-    gap: calc(28 * var(--unit-fx));
+  .heroSub {
+    width: calc(var(--col24) * 14 + var(--gutter24) * 13);
   }
+}
 
-  .pillars,
-  .principles {
-    grid-template-columns: repeat(2, 1fr);
+@media (max-width: 900px) {
+  .gapHead,
+  .chapterHead,
+  .ledgerHead,
+  .removeTitle,
+  .close > h2 {
+    grid-column: 2 / span 22;
   }
-
-  .people {
-    max-width: none;
+  .gapBody,
+  .chapterBody,
+  .closeBody {
+    grid-column: 2 / span 22;
+    grid-row: auto;
+    margin-top: calc(40 * var(--unit-fx));
+  }
+  .ledgerRows,
+  .removeRows,
+  .ledgerLanding,
+  .removeLanding {
+    grid-column: 2 / span 22;
+  }
+  /* The load path needs a margin to run down, and below 900 there is not one.
+     It is a desktop device; the hinges still break the page without it. */
+  .spine {
+    display: none;
+  }
+  .hingeText {
+    margin-left: 0;
+    width: 100%;
   }
 }
 
@@ -389,27 +388,25 @@
   .page {
     padding-top: calc(140 * var(--unit-fx));
   }
-
-  .section {
-    padding-block: calc(80 * var(--unit-fx));
+  .gap,
+  .chapter,
+  .ledger,
+  .remove,
+  .close {
+    padding-block: calc(90 * var(--unit-fx));
   }
-
-  .pillars,
-  .principles,
-  .people {
+  .hero {
+    padding-bottom: calc(80 * var(--unit-fx));
+  }
+  .heroSub {
+    width: 100%;
+  }
+  .hinge {
+    padding-block: calc(70 * var(--unit-fx)) calc(80 * var(--unit-fx));
+  }
+  .ledgerRow,
+  .removeRow {
     grid-template-columns: 1fr;
-  }
-
-  .pillar {
-    padding: calc(28 * var(--unit-fx));
-    min-height: 0;
-  }
-
-  .gapDiagram {
-    padding: calc(24 * var(--unit-fx));
-  }
-
-  .loopNode text {
-    font-size: 13px;
+    gap: calc(10 * var(--unit-fx));
   }
 }
