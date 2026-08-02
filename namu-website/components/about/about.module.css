@@ -23,7 +23,7 @@
 /* ---- Hero --------------------------------------------------------------- */
 
 .hero {
-  padding-bottom: calc(140 * var(--unit-fx));
+  padding-bottom: calc(110 * var(--unit-fx));
 }
 
 .heroInner {
@@ -39,7 +39,7 @@
 .heroTitle {
   width: calc(var(--col24) * 20 + var(--gutter24) * 19);
   max-width: 100%;
-  margin-bottom: calc(80 * var(--unit-fx));
+  margin-bottom: calc(60 * var(--unit-fx));
 }
 
 .heroTitle em {
@@ -63,7 +63,7 @@
   max-width: var(--container);
   margin-inline: auto;
   padding-inline: var(--outer-gutter);
-  padding-block: calc(200 * var(--unit-fx));
+  padding-block: calc(150 * var(--unit-fx));
   text-align: center;
 }
 
@@ -118,17 +118,17 @@
 
 .slabs {
   position: relative;
-  height: calc(420 * var(--unit-fx));
+  height: calc(340 * var(--unit-fx));
 }
 
 /* Each slab sits higher and narrower than the one below it, so the stack
    recedes slightly and reads as depth rather than as a bar chart. */
 .slab {
   position: absolute;
-  left: calc(var(--depth) * 30 * var(--unit-fx));
-  right: calc(var(--depth) * 30 * var(--unit-fx));
-  bottom: calc(var(--depth) * 96 * var(--unit-fx));
-  height: calc(132 * var(--unit-fx));
+  left: calc(var(--depth) * 26 * var(--unit-fx));
+  right: calc(var(--depth) * 26 * var(--unit-fx));
+  bottom: calc(var(--depth) * 78 * var(--unit-fx));
+  height: calc(108 * var(--unit-fx));
   display: flex;
   align-items: center;
   gap: calc(24 * var(--unit-fx));
@@ -162,7 +162,7 @@
 
 .stackCopy {
   position: relative;
-  min-height: calc(420 * var(--unit-fx));
+  min-height: calc(340 * var(--unit-fx));
 }
 
 .panel {
@@ -230,7 +230,7 @@
   margin-inline: auto;
   width: 100%;
   padding-inline: var(--outer-gutter);
-  padding-block: calc(170 * var(--unit-fx));
+  padding-block: calc(130 * var(--unit-fx));
 }
 
 /* ---- Take one away ------------------------------------------------------ */
@@ -272,7 +272,7 @@
 }
 
 .removeLabel {
-  color: var(--sahel);
+  color: var(--dry-clay);
   text-transform: uppercase;
 }
 
@@ -283,7 +283,7 @@
 .removeLanding {
   grid-column: 2 / span 16;
   margin-top: calc(96 * var(--unit-fx));
-  color: var(--sahel);
+  color: var(--dry-clay);
 }
 
 /* ---- Ledger ------------------------------------------------------------- */

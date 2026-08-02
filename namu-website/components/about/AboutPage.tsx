@@ -13,7 +13,8 @@ const PAPER = "#FFFAF1";
 const HARMATTAN = "#F7F0E3";
 const CLAY = "#EDD9B0";
 const CLAY_TEXT = "#4A2A12";
-const FOREST = "#1A3A2E";
+const INK = "#1C1410";
+const KOLA = "#6B3E1E";
 
 /* ── The stack ────────────────────────────────────────────────────────────
    The three things Namu does are not a list of services, they are a stack —
@@ -99,7 +100,7 @@ function Stack() {
                 style={{ "--depth": i } as React.CSSProperties}
               >
                 <span className={`text-small ${styles.slabNum}`}>{layer.n}</span>
-                <span className={`text-large-alt ${styles.slabName}`}>
+                <span className={`text-regular ${styles.slabName}`}>
                   {layer.name}
                 </span>
               </div>
@@ -117,10 +118,10 @@ function Stack() {
                   <span className={styles.markerNum}>{layer.n}</span>
                   <span className={styles.markerName}>{layer.name}</span>
                 </p>
-                <h3 className={`h4 ${styles.panelTitle}`}>{layer.heading}</h3>
+                <h3 className={`h6 ${styles.panelTitle}`}>{layer.heading}</h3>
                 <p className={`text-regular ${styles.panelBody}`}>{layer.body}</p>
                 {layer.hinge ? (
-                  <p className={`text-large ${styles.hinge}`}>{layer.hinge}</p>
+                  <p className={`text-regular ${styles.hinge}`}>{layer.hinge}</p>
                 ) : null}
               </div>
             ))}
@@ -156,7 +157,7 @@ export function AboutPage() {
                 <p className={`text-small ${styles.heroKicker}`} data-fade>
                   About Namu
                 </p>
-                <h1 className={`h1 ${styles.heroTitle}`}>
+                <h1 className={`h2 ${styles.heroTitle}`}>
                   <SplitText
                     immediate
                     srText="AI is only useful if it can reach you."
@@ -168,7 +169,7 @@ export function AboutPage() {
                     ]}
                   />
                 </h1>
-                <p className={`text-large ${styles.heroSub}`} data-fade>
+                <p className={`text-regular ${styles.heroSub}`} data-fade>
                   Namu builds models that understand African languages, runs the
                   infrastructure that serves them, and lets organizations reach
                   the people they are already trying to serve. We start with
@@ -184,19 +185,19 @@ export function AboutPage() {
             has to exist for that sentence to get an answer — which reframes
             the whole page from "what we build" to "what this costs to
             answer". */}
-        <BgFade bg={FOREST} text={PAPER}>
+        <BgFade bg={INK} text={PAPER}>
           <ScrollObject as="section" className={styles.utterance}>
             <p className={`text-small ${styles.utteranceKicker}`} data-fade>
               Someone says this out loud
             </p>
-            <p className={`h2 ${styles.utteranceLine}`}>
+            <p className={`h3 ${styles.utteranceLine}`}>
               <SplitText text="Ina asibiti mafi kusa?" />
             </p>
             <p className={`text-regular ${styles.utteranceGloss}`} data-fade>
               Where is the nearest clinic?
             </p>
             <p
-              className={`text-large ${styles.utteranceAfter}`}
+              className={`text-regular ${styles.utteranceAfter}`}
               data-fade
               style={{ transitionDelay: "0.18s" }}
             >
@@ -212,9 +213,9 @@ export function AboutPage() {
         </BgFade>
 
         {/* ── The proof ── */}
-        <BgFade bg={FOREST} text={PAPER}>
+        <BgFade bg={KOLA} text={PAPER}>
           <ScrollObject as="section" className={styles.remove}>
-            <h2 className={`h3 ${styles.removeTitle}`}>
+            <h2 className={`h5 ${styles.removeTitle}`}>
               <SplitText text="Take one away." />
             </h2>
             <ul className={styles.removeRows}>
@@ -233,7 +234,7 @@ export function AboutPage() {
                 </li>
               ))}
             </ul>
-            <p className={`h2 ${styles.removeLanding}`} data-fade>
+            <p className={`h4 ${styles.removeLanding}`} data-fade>
               That is why it is one job and not three.
             </p>
           </ScrollObject>
@@ -246,7 +247,7 @@ export function AboutPage() {
               <p className={`text-small ${styles.marker}`} data-fade>
                 <span className={styles.markerName}>What it takes away</span>
               </p>
-              <h2 className="h3">
+              <h2 className="h5">
                 <SplitText text="Access is what it takes away." />
               </h2>
               <p className={`text-regular ${styles.ledgerIntro}`} data-fade>
@@ -271,7 +272,7 @@ export function AboutPage() {
               ))}
             </ul>
 
-            <p className={`h3 ${styles.ledgerLanding}`} data-fade>
+            <p className={`h5 ${styles.ledgerLanding}`} data-fade>
               Enough of those, and the language a person speaks no longer
               decides the technology they are allowed to use.
             </p>
@@ -281,17 +282,17 @@ export function AboutPage() {
         {/* ── Close ── */}
         <BgFade bg={PAPER}>
           <ScrollObject as="section" className={styles.close}>
-            <h2 className="h3">
+            <h2 className="h5">
               <SplitText text="Namu is early." />
             </h2>
             <div className={styles.closeBody}>
-              <p className="text-large" data-fade>
+              <p className="text-regular" data-fade>
                 It is built in Niger and the United States, by people who speak
                 the language the work is for. The team is small on purpose and
                 close to the problem.
               </p>
               <p
-                className={`text-large ${styles.soft}`}
+                className={`text-regular ${styles.soft}`}
                 data-fade
                 style={{ transitionDelay: "0.12s" }}
               >
@@ -301,7 +302,7 @@ export function AboutPage() {
                 want to build the models and the infrastructure underneath.
               </p>
               <p
-                className={`h5 ${styles.closeLine}`}
+                className={`h7 ${styles.closeLine}`}
                 data-fade
                 style={{ transitionDelay: "0.24s" }}
               >
