@@ -1,16 +1,15 @@
 /* ==========================================================================
    About
    --------------------------------------------------------------------------
-   The page is a dependency proof, not a description. Three chapters, each
-   separated by the sentence that makes the next one necessary, then a section
-   that removes each layer in turn to show nothing survives alone.
+   The page hangs off one spoken sentence. Everything after it is what has to
+   exist before that sentence gets an answer — which turns "what we do" into
+   "what this costs to answer", and gives the three parts of the business a
+   reason to be in that order.
 
-   Type contract, kept strictly:
-     .h1  hero only, once
-     .h2  exactly three times, and only on the sentences that ARE the argument
-     .h3  everything else
-   The hinges are therefore LARGER than the chapter headings they follow. That
-   inversion is the point: the claim is smaller than the reason it holds.
+   The centre of the page is a stack that assembles while you watch. Three
+   slabs, bottom to top: models, infrastructure, organizations. Describing them
+   as three chapters made them read as a menu of services; building the stack
+   in front of the reader makes the dependency the point.
    ========================================================================== */
 
 .page {
@@ -24,7 +23,7 @@
 /* ---- Hero --------------------------------------------------------------- */
 
 .hero {
-  padding-bottom: calc(150 * var(--unit-fx));
+  padding-bottom: calc(140 * var(--unit-fx));
 }
 
 .heroInner {
@@ -37,8 +36,6 @@
   margin-bottom: calc(34 * var(--unit-fx));
 }
 
-/* .h1 at the frozen type step overflows a 20-column measure below 1537, so the
-   hero takes its own ramp rather than the global one. */
 .heroTitle {
   width: calc(var(--col24) * 20 + var(--gutter24) * 19);
   max-width: 100%;
@@ -57,64 +54,159 @@
   margin-left: auto;
 }
 
-/* ---- The 24-column bed -------------------------------------------------- */
+/* ---- The sentence ------------------------------------------------------- */
+/* Dark, quiet, and centred — the one place on the page that stops. It is a
+   real question in the language the work is for, and the English underneath is
+   a gloss, deliberately smaller, because the Hausa is the artefact. */
 
-.gap,
-.chapter,
-.ledger,
-.remove,
-.close {
-  display: grid;
-  grid-template-columns: repeat(24, minmax(0, 1fr));
-  column-gap: var(--gutter24);
+.utterance {
   max-width: var(--container);
   margin-inline: auto;
-  width: 100%;
   padding-inline: var(--outer-gutter);
-  padding-block: calc(170 * var(--unit-fx));
+  padding-block: calc(200 * var(--unit-fx));
+  text-align: center;
 }
 
-/* ---- The premise -------------------------------------------------------- */
-/* An L: heading top left, body dropped low and right. The chapters repeat this
-   silhouette so the reader stops reading it as layout and starts reading it as
-   rhythm. */
-
-.gapHead {
-  grid-column: 3 / span 13;
+.utteranceKicker {
+  color: var(--sahel);
+  text-transform: uppercase;
+  margin-bottom: calc(48 * var(--unit-fx));
 }
 
-.gapBody {
-  grid-column: 14 / span 9;
-  margin-top: calc(110 * var(--unit-fx));
-  display: flex;
-  flex-direction: column;
-  gap: calc(28 * var(--unit-fx));
+.utteranceLine {
+  color: var(--paper);
+  margin: 0 auto;
+  max-width: calc(var(--col24) * 18 + var(--gutter24) * 17);
 }
 
-/* ---- Chapters ----------------------------------------------------------- */
+.utteranceGloss {
+  color: rgba(255, 250, 241, 0.5);
+  font-style: italic;
+  margin-top: calc(28 * var(--unit-fx));
+}
 
-.chapter {
+.utteranceAfter {
+  color: rgba(255, 250, 241, 0.82);
+  margin: calc(90 * var(--unit-fx)) auto 0;
+  max-width: calc(var(--col24) * 11 + var(--gutter24) * 10);
+}
+
+/* ---- The stack ---------------------------------------------------------- */
+
+.stack {
   position: relative;
+  /* Runway. Three slabs at roughly a viewport each, plus room to read the
+     last panel before the section lets go. */
+  height: 340vh;
 }
 
-.chapterHead {
-  grid-column: 3 / span 13;
+.stackPin {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
 }
 
-.chapterBody {
-  grid-column: 14 / span 9;
-  grid-row: 2;
-  margin-top: calc(90 * var(--unit-fx));
+.stackGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(var(--gutter24) * 3);
+  align-items: center;
+  width: 100%;
+}
+
+.slabs {
+  position: relative;
+  height: calc(420 * var(--unit-fx));
+}
+
+/* Each slab sits higher and narrower than the one below it, so the stack
+   recedes slightly and reads as depth rather than as a bar chart. */
+.slab {
+  position: absolute;
+  left: calc(var(--depth) * 30 * var(--unit-fx));
+  right: calc(var(--depth) * 30 * var(--unit-fx));
+  bottom: calc(var(--depth) * 96 * var(--unit-fx));
+  height: calc(132 * var(--unit-fx));
+  display: flex;
+  align-items: center;
+  gap: calc(24 * var(--unit-fx));
+  padding-inline: calc(34 * var(--unit-fx));
+  border-radius: var(--radius-card);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  box-shadow: 0 calc(16 * var(--unit-fx)) calc(44 * var(--unit-fx))
+    rgba(28, 20, 16, 0.1);
+  opacity: 0;
+  will-change: transform, opacity;
+  transition:
+    border-color 0.6s var(--ease-out),
+    background-color 0.6s var(--ease-out);
+}
+
+/* The slab whose panel is being read takes the accent edge, so the copy and
+   the diagram are never ambiguous about which layer is which. */
+.slabActive {
+  border-color: var(--ds-accent);
+  background: #fffdf8;
+}
+
+.slabNum {
+  color: var(--ds-accent);
+}
+
+.slabName {
+  color: var(--ds-text);
+}
+
+.stackCopy {
+  position: relative;
+  min-height: calc(420 * var(--unit-fx));
+}
+
+.panel {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
-  gap: calc(28 * var(--unit-fx));
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(calc(24 * var(--unit-fx)));
+  transition:
+    opacity 0.7s var(--ease-out),
+    transform 0.7s var(--ease-out);
+  pointer-events: none;
+}
+
+.panelOn {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.panelTitle {
+  margin: 0 0 calc(24 * var(--unit-fx));
+}
+
+.panelBody {
+  color: var(--ds-text-soft);
+}
+
+/* The sentence that makes the next slab necessary. It arrives with the layer
+   it indicts, which is why it is set apart and in the accent. */
+.hinge {
+  margin-top: calc(36 * var(--unit-fx));
+  padding-top: calc(28 * var(--unit-fx));
+  border-top: 1px solid var(--rule);
+  color: var(--ds-accent);
 }
 
 .marker {
   display: flex;
   align-items: baseline;
   gap: calc(12 * var(--unit-fx));
-  margin-bottom: calc(38 * var(--unit-fx));
+  margin-bottom: calc(28 * var(--unit-fx));
 }
 
 .markerNum {
@@ -126,76 +218,78 @@
   text-transform: uppercase;
 }
 
-.chapterTitle {
-  margin: 0;
-}
+/* ---- Shared bed for the remaining spreads ------------------------------- */
 
-/* ---- The load path ------------------------------------------------------ */
-
-.spine {
-  grid-column: 2;
-  grid-row: 1 / -1;
-  justify-self: center;
-  position: relative;
-  width: 1px;
-  background: var(--rule-soft);
-}
-
-.spineLine {
-  position: absolute;
-  inset: 0;
-  background: var(--ds-accent);
-  transform: scaleY(0);
-  transform-origin: top center;
-  transition: transform 1.8s var(--ease-out);
-}
-
-:global(.in-view) > .spine > .spineLine {
-  transform: scaleY(1);
-}
-
-/* The stop is deliberate, so it gets a terminal mark. Without it a reader
-   reads a missing line rather than a broken one. */
-.spineCap {
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  width: calc(14 * var(--unit-fx));
-  height: 1px;
-  transform: translateX(-50%);
-  background: var(--ds-accent);
-  opacity: 0;
-  transition: opacity 0.6s var(--ease-out) 1.4s;
-}
-
-:global(.in-view) > .spine > .spineCap {
-  opacity: 1;
-}
-
-/* ---- Hinges ------------------------------------------------------------- */
-/* No spine here. The gap in the left margin is the page's structure waiting on
-   the sentence that justifies the next layer. */
-
-.hinge {
+.remove,
+.ledger,
+.close {
+  display: grid;
+  grid-template-columns: repeat(24, minmax(0, 1fr));
+  column-gap: var(--gutter24);
   max-width: var(--container);
   margin-inline: auto;
+  width: 100%;
   padding-inline: var(--outer-gutter);
-  padding-block: calc(120 * var(--unit-fx)) calc(150 * var(--unit-fx));
+  padding-block: calc(170 * var(--unit-fx));
 }
 
-.hingeText {
-  color: var(--ds-accent);
-  width: calc(var(--col24) * 16 + var(--gutter24) * 15);
-  max-width: 100%;
-  /* Indented to the chapter body's column, so it sits in the empty track the
-     spine leaves behind rather than starting a new margin. */
-  margin-left: calc(var(--col24) * 2 + var(--gutter24) * 2);
+/* ---- Take one away ------------------------------------------------------ */
+
+.removeTitle {
+  grid-column: 2 / span 14;
+  margin-bottom: calc(70 * var(--unit-fx));
+}
+
+.removeRows {
+  grid-column: 2 / span 20;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.removeRow {
+  display: grid;
+  grid-template-columns: calc(var(--col24) * 5 + var(--gutter24) * 4) 1fr;
+  gap: var(--gutter24);
+  align-items: baseline;
+  padding-block: calc(30 * var(--unit-fx));
+  border-top: 1px solid rgba(255, 250, 241, 0.2);
+  opacity: 0;
+  transform: translateY(calc(20 * var(--unit-fx)));
+  transition:
+    opacity 1.2s var(--ease-out),
+    transform 1.2s var(--ease-out);
+  transition-delay: calc(0.1s + var(--i, 0) * 0.1s);
+}
+
+:global(.in-view) .removeRow {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.removeRow:last-child {
+  border-bottom: 1px solid rgba(255, 250, 241, 0.2);
+}
+
+.removeLabel {
+  color: var(--sahel);
+  text-transform: uppercase;
+}
+
+.removeText {
+  color: rgba(255, 250, 241, 0.82);
+}
+
+.removeLanding {
+  grid-column: 2 / span 16;
+  margin-top: calc(96 * var(--unit-fx));
+  color: var(--sahel);
 }
 
 /* ---- Ledger ------------------------------------------------------------- */
 
 .ledgerHead {
-  grid-column: 3 / span 14;
+  grid-column: 2 / span 15;
   margin-bottom: calc(90 * var(--unit-fx));
 }
 
@@ -206,14 +300,12 @@
 }
 
 .ledgerRows {
-  grid-column: 3 / span 20;
+  grid-column: 2 / span 21;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-/* Struck cost on the left, what replaces it on the right. The rule between
-   rows is the ledger's only ornament. */
 .ledgerRow {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -263,67 +355,14 @@
 }
 
 .ledgerLanding {
-  grid-column: 3 / span 15;
+  grid-column: 2 / span 16;
   margin-top: calc(90 * var(--unit-fx));
-}
-
-/* ---- Remove one layer --------------------------------------------------- */
-
-.removeTitle {
-  grid-column: 3 / span 14;
-  margin-bottom: calc(70 * var(--unit-fx));
-}
-
-.removeRows {
-  grid-column: 3 / span 18;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.removeRow {
-  display: grid;
-  grid-template-columns: calc(var(--col24) * 5 + var(--gutter24) * 4) 1fr;
-  gap: var(--gutter24);
-  align-items: baseline;
-  padding-block: calc(30 * var(--unit-fx));
-  border-top: 1px solid rgba(255, 250, 241, 0.2);
-  opacity: 0;
-  transform: translateY(calc(20 * var(--unit-fx)));
-  transition:
-    opacity 1.2s var(--ease-out),
-    transform 1.2s var(--ease-out);
-  transition-delay: calc(0.1s + var(--i, 0) * 0.1s);
-}
-
-:global(.in-view) .removeRow {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.removeRow:last-child {
-  border-bottom: 1px solid rgba(255, 250, 241, 0.2);
-}
-
-.removeLabel {
-  color: var(--sahel);
-  text-transform: uppercase;
-}
-
-.removeText {
-  color: rgba(255, 250, 241, 0.82);
-}
-
-.removeLanding {
-  grid-column: 3 / span 16;
-  margin-top: calc(96 * var(--unit-fx));
-  color: var(--sahel);
 }
 
 /* ---- Close -------------------------------------------------------------- */
 
 .close > h2 {
-  grid-column: 3 / span 12;
+  grid-column: 2 / span 12;
 }
 
 .closeBody {
@@ -352,35 +391,55 @@
   }
 }
 
+/* Below 900 the stack stops being a scroll-driven diagram and becomes what it
+   describes: three slabs and three panels, read in order. There is no room to
+   hold a pinned two-column layout, and a pinned column on a phone fights the
+   scroll it is riding on. */
 @media (max-width: 900px) {
-  .gapHead,
-  .chapterHead,
-  .ledgerHead,
-  .removeTitle,
-  .close > h2 {
-    grid-column: 2 / span 22;
+  .stack {
+    height: auto;
   }
-  .gapBody,
-  .chapterBody,
+  .stackPin {
+    position: static;
+    height: auto;
+    display: block;
+    padding-block: calc(90 * var(--unit-fx));
+  }
+  .stackGrid {
+    grid-template-columns: 1fr;
+    gap: calc(60 * var(--unit-fx));
+  }
+  .slabs {
+    height: calc(340 * var(--unit-fx));
+  }
+  .slab {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .stackCopy {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: calc(70 * var(--unit-fx));
+  }
+  .panel {
+    position: static;
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+  .removeTitle,
+  .removeRows,
+  .removeLanding,
+  .ledgerHead,
+  .ledgerRows,
+  .ledgerLanding,
+  .close > h2,
   .closeBody {
     grid-column: 2 / span 22;
-    grid-row: auto;
+  }
+  .closeBody {
     margin-top: calc(40 * var(--unit-fx));
-  }
-  .ledgerRows,
-  .removeRows,
-  .ledgerLanding,
-  .removeLanding {
-    grid-column: 2 / span 22;
-  }
-  /* The load path needs a margin to run down, and below 900 there is not one.
-     It is a desktop device; the hinges still break the page without it. */
-  .spine {
-    display: none;
-  }
-  .hingeText {
-    margin-left: 0;
-    width: 100%;
   }
 }
 
@@ -388,21 +447,26 @@
   .page {
     padding-top: calc(140 * var(--unit-fx));
   }
-  .gap,
-  .chapter,
-  .ledger,
-  .remove,
-  .close {
-    padding-block: calc(90 * var(--unit-fx));
-  }
   .hero {
     padding-bottom: calc(80 * var(--unit-fx));
   }
   .heroSub {
     width: 100%;
   }
-  .hinge {
-    padding-block: calc(70 * var(--unit-fx)) calc(80 * var(--unit-fx));
+  .utterance {
+    padding-block: calc(110 * var(--unit-fx));
+  }
+  .remove,
+  .ledger,
+  .close {
+    padding-block: calc(90 * var(--unit-fx));
+  }
+  .slabs {
+    height: calc(300 * var(--unit-fx));
+  }
+  .slab {
+    height: calc(104 * var(--unit-fx));
+    padding-inline: calc(20 * var(--unit-fx));
   }
   .ledgerRow,
   .removeRow {
