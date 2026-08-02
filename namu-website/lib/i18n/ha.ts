@@ -32,8 +32,6 @@ export const ha = {
   "home.featured.title":     "Mayar da AI abin isa ga sauranmu",
   "home.featured.alt":       "Alamar Namu bisa bishiyar kirya a fili da safiya",
 
-  "home.stories.drag": "Ja domin gani",
-
   "home.stack.title": "Tsarin da muke ginawa",
   "home.stack.body":  "Matakai hudu da ke karfafa juna, daga maganar da mutane ke yi zuwa kayan aikin da take karfafawa.",
   "home.stack.cta":   "Duba hanyarmu",

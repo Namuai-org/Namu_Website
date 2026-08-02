@@ -33,6 +33,9 @@ const PORTAL_IMAGES = [
   { src: "/editorial/panel-elephants-crossing.jpg", alt: "A herd crossing a river at dawn, seen from above" },
 ];
 
+/* The rail is a taster, not the archive — /blog is where everything lives. */
+const MAX_STORIES = 4;
+
 const LANGUAGE_IMAGES = [
   "/editorial/dune-lone-tree.jpg",
   "/editorial/dune-ridge.jpg",
@@ -47,7 +50,7 @@ export default function HomePage() {
      and led to an index instead of the piece they named. Deriving them from
      lib/blog means the rail cannot drift from what is actually published, and
      a new article appears here without anyone remembering to add it. */
-  const stories: Story[] = postsByDate.map((post) => ({
+  const stories: Story[] = postsByDate.slice(0, MAX_STORIES).map((post) => ({
     href: `/blog/${post.slug}`,
     image: post.image,
     alt: post.imageAlt,

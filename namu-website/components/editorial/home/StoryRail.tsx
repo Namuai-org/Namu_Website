@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { useTranslation } from "@/hooks/useTranslation";
 import { ArrowRight } from "../icons";
 import { ScrollObject } from "../ScrollObject";
 import { SplitText } from "../SplitText";
@@ -23,7 +22,6 @@ export type Story = {
  * the track's bounds.
  */
 export function StoryRail({ stories }: { stories: Story[] }) {
-  const { t } = useTranslation();
   const trackRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const [dragging, setDragging] = useState(false);
@@ -190,9 +188,11 @@ export function StoryRail({ stories }: { stories: Story[] }) {
             ))}
           </div>
 
-          <div className={`text-caption ${styles.railHint}`}>
+          {/* Two arrows, no caption. The gesture is obvious from the shape of
+              the rail; spelling it out was the only text in the section that
+              addressed the reader rather than telling them something. */}
+          <div className={styles.railHint} aria-hidden="true">
             <ArrowRight style={{ width: "1.3em", transform: "rotate(180deg)" }} />
-            {t("home.stories.drag")}
             <ArrowRight style={{ width: "1.3em" }} />
           </div>
         </div>

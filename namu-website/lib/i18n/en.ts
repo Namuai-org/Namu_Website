@@ -32,8 +32,6 @@ export const en = {
   "home.featured.title":     "Making AI accessible to the rest of us",
   "home.featured.alt":       "The Namu mark above an acacia on the plain at sunrise",
 
-  "home.stories.drag": "Drag to explore",
-
   "home.stack.title": "The stack we are building",
   "home.stack.body":  "Four layers that reinforce each other, from the speech people actually produce to the products it ends up powering.",
   "home.stack.cta":   "See the approach",
