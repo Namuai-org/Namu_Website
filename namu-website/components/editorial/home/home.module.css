@@ -394,6 +394,44 @@
   margin-top: calc(30 * var(--unit-fx));
 }
 
+.railNav {
+  display: grid;
+  place-items: center;
+  width: calc(44 * var(--unit-fx));
+  height: calc(44 * var(--unit-fx));
+  min-width: 36px;
+  min-height: 36px;
+  padding: 0;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  transition:
+    background-color 0.5s var(--ease-out),
+    border-color 0.5s var(--ease-out),
+    color 0.5s var(--ease-out),
+    opacity 0.4s var(--ease-out);
+}
+
+.railNav:hover:not(:disabled) {
+  background: var(--kola);
+  border-color: var(--kola);
+  color: var(--paper);
+}
+
+/* Inert rather than hidden at the ends: a control that vanishes is worse than
+   one that visibly has nothing left to do. */
+.railNav:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.railNav:focus-visible {
+  outline: 2px solid var(--ds-accent);
+  outline-offset: calc(3 * var(--unit-fx));
+}
+
 @media (max-width: 600px) {
   .rail {
     margin-top: calc(60 * var(--unit-fx));
