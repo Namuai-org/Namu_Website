@@ -1,189 +1,148 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element -- static assets in /public; the
-   founder portraits and the brand plate are already sized for their frames. */
-
-import type { ReactNode } from "react";
+import { useRef, useState } from "react";
 import { BgFade } from "@/components/editorial/BgFade";
 import { Button } from "@/components/editorial/Button";
 import { Footer } from "@/components/editorial/Footer";
 import { ScrollObject } from "@/components/editorial/ScrollObject";
 import { SplitText } from "@/components/editorial/SplitText";
+import { clamp, useRafScroll } from "@/hooks/useRafScroll";
 import styles from "./about.module.css";
 
-/* Page background per section, so the handover is always defined and the page
-   keeps the same slow colour rhythm as the homepage. */
 const PAPER = "#FFFAF1";
 const HARMATTAN = "#F7F0E3";
 const CLAY = "#EDD9B0";
 const CLAY_TEXT = "#4A2A12";
+const INK = "#1C1410";
+const KOLA = "#6B3E1E";
 
-function Section({
-  id,
-  index,
-  kicker,
-  title,
-  intro,
-  bg,
-  text,
-  children,
-}: {
-  id: string;
-  index: string;
-  kicker: string;
-  title: string;
-  intro?: string;
-  bg: string;
-  text?: string;
-  children?: ReactNode;
-}) {
+/* ── The stack ────────────────────────────────────────────────────────────
+   The three things Namu does are not a list of services, they are a stack —
+   each one only works because the one under it exists. So the page builds it
+   in front of you rather than describing it: models land first, infrastructure
+   settles on top, organizations last. The hinge line is what makes the next
+   slab necessary, and it arrives as that slab does.
+
+   Bottom to top, which is why `models` is first. */
+const LAYERS = [
+  {
+    n: "01",
+    name: "Models",
+    heading: "We build the models.",
+    body: "Most AI treats an African language as something to translate into. We build the other way around. Our models learn Hausa from the way people actually speak it — the dialect, the code-switching, the regional accent, and the ordinary phrasing that never reaches a benchmark.",
+    hinge: "A model nobody can run is a research result.",
+  },
+  {
+    n: "02",
+    name: "Infrastructure",
+    heading: "We run the infrastructure.",
+    body: "A model is not a product until something can run it. We build the systems that carry ours into the places they are needed, on foundations we control and can take apart when they are wrong. Running it ourselves also decides what a single answer costs, and cost decides how many people ever get one.",
+    hinge: "Infrastructure with nothing running on it is a bill.",
+  },
+  {
+    n: "03",
+    name: "Organizations",
+    heading: "Organizations build on both.",
+    body: "We do not reach everyone ourselves. The clinics, banks, schools and government offices already serving these communities do that, and they already know where they lose people. What it looks like depends on who is on the other end — a message in an app they already keep open, a phone call because a call is what the person has, something that keeps working when the signal drops, or something that never asks anyone to read at all. The list is open.",
+    hinge: null,
+  },
+] as const;
+
+function Stack() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const slabRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [active, setActive] = useState(0);
+
+  useRafScroll((scrollY, viewportH) => {
+    const section = sectionRef.current;
+    if (!section) return;
+    if (window.innerWidth <= 900) return;
+
+    const rect = section.getBoundingClientRect();
+    const top = rect.top + scrollY;
+    const runway = section.offsetHeight - viewportH;
+    if (runway <= 0) return;
+
+    const p = clamp((scrollY - top) / runway);
+
+    slabRefs.current.forEach((el, i) => {
+      if (!el) return;
+      // Each slab owns a third of the runway, with a little overlap so the
+      // next one is already moving before the last has settled.
+      const local = clamp((p - i * 0.3) / 0.34);
+      const eased = local * local * (3 - 2 * local);
+
+      // Drops in from below and settles onto the one beneath it.
+      const y = (1 - eased) * 130;
+      el.style.transform = `translate3d(0, ${y.toFixed(1)}%, 0)`;
+      el.style.opacity = Math.min(1, local * 2.2).toFixed(3);
+    });
+
+    const i = Math.min(LAYERS.length - 1, Math.floor(p * LAYERS.length * 0.999));
+    setActive((cur) => (cur === i ? cur : i));
+  });
+
   return (
-    <BgFade bg={bg} text={text}>
-      <section id={id} className={styles.section}>
-        <div className="ds-container ds-outer">
-          <ScrollObject className={styles.head}>
-            <div className={styles.headMeta}>
-              <span className={`text-small ${styles.index}`}>{index}</span>
-              <span className={`text-small ${styles.kicker}`}>{kicker}</span>
-            </div>
-            <div className={styles.headBody}>
-              <h2 className={`h5 ${styles.title}`}>
-                <SplitText text={title} />
-              </h2>
-              {intro ? (
-                <p className={`text-regular ${styles.intro}`} data-fade>
-                  {intro}
+    <section ref={sectionRef} className={styles.stack} id="stack">
+      <div className={styles.stackPin}>
+        <div className={`ds-container ds-outer ${styles.stackGrid}`}>
+          {/* Rendered bottom-first so the slab higher in the stack is later in
+              the DOM and paints over the one beneath it — the way a real stack
+              of sheets reads, and without needing z-index. */}
+          <div className={styles.slabs} aria-hidden="true">
+            {LAYERS.map((layer, i) => (
+              <div
+                key={layer.n}
+                ref={(el) => {
+                  slabRefs.current[i] = el;
+                }}
+                className={`${styles.slab} ${i === active ? styles.slabActive : ""}`}
+                style={{ "--depth": i } as React.CSSProperties}
+              >
+                <span className={`text-small ${styles.slabNum}`}>{layer.n}</span>
+                <span className={`text-regular ${styles.slabName}`}>
+                  {layer.name}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <div className={styles.stackCopy}>
+            {LAYERS.map((layer, i) => (
+              <div
+                key={layer.n}
+                className={`${styles.panel} ${i === active ? styles.panelOn : ""}`}
+                aria-hidden={i !== active}
+              >
+                <p className={`text-small ${styles.marker}`}>
+                  <span className={styles.markerNum}>{layer.n}</span>
+                  <span className={styles.markerName}>{layer.name}</span>
                 </p>
-              ) : null}
-            </div>
-          </ScrollObject>
-          {children ? <div className={styles.body}>{children}</div> : null}
+                <h3 className={`h6 ${styles.panelTitle}`}>{layer.heading}</h3>
+                <p className={`text-regular ${styles.panelBody}`}>{layer.body}</p>
+                {layer.hinge ? (
+                  <p className={`text-regular ${styles.hinge}`}>{layer.hinge}</p>
+                ) : null}
+              </div>
+            ))}
+          </div>
         </div>
-      </section>
-    </BgFade>
+      </div>
+    </section>
   );
 }
 
-/* ── The closed loop ──────────────────────────────────────────────────────
-   Four arcs on one circle, drawn on in sequence when the section arrives —
-   the same stroke-dashoffset technique the homepage annotations use. The
-   point of drawing it rather than listing it is that the argument *is* the
-   shape: each condition causes the next, and the last causes the first. */
-const R = 140;
-const C = 200;
-const pt = (deg: number) => {
-  const a = (deg * Math.PI) / 180;
-  return [C + R * Math.cos(a), C + R * Math.sin(a)] as const;
-};
-const arc = (from: number, to: number) => {
-  const [x1, y1] = pt(from);
-  const [x2, y2] = pt(to);
-  return `M ${x1.toFixed(1)} ${y1.toFixed(1)} A ${R} ${R} 0 0 1 ${x2.toFixed(1)} ${y2.toFixed(1)}`;
-};
-
-const LOOP_NODES = [
-  { at: -90, label: "No data" },
-  { at: 0, label: "Weak models" },
-  { at: 90, label: "No tools" },
-  { at: 180, label: "No usage" },
+const REMOVALS: [string, string][] = [
+  ["Without the models", "you are translating in and out of English, and the answer arrives thinner than the question."],
+  ["Without the infrastructure", "you are renting someone else's priorities, and the cost of an answer decides who is allowed to have one."],
+  ["Without the organizations", "you have a very good system that reaches whoever already had a laptop and a connection."],
 ];
 
-function Loop() {
-  return (
-    <svg
-      className={styles.loop}
-      viewBox="0 0 400 400"
-      role="img"
-      aria-label="A closed cycle: no data leads to weak models, weak models to no usable tools, no tools to no usage, and no usage back to no data."
-    >
-      <defs>
-        <marker
-          id="loop-arrow"
-          viewBox="0 0 10 10"
-          refX="8"
-          refY="5"
-          markerWidth="5"
-          markerHeight="5"
-          orient="auto-start-reverse"
-        >
-          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--ds-accent)" />
-        </marker>
-      </defs>
-
-      {[
-        arc(-82, -12),
-        arc(8, 78),
-        arc(98, 168),
-        arc(188, 258),
-      ].map((d, i) => (
-        <path
-          key={d}
-          d={d}
-          pathLength={1}
-          strokeDasharray={1}
-          strokeDashoffset={1}
-          markerEnd="url(#loop-arrow)"
-          style={{ transitionDelay: `${0.15 + i * 0.22}s` }}
-        />
-      ))}
-
-      {LOOP_NODES.map((n, i) => {
-        const [x, y] = pt(n.at);
-        return (
-          <g key={n.label} style={{ transitionDelay: `${0.3 + i * 0.22}s` }} className={styles.loopNode}>
-            <circle cx={x} cy={y} r="7" />
-            <text x={x} y={n.at === 90 ? y + 30 : n.at === -90 ? y - 20 : y - 20} textAnchor="middle">
-              {n.label}
-            </text>
-          </g>
-        );
-      })}
-    </svg>
-  );
-}
-
-/* ── Language roadmap ────────────────────────────────────────────────── */
-const LANGUAGES = [
-  {
-    name: "Hausa",
-    status: "In build",
-    note: "Tens of millions of speakers across northern Nigeria, Niger and beyond, and centuries of written scholarship. Almost nothing built for it.",
-  },
-  {
-    name: "Zarma",
-    status: "Next",
-    note: "Spoken widely along the Niger river in the southwest, and a first language for millions who have no tools in it at all.",
-  },
-  {
-    name: "Fulfulde",
-    status: "After that",
-    note: "Runs in a band across the Sahel from Senegal to Cameroon. It has always crossed borders, which is exactly what makes it hard and worth doing.",
-  },
-];
-
-/* ── The people ───────────────────────────────────────────────────────── */
-const PEOPLE = [
-  {
-    name: "Mouhamad Mamane",
-    role: "Co-founder",
-    photo: "/mouhamad.jpeg",
-    alt: "Mouhamad Mamane speaking at a podium",
-  },
-  {
-    name: "Co-founder",
-    role: "Co-founder",
-    photo: "/editorial/panel-cofounder.jpg",
-    alt: "Namu co-founder portrait",
-  },
-];
-
-const PRINCIPLES = [
-  ["Language", "We start from the language, not from a translation layer bolted onto something built elsewhere."],
-  ["Consent", "Voices that train a system should know it, agree to it, and be able to change their mind."],
-  ["Depth", "One language done properly is worth more than ten announced."],
-  ["Proximity", "We build close to the people we build for, and we are wrong less often because of it."],
-  ["Rigour", "We say what a model can and cannot do, and we publish how we measured it."],
-  ["Openness", "The layer beneath should be something others can build on."],
+const LEDGER: [string, string][] = [
+  ["A day of travel and a day of waiting", "A question asked from where you already are"],
+  ["A form in a language you do not write", "A sentence in the language you speak"],
+  ["A document someone else has to read to you", "An answer you receive directly"],
+  ["An interface nobody ever taught you", "A way in you already know how to use"],
 ];
 
 export function AboutPage() {
@@ -194,211 +153,167 @@ export function AboutPage() {
         <BgFade bg={PAPER}>
           <header className={styles.hero}>
             <div className="ds-container ds-outer">
-              <p className={`text-small ${styles.heroEyebrow}`}>About Namu</p>
-
-              <h1 className={`h1 ${styles.heroTitle}`}>
-                <SplitText
-                  immediate
-                  srText="Our language. Our future."
-                  lines={["Our language.", <em key="f">Our future.</em>]}
-                />
-              </h1>
-
-              <ScrollObject className={styles.heroLead}>
-                <p className="text-large" data-fade>
-                  Namu is an African AI research and technology company. We build
-                  speech-native models, datasets and products so that people can
-                  use technology by talking to it, in the language they already
-                  think in.
+              <ScrollObject className={styles.heroInner}>
+                <p className={`text-small ${styles.heroKicker}`} data-fade>
+                  About Namu
                 </p>
-              </ScrollObject>
-
-              <ScrollObject className={styles.heroStage}>
-                <div className={styles.heroFrame}>
-                  <img
-                    src="/namu.jpeg"
-                    alt="The Namu mark over an acacia at dusk"
-                    className="scale-out"
+                <h1 className={`h2 ${styles.heroTitle}`}>
+                  <SplitText
+                    immediate
+                    srText="AI is only useful if it can reach you."
+                    lines={[
+                      "AI is only useful",
+                      <>
+                        if it can <em>reach</em> you.
+                      </>,
+                    ]}
                   />
-                </div>
+                </h1>
+                <p className={`text-regular ${styles.heroSub}`} data-fade>
+                  Namu builds models that understand African languages, runs the
+                  infrastructure that serves them, and lets organizations reach
+                  the people they are already trying to serve. We start with
+                  Hausa, the language we speak.
+                </p>
               </ScrollObject>
             </div>
           </header>
         </BgFade>
 
-        {/* ── 01 The gap ── */}
-        <Section
-          id="gap"
-          index="01"
-          kicker="Why we exist"
-          title="The gap is not talent. It is infrastructure."
-          intro="More than seventy million people speak Hausa. The language carries centuries of written scholarship. What it does not carry is presence in the datasets, models and benchmarks that decide what modern AI can do — and that absence compounds."
-          bg={PAPER}
-        >
-          <ScrollObject className={styles.gap}>
-            <div className={styles.gapDiagram}>
-              <Loop />
+        {/* ── The sentence ──
+            The page turns on one spoken question. Everything after it is what
+            has to exist for that sentence to get an answer — which reframes
+            the whole page from "what we build" to "what this costs to
+            answer". */}
+        <BgFade bg={INK} text={PAPER}>
+          <ScrollObject as="section" className={styles.utterance}>
+            <p className={`text-small ${styles.utteranceKicker}`} data-fade>
+              Someone says this out loud
+            </p>
+            <p className={`h3 ${styles.utteranceLine}`}>
+              <SplitText text="Ina asibiti mafi kusa?" />
+            </p>
+            <p className={`text-regular ${styles.utteranceGloss}`} data-fade>
+              Where is the nearest clinic?
+            </p>
+            <p
+              className={`text-regular ${styles.utteranceAfter}`}
+              data-fade
+              style={{ transitionDelay: "0.18s" }}
+            >
+              She does not type it. She has no reason to. Everything below is
+              what has to exist before that sentence gets an answer.
+            </p>
+          </ScrollObject>
+        </BgFade>
+
+        {/* ── The stack builds ── */}
+        <BgFade bg={HARMATTAN}>
+          <Stack />
+        </BgFade>
+
+        {/* ── The proof ── */}
+        <BgFade bg={KOLA} text={PAPER}>
+          <ScrollObject as="section" className={styles.remove}>
+            <h2 className={`h5 ${styles.removeTitle}`}>
+              <SplitText text="Take one away." />
+            </h2>
+            <ul className={styles.removeRows}>
+              {REMOVALS.map(([label, consequence], i) => (
+                <li
+                  key={label}
+                  className={styles.removeRow}
+                  style={{ "--i": i } as React.CSSProperties}
+                >
+                  <span className={`text-small ${styles.removeLabel}`}>
+                    {label}
+                  </span>
+                  <span className={`text-regular ${styles.removeText}`}>
+                    {consequence}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <p className={`h4 ${styles.removeLanding}`} data-fade>
+              That is why it is one job and not three.
+            </p>
+          </ScrollObject>
+        </BgFade>
+
+        {/* ── What it costs today ── */}
+        <BgFade bg={CLAY} text={CLAY_TEXT}>
+          <ScrollObject as="section" className={styles.ledger}>
+            <div className={styles.ledgerHead}>
+              <p className={`text-small ${styles.marker}`} data-fade>
+                <span className={styles.markerName}>What it takes away</span>
+              </p>
+              <h2 className="h5">
+                <SplitText text="Access is what it takes away." />
+              </h2>
+              <p className={`text-regular ${styles.ledgerIntro}`} data-fade>
+                Every line below is a cost someone pays today to get an answer.
+              </p>
             </div>
 
-            <div className={styles.gapNote}>
-              <p className={`text-regular ${styles.gapP} slide-up`}>
-                No data means weak models. Weak models mean no usable tools. No
-                tools mean no usage — and no usage means no new data. The loop
-                closes on itself, and it stays closed until someone deliberately
-                breaks it.
+            <ul className={styles.ledgerRows}>
+              {LEDGER.map(([cost, instead], i) => (
+                <li
+                  key={cost}
+                  className={styles.ledgerRow}
+                  style={{ "--i": i } as React.CSSProperties}
+                >
+                  <span className={`text-regular ${styles.ledgerCost}`}>
+                    {cost}
+                  </span>
+                  <span className={`text-regular ${styles.ledgerInstead}`}>
+                    {instead}
+                  </span>
+                </li>
+              ))}
+            </ul>
+
+            <p className={`h5 ${styles.ledgerLanding}`} data-fade>
+              Enough of those, and the language a person speaks no longer
+              decides the technology they are allowed to use.
+            </p>
+          </ScrollObject>
+        </BgFade>
+
+        {/* ── Close ── */}
+        <BgFade bg={PAPER}>
+          <ScrollObject as="section" className={styles.close}>
+            <h2 className="h5">
+              <SplitText text="Namu is early." />
+            </h2>
+            <div className={styles.closeBody}>
+              <p className="text-regular" data-fade>
+                It is built in Niger and the United States, by people who speak
+                the language the work is for. The team is small on purpose and
+                close to the problem.
               </p>
               <p
-                className={`text-regular ${styles.gapP} slide-up`}
-                style={{ "--i": 1 } as React.CSSProperties}
+                className={`text-regular ${styles.soft}`}
+                data-fade
+                style={{ transitionDelay: "0.12s" }}
               >
-                Breaking it is not a feature you can add to somebody else&apos;s
-                system. It has to be built from the language outward, and it has
-                to be built on purpose.
+                We are looking for organizations that already carry the last
+                stretch — the ones with people to reach and no good way to reach
+                them in the right language. We are also looking for people who
+                want to build the models and the infrastructure underneath.
               </p>
-            </div>
-          </ScrollObject>
-        </Section>
-
-        {/* ── 02 What we build ── */}
-        <Section
-          id="what"
-          index="02"
-          kicker="What we build"
-          title="Speech first, because that is how the language is actually used."
-          intro="Most of the world's languages are spoken far more than they are typed. Building text-first and adding voice later inherits every assumption text made — so we start at the other end."
-          bg={HARMATTAN}
-        >
-          <ScrollObject className={styles.pillars}>
-            {[
-              { idx: "01", title: "Models", body: "Speech-native models that hear and answer in the language, without routing through English on the way." },
-              { idx: "02", title: "Data", body: "Consented, documented corpora of how people actually speak — conversational, code-switched, across dialects." },
-              { idx: "03", title: "Products", body: "Tools ordinary people and institutions can use: writing, translation, voice interfaces, and the plumbing beneath them." },
-            ].map((c, i) => (
-              <article
-                key={c.idx}
-                className={`${styles.pillar} slide-up`}
-                style={{ "--i": i } as React.CSSProperties}
+              <p
+                className={`h7 ${styles.closeLine}`}
+                data-fade
+                style={{ transitionDelay: "0.24s" }}
               >
-                <span className={`text-small ${styles.pillarIdx}`}>{c.idx}</span>
-                <h3 className="h7">{c.title}</h3>
-                <p className={`text-regular ${styles.pillarBody}`}>{c.body}</p>
-              </article>
-            ))}
-          </ScrollObject>
-        </Section>
-
-        {/* ── 03 Languages ── */}
-        <Section
-          id="languages"
-          index="03"
-          kicker="Where we start"
-          title="Depth before breadth."
-          intro="Announcing support for fifty languages is easy and mostly meaningless. Supporting a language and serving it are different claims, and everything that makes the difference is language-specific and slow to build."
-          bg={PAPER}
-        >
-          <ScrollObject className={styles.languages}>
-            {LANGUAGES.map((l, i) => (
-              <article
-                key={l.name}
-                className={`${styles.language} slide-up`}
-                style={{ "--i": i } as React.CSSProperties}
-              >
-                <div className={styles.languageTop}>
-                  <h3 className="h6">{l.name}</h3>
-                  <span className={`text-small ${styles.status}`}>{l.status}</span>
-                </div>
-                <p className={`text-regular ${styles.languageNote}`}>{l.note}</p>
-              </article>
-            ))}
-          </ScrollObject>
-        </Section>
-
-        {/* ── 04 Principles ── */}
-        <Section
-          id="principles"
-          index="04"
-          kicker="How we work"
-          title="Six commitments we can be held to."
-          bg={CLAY}
-          text={CLAY_TEXT}
-        >
-          <ScrollObject className={styles.principles}>
-            {PRINCIPLES.map(([name, body], i) => (
-              <div
-                key={name}
-                className={`${styles.principle} slide-up`}
-                style={{ "--i": i } as React.CSSProperties}
-              >
-                <h3 className={`h7 ${styles.principleName}`}>{name}</h3>
-                <p className={`text-regular ${styles.principleBody}`}>{body}</p>
+                If either is you, write to us.
+              </p>
+              <div data-fade style={{ transitionDelay: "0.36s" }}>
+                <Button href="mailto:contact@namuai.org">Get in touch</Button>
               </div>
-            ))}
-          </ScrollObject>
-        </Section>
-
-        {/* ── 05 People ── */}
-        <Section
-          id="people"
-          index="05"
-          kicker="The people"
-          title="Small on purpose, and close to the work."
-          intro="We are a small team of researchers, engineers and builders, working close to the communities the system is for. That proximity is not sentiment — it is why we are wrong less often."
-          bg={PAPER}
-        >
-          <ScrollObject className={styles.people}>
-            {PEOPLE.map((p, i) => (
-              <figure
-                key={p.name}
-                className={`${styles.person} slide-up`}
-                style={{ "--i": i } as React.CSSProperties}
-              >
-                <div className={styles.personFrame}>
-                  <img src={p.photo} alt={p.alt} loading="lazy" />
-                </div>
-                <figcaption className={styles.personMeta}>
-                  <strong className="text-large-alt">{p.name}</strong>
-                  <span className={`text-small ${styles.personRole}`}>
-                    {p.role}
-                  </span>
-                </figcaption>
-              </figure>
-            ))}
-          </ScrollObject>
-
-          <ScrollObject className={styles.quote}>
-            <blockquote className={`h6 ${styles.quoteText}`} data-fade>
-              &ldquo;Language should never be a barrier to accessing the
-              world&apos;s most powerful tools.&rdquo;
-            </blockquote>
-            <p className={`text-small ${styles.quoteAttr}`} data-fade>
-              Mouhamad Mamane — Co-founder, Namu
-            </p>
-          </ScrollObject>
-        </Section>
-
-        {/* ── 06 Work with us ── */}
-        <Section
-          id="work-with-us"
-          index="06"
-          kicker="Work with us"
-          title="If this is your problem too, come and build it."
-          bg={HARMATTAN}
-        >
-          <ScrollObject className={styles.cta}>
-            <p className={`text-regular ${styles.ctaP}`} data-fade>
-              We are looking for people who want to work on hard problems in
-              speech, language, data and product — and for partners in health,
-              finance, education and government who need to reach people in the
-              language they speak.
-            </p>
-            <div className={styles.ctaActions} data-fade>
-              <Button href="mailto:contact@namuai.org">Get in touch</Button>
-              <Button href="/blog" variant="invert" simple>
-                Read the journal
-              </Button>
             </div>
           </ScrollObject>
-        </Section>
+        </BgFade>
       </main>
 
       <Footer />

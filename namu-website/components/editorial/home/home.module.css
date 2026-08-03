@@ -133,6 +133,10 @@
    is what stops it reading as flat translucency. */
 .featuredCard {
   display: block;
+  /* Fills the wrap rather than shrinking to its contents. As a flex item it
+     would size to whatever text it happens to hold, so the headline rewrapped
+     and the card changed width whenever the copy changed. */
+  width: 100%;
   text-align: center;
   padding: calc(20 * var(--unit-fx)) calc(28 * var(--unit-fx))
     calc(22 * var(--unit-fx));
@@ -176,16 +180,6 @@
 .featuredCard:focus-visible {
   outline: 2px solid var(--ds-accent);
   outline-offset: calc(4 * var(--unit-fx));
-}
-
-/* The label is a route — "/namu" — so it reads as somewhere to go. It takes
-   the card's own text colour: the slash already does the work, and an accent
-   on it competed with the hairline below for the eye. */
-.featuredEyebrow {
-  display: block;
-  color: inherit;
-  opacity: 0.72;
-  margin-bottom: calc(10 * var(--unit-fx));
 }
 
 /* Sized here rather than borrowed from .h7 — the card is small and the type
@@ -398,6 +392,44 @@
   gap: calc(10 * var(--unit-fx));
   color: var(--ds-text-soft);
   margin-top: calc(30 * var(--unit-fx));
+}
+
+.railNav {
+  display: grid;
+  place-items: center;
+  width: calc(44 * var(--unit-fx));
+  height: calc(44 * var(--unit-fx));
+  min-width: 36px;
+  min-height: 36px;
+  padding: 0;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  transition:
+    background-color 0.5s var(--ease-out),
+    border-color 0.5s var(--ease-out),
+    color 0.5s var(--ease-out),
+    opacity 0.4s var(--ease-out);
+}
+
+.railNav:hover:not(:disabled) {
+  background: var(--kola);
+  border-color: var(--kola);
+  color: var(--paper);
+}
+
+/* Inert rather than hidden at the ends: a control that vanishes is worse than
+   one that visibly has nothing left to do. */
+.railNav:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.railNav:focus-visible {
+  outline: 2px solid var(--ds-accent);
+  outline-offset: calc(3 * var(--unit-fx));
 }
 
 @media (max-width: 600px) {

@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { useTranslation } from "@/hooks/useTranslation";
 import { ArrowRight } from "../icons";
 import { ScrollObject } from "../ScrollObject";
 import { SplitText } from "../SplitText";
@@ -23,10 +22,14 @@ export type Story = {
  * the track's bounds.
  */
 export function StoryRail({ stories }: { stories: Story[] }) {
-  const { t } = useTranslation();
   const trackRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const [dragging, setDragging] = useState(false);
+  /* Whether either end has been reached, so the arrows can go inert there. */
+  const [bounds, setBounds] = useState({ start: true, end: false });
+  /* Populated by the effect below — the buttons cannot reach the rail's motion
+     state directly, since it lives in a ref the effect closes over. */
+  const nudgeRef = useRef<(dir: 1 | -1) => void>(() => {});
 
   const state = useRef({
     x: 0,
@@ -55,7 +58,24 @@ export function StoryRail({ stories }: { stories: Story[] }) {
       s.target = Math.min(60, Math.max(-max - 60, s.target));
     };
 
+    /* One card plus the gap between them, so a press moves exactly one card
+       rather than a guessed number of pixels. */
+    const step = () => {
+      const card = track.firstElementChild as HTMLElement | null;
+      if (!card) return viewport.clientWidth * 0.8;
+      const gap = parseFloat(getComputedStyle(track).columnGap || "0") || 0;
+      return card.getBoundingClientRect().width + gap;
+    };
+
+    nudgeRef.current = (dir) => {
+      s.velocity = 0;
+      s.target -= dir * step();
+      // No rubber band on a button press — a click should land somewhere real.
+      s.target = Math.min(0, Math.max(-maxScroll(), s.target));
+    };
+
     let raf = 0;
+    let lastBounds = "";
     const loop = () => {
       raf = requestAnimationFrame(loop);
 
@@ -72,6 +92,14 @@ export function StoryRail({ stories }: { stories: Story[] }) {
 
       s.x += (s.target - s.x) * 0.12;
       track.style.transform = `translate3d(${s.x.toFixed(2)}px,0,0)`;
+
+      const max = maxScroll();
+      const next = `${s.x > -2}|${s.x < -max + 2}`;
+      if (next !== lastBounds) {
+        lastBounds = next;
+        const [start, end] = next.split("|");
+        setBounds({ start: start === "true", end: end === "true" });
+      }
     };
     raf = requestAnimationFrame(loop);
 
@@ -190,10 +218,30 @@ export function StoryRail({ stories }: { stories: Story[] }) {
             ))}
           </div>
 
-          <div className={`text-caption ${styles.railHint}`}>
-            <ArrowRight style={{ width: "1.3em", transform: "rotate(180deg)" }} />
-            {t("home.stories.drag")}
-            <ArrowRight style={{ width: "1.3em" }} />
+          {/* Real controls, not a caption. Dragging still works; these are for
+              anyone who does not think to try it, and for keyboards. */}
+          <div className={styles.railHint}>
+            <button
+              type="button"
+              className={styles.railNav}
+              onClick={() => nudgeRef.current(-1)}
+              disabled={bounds.start}
+              aria-label="Previous posts"
+            >
+              <ArrowRight
+                style={{ width: "1.3em", transform: "rotate(180deg)" }}
+                aria-hidden="true"
+              />
+            </button>
+            <button
+              type="button"
+              className={styles.railNav}
+              onClick={() => nudgeRef.current(1)}
+              disabled={bounds.end}
+              aria-label="More posts"
+            >
+              <ArrowRight style={{ width: "1.3em" }} aria-hidden="true" />
+            </button>
           </div>
         </div>
       </ScrollObject>

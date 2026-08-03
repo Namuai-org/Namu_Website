@@ -79,10 +79,12 @@
   margin-bottom: calc(96 * var(--unit-fx));
 }
 
-.hero img {
+.hero img,
+.hero video {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 /* ---- Body ---------------------------------------------------------------- */

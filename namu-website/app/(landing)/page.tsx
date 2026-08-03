@@ -12,6 +12,7 @@ import { Portal } from "@/components/editorial/home/Portal";
 import { Quote } from "@/components/editorial/home/Quote";
 import { StoryRail, type Story } from "@/components/editorial/home/StoryRail";
 import { Values } from "@/components/editorial/home/Values";
+import { postsByDate } from "@/lib/blog";
 
 /* Photography and painting alternating, so the flight never reads as a stock
    slideshow, with the two founders placed at 3 and 6 — far enough in that they
@@ -32,6 +33,9 @@ const PORTAL_IMAGES = [
   { src: "/editorial/panel-elephants-crossing.jpg", alt: "A herd crossing a river at dawn, seen from above" },
 ];
 
+/* The rail is a taster, not the archive — /blog is where everything lives. */
+const MAX_STORIES = 4;
+
 const LANGUAGE_IMAGES = [
   "/editorial/dune-lone-tree.jpg",
   "/editorial/dune-ridge.jpg",
@@ -41,32 +45,19 @@ const LANGUAGE_IMAGES = [
 export default function HomePage() {
   const { t } = useTranslation();
 
-  const stories: Story[] = [
-    {
-      href: "/blog",
-      image: "/editorial/paint-sea-dusk.jpg",
-      alt: "",
-      title: t("home.story1.title"),
-      category: t("home.story1.cat"),
-      readTime: t("home.story1.time"),
-    },
-    {
-      href: "/blog",
-      image: "/editorial/paint-lake-haze.jpg",
-      alt: "",
-      title: t("home.story2.title"),
-      category: t("home.story2.cat"),
-      readTime: t("home.story2.time"),
-    },
-    {
-      href: "/blog",
-      image: "/editorial/desert-aerial-rose.jpg",
-      alt: "",
-      title: t("home.story3.title"),
-      category: t("home.story3.cat"),
-      readTime: t("home.story3.time"),
-    },
-  ];
+  /* Real posts, newest first. These used to be three hand-written strings in
+     the dictionaries pointing at /blog — headlines that looked like articles
+     and led to an index instead of the piece they named. Deriving them from
+     lib/blog means the rail cannot drift from what is actually published, and
+     a new article appears here without anyone remembering to add it. */
+  const stories: Story[] = postsByDate.slice(0, MAX_STORIES).map((post) => ({
+    href: `/blog/${post.slug}`,
+    image: post.image,
+    alt: post.imageAlt,
+    title: post.title,
+    category: post.category.toLowerCase(),
+    readTime: post.readTime,
+  }));
 
   return (
     <>

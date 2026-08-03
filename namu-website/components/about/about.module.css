@@ -1,29 +1,45 @@
 /* ==========================================================================
    About
    --------------------------------------------------------------------------
-   Same foundation as the rest of the site: every dimension a multiple of
-   --unit-fx, colour from the --ds-* roles so sections re-tint through BgFade,
-   type from the global .h* / .text-* scale.
+   The page hangs off one spoken sentence. Everything after it is what has to
+   exist before that sentence gets an answer — which turns "what we do" into
+   "what this costs to answer", and gives the three parts of the business a
+   reason to be in that order.
+
+   The centre of the page is a stack that assembles while you watch. Three
+   slabs, bottom to top: models, infrastructure, organizations. Describing them
+   as three chapters made them read as a menu of services; building the stack
+   in front of the reader makes the dependency the point.
    ========================================================================== */
 
 .page {
   padding-top: calc(190 * var(--unit-fx));
 }
 
+.soft {
+  color: var(--ds-text-soft);
+}
+
 /* ---- Hero --------------------------------------------------------------- */
 
 .hero {
-  padding-bottom: calc(120 * var(--unit-fx));
+  padding-bottom: calc(110 * var(--unit-fx));
 }
 
-.heroEyebrow {
-  color: var(--ds-text-soft);
+.heroInner {
+  display: block;
+}
+
+.heroKicker {
+  color: var(--ds-accent);
   text-transform: uppercase;
-  margin-bottom: calc(28 * var(--unit-fx));
+  margin-bottom: calc(34 * var(--unit-fx));
 }
 
 .heroTitle {
-  margin-bottom: calc(56 * var(--unit-fx));
+  width: calc(var(--col24) * 20 + var(--gutter24) * 19);
+  max-width: 100%;
+  margin-bottom: calc(60 * var(--unit-fx));
 }
 
 .heroTitle em {
@@ -31,357 +47,399 @@
   color: var(--ds-accent);
 }
 
-.heroLead {
-  width: calc(var(--col24) * 12 + var(--gutter24) * 11);
-  margin-bottom: calc(96 * var(--unit-fx));
+/* Set flush right, diagonally opposite the headline, so the hero uses its
+   empty quadrant instead of stacking everything on one axis. */
+.heroSub {
+  width: calc(var(--col24) * 10 + var(--gutter24) * 9);
+  margin-left: auto;
 }
 
-.heroStage {
-  display: block;
+/* ---- The sentence ------------------------------------------------------- */
+/* Dark, quiet, and centred — the one place on the page that stops. It is a
+   real question in the language the work is for, and the English underneath is
+   a gloss, deliberately smaller, because the Hausa is the artefact. */
+
+.utterance {
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--outer-gutter);
+  padding-block: calc(150 * var(--unit-fx));
+  text-align: center;
 }
 
-/* The plate that brought them here, shown again full width — the headline
-   above it is the line printed on the image, so it reads as arrival. */
-.heroFrame {
-  overflow: hidden;
-  border-radius: var(--radius-card);
-  aspect-ratio: 1086 / 724;
-  background: var(--ink);
+.utteranceKicker {
+  color: var(--sahel);
+  text-transform: uppercase;
+  margin-bottom: calc(48 * var(--unit-fx));
 }
 
-.heroFrame img {
+.utteranceLine {
+  color: var(--paper);
+  margin: 0 auto;
+  max-width: calc(var(--col24) * 18 + var(--gutter24) * 17);
+}
+
+.utteranceGloss {
+  color: rgba(255, 250, 241, 0.5);
+  font-style: italic;
+  margin-top: calc(28 * var(--unit-fx));
+}
+
+.utteranceAfter {
+  color: rgba(255, 250, 241, 0.82);
+  margin: calc(90 * var(--unit-fx)) auto 0;
+  max-width: calc(var(--col24) * 11 + var(--gutter24) * 10);
+}
+
+/* ---- The stack ---------------------------------------------------------- */
+
+.stack {
+  position: relative;
+  /* Runway. Three slabs at roughly a viewport each, plus room to read the
+     last panel before the section lets go. */
+  height: 340vh;
+}
+
+.stackPin {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+}
+
+.stackGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(var(--gutter24) * 3);
+  align-items: center;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
 }
 
-/* ---- Section scaffold --------------------------------------------------- */
+.slabs {
+  position: relative;
+  height: calc(340 * var(--unit-fx));
+}
 
-.section {
+/* Each slab sits higher and narrower than the one below it, so the stack
+   recedes slightly and reads as depth rather than as a bar chart. */
+.slab {
+  position: absolute;
+  left: calc(var(--depth) * 26 * var(--unit-fx));
+  right: calc(var(--depth) * 26 * var(--unit-fx));
+  bottom: calc(var(--depth) * 78 * var(--unit-fx));
+  height: calc(108 * var(--unit-fx));
+  display: flex;
+  align-items: center;
+  gap: calc(24 * var(--unit-fx));
+  padding-inline: calc(34 * var(--unit-fx));
+  border-radius: var(--radius-card);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  box-shadow: 0 calc(16 * var(--unit-fx)) calc(44 * var(--unit-fx))
+    rgba(28, 20, 16, 0.1);
+  opacity: 0;
+  will-change: transform, opacity;
+  transition:
+    border-color 0.6s var(--ease-out),
+    background-color 0.6s var(--ease-out);
+}
+
+/* The slab whose panel is being read takes the accent edge, so the copy and
+   the diagram are never ambiguous about which layer is which. */
+.slabActive {
+  border-color: var(--ds-accent);
+  background: #fffdf8;
+}
+
+.slabNum {
+  color: var(--ds-accent);
+}
+
+.slabName {
+  color: var(--ds-text);
+}
+
+.stackCopy {
+  position: relative;
+  min-height: calc(340 * var(--unit-fx));
+}
+
+.panel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(calc(24 * var(--unit-fx)));
+  transition:
+    opacity 0.7s var(--ease-out),
+    transform 0.7s var(--ease-out);
+  pointer-events: none;
+}
+
+.panelOn {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.panelTitle {
+  margin: 0 0 calc(24 * var(--unit-fx));
+}
+
+.panelBody {
+  color: var(--ds-text-soft);
+}
+
+/* The sentence that makes the next slab necessary. It arrives with the layer
+   it indicts, which is why it is set apart and in the accent. */
+.hinge {
+  margin-top: calc(36 * var(--unit-fx));
+  padding-top: calc(28 * var(--unit-fx));
+  border-top: 1px solid var(--rule);
+  color: var(--ds-accent);
+}
+
+.marker {
+  display: flex;
+  align-items: baseline;
+  gap: calc(12 * var(--unit-fx));
+  margin-bottom: calc(28 * var(--unit-fx));
+}
+
+.markerNum {
+  color: var(--ds-accent);
+}
+
+.markerName {
+  color: var(--ds-text-soft);
+  text-transform: uppercase;
+}
+
+/* ---- Shared bed for the remaining spreads ------------------------------- */
+
+.remove,
+.ledger,
+.close {
+  display: grid;
+  grid-template-columns: repeat(24, minmax(0, 1fr));
+  column-gap: var(--gutter24);
+  max-width: var(--container);
+  margin-inline: auto;
+  width: 100%;
+  padding-inline: var(--outer-gutter);
   padding-block: calc(130 * var(--unit-fx));
 }
 
-.head {
+/* ---- Take one away ------------------------------------------------------ */
+
+.removeTitle {
+  grid-column: 2 / span 14;
+  margin-bottom: calc(70 * var(--unit-fx));
+}
+
+.removeRows {
+  grid-column: 2 / span 20;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.removeRow {
   display: grid;
   grid-template-columns: calc(var(--col24) * 5 + var(--gutter24) * 4) 1fr;
   gap: var(--gutter24);
-  align-items: start;
-  padding-top: calc(28 * var(--unit-fx));
-  border-top: 1px solid var(--rule);
-  margin-bottom: calc(72 * var(--unit-fx));
-}
-
-.headMeta {
-  display: flex;
   align-items: baseline;
-  gap: calc(14 * var(--unit-fx));
-  color: var(--ds-text-soft);
+  padding-block: calc(30 * var(--unit-fx));
+  border-top: 1px solid rgba(255, 250, 241, 0.2);
+  opacity: 0;
+  transform: translateY(calc(20 * var(--unit-fx)));
+  transition:
+    opacity 1.2s var(--ease-out),
+    transform 1.2s var(--ease-out);
+  transition-delay: calc(0.1s + var(--i, 0) * 0.1s);
 }
 
-.index {
-  color: var(--ds-accent);
+:global(.in-view) .removeRow {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.kicker {
+.removeRow:last-child {
+  border-bottom: 1px solid rgba(255, 250, 241, 0.2);
+}
+
+.removeLabel {
+  color: var(--dry-clay);
   text-transform: uppercase;
 }
 
-.headBody {
-  max-width: calc(var(--col24) * 14 + var(--gutter24) * 13);
+.removeText {
+  color: rgba(255, 250, 241, 0.82);
 }
 
-.title {
-  margin-bottom: calc(24 * var(--unit-fx));
+.removeLanding {
+  grid-column: 2 / span 16;
+  margin-top: calc(96 * var(--unit-fx));
+  color: var(--dry-clay);
 }
 
-.intro {
+/* ---- Ledger ------------------------------------------------------------- */
+
+.ledgerHead {
+  grid-column: 2 / span 15;
+  margin-bottom: calc(90 * var(--unit-fx));
+}
+
+.ledgerIntro {
   color: var(--ds-text-soft);
-  max-width: calc(var(--col24) * 12 + var(--gutter24) * 11);
+  margin-top: calc(24 * var(--unit-fx));
+  max-width: calc(var(--col24) * 10 + var(--gutter24) * 9);
 }
 
-.body {
-  display: block;
+.ledgerRows {
+  grid-column: 2 / span 21;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-/* ---- 01 The gap --------------------------------------------------------- */
-
-.gap {
+.ledgerRow {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: calc(var(--gutter24) * 2);
-  align-items: center;
-}
-
-.gapDiagram {
-  display: grid;
-  place-items: center;
-  background: var(--ds-surface);
-  border-radius: var(--radius-card);
-  padding: calc(40 * var(--unit-fx));
-}
-
-.loop {
-  width: 100%;
-  max-width: calc(420 * var(--unit-fx));
-  height: auto;
-  display: block;
-  overflow: visible;
-}
-
-/* Drawn on rather than listed: the argument is the shape. */
-.loop path {
-  fill: none;
-  stroke: var(--ds-accent);
-  stroke-width: 2.5;
-  stroke-linecap: round;
-  transition: stroke-dashoffset 0.9s linear;
-}
-
-.gap:global(.in-view) .loop path {
-  stroke-dashoffset: 0;
-}
-
-.loopNode {
-  opacity: 0;
-  transition: opacity 0.7s var(--ease-out);
-}
-
-.gap:global(.in-view) .loopNode {
-  opacity: 1;
-}
-
-.loopNode circle {
-  fill: var(--ds-text);
-}
-
-.loopNode text {
-  fill: var(--ds-text);
-  font-family: var(--font-mono-ui), ui-monospace, monospace;
-  font-size: 15px;
-  letter-spacing: 0.04em;
-}
-
-.gapNote {
-  display: flex;
-  flex-direction: column;
-  gap: calc(22 * var(--unit-fx));
-}
-
-.gapP {
-  color: var(--ds-text-soft);
-}
-
-/* ---- 02 What we build --------------------------------------------------- */
-
-.pillars {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
   gap: var(--gutter24);
-}
-
-.pillar {
-  background: var(--paper);
-  border-radius: var(--radius-card);
-  padding: calc(40 * var(--unit-fx));
-  display: flex;
-  flex-direction: column;
-  gap: calc(16 * var(--unit-fx));
-  min-height: calc(300 * var(--unit-fx));
-}
-
-.pillarIdx {
-  color: var(--ds-accent);
-}
-
-.pillarBody {
-  color: var(--ds-text-soft);
-  margin-top: auto;
-}
-
-/* ---- 03 Languages ------------------------------------------------------- */
-
-.languages {
-  display: flex;
-  flex-direction: column;
-}
-
-/* A ladder rather than cards: the order is the point. */
-.language {
-  display: grid;
-  grid-template-columns: calc(var(--col24) * 7 + var(--gutter24) * 6) 1fr;
-  gap: var(--gutter24);
-  align-items: start;
-  padding-block: calc(36 * var(--unit-fx));
+  align-items: baseline;
+  padding-block: calc(28 * var(--unit-fx));
   border-top: 1px solid var(--rule);
+  opacity: 0;
+  transform: translateY(calc(20 * var(--unit-fx)));
+  transition:
+    opacity 1.2s var(--ease-out),
+    transform 1.2s var(--ease-out);
+  transition-delay: calc(0.1s + var(--i, 0) * 0.09s);
 }
 
-.language:last-child {
+:global(.in-view) .ledgerRow {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ledgerRow:last-child {
   border-bottom: 1px solid var(--rule);
 }
 
-.languageTop {
-  display: flex;
-  align-items: baseline;
-  gap: calc(18 * var(--unit-fx));
-}
-
-.status {
-  display: inline-flex;
-  align-items: center;
-  height: calc(28 * var(--unit-fx));
-  min-height: 22px;
-  padding-inline: calc(14 * var(--unit-fx));
-  border-radius: var(--radius-pill);
-  background: var(--ds-surface);
+.ledgerCost {
   color: var(--ds-text-soft);
-  text-transform: uppercase;
-  white-space: nowrap;
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--ds-accent);
 }
 
-.language:first-child .status {
+/* Set against the struck cost, not below it, so the eye reads the swap in one
+   movement rather than as two separate lists. */
+.ledgerInstead {
+  position: relative;
+  padding-left: calc(28 * var(--unit-fx));
+}
+
+.ledgerInstead::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: calc(14 * var(--unit-fx));
+  height: 1px;
   background: var(--ds-accent);
-  color: var(--paper);
 }
 
-.languageNote {
-  color: var(--ds-text-soft);
-  max-width: calc(var(--col24) * 12 + var(--gutter24) * 11);
+.ledgerLanding {
+  grid-column: 2 / span 16;
+  margin-top: calc(90 * var(--unit-fx));
 }
 
-/* ---- 04 Principles ------------------------------------------------------ */
+/* ---- Close -------------------------------------------------------------- */
 
-.principles {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--gutter24) calc(var(--gutter24) * 2);
+.close > h2 {
+  grid-column: 2 / span 12;
 }
 
-.principle {
-  padding-top: calc(22 * var(--unit-fx));
-  border-top: 1px solid rgba(74, 42, 18, 0.22);
-}
-
-.principleName {
-  margin-bottom: calc(12 * var(--unit-fx));
-}
-
-.principleBody {
-  opacity: 0.78;
-}
-
-/* ---- 05 People ---------------------------------------------------------- */
-
-.people {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: calc(var(--gutter24) * 2);
-  max-width: calc(var(--col24) * 16 + var(--gutter24) * 15);
-}
-
-.person {
-  margin: 0;
-}
-
-.personFrame {
-  overflow: hidden;
-  border-radius: var(--radius-card);
-  aspect-ratio: 4 / 3;
-  background: var(--ds-surface);
-}
-
-.personFrame img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 1.2s var(--ease-out);
-}
-
-.person:hover .personFrame img {
-  transform: scale(1.03);
-}
-
-.personMeta {
+.closeBody {
+  grid-column: 14 / span 9;
+  margin-top: calc(70 * var(--unit-fx));
   display: flex;
   flex-direction: column;
-  gap: calc(6 * var(--unit-fx));
-  margin-top: calc(18 * var(--unit-fx));
+  gap: calc(28 * var(--unit-fx));
+  align-items: flex-start;
 }
 
-.personMeta strong {
-  font-weight: 450;
-}
-
-.personRole {
-  color: var(--ds-text-soft);
-  text-transform: uppercase;
-}
-
-.quote {
-  margin-top: calc(96 * var(--unit-fx));
-  padding-top: calc(40 * var(--unit-fx));
-  border-top: 1px solid var(--rule);
-  max-width: calc(var(--col24) * 15 + var(--gutter24) * 14);
-}
-
-.quoteText {
-  margin: 0 0 calc(24 * var(--unit-fx));
-  font-style: italic;
-  letter-spacing: -0.02em;
-}
-
-.quoteAttr {
-  color: var(--ds-text-soft);
-  text-transform: uppercase;
-}
-
-/* ---- 06 Work with us ---------------------------------------------------- */
-
-.cta {
-  display: flex;
-  flex-direction: column;
-  gap: calc(40 * var(--unit-fx));
-  max-width: calc(var(--col24) * 14 + var(--gutter24) * 13);
-}
-
-.ctaP {
-  color: var(--ds-text-soft);
-}
-
-.ctaActions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: calc(16 * var(--unit-fx));
+.closeLine {
+  margin-top: calc(12 * var(--unit-fx));
 }
 
 /* ==========================================================================
    Responsive
    ========================================================================== */
 
-@media (max-width: 900px) {
-  .head {
-    grid-template-columns: 1fr;
-    gap: calc(20 * var(--unit-fx));
-  }
-
-  .heroLead {
+@media (max-width: 1024px) {
+  .heroTitle {
     width: 100%;
   }
+  .heroSub {
+    width: calc(var(--col24) * 14 + var(--gutter24) * 13);
+  }
+}
 
-  .gap,
-  .language {
+/* Below 900 the stack stops being a scroll-driven diagram and becomes what it
+   describes: three slabs and three panels, read in order. There is no room to
+   hold a pinned two-column layout, and a pinned column on a phone fights the
+   scroll it is riding on. */
+@media (max-width: 900px) {
+  .stack {
+    height: auto;
+  }
+  .stackPin {
+    position: static;
+    height: auto;
+    display: block;
+    padding-block: calc(90 * var(--unit-fx));
+  }
+  .stackGrid {
     grid-template-columns: 1fr;
-    gap: calc(28 * var(--unit-fx));
+    gap: calc(60 * var(--unit-fx));
   }
-
-  .pillars,
-  .principles {
-    grid-template-columns: repeat(2, 1fr);
+  .slabs {
+    height: calc(340 * var(--unit-fx));
   }
-
-  .people {
-    max-width: none;
+  .slab {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .stackCopy {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: calc(70 * var(--unit-fx));
+  }
+  .panel {
+    position: static;
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+  .removeTitle,
+  .removeRows,
+  .removeLanding,
+  .ledgerHead,
+  .ledgerRows,
+  .ledgerLanding,
+  .close > h2,
+  .closeBody {
+    grid-column: 2 / span 22;
+  }
+  .closeBody {
+    margin-top: calc(40 * var(--unit-fx));
   }
 }
 
@@ -389,27 +447,30 @@
   .page {
     padding-top: calc(140 * var(--unit-fx));
   }
-
-  .section {
-    padding-block: calc(80 * var(--unit-fx));
+  .hero {
+    padding-bottom: calc(80 * var(--unit-fx));
   }
-
-  .pillars,
-  .principles,
-  .people {
+  .heroSub {
+    width: 100%;
+  }
+  .utterance {
+    padding-block: calc(110 * var(--unit-fx));
+  }
+  .remove,
+  .ledger,
+  .close {
+    padding-block: calc(90 * var(--unit-fx));
+  }
+  .slabs {
+    height: calc(300 * var(--unit-fx));
+  }
+  .slab {
+    height: calc(104 * var(--unit-fx));
+    padding-inline: calc(20 * var(--unit-fx));
+  }
+  .ledgerRow,
+  .removeRow {
     grid-template-columns: 1fr;
-  }
-
-  .pillar {
-    padding: calc(28 * var(--unit-fx));
-    min-height: 0;
-  }
-
-  .gapDiagram {
-    padding: calc(24 * var(--unit-fx));
-  }
-
-  .loopNode text {
-    font-size: 13px;
+    gap: calc(10 * var(--unit-fx));
   }
 }

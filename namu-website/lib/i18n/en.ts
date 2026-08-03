@@ -29,20 +29,8 @@ export const en = {
   "home.hero.line1": "Speech-native",
   "home.hero.line2": "Intelligence",
 
-  "home.featured.category":  "/namu",
   "home.featured.title":     "Making AI accessible to the rest of us",
   "home.featured.alt":       "The Namu mark above an acacia on the plain at sunrise",
-
-  "home.stories.drag": "Drag to explore",
-  "home.story1.title": "Why African languages need speech-native models, not translations",
-  "home.story1.cat":   "research",
-  "home.story1.time":  "6 min read",
-  "home.story2.title": "Collecting speech data with consent, not extraction",
-  "home.story2.cat":   "method",
-  "home.story2.time":  "5 min read",
-  "home.story3.title": "Starting with Hausa, and what comes after it",
-  "home.story3.cat":   "roadmap",
-  "home.story3.time":  "4 min read",
 
   "home.stack.title": "The stack we are building",
   "home.stack.body":  "Four layers that reinforce each other, from the speech people actually produce to the products it ends up powering.",
