@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Footer } from "@/components/editorial/Footer";
@@ -11,6 +12,44 @@ import { breadcrumbJsonLd, postJsonLd } from "@/lib/structuredData";
 import styles from "./article.module.css";
 
 type Params = { params: Promise<{ slug: string }> };
+
+/**
+ * Inline links in body copy, written as [label](href).
+ *
+ * A technical post has to be able to point at the code and the datasets it
+ * describes, and a plain string cannot. This is deliberately the smallest
+ * thing that does that: one pattern, no nesting, no other markup. Post bodies
+ * are our own copy from lib/blog, never user input, so there is nothing to
+ * sanitise, but external links still get rel="noreferrer".
+ */
+const LINK = /\[([^\]]+)\]\(([^)]+)\)/g;
+
+function withLinks(text: string) {
+  const out: ReactNode[] = [];
+  let last = 0;
+
+  for (const m of text.matchAll(LINK)) {
+    const at = m.index ?? 0;
+    if (at > last) out.push(text.slice(last, at));
+
+    const [, label, href] = m;
+    const external = href.startsWith("http");
+    out.push(
+      <a
+        key={`${href}-${at}`}
+        href={href}
+        className="link-underline"
+        {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
+      >
+        {label}
+      </a>,
+    );
+    last = at + m[0].length;
+  }
+
+  if (last < text.length) out.push(text.slice(last));
+  return out.length ? out : text;
+}
 
 /* Every post is known at build time, so each one prerenders. */
 export function generateStaticParams() {
@@ -106,7 +145,7 @@ export default async function ArticlePage({ params }: Params) {
                 {para.slice(0, -1)}
               </p>
             ) : (
-              <p key={i}>{para}</p>
+              <p key={i}>{withLinks(para)}</p>
             ),
           )}
 
