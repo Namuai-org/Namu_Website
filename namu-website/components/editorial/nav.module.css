@@ -458,6 +458,107 @@
   text-decoration: underline;
 }
 
+/* ---- Stories layout (blog panel) ---------------------------------------- */
+
+/* No preview column here: each card already carries its own picture, so the
+   width goes to the cards instead of being split with something to compare
+   against. */
+.stories {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(24 * var(--unit-fx));
+}
+
+.storiesHead {
+  max-width: 62%;
+}
+
+.storiesList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.storyCard {
+  display: grid;
+  /* A share of the card rather than page columns: the panel is much narrower
+     than the page, so six grid columns would eat most of the card and leave
+     the headline nowhere to go. This is the reference's own proportion. */
+  grid-template-columns: 38% 1fr;
+  gap: calc(28 * var(--unit-fx));
+  padding: calc(20 * var(--unit-fx));
+  border-radius: calc(3 * var(--unit-fx));
+  background: #fbf0dc;
+  color: inherit;
+  text-decoration: none;
+  transition: background-color 0.45s var(--ease-out);
+}
+
+.storyCard:hover {
+  background: var(--ds-surface-2);
+}
+
+.storyThumb {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 3 / 2;
+  border-radius: 2px;
+}
+
+.storyThumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Title at the top, read time and arrow pinned to the bottom, so the footers
+   line up across cards whatever the title length. */
+.storyBody {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: calc(20 * var(--unit-fx));
+  min-width: 0;
+  padding-block: calc(6 * var(--unit-fx));
+}
+
+/* The one serif on the panel. These are headlines, not labels. */
+.storyTitle {
+  display: block;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: max(20px, calc(34 * var(--unit-fx-type)));
+  font-weight: 450;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--ds-text);
+}
+
+.storyFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(20 * var(--unit-fx));
+}
+
+.storyMeta {
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  font-size: max(10px, calc(13 * var(--unit-fx-type)));
+  font-weight: 500;
+  line-height: 1;
+  color: var(--ds-text-soft);
+}
+
+.storyCard .panelRowArrow {
+  opacity: 0;
+}
+
+.storyCard:hover .panelRowArrow {
+  opacity: 1;
+}
+
 /* All previews occupy the same grid cell and cross-fade between them. */
 .panelRight {
   display: grid;

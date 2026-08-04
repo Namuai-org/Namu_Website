@@ -205,6 +205,50 @@ export function Nav() {
                  carried by opacity + clip-path + pointer-events instead. */
               aria-hidden={openPanel !== id}
             >
+              {panel.layout === "stories" ? (
+                /* Articles get the whole width: a picture large enough to
+                   recognise and a title large enough to read, stacked. There
+                   is no preview pane because there is nothing to preview —
+                   every row already carries its own image. */
+                <div className={styles.stories}>
+                  <div className={styles.storiesHead}>
+                    <h2 className={styles.metaTitle}>{t(panel.titleKey)}</h2>
+                    <p className={styles.metaDesc}>{t(panel.bodyKey)}</p>
+                  </div>
+
+                  <div className={styles.storiesList}>
+                    {panel.items.map((item) => (
+                      <Link
+                        key={item.href + item.title}
+                        href={item.href}
+                        className={styles.storyCard}
+                        onClick={closeNow}
+                      >
+                        <span className={styles.storyThumb}>
+                          <img src={item.image} alt="" loading="lazy" />
+                        </span>
+                        <span className={styles.storyBody}>
+                          <span className={styles.storyTitle}>
+                            {copy(item, "title")}
+                          </span>
+                          <span className={styles.storyFoot}>
+                            <span className={styles.storyMeta}>{item.meta}</span>
+                            <ArrowRight className={styles.panelRowArrow} />
+                          </span>
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+
+                  <Link
+                    href={panel.allHref}
+                    className={`${styles.metaTitle} ${styles.panelAll}`}
+                    onClick={closeNow}
+                  >
+                    {t(panel.allKey)}
+                  </Link>
+                </div>
+              ) : (
               <div className={styles.panelCols}>
                 <div className={styles.panelLeft}>
                   <div>
@@ -272,6 +316,7 @@ export function Nav() {
                   ))}
                 </div>
               </div>
+              )}
             </div>
           ))}
         </div>

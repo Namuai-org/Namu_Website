@@ -21,9 +21,18 @@ export type PanelItem = {
   image: string;
   /** `title` and `body` are finished copy, not keys. Skips translation. */
   literal?: boolean;
+  /** Small line under the item — read time on stories. Always literal. */
+  meta?: string;
 };
 
 export type NavPanel = {
+  /**
+   * `split` is the two-column form: a list on the left, one large preview on
+   * the right that cross-fades between them. `stories` drops the preview and
+   * lays the items out as full-width cards, which is what reads better when
+   * every item is an article with its own picture and nothing to compare.
+   */
+  layout?: "split" | "stories";
   titleKey: string;
   bodyKey: string;
   /** Link pinned to the bottom of the left column. */
@@ -32,12 +41,13 @@ export type NavPanel = {
   items: PanelItem[];
 };
 
-/* The panel is sized for five rows; more than that and the left column
-   outgrows the preview beside it. */
-const MAX_BLOG_ITEMS = 5;
+/* Three cards is the whole panel in the stories layout — each one is tall
+   enough that a fourth would push the panel past the fold. */
+const MAX_BLOG_ITEMS = 3;
 
 export const NAV_PANELS: Record<string, NavPanel> = {
   models: {
+    layout: "split",
     titleKey: "nav.panel.models.title",
     bodyKey: "nav.panel.models.body",
     allKey: "nav.panel.allModels",
@@ -71,6 +81,7 @@ export const NAV_PANELS: Record<string, NavPanel> = {
     ],
   },
   products: {
+    layout: "split",
     titleKey: "nav.panel.products.title",
     bodyKey: "nav.panel.products.body",
     allKey: "nav.panel.allProducts",
@@ -97,6 +108,7 @@ export const NAV_PANELS: Record<string, NavPanel> = {
     ],
   },
   blog: {
+    layout: "stories",
     titleKey: "nav.panel.blog.title",
     bodyKey: "nav.panel.blog.body",
     allKey: "nav.panel.allPosts",
@@ -109,6 +121,7 @@ export const NAV_PANELS: Record<string, NavPanel> = {
       href: `/blog/${post.slug}`,
       image: post.image,
       literal: true,
+      meta: post.readTime,
     })),
   },
 };
