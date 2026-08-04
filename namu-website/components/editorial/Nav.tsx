@@ -5,13 +5,13 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "@/hooks/useTranslation";
 import { ArrowRight, ArrowUpRight, NamuMark } from "./icons";
-import { NAV_PANELS } from "./navPanels";
+import { NAV_PANELS, type PanelItem } from "./navPanels";
 import styles from "./nav.module.css";
 
 const LINKS = [
   { href: "/#stack", key: "nav.approach", panel: "models" },
   { href: "/playground", key: "nav.products", panel: "products" },
-  { href: "/blog", key: "nav.blog", panel: null },
+  { href: "/blog", key: "nav.blog", panel: "blog" },
 ] as const;
 
 /* Hover intent: a short delay stops the panel firing when the pointer is just
@@ -47,6 +47,11 @@ export function Nav() {
     if (hoverTimer.current) clearTimeout(hoverTimer.current);
     setOpenPanel(null);
   };
+
+  /* Model and product items name an i18n key; blog items carry the post's own
+     title and excerpt, which are already prose. */
+  const copy = (item: PanelItem, field: "title" | "body") =>
+    item.literal ? item[field] : t(item[field]);
 
   useEffect(
     () => () => {
@@ -209,7 +214,7 @@ export function Nav() {
                     <div role="tablist" className={styles.panelList}>
                       {panel.items.map((item, i) => (
                         <Link
-                          key={item.title}
+                          key={item.href + item.title}
                           href={item.href}
                           role="tab"
                           aria-selected={activeItem === i}
@@ -225,7 +230,7 @@ export function Nav() {
                               <img src={item.image} alt="" loading="lazy" />
                             </span>
                             <span className={styles.metaTitle}>
-                              {t(item.title)}
+                              {copy(item, "title")}
                             </span>
                           </span>
                           <ArrowRight className={styles.panelRowArrow} />
@@ -246,7 +251,7 @@ export function Nav() {
                 <div className={styles.panelRight}>
                   {panel.items.map((item, i) => (
                     <div
-                      key={item.title}
+                      key={item.href + item.title}
                       role="tabpanel"
                       className={`${styles.panelPreview} ${
                         activeItem === i ? styles.panelPreviewActive : ""
@@ -258,11 +263,11 @@ export function Nav() {
                       </span>
                       <span className={styles.panelPreviewHead}>
                         <span className={styles.metaTitle}>
-                          {t(item.title)}
+                          {copy(item, "title")}
                         </span>
                         <ArrowRight className={styles.panelRowArrow} />
                       </span>
-                      <p className={styles.metaDesc}>{t(item.body)}</p>
+                      <p className={styles.metaDesc}>{copy(item, "body")}</p>
                     </div>
                   ))}
                 </div>

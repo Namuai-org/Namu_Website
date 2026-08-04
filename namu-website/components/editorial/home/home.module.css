@@ -543,6 +543,7 @@
 .modelKicker {
   display: block;
   margin-bottom: calc(10 * var(--unit-fx));
+  font-size: calc(14 * var(--unit-fx-type));
   letter-spacing: calc(1.5 * var(--unit-fx));
   color: var(--ds-text-soft);
 }
@@ -554,7 +555,13 @@
 .modelDesc {
   width: calc(var(--col24) * 6 + var(--gutter24) * 5);
   flex: 0 0 auto;
+  font-size: calc(20 * var(--unit-fx-type));
   color: var(--ds-text-soft);
+}
+
+/* Sits under the title/description row, as on the reference. */
+.modelAction {
+  margin-top: calc(26 * var(--unit-fx));
 }
 
 /* Tablet: the copy stops sitting beside the title and drops beneath it, but
@@ -597,12 +604,12 @@
     margin-right: 0;
     margin-bottom: calc(24 * var(--unit-fx));
   }
-  /* Steps down to the h7 size rather than carrying h4 into a five-row list. */
-  .modelName {
-    font-size: calc(24 * var(--unit-fx-type));
-  }
   .modelDesc {
     margin-top: calc(12 * var(--unit-fx));
+    font-size: calc(18 * var(--unit-fx-type));
+  }
+  .modelAction {
+    margin-top: calc(20 * var(--unit-fx));
   }
 }
 

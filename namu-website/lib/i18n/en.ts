@@ -33,6 +33,7 @@ export const en = {
   "home.featured.alt":       "The Namu mark above an acacia on the plain at sunrise",
 
   "home.models.title": "Discover and experiment with our state-of-the-art voice models",
+  "home.models.more":  "Learn more",
 
   "home.model.haFr.kicker": "Speech translation",
   "home.model.haFr.name":   "Namu-Interpret HA\u2192FR",
@@ -102,11 +103,14 @@ export const en = {
 
   // Nav mega-panels
   "nav.panel.models.title":   "Latest models",
-  "nav.panel.models.body":    "The four layers we build, from consented speech through to the products they power.",
+  "nav.panel.models.body":    "Discover the latest Namu voice models, built for the way people actually speak.",
   "nav.panel.allModels":      "All models",
   "nav.panel.products.title": "Products",
   "nav.panel.products.body":  "Speech-native tools for people and for the teams building on top of us.",
   "nav.panel.allProducts":    "All products",
+  "nav.panel.blog.title":     "Latest writing",
+  "nav.panel.blog.body":      "Notes from the team on speech, language, and building AI for African communities.",
+  "nav.panel.allPosts":       "All posts",
   "nav.product.studio.title": "Namu Studio",
   "nav.product.studio.body":  "A workspace where you can speak, and be understood, in your own language.",
   "nav.product.app.title":    "Namu App",

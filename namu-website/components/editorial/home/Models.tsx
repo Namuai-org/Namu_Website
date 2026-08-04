@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslation } from "@/hooks/useTranslation";
+import { Button } from "../Button";
 import { ScrollObject } from "../ScrollObject";
 import { SplitText } from "../SplitText";
 import styles from "./home.module.css";
@@ -36,9 +37,9 @@ export function Models() {
         <ScrollObject>
           <div className={styles.modelsHead}>
             <h2
-              className="h3 ds-span"
+              className="h4 ds-span"
               style={
-                { "--span": 10, marginInline: "auto" } as React.CSSProperties
+                { "--span": 12, marginInline: "auto" } as React.CSSProperties
               }
             >
               <SplitText text={t("home.models.title")} />
@@ -73,12 +74,30 @@ export function Models() {
                         <span className={`text-ui ${styles.modelKicker}`}>
                           {t(`${model.key}.kicker`)}
                         </span>
-                        <h3 className={`h4 ${styles.modelName}`}>{title}</h3>
+                        <h3 className={`h7 ${styles.modelName}`}>{title}</h3>
                       </div>
 
                       <p className={`text-regular ${styles.modelDesc}`}>
                         {t(`${model.key}.body`)}
                       </p>
+                    </div>
+
+                    <div className={styles.modelAction}>
+                      {model.href ? (
+                        <Button href={model.href} simple>
+                          {t("home.models.more")}
+                        </Button>
+                      ) : (
+                        /* No destination yet, so this is the pill's shape
+                           without the control — a button that goes nowhere is
+                           worse than none. Give a model an `href` above and the
+                           real Button takes over. */
+                        <span className="button button--simple">
+                          <span className="button__pill">
+                            {t("home.models.more")}
+                          </span>
+                        </span>
+                      )}
                     </div>
                   </div>
                 </article>

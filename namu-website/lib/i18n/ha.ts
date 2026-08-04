@@ -33,6 +33,7 @@ export const ha = {
   "home.featured.alt":       "Alamar Namu bisa bishiyar kirya a fili da safiya",
 
   "home.models.title": "Gano ka kuma gwada samfuran muryarmu na zamani",
+  "home.models.more":  "Kara sani",
 
   "home.model.haFr.kicker": "Fassarar magana",
   "home.model.haFr.name":   "Namu-Interpret HA\u2192FR",
@@ -102,11 +103,14 @@ export const ha = {
 
   // Menu na sama
   "nav.panel.models.title":   "Sabbin samfura",
-  "nav.panel.models.body":    "Matakai hudu da muke ginawa, daga maganar da aka bayar da yarda zuwa kayan aikin da take karfafawa.",
+  "nav.panel.models.body":    "Gano sabbin samfuran muryar Namu, wadanda aka gina domin yadda mutane ke magana da gaske.",
   "nav.panel.allModels":      "Duk samfura",
   "nav.panel.products.title": "Kayayyaki",
   "nav.panel.products.body":  "Kayan aiki masu jin magana ga mutane da kuma tawagogin da ke gini a kanmu.",
   "nav.panel.allProducts":    "Duk kayayyaki",
+  "nav.panel.blog.title":     "Sabbin rubuce-rubuce",
+  "nav.panel.blog.body":      "Rubuce-rubuce daga tawagarmu kan magana, harshe, da gina AI ga al'ummomin Afirka.",
+  "nav.panel.allPosts":       "Duk rubuce-rubuce",
   "nav.product.studio.title": "Namu Studio",
   "nav.product.studio.body":  "Wurin aiki inda za ka iya magana, a kuma fahimce ka, cikin harshenka.",
   "nav.product.app.title":    "Manhajar Namu",
