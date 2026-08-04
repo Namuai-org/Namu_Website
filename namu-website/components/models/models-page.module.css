@@ -1,0 +1,146 @@
+/* ==========================================================================
+   /models — the full catalogue
+   --------------------------------------------------------------------------
+   Three cards to a row on desktop, each the same height so the "Learn more"
+   pills sit on a common baseline. Below 1100 it drops to two, and on phones
+   to a single column.
+   ========================================================================== */
+
+.page {
+  position: relative;
+  padding-top: calc(320 * var(--unit-fx));
+  padding-bottom: calc(144 * var(--unit-fx));
+}
+
+/* One viewport of colour fading out, so the page does not open on flat cream
+   behind the floating nav. */
+.wash {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 100vh;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(242, 221, 219, 0.7),
+    transparent
+  );
+}
+
+.head {
+  position: relative;
+  text-align: center;
+  margin-bottom: calc(144 * var(--unit-fx));
+}
+
+.intro {
+  margin-top: calc(30 * var(--unit-fx));
+  line-height: 1.2;
+  color: color-mix(in srgb, var(--ds-text) 76%, transparent);
+}
+
+.grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: calc(20 * var(--unit-fx));
+  row-gap: calc(30 * var(--unit-fx));
+  /* Three columns of inset either side, matching the reference's measure. */
+  padding-inline: calc(var(--col24) * 3 + var(--gutter24) * 3);
+  margin-bottom: calc(112 * var(--unit-fx));
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: calc(35 * var(--unit-fx)) calc(30 * var(--unit-fx));
+  border-radius: calc(4 * var(--unit-fx));
+  background: var(--ds-bg);
+  transition: box-shadow 0.7s var(--ease-out);
+}
+
+@media (hover: hover) {
+  .card:hover {
+    box-shadow: 0 0 calc(74 * var(--unit-fx)) calc(14 * var(--unit-fx))
+      rgba(107, 62, 30, 0.08);
+  }
+}
+
+.media {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 2px;
+  margin-bottom: calc(26 * var(--unit-fx));
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.copy {
+  flex: 1 1 auto;
+}
+
+.kicker {
+  display: block;
+  margin-bottom: calc(10 * var(--unit-fx));
+  font-size: calc(14 * var(--unit-fx-type));
+  letter-spacing: calc(1.5 * var(--unit-fx));
+  color: var(--ds-text-soft);
+}
+
+.name {
+  margin: 0 0 calc(20 * var(--unit-fx));
+}
+
+.desc {
+  font-size: calc(20 * var(--unit-fx-type));
+  color: var(--ds-text-soft);
+}
+
+/* auto margin, not a fixed gap: the pills line up across a row however long
+   the descriptions above them run. */
+.action {
+  margin-top: auto;
+  padding-top: calc(26 * var(--unit-fx));
+}
+
+.foot {
+  position: relative;
+  text-align: center;
+}
+
+@media (max-width: 1100px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    padding-inline: calc(var(--col24) * 2 + var(--gutter24) * 2);
+  }
+}
+
+@media (max-width: 600px) {
+  .page {
+    padding-top: calc(144 * var(--unit-fx));
+    padding-bottom: calc(80 * var(--unit-fx));
+  }
+  .head {
+    margin-bottom: calc(70 * var(--unit-fx));
+  }
+  .intro {
+    font-size: calc(20 * var(--unit-fx-type));
+  }
+  .grid {
+    grid-template-columns: 1fr;
+    padding-inline: 0;
+    row-gap: calc(20 * var(--unit-fx));
+    margin-bottom: calc(70 * var(--unit-fx));
+  }
+  .card {
+    padding: calc(26 * var(--unit-fx));
+  }
+  .desc {
+    font-size: calc(18 * var(--unit-fx-type));
+  }
+}

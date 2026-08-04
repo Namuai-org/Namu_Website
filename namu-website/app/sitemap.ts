@@ -3,12 +3,15 @@ import { postsByDate } from "@/lib/blog";
 
 const BASE = "https://namu.ai";
 
-/* Every route that actually exists, plus a URL per post. This list was
-   hand-written and had drifted: it advertised /solutions, which 404s, and
-   omitted /about, /brand, /privacy, /terms and every article. */
+/* Every route that actually exists, plus a URL per post.
+
+   /about is deliberately absent while the page is empty: it still resolves,
+   because the homepage links to it, but there is nothing there worth sending
+   a crawler to. Put it back when the page has content. */
 const PAGES: { path: string; priority: number }[] = [
   { path: "", priority: 1 },
-  { path: "/about", priority: 0.9 },
+  { path: "/models", priority: 0.9 },
+  { path: "/models/namu-voice", priority: 0.8 },
   { path: "/blog", priority: 0.8 },
   { path: "/playground", priority: 0.7 },
   { path: "/brand", priority: 0.5 },

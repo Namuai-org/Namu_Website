@@ -3,15 +3,13 @@ export const en = {
   "nav.home":         "About",
   "nav.products":     "Products",
   "nav.models":       "Models",
+  "nav.mission":      "Mission",
   "nav.contactSales": "Contact sales",
   "nav.tryFree":      "Try for free",
 
   "mission.quote":          "Language should never be a barrier to accessing the world's most powerful tools.",
   "mission.attributionLine":"Mouhamad Mamane, Co-founder, Namu",
   "mission.statement1":     "Our mission is to make AI accessible to African communities in their language and cultural context.",
-
-  "solution.intro.title": "Speech-native AI, built for African languages.",
-  "solution.positioning": "Not a chatbot. Not a general AI platform. Speech-native infrastructure for African languages — depth before breadth.",
   "solution.step1.title": "Speech Data, With Consent",
   "solution.step1.body":  "Real speech, collected and curated with the communities we work with.",
   "solution.step2.title": "Speech-Native Models",
@@ -31,20 +29,41 @@ export const en = {
 
   "home.featured.title":     "Making AI accessible to the rest of us",
   "home.featured.alt":       "The Namu mark above an acacia on the plain at sunrise",
+  "home.mission.statement": "At Namu we develop voice models for underserved African languages, build the infrastructure required to deliver them through accessible channels, and work with organizations to apply the technology in service of the community.",
+  "home.mission.label":     "Our mission",
+  "home.mission.expand":    "A future where African communities can access, shape, and benefit from Artificial Intelligence in the languages they speak and the realities they live.",
 
-  "home.stack.title": "The stack we are building",
-  "home.stack.body":  "Four layers that reinforce each other, from the speech people actually produce to the products it ends up powering.",
-  "home.stack.cta":   "See the approach",
-  "home.stack.more":  "Learn more",
 
-  "home.status.data":     "Layer 01 — Data",
-  "home.status.models":   "Layer 02 — Models",
-  "home.status.platform": "Layer 03 — Platform",
-  "home.status.apps":     "Layer 04 — Applications",
-  "home.status.loop":     "The loop",
+  "home.models.title": "Discover and experiment with our state-of-the-art voice models",
+  "home.models.more":  "Learn more",
+  "home.models.all":   "All models",
+  "models.intro":      "Every model here is built speech-first, for languages the industry has passed over. Each one is trained on recordings given with consent by the communities that speak them, and shaped to work on the channels people already reach for.",
+  "models.cta":        "Try the models",
 
-  "home.loop.title": "Each layer feeds the next",
-  "home.loop.body":  "Consented speech trains the models. The models power the platform. The platform reaches real users, and their usage becomes the next round of data.",
+  "home.model.haFr.kicker": "Speech translation",
+  "home.model.haFr.name":   "Namu-Interpret HA\u2192FR",
+  "home.model.haFr.body":   "Speak or ask in Hausa and hear the answer in French. A whole conversation carried in speech, with nothing to type and nothing to read.",
+  "home.model.haFr.alt":    "Watercolour illustration of two speech bubbles, one marked HA and one marked FR, joined by flowing sound waves",
+
+  "home.model.frHa.kicker": "Speech translation",
+  "home.model.frHa.name":   "Namu-Interpret FR\u2192HA",
+  "home.model.frHa.body":   "The same conversation running the other way: speak or ask in French and hear the answer in Hausa.",
+  "home.model.frHa.alt":    "Watercolour illustration of two speech bubbles, one marked FR and one marked HA, joined by flowing sound waves",
+
+  "home.model.asr.kicker":  "Speech recognition",
+  "home.model.asr.name":    "Namu-Transcribe",
+  "home.model.asr.body":    "Turn Hausa speech into accurate text, across accents, dialects and the noisy rooms people actually record in.",
+  "home.model.asr.alt":     "Watercolour illustration of a sound wave resolving into four written lines of text",
+
+  "home.model.tts.kicker":  "Speech synthesis",
+  "home.model.tts.name":    "Namu-Voice",
+  "home.model.tts.body":    "Natural, expressive Hausa speech from written text, shaped to be understood the first time it is heard.",
+  "home.model.tts.alt":     "Watercolour illustration of a megaphone with sound radiating outward from it",
+
+  "home.model.agent.kicker": "Voice agent",
+  "home.model.agent.name":   "Namu-Agent",
+  "home.model.agent.body":   "An end-to-end conversation in Hausa. It listens, works out what you need, and answers out loud.",
+  "home.model.agent.alt":    "Watercolour illustration of two overlapping speech bubbles with a sound wave running between them",
 
   "home.join.title": "Join us",
   "home.join.body":  "We're a small, ambitious team of researchers, engineers, and builders working to make AI accessible to African communities.",
@@ -87,14 +106,16 @@ export const en = {
   "home.value6.name": "Openness",
   "home.value6.body": "We are as clear about what our systems cannot do as we are about what they can.",
 
-
   // Nav mega-panels
   "nav.panel.models.title":   "Latest models",
-  "nav.panel.models.body":    "The four layers we build, from consented speech through to the products they power.",
+  "nav.panel.models.body":    "Discover the latest Namu voice models, built for the way people actually speak.",
   "nav.panel.allModels":      "All models",
   "nav.panel.products.title": "Products",
   "nav.panel.products.body":  "Speech-native tools for people and for the teams building on top of us.",
   "nav.panel.allProducts":    "All products",
+  "nav.panel.blog.title":     "Latest writing",
+  "nav.panel.blog.body":      "Notes from the team on speech, language, and building AI for African communities.",
+  "nav.panel.allPosts":       "All posts",
   "nav.product.studio.title": "Namu Studio",
   "nav.product.studio.body":  "A workspace where you can speak, and be understood, in your own language.",
   "nav.product.app.title":    "Namu App",

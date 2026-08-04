@@ -15,8 +15,8 @@ const COLUMNS = [
   {
     title: "nav.home",
     links: [
-      { label: "nav.approach", href: "/#approach" },
-      { label: "nav.models", href: "/#stack" },
+      { label: "nav.mission", href: "/#approach" },
+      { label: "nav.models", href: "/models" },
       { label: "nav.blog", href: "/blog" },
       { label: "nav.brand", href: "/brand" },
     ],

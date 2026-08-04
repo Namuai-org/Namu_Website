@@ -3,10 +3,10 @@
 import { useTranslation } from "@/hooks/useTranslation";
 import { BgFade } from "@/components/editorial/BgFade";
 import { Footer } from "@/components/editorial/Footer";
-import { Building } from "@/components/editorial/home/Building";
 import { FeaturedStory } from "@/components/editorial/home/FeaturedStory";
 import { Hero } from "@/components/editorial/home/Hero";
 import { Mission } from "@/components/editorial/home/Mission";
+import { Models } from "@/components/editorial/home/Models";
 import { Places } from "@/components/editorial/home/Places";
 import { Portal } from "@/components/editorial/home/Portal";
 import { Quote } from "@/components/editorial/home/Quote";
@@ -76,7 +76,7 @@ export default function HomePage() {
         <StoryRail stories={stories} />
 
         <BgFade bg="#FFFAF1">
-          <Building />
+          <Models />
         </BgFade>
 
         <BgFade bg="#EDD9B0" text="#4A2A12">

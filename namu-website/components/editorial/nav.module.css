@@ -402,14 +402,16 @@
   width: 100%;
   padding: calc(6 * var(--unit-fx));
   padding-right: calc(18 * var(--unit-fx));
-  background: transparent;
+  /* Every row carries the tinted surface at rest, as on the reference; the
+     active one only deepens. */
+  background: #fbf0dc;
   border-radius: calc(3 * var(--unit-fx));
   color: inherit;
   transition: background-color 0.45s var(--ease-out);
 }
 
 .panelRowActive {
-  background: #fbf0dc;
+  background: var(--ds-surface-2);
 }
 
 .panelRowLead {

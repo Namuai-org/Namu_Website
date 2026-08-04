@@ -465,119 +465,159 @@
   }
 }
 
-/* ---- 4. What we are building -------------------------------------------- */
+/* ---- 4. Models ---------------------------------------------------------- */
 
-.building {
+.models {
   position: relative;
   padding-block: calc(144 * var(--unit-fx));
 }
 
-.buildingHead {
+.modelsHead {
   text-align: center;
-  margin-bottom: calc(120 * var(--unit-fx));
+  margin-bottom: calc(144 * var(--unit-fx));
 }
 
-.buildingIntro {
-  margin-inline: auto;
-  margin-top: calc(30 * var(--unit-fx));
-  color: var(--ds-text-soft);
+/* Two columns of inset either side, so the rows sit inside the heading's
+   measure and the hover surface has somewhere to bleed into. */
+.modelList {
+  padding-inline: calc(var(--col24) * 2 + var(--gutter24) * 2);
 }
 
-.cardGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: calc(20 * var(--unit-fx));
-}
-
-.card {
-  background: var(--ds-surface);
-  border-radius: var(--radius-card);
-  padding: calc(34 * var(--unit-fx));
+/* The row's padding is cancelled by an equal negative margin: the tinted
+   hover surface extends past the content column without shifting the content
+   inside it. */
+.modelRow {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: calc(420 * var(--unit-fx));
-  transition: box-shadow 0.7s var(--ease-out), transform 0.7s var(--ease-out);
-  color: inherit;
+  align-items: center;
+  margin-inline: calc(-39 * var(--unit-fx));
+  padding: calc(36 * var(--unit-fx)) calc(39 * var(--unit-fx));
+  border-radius: calc(4 * var(--unit-fx));
+  background: var(--ds-bg);
+  transition: box-shadow 0.7s var(--ease-out);
+}
+
+.modelRow + .modelRow {
+  margin-top: calc(26 * var(--unit-fx));
 }
 
 @media (hover: hover) {
-  .card:hover {
-    box-shadow: 0 0 74px 14px rgba(107, 62, 30, 0.1);
-    transform: translateY(calc(-6 * var(--unit-fx)));
+  .modelRow:hover {
+    box-shadow: 0 0 calc(74 * var(--unit-fx)) calc(14 * var(--unit-fx))
+      rgba(107, 62, 30, 0.08);
   }
 }
 
-.cardStatus {
-  color: var(--ds-accent);
-  margin-bottom: calc(24 * var(--unit-fx));
+.modelMedia {
+  width: calc(var(--col24) * 4 + var(--gutter24) * 3);
+  aspect-ratio: 1 / 1;
+  flex: 0 0 auto;
+  /* One column plus the gutters either side of it. */
+  margin-right: calc(var(--col24) * 1 + var(--gutter24) * 2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.modelImage {
   display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
-.cardName {
-  margin-bottom: calc(20 * var(--unit-fx));
+.modelBody {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
-.cardBody {
-  color: var(--ds-text-soft);
-  flex: 1;
-}
-
-.cardLink {
-  display: inline-flex;
+.modelCopy {
+  display: flex;
   align-items: center;
-  gap: calc(10 * var(--unit-fx));
-  margin-top: calc(40 * var(--unit-fx));
+  gap: calc(var(--col24) * 1 + var(--gutter24) * 1);
 }
 
-.cardArrow {
-  width: calc(18 * var(--unit-fx));
-  transition: transform 0.6s var(--ease-out);
+.modelHeading {
+  width: calc(var(--col24) * 8 + var(--gutter24) * 7);
+  flex: 1 1 auto;
 }
 
-.card:hover .cardArrow {
-  transform: translateX(calc(6 * var(--unit-fx)));
+.modelKicker {
+  display: block;
+  margin-bottom: calc(10 * var(--unit-fx));
+  font-size: calc(14 * var(--unit-fx-type));
+  letter-spacing: calc(1.5 * var(--unit-fx));
+  color: var(--ds-text-soft);
 }
 
-/* The last tile inverts and carries the section's call to action. */
-.cardCta {
-  background: var(--kola);
-  color: var(--paper);
+.modelName {
+  margin: 0;
 }
 
-.cardCta .cardBody {
-  color: rgba(255, 250, 241, 0.7);
+.modelDesc {
+  width: calc(var(--col24) * 6 + var(--gutter24) * 5);
+  flex: 0 0 auto;
+  font-size: calc(20 * var(--unit-fx-type));
+  color: var(--ds-text-soft);
 }
 
-.cardCta .cardStatus {
-  color: var(--sahel);
+/* Sits under the title/description row, as on the reference. */
+.modelAction {
+  margin-top: calc(26 * var(--unit-fx));
 }
 
-.buildingFoot {
+.modelsFoot {
+  margin-top: calc(112 * var(--unit-fx));
   text-align: center;
-  margin-top: calc(80 * var(--unit-fx));
 }
 
+/* Tablet: the copy stops sitting beside the title and drops beneath it, but
+   the image stays alongside. */
 @media (max-width: 900px) {
-  .cardGrid {
-    grid-template-columns: repeat(2, 1fr);
+  .modelCopy {
+    display: block;
+  }
+  .modelHeading,
+  .modelDesc {
+    width: 100%;
+  }
+  .modelDesc {
+    margin-top: calc(20 * var(--unit-fx));
   }
 }
 
 @media (max-width: 600px) {
-  .building {
+  .models {
     padding-block: calc(80 * var(--unit-fx));
   }
-  .buildingHead {
+  .modelsHead {
     margin-bottom: calc(54 * var(--unit-fx));
   }
-  .cardGrid {
-    grid-template-columns: 1fr;
-    gap: calc(14 * var(--unit-fx));
+  .modelList {
+    padding-inline: 0;
   }
-  .card {
-    min-height: 0;
-    padding: calc(26 * var(--unit-fx));
+  /* No card surface on phones — the rows read as a plain stack. */
+  .modelRow {
+    display: block;
+    margin-inline: 0;
+    padding: 0;
+    background: none;
+  }
+  .modelRow + .modelRow {
+    margin-top: calc(90 * var(--unit-fx));
+  }
+  .modelMedia {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: calc(24 * var(--unit-fx));
+  }
+  .modelDesc {
+    margin-top: calc(12 * var(--unit-fx));
+    font-size: calc(18 * var(--unit-fx-type));
+  }
+  .modelAction {
+    margin-top: calc(20 * var(--unit-fx));
+  }
+  .modelsFoot {
+    margin-top: calc(70 * var(--unit-fx));
   }
 }
 
@@ -593,17 +633,37 @@
   text-align: center;
 }
 
+/* Mono eyebrow, the same device the values and locations bands use. Tinted
+   from the band's own ink rather than the accent, which sits too close to
+   Dry Clay to read. */
+.missionLabel {
+  margin-top: calc(110 * var(--unit-fx));
+  color: color-mix(in srgb, var(--ds-text) 58%, transparent);
+  text-transform: uppercase;
+  transition-delay: 0.5s;
+}
+
 .missionExpand {
-  margin-top: calc(120 * var(--unit-fx));
-  color: var(--ds-text-soft);
+  margin-top: calc(24 * var(--unit-fx));
+  line-height: 1.2;
+  color: color-mix(in srgb, var(--ds-text) 76%, transparent);
 }
 
 @media (max-width: 600px) {
   .mission {
     padding-block: calc(100 * var(--unit-fx));
   }
-  .missionExpand {
+  /* h6's phone size is set for short headlines; this statement is a long
+     sentence and needs to come down further still. */
+  .missionStatement {
+    font-size: calc(23 * var(--unit-fx-type));
+  }
+  .missionLabel {
     margin-top: calc(50 * var(--unit-fx));
+  }
+  .missionExpand {
+    margin-top: calc(16 * var(--unit-fx));
+    font-size: calc(20 * var(--unit-fx-type));
   }
 }
 

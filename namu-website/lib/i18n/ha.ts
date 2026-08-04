@@ -3,15 +3,13 @@ export const ha = {
   "nav.home":         "Game da Mu",
   "nav.products":     "Kayayyaki",
   "nav.models":       "Samfuranmu",
+  "nav.mission":      "Manufarmu",
   "nav.contactSales": "Tuntubi tallace-tallace",
   "nav.tryFree":      "Gwada kyauta",
 
   "mission.quote":           "Harshe bai kamata ya zama shinge ba ga samun kayan aikin da suka fi karfi a duniya.",
   "mission.attributionLine": "Mouhamad Mamane, Wanda ya kafa Namu",
   "mission.statement1":      "Manufarmu ita ce mu sa AI ya zama mai saukin samu ga al'ummomin Afirka cikin harshe da al'adunsu.",
-
-  "solution.intro.title": "AI na asalin magana, an gina shi domin harsunan Afirka.",
-  "solution.positioning": "Ba chatbot ba ne. Ba dandali na AI na gama-gari ba ne. Ginshikin AI na magana ga harsunan Afirka — zurfi kafin fadi.",
   "solution.step1.title": "Bayanan Magana, da Yarda",
   "solution.step1.body":  "Magana ta gaske, an tattara kuma an shirya tare da yardar al'ummomin da muke aiki da su.",
   "solution.step2.title": "Samfuran Asalin Magana",
@@ -31,20 +29,41 @@ export const ha = {
 
   "home.featured.title":     "Mayar da AI abin isa ga sauranmu",
   "home.featured.alt":       "Alamar Namu bisa bishiyar kirya a fili da safiya",
+  "home.mission.statement": "A Namu muna kera samfuran murya ga harsunan Afirka da aka yi wa watsi da su, muna gina abubuwan more rayuwa da ake bukata don isar da su ta hanyoyin da kowa zai iya samu, muna kuma aiki tare da kungiyoyi domin amfani da fasahar don gina al'umma.",
+  "home.mission.label":     "Manufarmu",
+  "home.mission.expand":    "Gaba inda al'ummomin Afirka za su iya samu, su tsara, su kuma amfana daga Basirar Dan Adam ta Roba cikin harsunan da suke magana da rayuwar da suke ciki.",
 
-  "home.stack.title": "Tsarin da muke ginawa",
-  "home.stack.body":  "Matakai hudu da ke karfafa juna, daga maganar da mutane ke yi zuwa kayan aikin da take karfafawa.",
-  "home.stack.cta":   "Duba hanyarmu",
-  "home.stack.more":  "Kara sani",
 
-  "home.status.data":     "Mataki 01 — Bayanai",
-  "home.status.models":   "Mataki 02 — Samfura",
-  "home.status.platform": "Mataki 03 — Dandamali",
-  "home.status.apps":     "Mataki 04 — Aikace-aikace",
-  "home.status.loop":     "Zagayen",
+  "home.models.title": "Gano ka kuma gwada samfuran muryarmu na zamani",
+  "home.models.more":  "Kara sani",
+  "home.models.all":   "Duk samfura",
+  "models.intro":      "Kowane samfuri a nan an gina shi da magana tun farko, ga harsunan da masana'antar ta yi wa watsi. An horar da kowanne a kan rikodin da al'ummomin da suke magana da su suka bayar da yardarsu, an kuma tsara shi ya yi aiki a hanyoyin da mutane suka riga suka saba amfani da su.",
+  "models.cta":        "Gwada samfuran",
 
-  "home.loop.title": "Kowane mataki na ciyar da na gaba",
-  "home.loop.body":  "Maganar da aka bayar da yarda tana horar da samfura. Samfura na karfafa dandamali. Dandamali na kai ga masu amfani, amfaninsu kuma ya koma sabon bayani.",
+  "home.model.haFr.kicker": "Fassarar magana",
+  "home.model.haFr.name":   "Namu-Interpret HA\u2192FR",
+  "home.model.haFr.body":   "Ka yi magana ko ka yi tambaya da Hausa, ka ji amsa da Faransanci. Cikakkiyar tattaunawa cikin magana, ba sai ka rubuta ko ka karanta ba.",
+  "home.model.haFr.alt":    "Zanen ruwa na kumfar magana biyu, daya mai alamar HA daya kuma mai alamar FR, hade da igiyoyin sauti",
+
+  "home.model.frHa.kicker": "Fassarar magana",
+  "home.model.frHa.name":   "Namu-Interpret FR\u2192HA",
+  "home.model.frHa.body":   "Wannan tattaunawa ta wata hanyar: ka yi magana ko ka yi tambaya da Faransanci, ka ji amsa da Hausa.",
+  "home.model.frHa.alt":    "Zanen ruwa na kumfar magana biyu, daya mai alamar FR daya kuma mai alamar HA, hade da igiyoyin sauti",
+
+  "home.model.asr.kicker":  "Ganewar magana",
+  "home.model.asr.name":    "Namu-Transcribe",
+  "home.model.asr.body":    "Mayar da maganar Hausa zuwa rubutu daidai, a kan lafuzza daban-daban, karin harshe, da wuraren hayaniya inda mutane ke yin rikodi.",
+  "home.model.asr.alt":     "Zanen ruwa na igiyar sauti da ke koma layuka hudu na rubutu",
+
+  "home.model.tts.kicker":  "Samar da magana",
+  "home.model.tts.name":    "Namu-Voice",
+  "home.model.tts.body":    "Maganar Hausa mai sauki da bayyana daga rubutu, an tsara ta domin a fahimce ta tun sau na farko.",
+  "home.model.tts.alt":     "Zanen ruwa na kakaki mai fitar da sauti",
+
+  "home.model.agent.kicker": "Wakilin murya",
+  "home.model.agent.name":   "Namu-Agent",
+  "home.model.agent.body":   "Cikakkiyar tattaunawa da Hausa. Yana saurara, ya gane abin da kake bukata, sannan ya amsa da murya.",
+  "home.model.agent.alt":    "Zanen ruwa na kumfar magana biyu da suka hadu, da igiyar sauti a tsakaninsu",
 
   "home.join.title": "Ku shiga tare da mu",
   "home.join.body":  "Mu karamar tawaga ce mai buri, ta masu bincike, injiniyoyi da masu gine-gine, muna aiki domin sanya AI ta kai ga al'ummomin Afirka.",
@@ -87,14 +106,16 @@ export const ha = {
   "home.value6.name": "Fayyace",
   "home.value6.body": "Muna bayyana abin da tsarinmu ba zai iya yi ba kamar yadda muke bayyana abin da zai iya yi.",
 
-
   // Menu na sama
   "nav.panel.models.title":   "Sabbin samfura",
-  "nav.panel.models.body":    "Matakai hudu da muke ginawa, daga maganar da aka bayar da yarda zuwa kayan aikin da take karfafawa.",
+  "nav.panel.models.body":    "Gano sabbin samfuran muryar Namu, wadanda aka gina domin yadda mutane ke magana da gaske.",
   "nav.panel.allModels":      "Duk samfura",
   "nav.panel.products.title": "Kayayyaki",
   "nav.panel.products.body":  "Kayan aiki masu jin magana ga mutane da kuma tawagogin da ke gini a kanmu.",
   "nav.panel.allProducts":    "Duk kayayyaki",
+  "nav.panel.blog.title":     "Sabbin rubuce-rubuce",
+  "nav.panel.blog.body":      "Rubuce-rubuce daga tawagarmu kan magana, harshe, da gina AI ga al'ummomin Afirka.",
+  "nav.panel.allPosts":       "Duk rubuce-rubuce",
   "nav.product.studio.title": "Namu Studio",
   "nav.product.studio.body":  "Wurin aiki inda za ka iya magana, a kuma fahimce ka, cikin harshenka.",
   "nav.product.app.title":    "Manhajar Namu",

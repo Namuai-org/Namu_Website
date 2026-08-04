@@ -5,8 +5,12 @@
  * hoverable items on the left, and a single large preview on the right that
  * cross-fades as you move between them.
  *
- * All strings are i18n keys, resolved at render.
+ * Strings are i18n keys by default. The blog panel is built from real posts,
+ * whose titles are already written prose rather than keys, so those items set
+ * `literal` and are rendered as-is.
  */
+import { postsByDate } from "@/lib/blog";
+
 export type PanelItem = {
   /** i18n key for the item name — used in both the list and the preview. */
   title: string;
@@ -15,6 +19,8 @@ export type PanelItem = {
   href: string;
   /** Square thumbnail in the list, and the large preview image. */
   image: string;
+  /** `title` and `body` are finished copy, not keys. Skips translation. */
+  literal?: boolean;
 };
 
 export type NavPanel = {
@@ -26,36 +32,47 @@ export type NavPanel = {
   items: PanelItem[];
 };
 
+/* The panel is sized for five rows; more than that and the left column
+   outgrows the preview beside it. */
+const MAX_BLOG_ITEMS = 5;
+
 export const NAV_PANELS: Record<string, NavPanel> = {
   models: {
     titleKey: "nav.panel.models.title",
     bodyKey: "nav.panel.models.body",
     allKey: "nav.panel.allModels",
-    allHref: "/#stack",
+    allHref: "/models",
+    /* Every model points at the catalogue until the individual pages exist. */
     items: [
       {
-        title: "solution.step1.title",
-        body: "solution.step1.body",
-        href: "/#stack",
-        image: "/editorial/desert-aerial-rose.jpg",
+        title: "home.model.haFr.name",
+        body: "home.model.haFr.body",
+        href: "/models",
+        image: "/modim/hausa-french.png",
       },
       {
-        title: "solution.step2.title",
-        body: "solution.step2.body",
-        href: "/#stack",
-        image: "/editorial/canyon-lightfall.jpg",
+        title: "home.model.frHa.name",
+        body: "home.model.frHa.body",
+        href: "/models",
+        image: "/modim/french-hausa.png",
       },
       {
-        title: "solution.step3.title",
-        body: "solution.step3.body",
-        href: "/#stack",
-        image: "/editorial/paint-golden-valley.jpg",
+        title: "home.model.asr.name",
+        body: "home.model.asr.body",
+        href: "/models",
+        image: "/modim/asr.png",
       },
       {
-        title: "solution.step4.title",
-        body: "solution.step4.body",
-        href: "/#stack",
-        image: "/editorial/paint-sea-dusk.jpg",
+        title: "home.model.tts.name",
+        body: "home.model.tts.body",
+        href: "/models/namu-voice",
+        image: "/modim/tts.png",
+      },
+      {
+        title: "home.model.agent.name",
+        body: "home.model.agent.body",
+        href: "/models",
+        image: "/modim/voice-agent.png",
       },
     ],
   },
@@ -80,9 +97,24 @@ export const NAV_PANELS: Record<string, NavPanel> = {
       {
         title: "nav.product.api.title",
         body: "nav.product.api.body",
-        href: "/#stack",
+        href: "/models",
         image: "/editorial/paint-caravan-pale.jpg",
       },
     ],
+  },
+  blog: {
+    titleKey: "nav.panel.blog.title",
+    bodyKey: "nav.panel.blog.body",
+    allKey: "nav.panel.allPosts",
+    allHref: "/blog",
+    /* Derived from lib/blog so a new post shows up here without anyone
+       remembering to add it, exactly as the home page rail does. */
+    items: postsByDate.slice(0, MAX_BLOG_ITEMS).map((post) => ({
+      title: post.title,
+      body: post.excerpt,
+      href: `/blog/${post.slug}`,
+      image: post.image,
+      literal: true,
+    })),
   },
 };
