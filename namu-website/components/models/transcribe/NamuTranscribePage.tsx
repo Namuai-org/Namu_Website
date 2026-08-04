@@ -8,9 +8,20 @@ import { ArrowUpRight } from "@/components/editorial/icons";
 import { ScrollObject } from "@/components/editorial/ScrollObject";
 import { SplitText } from "@/components/editorial/SplitText";
 import { AudioSample } from "@/components/models/voice/AudioSample";
+import { DialectRing } from "@/components/models/voice/DialectRing";
 import { SectionNav } from "@/components/models/voice/SectionNav";
 import { SoundWave } from "./SoundWave";
 import styles from "./transcribe.module.css";
+
+/* Initials stand in for the reference's portraits. Inventing faces to sit
+   beside invented transcripts would claim more than we can. */
+const initials = (name: string) =>
+  name
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((w) => w[0])
+    .join("")
+    .toUpperCase();
 
 /* Where Hausa speech actually reaches Namu, and the register each one brings. */
 const DOMAINS = [
@@ -104,30 +115,34 @@ const STATS = [
   { value: "11×", unit: "", label: "Faster than real time", note: "Batch, single GPU" },
 ];
 
-const VERSIONS = [
-  {
-    name: "Namu-Transcribe",
-    rows: [
-      ["Word error rate", "8.4%"],
-      ["Noisy conditions", "14.1%"],
-      ["Dialects", "8"],
-      ["Domain terms", "Yes"],
-      ["Timestamps", "Word level"],
-      ["Price", "$0.22 per hour of audio"],
-    ],
-  },
-  {
-    name: "Namu-Transcribe Lite",
-    rows: [
-      ["Word error rate", "11.6%"],
-      ["Noisy conditions", "19.3%"],
-      ["Dialects", "4"],
-      ["Domain terms", "No"],
-      ["Timestamps", "Segment level"],
-      ["Price", "$0.09 per hour of audio"],
-    ],
-  },
+/* One more row of facts under the headline numbers. There is no second
+   version to compare against yet — this is the first. */
+const SPECS: [string, string][] = [
+  ["Domain terms", "Supported"],
+  ["Timestamps", "Word level"],
+  ["Streaming", "Yes"],
+  ["Price", "$0.22 per hour of audio"],
 ];
+
+/* Clips the model is demonstrated on. Audio arrives later; the transcript is
+   what the section is really showing. */
+const SAMPLES = [
+  {
+    id: "radio",
+    label: "Radio feed",
+    text: "Ruwan sama ya sauka a yankin Maradi da Tessaoua a daren jiya, kuma manoma na sa ran fara shuka a mako mai zuwa.",
+  },
+  {
+    id: "phone",
+    label: "Phone call",
+    text: "Ba na jin ka sosai. Za ka iya maimaita adireshin, don Allah?",
+  },
+  {
+    id: "note",
+    label: "Voice note",
+    text: "Na isa kasuwa da karfe bakwai. Zan sayo buhu biyar na gero idan farashin bai canza ba.",
+  },
+] as const;
 
 const SECTIONS = [
   { id: "features", label: "Features" },
@@ -137,6 +152,7 @@ const SECTIONS = [
 
 export function NamuTranscribePage() {
   const [domain, setDomain] = useState(0);
+  const [sample, setSample] = useState(0);
 
   return (
     <>
@@ -207,40 +223,30 @@ export function NamuTranscribePage() {
         {/* ---- Dialect coverage ---------------------------------------- */}
         <section className={styles.coverage}>
           <div className="ds-container ds-outer">
-            <ScrollObject className={styles.blockHead}>
-              <h3 className={`h7 ${styles.blockTitle}`}>
-                <SplitText text="Accurate across eight Hausa dialects" />
-              </h3>
-              <p className={`text-regular ${styles.blockLede}`}>
-                <SplitText
-                  delay={0.2}
-                  text="Measured separately on each, because an average across Niger hides the varieties it does worst on."
-                />
-              </p>
-            </ScrollObject>
+            <ScrollObject className={styles.coverageStage}>
+              {/* The names orbit; the claim sits still in the middle of them. */}
+              <div className={styles.coverageHead}>
+                <h3 className={`h7 ${styles.blockTitle}`}>
+                  Accurate across eight Hausa dialects
+                </h3>
+                <p className={`text-regular ${styles.blockLede}`}>
+                  <SplitText text="Measured separately on each, because an average across Niger hides the varieties it does worst on." />
+                </p>
+              </div>
 
-            <ScrollObject className={styles.chips}>
-              {DIALECTS.map((d, i) => (
-                <span
-                  key={d.name}
-                  className={`text-small slide-up ${styles.chip}`}
-                  style={{ background: d.tint, "--i": i } as React.CSSProperties}
-                >
-                  {d.name}
-                </span>
-              ))}
+              <DialectRing dialects={DIALECTS} />
             </ScrollObject>
           </div>
         </section>
 
         {/* ---- Domain transcripts -------------------------------------- */}
         <section className={styles.domains}>
-          <div className="ds-container ds-outer">
-            <ScrollObject className={styles.blockHead}>
-              <h3 className={`h7 ${styles.blockTitle}`}>
+          <div className={`ds-container ds-outer ${styles.domainsInner}`}>
+            <ScrollObject className={styles.domainsCopy}>
+              <h3 className={`h4 ${styles.blockTitle}`}>
                 <SplitText text="Adapts to the work" />
               </h3>
-              <p className={`text-regular ${styles.blockLede}`}>
+              <p className={`text-large ${styles.blockLede}`}>
                 <SplitText
                   delay={0.2}
                   text="Give it the words your field actually uses — place names, drug names, prices — and it stops guessing at them."
@@ -248,34 +254,51 @@ export function NamuTranscribePage() {
               </p>
             </ScrollObject>
 
-            <div className={styles.tabs} role="tablist" aria-label="Transcript examples">
-              {DOMAINS.map((d, i) => (
-                <button
-                  key={d.id}
-                  type="button"
-                  role="tab"
-                  aria-selected={i === domain}
-                  className={`text-ui ${styles.tab} ${i === domain ? styles.tabActive : ""}`}
-                  onClick={() => setDomain(i)}
-                >
-                  {d.label}
-                </button>
-              ))}
-            </div>
+            <ScrollObject className={styles.domainsPanel}>
+              <div
+                className={styles.tabs}
+                role="tablist"
+                aria-label="Transcript examples"
+              >
+                {DOMAINS.map((d, i) => (
+                  <button
+                    key={d.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={i === domain}
+                    className={`text-ui ${styles.tab} ${i === domain ? styles.tabActive : ""}`}
+                    onClick={() => setDomain(i)}
+                  >
+                    {d.label}
+                  </button>
+                ))}
+              </div>
 
-            <div className={styles.transcript}>
-              {DOMAINS[domain].lines.map((line) => (
-                <div key={line.at + line.who} className={styles.line}>
-                  <div className={styles.lineWho}>
-                    <span className={`text-ui ${styles.lineSpeaker}`}>
-                      {line.who}
+              <div className={styles.transcript}>
+                {DOMAINS[domain].lines.map((line) => (
+                  <div key={line.at + line.who} className={styles.line}>
+                    <span className={styles.avatar} aria-hidden="true">
+                      {initials(line.who)}
                     </span>
-                    <span className={styles.lineClock}>{line.at}</span>
+                    <div className={styles.lineBody}>
+                      <p className={styles.lineHead}>
+                        <span className={`text-ui ${styles.lineSpeaker}`}>
+                          {line.who}
+                        </span>
+                        <span className={styles.lineClock}>{line.at}</span>
+                      </p>
+                      {/* Mono, because this is machine output being shown as
+                          machine output rather than set as prose. */}
+                      <p className={styles.lineText}>{line.text}</p>
+                    </div>
                   </div>
-                  <p className={`text-regular ${styles.lineText}`}>{line.text}</p>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+
+              <div className={styles.transcriptControls}>
+                <AudioSample compact />
+              </div>
+            </ScrollObject>
           </div>
         </section>
 
@@ -315,6 +338,42 @@ export function NamuTranscribePage() {
           </div>
         </section>
 
+        {/* ---- Using the model ----------------------------------------- */}
+        <section className={styles.using}>
+          <div className="ds-container ds-outer">
+            <ScrollObject className={styles.blockHead}>
+              <h2 className={`h6 ${styles.usingKicker}`}>
+                <SplitText text="Using the model" />
+              </h2>
+              <p className={`h4 ${styles.usingTitle}`}>
+                <SplitText delay={0.2} text="Hausa in, text out." />
+              </p>
+            </ScrollObject>
+
+            <div className={styles.tabs} role="tablist" aria-label="Sample clips">
+              {SAMPLES.map((c, i) => (
+                <button
+                  key={c.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={i === sample}
+                  className={`text-ui ${styles.tab} ${i === sample ? styles.tabActive : ""}`}
+                  onClick={() => setSample(i)}
+                >
+                  {c.label}
+                </button>
+              ))}
+            </div>
+
+            <ScrollObject className={styles.sampleCard}>
+              <p className={`text-regular ${styles.sampleText}`}>
+                {SAMPLES[sample].text}
+              </p>
+              <AudioSample />
+            </ScrollObject>
+          </div>
+        </section>
+
         {/* ---- Performance --------------------------------------------- */}
         <section id="performance" className={styles.section}>
           <div className="ds-container ds-outer">
@@ -322,7 +381,7 @@ export function NamuTranscribePage() {
               <p className={`h3 ${styles.sectionKicker}`}>
                 <SplitText text="Performance" />
               </p>
-              <h2 className={`h2 ${styles.performanceTitle}`}>
+              <h2 className={`h4 ${styles.performanceTitle}`}>
                 <SplitText delay={0.1} text="Measured on Hausa, not on average" />
               </h2>
               <p
@@ -353,20 +412,15 @@ export function NamuTranscribePage() {
               ))}
             </ScrollObject>
 
-            <ScrollObject className={styles.compare}>
-              {VERSIONS.map((v, i) => (
+            <ScrollObject className={styles.specs}>
+              {SPECS.map(([label, value], i) => (
                 <div
-                  key={v.name}
-                  className={`slide-up ${styles.card}`}
+                  key={label}
+                  className={`slide-up ${styles.spec}`}
                   style={{ "--i": i } as React.CSSProperties}
                 >
-                  <h3 className={`h7 ${styles.cardTitle}`}>{v.name}</h3>
-                  {v.rows.map(([label, value]) => (
-                    <div key={label} className={styles.row}>
-                      <span className={`text-ui ${styles.rowLabel}`}>{label}</span>
-                      <span className={`text-regular ${styles.rowValue}`}>{value}</span>
-                    </div>
-                  ))}
+                  <span className={`text-ui ${styles.specLabel}`}>{label}</span>
+                  <span className={`text-regular ${styles.specValue}`}>{value}</span>
                 </div>
               ))}
             </ScrollObject>
