@@ -248,25 +248,35 @@ export function NamuInterpretPage() {
             </div>
 
             <ScrollObject className={styles.ladder} key={CROSSINGS[crossing].id}>
-              <div className={styles.rung}>
+              {/* The Hausa is the shared input, so it sits above and spans the
+                  card. The two readings of it go side by side underneath,
+                  which is what makes the failure and the fix a comparison
+                  rather than two more items on a list. */}
+              <div className={styles.source}>
                 <span className={`text-caption ${styles.rungTag}`}>Hausa</span>
-                <p className={styles.rungText} lang="ha">
+                <p className={styles.sourceText} lang="ha">
                   {CROSSINGS[crossing].source}
                 </p>
               </div>
 
-              <div className={`${styles.rung} ${styles.rungBad}`}>
-                <span className={`text-caption ${styles.rungTag}`}>Word for word</span>
-                <p className={styles.rungText} lang="fr">
-                  <s>{CROSSINGS[crossing].literal}</s>
-                </p>
-              </div>
+              <div className={styles.outcomes}>
+                <div className={`${styles.outcome} ${styles.outcomeBad}`}>
+                  <span className={`text-caption ${styles.rungTag}`}>
+                    Word for word
+                  </span>
+                  <p className={styles.outcomeText} lang="fr">
+                    <s>{CROSSINGS[crossing].literal}</s>
+                  </p>
+                </div>
 
-              <div className={`${styles.rung} ${styles.rungGood}`}>
-                <span className={`text-caption ${styles.rungTag}`}>Namu-Interpret</span>
-                <p className={styles.rungText} lang="fr">
-                  {CROSSINGS[crossing].good}
-                </p>
+                <div className={`${styles.outcome} ${styles.outcomeGood}`}>
+                  <span className={`text-caption ${styles.rungTag}`}>
+                    Namu-Interpret
+                  </span>
+                  <p className={styles.outcomeText} lang="fr">
+                    {CROSSINGS[crossing].good}
+                  </p>
+                </div>
               </div>
             </ScrollObject>
           </div>

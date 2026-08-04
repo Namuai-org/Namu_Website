@@ -345,35 +345,69 @@
   color: var(--ds-text);
 }
 
-/* Three steps down: what was said, what a literal reading gives you, and what
-   the model returns. Stacked rather than side by side so the middle rung reads
-   as a step being corrected, not as an alternative on offer. */
+/* The source above, the two readings of it side by side below. Laid out as a
+   list of three the card was mostly empty on the right and the correction read
+   as a third item rather than as a verdict on the second. */
 .ladder {
-  width: calc(var(--col24) * 14 + var(--gutter24) * 13);
+  width: calc(var(--col24) * 16 + var(--gutter24) * 15);
   max-width: 100%;
   margin-inline: auto;
-  padding: calc(34 * var(--unit-fx));
+  padding: calc(38 * var(--unit-fx)) calc(40 * var(--unit-fx));
   border-radius: calc(6 * var(--unit-fx));
   background: var(--ds-surface);
+  /* Keyed on the active crossing, so switching tabs plays this again. */
+  animation: crossingIn 0.55s var(--ease-out) both;
 }
 
-.rung {
-  padding-block: calc(18 * var(--unit-fx));
+@keyframes crossingIn {
+  from {
+    opacity: 0;
+    transform: translateY(calc(10 * var(--unit-fx)));
+  }
 }
 
-.rung + .rung {
-  border-top: 1px solid var(--rule-soft);
+.source {
+  padding-bottom: calc(30 * var(--unit-fx));
+  border-bottom: 1px solid var(--rule-soft);
 }
 
 .rungTag {
   display: block;
-  margin-bottom: calc(8 * var(--unit-fx));
+  margin-bottom: calc(10 * var(--unit-fx));
   color: var(--ds-text-soft);
   font-family: var(--font-mono-ui), ui-monospace, monospace;
   letter-spacing: 0.06em;
 }
 
-.rungText {
+.sourceText {
+  margin: 0;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(38 * var(--unit-fx-type));
+  font-weight: 450;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--ds-text);
+}
+
+.outcomes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(40 * var(--unit-fx));
+  margin-top: calc(30 * var(--unit-fx));
+}
+
+/* A rail rather than a box: each column is one of two paths out of the same
+   sentence, and the rail is what tells you which one the page endorses. */
+.outcome {
+  padding-left: calc(20 * var(--unit-fx));
+  border-left: 2px solid var(--rule-soft);
+}
+
+.outcomeGood {
+  border-left-color: var(--sahel);
+}
+
+.outcomeText {
   margin: 0;
   font-family: var(--font-serif), Georgia, serif;
   font-size: calc(26 * var(--unit-fx-type));
@@ -382,12 +416,13 @@
   letter-spacing: -0.01em;
 }
 
-.rungBad .rungText {
+.outcomeBad .outcomeText {
   color: var(--ds-text-soft);
   text-decoration-color: var(--ds-text-soft);
+  text-decoration-thickness: 1px;
 }
 
-.rungGood .rungText {
+.outcomeGood .outcomeText {
   color: var(--kola);
 }
 
@@ -665,9 +700,16 @@
   }
 
   .ladder {
-    padding: calc(24 * var(--unit-fx)) calc(22 * var(--unit-fx));
+    padding: calc(26 * var(--unit-fx)) calc(22 * var(--unit-fx));
   }
-  .rungText {
+  .outcomes {
+    grid-template-columns: 1fr;
+    gap: calc(24 * var(--unit-fx));
+  }
+  .sourceText {
+    font-size: calc(28 * var(--unit-fx-type));
+  }
+  .outcomeText {
     font-size: calc(21 * var(--unit-fx-type));
   }
 
