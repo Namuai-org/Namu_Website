@@ -23,7 +23,7 @@ const initials = (name: string) =>
     .join("")
     .toUpperCase();
 
-/* Where Hausa speech actually reaches Namu, and the register each one brings. */
+/* Where Hausa speech reaches Namu, and the register each one brings. */
 const DOMAINS = [
   {
     id: "radio",
@@ -213,7 +213,7 @@ export function NamuTranscribePage() {
               >
                 <SplitText
                   delay={0.2}
-                  text="Namu-Transcribe is trained on Hausa as it is actually spoken — across dialects, over bad lines, and in rooms with other people talking."
+                  text="Namu-Transcribe is trained on Hausa the way people speak it: across dialects, over bad lines, and in rooms where other people are talking."
                 />
               </p>
             </ScrollObject>
@@ -244,12 +244,12 @@ export function NamuTranscribePage() {
           <div className={`ds-container ds-outer ${styles.domainsInner}`}>
             <ScrollObject className={styles.domainsCopy}>
               <h3 className={`h4 ${styles.blockTitle}`}>
-                <SplitText text="Adapts to the work" />
+                <SplitText text="It learns your words" />
               </h3>
               <p className={`text-large ${styles.blockLede}`}>
                 <SplitText
                   delay={0.2}
-                  text="Give it the words your field actually uses — place names, drug names, prices — and it stops guessing at them."
+                  text="Every trade has names of its own. Tell Namu the ones you use and it will stop guessing at them."
                 />
               </p>
             </ScrollObject>
@@ -307,7 +307,7 @@ export function NamuTranscribePage() {
           <div className={`ds-container ds-outer ${styles.noisyInner}`}>
             <ScrollObject className={styles.noisyCopy}>
               <h3 className={`h7 ${styles.blockTitle}`}>
-                <SplitText text="Handles what you actually record" />
+                <SplitText text="Made for real recordings" />
               </h3>
               <p className={`text-regular ${styles.blockLede}`}>
                 <SplitText

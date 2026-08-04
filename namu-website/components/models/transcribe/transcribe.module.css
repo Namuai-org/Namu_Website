@@ -378,6 +378,11 @@
   margin: 0;
 }
 
+/* Centred here, unlike the domain tabs, so they line up over the card. */
+.using .tabs {
+  justify-content: center;
+}
+
 .sampleCard {
   display: flex;
   flex-direction: column;

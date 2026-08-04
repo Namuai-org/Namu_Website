@@ -52,7 +52,7 @@ export const en = {
 
   "home.model.asr.kicker":  "Speech recognition",
   "home.model.asr.name":    "Namu-Transcribe",
-  "home.model.asr.body":    "Turn Hausa speech into accurate text, across accents, dialects and the noisy rooms people actually record in.",
+  "home.model.asr.body":    "Turn Hausa speech into accurate text, across accents, dialects and the noisy rooms people record in.",
   "home.model.asr.alt":     "Watercolour illustration of a sound wave resolving into four written lines of text",
 
   "home.model.tts.kicker":  "Speech synthesis",
@@ -108,7 +108,7 @@ export const en = {
 
   // Nav mega-panels
   "nav.panel.models.title":   "Latest models",
-  "nav.panel.models.body":    "Discover the latest Namu voice models, built for the way people actually speak.",
+  "nav.panel.models.body":    "Discover the latest Namu voice models, built for the way people speak.",
   "nav.panel.allModels":      "All models",
   "nav.panel.products.title": "Products",
   "nav.panel.products.body":  "Speech-native tools for people and for the teams building on top of us.",
