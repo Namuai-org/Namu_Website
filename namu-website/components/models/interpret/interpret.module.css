@@ -175,10 +175,54 @@
 
 /* ---- The conversation ---------------------------------------------------- */
 
+/* The one dark section on the page. The photograph is a blurred dusk with a
+   single warm light in it, which is what the arcs are tuned to — the crossings
+   read as that same light travelling between the two languages. */
 .talkSection {
+  position: relative;
+  isolation: isolate;
   margin-block: calc(200 * var(--unit-fx));
-  padding-block: calc(110 * var(--unit-fx));
-  background: var(--ds-surface-2);
+  padding-block: calc(140 * var(--unit-fx));
+  overflow: hidden;
+  color: var(--paper);
+}
+
+.talkMedia {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.talkImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* The frame is a tall portrait; anchoring low keeps the treeline and the
+     light in view rather than the empty sky at the top. */
+  object-position: 50% 70%;
+}
+
+/* Weighted to the top, where the heading sits over the palest part of the
+   sky, and eased off through the middle so the photograph still reads. */
+.talkMedia::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(20, 16, 13, 0.82),
+      rgba(20, 16, 13, 0.6) 34%,
+      rgba(20, 16, 13, 0.66) 100%
+    );
+}
+
+.talkSection .blockTitle {
+  color: var(--paper);
+}
+
+.talkSection .blockLede {
+  color: rgba(255, 250, 241, 0.72);
 }
 
 .talk {
@@ -211,7 +255,7 @@
 
 .arcDrawn {
   stroke-dashoffset: 0;
-  opacity: 0.85;
+  opacity: 1;
 }
 
 /* Two equal columns with a wide gutter for the arc to cross. */
@@ -222,30 +266,34 @@
   align-items: start;
 }
 
+/* Glass rather than a filled card: the photograph stays visible through every
+   turn, so the conversation reads as happening somewhere rather than on a
+   panel laid over a picture. */
 .bubble {
   position: relative;
   z-index: 2;
   padding: calc(22 * var(--unit-fx)) calc(26 * var(--unit-fx));
   border-radius: calc(6 * var(--unit-fx));
+  border: 1px solid rgba(255, 250, 241, 0.16);
+  background: rgba(255, 250, 241, 0.09);
+  backdrop-filter: blur(calc(10 * var(--unit-fx)));
 }
 
-/* What a person said reads as the solid thing; what the model produced sits a
-   shade back, so the direction of each turn is legible before you read it. */
+/* What a person said carries more weight than what the model produced, so the
+   direction of each turn is legible before you read a word of it. */
 .bubbleSaid {
-  background: var(--paper);
-  color: var(--ds-text);
+  border-color: rgba(255, 250, 241, 0.3);
+  background: rgba(255, 250, 241, 0.15);
 }
 
 .bubbleHeard {
-  background: color-mix(in srgb, var(--paper) 45%, transparent);
-  color: var(--ds-text);
   margin-top: calc(30 * var(--unit-fx));
 }
 
 .bubbleTag {
   display: block;
   margin-bottom: calc(8 * var(--unit-fx));
-  color: var(--ds-text-soft);
+  color: rgba(255, 250, 241, 0.62);
   font-family: var(--font-mono-ui), ui-monospace, monospace;
   letter-spacing: 0.06em;
 }
@@ -254,6 +302,7 @@
   margin: 0;
   font-size: calc(17 * var(--unit-fx-type));
   line-height: 1.5;
+  color: var(--paper);
 }
 
 /* ---- What survives the crossing ------------------------------------------ */
@@ -340,170 +389,6 @@
 
 .rungGood .rungText {
   color: var(--kola);
-}
-
-.rungNote {
-  margin: calc(22 * var(--unit-fx)) 0 0;
-  padding-top: calc(20 * var(--unit-fx));
-  border-top: 1px solid var(--rule-soft);
-  color: var(--ds-text-soft);
-}
-
-/* ---- Latency ------------------------------------------------------------- */
-
-.timing {
-  margin-block: calc(200 * var(--unit-fx));
-  padding-block: calc(100 * var(--unit-fx));
-  background: #e4eadb;
-}
-
-.timingCopy {
-  width: calc(var(--col24) * 11 + var(--gutter24) * 10);
-  max-width: 100%;
-  margin-bottom: calc(70 * var(--unit-fx));
-}
-
-.track {
-  width: 100%;
-}
-
-/* One grid so the lanes, the gap marker and the axis all measure against the
-   same rail. Separate containers would let the "0.9s" drift off the bar edge
-   it is describing. */
-.trackGrid {
-  display: grid;
-  grid-template-columns: calc(130 * var(--unit-fx)) 1fr;
-  align-items: center;
-  column-gap: calc(24 * var(--unit-fx));
-  row-gap: calc(14 * var(--unit-fx));
-}
-
-.laneName {
-  color: var(--ds-text-soft);
-  font-family: var(--font-mono-ui), ui-monospace, monospace;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-}
-
-.laneRail {
-  position: relative;
-  height: calc(52 * var(--unit-fx));
-  min-height: 34px;
-  border-radius: calc(4 * var(--unit-fx));
-  background: color-mix(in srgb, var(--ink) 5%, transparent);
-}
-
-.bar {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 0;
-  border-radius: calc(4 * var(--unit-fx));
-  transition: width 1s var(--ease-out);
-}
-
-.barSaid {
-  background: var(--dry-clay);
-}
-
-.barHeard {
-  background: var(--sahel);
-}
-
-:global(.in-view) .bar {
-  width: var(--w);
-}
-
-.gapRow {
-  position: relative;
-  height: calc(22 * var(--unit-fx));
-}
-
-.gap {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-
-/* A rule with a tick at each end, so it reads as a measurement. */
-.gapRule {
-  position: absolute;
-  inset-inline: 0;
-  top: 50%;
-  height: 1px;
-  background: var(--kola);
-  opacity: 0.45;
-}
-
-.gapRule::before,
-.gapRule::after {
-  content: "";
-  position: absolute;
-  top: calc(-3 * var(--unit-fx));
-  width: 1px;
-  height: calc(7 * var(--unit-fx));
-  min-height: 5px;
-  background: var(--kola);
-}
-
-.gapRule::before {
-  left: 0;
-}
-
-.gapRule::after {
-  right: 0;
-}
-
-.gapLabel {
-  position: relative;
-  padding-inline: calc(8 * var(--unit-fx));
-  background: #e4eadb;
-  color: var(--kola);
-  font-family: var(--font-mono-ui), ui-monospace, monospace;
-  font-variant-numeric: tabular-nums;
-}
-
-.trackAxis {
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  margin-top: calc(10 * var(--unit-fx));
-}
-
-.tick {
-  display: block;
-  width: 0;
-}
-
-.tickLabel {
-  display: block;
-  transform: translateX(-50%);
-  color: var(--ds-text-soft);
-  font-family: var(--font-mono-ui), ui-monospace, monospace;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-/* The first and last labels would hang off the rail otherwise. */
-.tick:first-child .tickLabel {
-  transform: none;
-}
-
-.tick:last-child .tickLabel {
-  transform: translateX(-100%);
-}
-
-.trackNote {
-  width: calc(var(--col24) * 12 + var(--gutter24) * 11);
-  max-width: 100%;
-  margin: calc(40 * var(--unit-fx)) 0 0;
-  padding-left: calc(154 * var(--unit-fx));
-  color: var(--ds-text-soft);
-  line-height: 1.6;
 }
 
 /* ---- Using the model ----------------------------------------------------- */
@@ -732,10 +617,6 @@
   .turn {
     column-gap: calc(var(--col24) * 2 + var(--gutter24) * 2);
   }
-  .timingCopy,
-  .trackNote {
-    width: 100%;
-  }
 }
 
 /* Below this the conversation stacks, so CrossingTalk stops drawing arcs.
@@ -750,16 +631,6 @@
     /* Indented instead, so the reply still reads as a reply once the
        columns are gone. */
     margin-left: calc(28 * var(--unit-fx));
-  }
-  .trackGrid {
-    grid-template-columns: 1fr;
-    row-gap: calc(8 * var(--unit-fx));
-  }
-  .trackGrid > span[aria-hidden] {
-    display: none;
-  }
-  .trackNote {
-    padding-left: 0;
   }
 }
 
@@ -782,14 +653,12 @@
   .section,
   .talkSection,
   .crossings,
-  .timing,
   .using,
   .tryOut {
     margin-block: calc(80 * var(--unit-fx));
   }
-  .talkSection,
-  .timing {
-    padding-block: calc(60 * var(--unit-fx));
+  .talkSection {
+    padding-block: calc(70 * var(--unit-fx));
   }
   .blockHead {
     width: 100%;

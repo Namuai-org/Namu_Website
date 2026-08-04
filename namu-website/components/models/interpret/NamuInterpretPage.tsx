@@ -10,7 +10,6 @@ import { SplitText } from "@/components/editorial/SplitText";
 import { AudioSample } from "@/components/models/voice/AudioSample";
 import { SectionNav } from "@/components/models/voice/SectionNav";
 import { CrossingTalk, type Turn } from "./CrossingTalk";
-import { LatencyTrack } from "./LatencyTrack";
 import { LiveInterpret } from "./LiveInterpret";
 import styles from "./interpret.module.css";
 
@@ -50,8 +49,8 @@ const TURNS: Turn[] = [
 ];
 
 /* The cases where word-for-word gives you something confidently wrong. The
-   middle column is the failure, kept visible so the last one has something to
-   be measured against. */
+   middle rung is the failure, kept visible so the last one has something to be
+   measured against. */
 const CROSSINGS = [
   {
     id: "numbers",
@@ -59,7 +58,6 @@ const CROSSINGS = [
     source: "Dubu talatin da biyar",
     literal: "Mille trente et cinq",
     good: "Trente-cinq mille",
-    note: "Hausa builds the thousand first. Read left to right into French and you land three zeros off, on a price.",
   },
   {
     id: "places",
@@ -67,7 +65,6 @@ const CROSSINGS = [
     source: "Ya tafi Dogondoutchi",
     literal: "Il est allé à la longue pierre",
     good: "Il est allé à Dogondoutchi",
-    note: "Plenty of Nigerien place names are ordinary Hausa words. A model that translates everything translates the map too.",
   },
   {
     id: "greetings",
@@ -75,7 +72,6 @@ const CROSSINGS = [
     source: "Sannu da aiki",
     literal: "Bonjour avec le travail",
     good: "Bon courage",
-    note: "There is no French phrase for greeting someone mid-task. The job is to carry what it does, not what it says.",
   },
   {
     id: "negation",
@@ -83,7 +79,6 @@ const CROSSINGS = [
     source: "Ba na jin ka",
     literal: "Pas je entendre toi",
     good: "Je ne t'entends pas",
-    note: "Hausa wraps the negative around the verb. Dropped or misplaced, a sentence can come out meaning its opposite.",
   },
 ];
 
@@ -194,6 +189,11 @@ export function NamuInterpretPage() {
 
         {/* ---- The conversation ---------------------------------------- */}
         <section className={styles.talkSection}>
+          <div className={styles.talkMedia} aria-hidden="true">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/ww.jpeg" alt="" className={styles.talkImage} />
+          </div>
+
           <div className="ds-container ds-outer">
             <ScrollObject className={styles.blockHead}>
               <h3 className={`h4 ${styles.blockTitle}`}>
@@ -268,30 +268,7 @@ export function NamuInterpretPage() {
                   {CROSSINGS[crossing].good}
                 </p>
               </div>
-
-              <p className={`text-regular ${styles.rungNote}`}>
-                {CROSSINGS[crossing].note}
-              </p>
             </ScrollObject>
-          </div>
-        </section>
-
-        {/* ---- Latency ------------------------------------------------- */}
-        <section className={styles.timing}>
-          <div className="ds-container ds-outer">
-            <ScrollObject className={styles.timingCopy}>
-              <h3 className={`h4 ${styles.blockTitle}`}>
-                <SplitText text="Late is the same as wrong" />
-              </h3>
-              <p className={`text-large ${styles.blockLede}`}>
-                <SplitText
-                  delay={0.2}
-                  text="A transcript can arrive after the fact and still be worth reading. An interpretation that arrives late has already missed its turn."
-                />
-              </p>
-            </ScrollObject>
-
-            <LatencyTrack />
           </div>
         </section>
 
