@@ -1,32 +1,18 @@
 "use client";
 
 import { useTranslation } from "@/hooks/useTranslation";
+import { MODELS } from "@/lib/models";
 import { Button } from "../Button";
+import { LearnMore } from "../LearnMore";
 import { ScrollObject } from "../ScrollObject";
 import { SplitText } from "../SplitText";
 import styles from "./home.module.css";
 
 /**
  * The model listing: one full-width row per model, image on the left and the
- * copy set across the grid on the right.
- *
- * `href` is deliberately optional. The individual model pages do not exist
- * yet, so a row without one renders as plain content — no link wrappers, no
- * "Learn more". Filling in `href` turns both back on without any other change.
+ * copy set across the grid on the right. /models carries the same catalogue
+ * as a card grid.
  */
-type Model = {
-  key: string;
-  image: string;
-  href?: string;
-};
-
-const MODELS: Model[] = [
-  { key: "home.model.haFr", image: "/modim/hausa-french.png" },
-  { key: "home.model.frHa", image: "/modim/french-hausa.png" },
-  { key: "home.model.asr", image: "/modim/asr.png" },
-  { key: "home.model.tts", image: "/modim/tts.png" },
-  { key: "home.model.agent", image: "/modim/voice-agent.png" },
-];
 
 export function Models() {
   const { t } = useTranslation();
@@ -83,26 +69,21 @@ export function Models() {
                     </div>
 
                     <div className={styles.modelAction}>
-                      {model.href ? (
-                        <Button href={model.href} simple>
-                          {t("home.models.more")}
-                        </Button>
-                      ) : (
-                        /* No destination yet, so this is the pill's shape
-                           without the control — a button that goes nowhere is
-                           worse than none. Give a model an `href` above and the
-                           real Button takes over. */
-                        <span className="button button--simple">
-                          <span className="button__pill">
-                            {t("home.models.more")}
-                          </span>
-                        </span>
-                      )}
+                      <LearnMore
+                        href={model.href}
+                        label={t("home.models.more")}
+                      />
                     </div>
                   </div>
                 </article>
               );
             })}
+          </div>
+
+          <div className={styles.modelsFoot}>
+            <Button href="/models" variant="invert">
+              {t("home.models.all")}
+            </Button>
           </div>
         </ScrollObject>
       </div>

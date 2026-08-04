@@ -3,6 +3,7 @@ export const ha = {
   "nav.home":         "Game da Mu",
   "nav.products":     "Kayayyaki",
   "nav.models":       "Samfuranmu",
+  "nav.mission":      "Manufarmu",
   "nav.contactSales": "Tuntubi tallace-tallace",
   "nav.tryFree":      "Gwada kyauta",
 
@@ -35,6 +36,9 @@ export const ha = {
 
   "home.models.title": "Gano ka kuma gwada samfuran muryarmu na zamani",
   "home.models.more":  "Kara sani",
+  "home.models.all":   "Duk samfura",
+  "models.intro":      "Kowane samfuri a nan an gina shi da magana tun farko, ga harsunan da masana'antar ta yi wa watsi. An horar da kowanne a kan rikodin da al'ummomin da suke magana da su suka bayar da yardarsu, an kuma tsara shi ya yi aiki a hanyoyin da mutane suka riga suka saba amfani da su.",
+  "models.cta":        "Gwada samfuran",
 
   "home.model.haFr.kicker": "Fassarar magana",
   "home.model.haFr.name":   "Namu-Interpret HA\u2192FR",

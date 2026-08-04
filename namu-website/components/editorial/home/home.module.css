@@ -564,6 +564,11 @@
   margin-top: calc(26 * var(--unit-fx));
 }
 
+.modelsFoot {
+  margin-top: calc(112 * var(--unit-fx));
+  text-align: center;
+}
+
 /* Tablet: the copy stops sitting beside the title and drops beneath it, but
    the image stays alongside. */
 @media (max-width: 900px) {
@@ -611,6 +616,9 @@
   .modelAction {
     margin-top: calc(20 * var(--unit-fx));
   }
+  .modelsFoot {
+    margin-top: calc(70 * var(--unit-fx));
+  }
 }
 
 /* ---- 5. Mission statement ----------------------------------------------- */
@@ -645,10 +653,10 @@
   .mission {
     padding-block: calc(100 * var(--unit-fx));
   }
-  /* h4's phone size is set for short headlines; this statement is a long
-     sentence, and at 38fx it runs to thirteen lines. */
+  /* h6's phone size is set for short headlines; this statement is a long
+     sentence and needs to come down further still. */
   .missionStatement {
-    font-size: calc(26 * var(--unit-fx-type));
+    font-size: calc(23 * var(--unit-fx-type));
   }
   .missionLabel {
     margin-top: calc(50 * var(--unit-fx));

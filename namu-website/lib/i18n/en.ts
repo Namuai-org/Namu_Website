@@ -3,6 +3,7 @@ export const en = {
   "nav.home":         "About",
   "nav.products":     "Products",
   "nav.models":       "Models",
+  "nav.mission":      "Mission",
   "nav.contactSales": "Contact sales",
   "nav.tryFree":      "Try for free",
 
@@ -35,6 +36,9 @@ export const en = {
 
   "home.models.title": "Discover and experiment with our state-of-the-art voice models",
   "home.models.more":  "Learn more",
+  "home.models.all":   "All models",
+  "models.intro":      "Every model here is built speech-first, for languages the industry has passed over. Each one is trained on recordings given with consent by the communities that speak them, and shaped to work on the channels people already reach for.",
+  "models.cta":        "Try the models",
 
   "home.model.haFr.kicker": "Speech translation",
   "home.model.haFr.name":   "Namu-Interpret HA\u2192FR",

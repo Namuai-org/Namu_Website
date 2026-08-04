@@ -9,7 +9,7 @@ import { NAV_PANELS, type PanelItem } from "./navPanels";
 import styles from "./nav.module.css";
 
 const LINKS = [
-  { href: "/#stack", key: "nav.approach", panel: "models" },
+  { href: "/models", key: "nav.approach", panel: "models" },
   { href: "/playground", key: "nav.products", panel: "products" },
   { href: "/blog", key: "nav.blog", panel: "blog" },
 ] as const;

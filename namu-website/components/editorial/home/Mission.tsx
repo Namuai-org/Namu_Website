@@ -23,7 +23,7 @@ export function Mission() {
           className={`ds-span ${styles.missionInner}`}
           style={{ "--span": 16 } as React.CSSProperties}
         >
-          <h2 className={`h4 ${styles.missionStatement}`}>
+          <h2 className={`h6 ${styles.missionStatement}`}>
             <SplitText text={t("home.mission.statement")} />
           </h2>
 

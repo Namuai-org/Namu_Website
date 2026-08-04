@@ -10,6 +10,7 @@ const BASE = "https://namu.ai";
    a crawler to. Put it back when the page has content. */
 const PAGES: { path: string; priority: number }[] = [
   { path: "", priority: 1 },
+  { path: "/models", priority: 0.9 },
   { path: "/blog", priority: 0.8 },
   { path: "/playground", priority: 0.7 },
   { path: "/brand", priority: 0.5 },

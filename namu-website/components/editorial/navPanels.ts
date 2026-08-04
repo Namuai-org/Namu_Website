@@ -41,37 +41,37 @@ export const NAV_PANELS: Record<string, NavPanel> = {
     titleKey: "nav.panel.models.title",
     bodyKey: "nav.panel.models.body",
     allKey: "nav.panel.allModels",
-    allHref: "/#stack",
-    /* Every model points at the listing until the individual pages exist. */
+    allHref: "/models",
+    /* Every model points at the catalogue until the individual pages exist. */
     items: [
       {
         title: "home.model.haFr.name",
         body: "home.model.haFr.body",
-        href: "/#stack",
+        href: "/models",
         image: "/modim/hausa-french.png",
       },
       {
         title: "home.model.frHa.name",
         body: "home.model.frHa.body",
-        href: "/#stack",
+        href: "/models",
         image: "/modim/french-hausa.png",
       },
       {
         title: "home.model.asr.name",
         body: "home.model.asr.body",
-        href: "/#stack",
+        href: "/models",
         image: "/modim/asr.png",
       },
       {
         title: "home.model.tts.name",
         body: "home.model.tts.body",
-        href: "/#stack",
+        href: "/models",
         image: "/modim/tts.png",
       },
       {
         title: "home.model.agent.name",
         body: "home.model.agent.body",
-        href: "/#stack",
+        href: "/models",
         image: "/modim/voice-agent.png",
       },
     ],
@@ -97,7 +97,7 @@ export const NAV_PANELS: Record<string, NavPanel> = {
       {
         title: "nav.product.api.title",
         body: "nav.product.api.body",
-        href: "/#stack",
+        href: "/models",
         image: "/editorial/paint-caravan-pale.jpg",
       },
     ],
