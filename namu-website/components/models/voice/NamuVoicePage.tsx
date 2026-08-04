@@ -8,6 +8,7 @@ import { ArrowUpRight } from "@/components/editorial/icons";
 import { ScrollObject } from "@/components/editorial/ScrollObject";
 import { SplitText } from "@/components/editorial/SplitText";
 import { AudioSample } from "./AudioSample";
+import { DialectRing } from "./DialectRing";
 import { Check, Waveform } from "./icons";
 import { LongFormHeading } from "./LongFormHeading";
 import { SectionNav } from "./SectionNav";
@@ -16,27 +17,24 @@ import { WaveBand } from "./WaveBand";
 import styles from "./voice.module.css";
 
 /* Voices are named for trees of the Sahel, the way the reference names its
-   own after temperate ones. */
+   own after temperate ones. The colour drives both the list swatch and the
+   wash behind the stage. */
 const VOICES: Voice[] = [
   {
     name: "Kanya",
     color: "#E8935A",
-    note: "Warm and unhurried. The register of someone explaining something to you properly.",
   },
   {
     name: "Baobab",
     color: "#8C6239",
-    note: "Low and steady, with weight behind it. Made for long passages.",
   },
   {
     name: "Marke",
     color: "#C05E3C",
-    note: "Bright and forward, quick on its feet. Suits announcements and short turns.",
   },
   {
     name: "Gawo",
     color: "#6E8B5B",
-    note: "Soft, close, conversational. The voice you would use across a table.",
   },
 ];
 
@@ -57,16 +55,17 @@ const USE_CASES = [
   "Announcements",
 ];
 
-/* Hausa is not one accent. These are the varieties the model is measured on. */
+/* Hausa-speaking areas of Niger. Namu is a Niger-first company, so the
+   coverage claim is about Niger — not the Nigerian varieties. */
 const DIALECTS = [
-  { name: "Kano", tint: "#EDD9B0" },
-  { name: "Sokoto", tint: "#F0DCC4" },
-  { name: "Zaria", tint: "#E6CAD1" },
-  { name: "Katsina", tint: "#F7ECD9" },
-  { name: "Maradi", tint: "#DDE3D0" },
-  { name: "Zinder", tint: "#F2DDDB" },
-  { name: "Damagaram", tint: "#EFE2C8" },
-  { name: "Bauchi", tint: "#E3D5C0" },
+  { name: "Maradi", tint: "#EDD9B0" },
+  { name: "Zinder", tint: "#F0DCC4" },
+  { name: "Tahoua", tint: "#E6CAD1" },
+  { name: "Tessaoua", tint: "#F7ECD9" },
+  { name: "Konni", tint: "#DDE3D0" },
+  { name: "Dogondoutchi", tint: "#F2DDDB" },
+  { name: "Madaoua", tint: "#EFE2C8" },
+  { name: "Mirriah", tint: "#E3D5C0" },
 ];
 
 /* Invented for now — real figures replace these. */
@@ -94,6 +93,11 @@ const SAMPLES = [
     body: "Twenty minutes of continuous narration. Speaker consistency is the whole game — the voice at minute nineteen has to be the same voice as at minute one.",
   },
 ];
+
+/* Spelled out, so the heading reads as prose — but still derived from the
+   list, so it cannot drift when a dialect is added. */
+const NUMBER_WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
+const dialectCount = NUMBER_WORDS[DIALECTS.length] ?? String(DIALECTS.length);
 
 const SECTIONS = [
   { id: "features", label: "Features" },
@@ -230,29 +234,18 @@ export function NamuVoicePage() {
         {/* ---- Dialects ------------------------------------------------ */}
         <section className={styles.dialects}>
           <div className="ds-container ds-outer">
-            <ScrollObject className={styles.dialectsHead}>
-              <h3 className={`h7 ${styles.expressionTitle}`}>
-                Natural across eight Hausa dialects
-              </h3>
-              <p className={`text-regular ${styles.expressionLede}`}>
-                <SplitText
-                  text="Hausa is not one accent. The model is trained and measured on the varieties people actually speak, from Kano to Zinder."
-                />
-              </p>
-            </ScrollObject>
+            <ScrollObject className={styles.dialectStage}>
+              {/* The names orbit; the claim sits still in the middle of them. */}
+              <div className={styles.dialectsHead}>
+                <h3 className={`h7 ${styles.expressionTitle}`}>
+                  {`Natural across ${dialectCount} Hausa dialects`}
+                </h3>
+                <p className={`text-regular ${styles.expressionLede}`}>
+                  <SplitText text="Hausa is not one accent. The model is trained and measured on the varieties people actually speak across Niger, from Maradi to Zinder." />
+                </p>
+              </div>
 
-            <ScrollObject className={styles.dialectCloud}>
-              {DIALECTS.map((d, i) => (
-                <span
-                  key={d.name}
-                  className={`text-small slide-up ${styles.dialectChip}`}
-                  style={
-                    { background: d.tint, "--i": i } as React.CSSProperties
-                  }
-                >
-                  {d.name}
-                </span>
-              ))}
+              <DialectRing dialects={DIALECTS} />
             </ScrollObject>
           </div>
         </section>

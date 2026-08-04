@@ -258,15 +258,70 @@
   z-index: 1;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
-  gap: calc(24 * var(--unit-fx));
-  padding-block: calc(20 * var(--unit-fx));
+  gap: calc(6 * var(--unit-fx));
+  min-height: calc(260 * var(--unit-fx));
   text-align: center;
 }
 
-.gridNote {
-  margin: 0 auto;
-  max-width: calc(var(--col24) * 8 + var(--gutter24) * 7);
+.gridStageVoice {
+  margin: 0;
+  color: color-mix(in srgb, var(--kola) 75%, transparent);
+}
+
+.gridStageEmotion {
+  margin: 0;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(54 * var(--unit-fx-type));
+  font-weight: 450;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--kola);
+}
+
+.gridControls {
+  display: flex;
+  align-items: center;
+  gap: calc(14 * var(--unit-fx));
+  margin-top: calc(24 * var(--unit-fx));
+}
+
+.gridRound {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(56 * var(--unit-fx));
+  height: calc(56 * var(--unit-fx));
+  min-width: 44px;
+  min-height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--paper) 72%, transparent);
+  color: var(--kola);
+  cursor: pointer;
+  transition:
+    background-color 0.5s var(--ease-out),
+    transform 0.5s var(--ease-out),
+    opacity 0.5s var(--ease-out);
+}
+
+.gridRound svg {
+  width: calc(17 * var(--unit-fx));
+  min-width: 13px;
+  height: auto;
+}
+
+@media (hover: hover) {
+  .gridRound:not(:disabled):hover {
+    background: var(--paper);
+    transform: scale(1.06);
+  }
+}
+
+.gridRound:disabled {
+  cursor: default;
+  opacity: 0.55;
 }
 
 /* ---- Audio -------------------------------------------------------------- */
@@ -484,26 +539,40 @@
   margin-block: calc(240 * var(--unit-fx));
 }
 
+/* The ring is the stage; the copy sits on top of it, centred. */
+.dialectStage {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1200 / 590;
+}
+
 .dialectsHead {
-  width: calc(var(--col24) * 10 + var(--gutter24) * 9);
-  margin-inline: auto;
-  margin-bottom: calc(60 * var(--unit-fx));
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+  width: calc(var(--col24) * 8 + var(--gutter24) * 7);
   text-align: center;
 }
 
-.dialectCloud {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: calc(14 * var(--unit-fx));
+.ring {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
 }
 
-.dialectChip {
+.ringChip {
+  position: absolute;
+  top: 0;
+  left: 0;
   display: inline-block;
-  padding: calc(8 * var(--unit-fx)) calc(20 * var(--unit-fx));
+  padding: calc(6 * var(--unit-fx)) calc(20 * var(--unit-fx));
   border-radius: calc(32 * var(--unit-fx));
   color: var(--kola);
+  white-space: nowrap;
+  will-change: transform;
 }
 
 /* ---- Using the model ---------------------------------------------------- */
@@ -841,7 +910,6 @@
   }
   .expressionHead,
   .matchingHead,
-  .dialectsHead,
   .usingHead,
   .longFormLede {
     width: 100%;
@@ -854,6 +922,33 @@
   }
   .gridStage {
     order: 0;
+    min-height: calc(200 * var(--unit-fx));
+  }
+  .gridStageEmotion {
+    font-size: calc(38 * var(--unit-fx-type));
+  }
+
+  /* No ring on phones: the heading sits above a plain wrapped row. */
+  .dialectStage {
+    aspect-ratio: auto;
+  }
+  .dialectsHead {
+    position: static;
+    transform: none;
+    width: 100%;
+    margin-bottom: calc(40 * var(--unit-fx));
+  }
+  .ring {
+    position: static;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: calc(12 * var(--unit-fx));
+  }
+  .ringChip {
+    position: static;
+    transform: none !important;
   }
 
   .longFormLine {

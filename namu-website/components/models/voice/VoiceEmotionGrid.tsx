@@ -1,15 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { AudioSample } from "./AudioSample";
+import { useEffect, useRef, useState } from "react";
+import { Pause, Play, Volume } from "./icons";
 import styles from "./voice.module.css";
 
 export type Voice = {
   name: string;
-  /** Drives the swatch and the blob behind the panel. */
+  /** Drives the swatch and the blob behind the stage. */
   color: string;
-  /** One line on where the voice sits — register, warmth, pace. */
-  note: string;
 };
 
 export type Emotion = { name: string };
@@ -22,22 +20,46 @@ type Props = {
 };
 
 /**
- * Voice down the left, emotion down the right, one clip at the crossing.
+ * Voice down the left, emotion down the right, and the crossing of the two
+ * named in the middle over a wash of the voice's colour.
  *
- * A soft blob of the selected voice's colour sits behind the two columns and
- * moves with the selection, which is what keeps a plain pair of tab lists
- * feeling like an instrument rather than a form.
+ * The stage is deliberately bare — voice, emotion, two round controls — so the
+ * colour and the type carry it rather than a player chrome.
  */
 export function VoiceEmotionGrid({ voices, emotions, clips }: Props) {
   const [voice, setVoice] = useState(0);
   const [emotion, setEmotion] = useState(0);
+  const [playing, setPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   const current = voices[voice];
   const currentEmotion = emotions[emotion];
   const src = clips?.[current.name]?.[currentEmotion.name];
 
+  // Changing either axis stops whatever was playing — the clip no longer
+  // matches what the stage says.
+  useEffect(() => {
+    audioRef.current?.pause();
+    setPlaying(false);
+  }, [voice, emotion]);
+
+  const toggle = () => {
+    const el = audioRef.current;
+    if (!el) return;
+    if (el.paused) {
+      document.querySelectorAll("audio").forEach((o) => o !== el && o.pause());
+      el.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+    } else {
+      el.pause();
+      setPlaying(false);
+    }
+  };
+
   return (
-    <div className={styles.grid} style={{ "--blob": current.color } as React.CSSProperties}>
+    <div
+      className={styles.grid}
+      style={{ "--blob": current.color } as React.CSSProperties}
+    >
       <div className={styles.gridBlob} aria-hidden="true" />
 
       <div className={styles.gridCol}>
@@ -64,11 +86,38 @@ export function VoiceEmotionGrid({ voices, emotions, clips }: Props) {
       </div>
 
       <div className={styles.gridStage}>
-        <p className={`text-book ${styles.gridNote}`}>{current.note}</p>
-        <AudioSample
-          src={src}
-          title={`${current.name} — ${currentEmotion.name}`}
-        />
+        <p className={`text-ui ${styles.gridStageVoice}`}>{current.name}</p>
+        <p className={styles.gridStageEmotion}>{currentEmotion.name}</p>
+
+        <div className={styles.gridControls}>
+          <button
+            type="button"
+            className={styles.gridRound}
+            disabled={!src}
+            aria-label={`Preview the ${current.name} voice`}
+          >
+            <Volume />
+          </button>
+          <button
+            type="button"
+            className={styles.gridRound}
+            disabled={!src}
+            onClick={toggle}
+            aria-label={playing ? "Pause sample" : "Play sample"}
+            aria-pressed={playing}
+          >
+            {playing ? <Pause /> : <Play />}
+          </button>
+        </div>
+
+        {src ? (
+          <audio
+            ref={audioRef}
+            src={src}
+            preload="none"
+            onEnded={() => setPlaying(false)}
+          />
+        ) : null}
       </div>
 
       <div className={styles.gridCol}>

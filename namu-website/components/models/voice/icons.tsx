@@ -85,3 +85,30 @@ export function Waveform({ className, style }: IconProps) {
     </svg>
   );
 }
+
+/** Speaker with sound arcs — the secondary control on the expression stage. */
+export function Volume({ className, style }: IconProps) {
+  return (
+    <svg
+      className={className}
+      style={style}
+      viewBox="0 0 20 18"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <path
+        d="M9 1.5 4.5 5.5H1.5v7h3L9 16.5V1.5Z"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M12.8 6.2a4 4 0 0 1 0 5.6M15.4 3.6a7.6 7.6 0 0 1 0 10.8"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
