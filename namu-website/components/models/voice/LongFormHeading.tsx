@@ -59,6 +59,10 @@ export function LongFormHeading({ text, srText }: { text: string; srText: string
     const measure = () => {
       titleWidth = title.scrollWidth;
       hostWidth = host.clientWidth;
+      /* Shorter phrases fit the full-bleed window outright. With no travel
+         there is no slide to make, so it centres and reads as a plain
+         headline; lengthen the copy and the marquee returns on its own. */
+      host.dataset.static = titleWidth <= hostWidth ? "true" : "false";
     };
 
     const targetX = () => {

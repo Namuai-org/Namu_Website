@@ -509,11 +509,15 @@
   margin: 0;
 }
 
+.longForm[data-static="true"] {
+  text-align: center;
+}
+
 .longFormLine {
   display: inline-block;
   width: max-content;
   font-family: var(--font-serif), Georgia, serif;
-  font-size: calc(270 * var(--unit-fx-type));
+  font-size: calc(190 * var(--unit-fx-type));
   font-weight: 450;
   line-height: 1.2;
   letter-spacing: -0.04em;

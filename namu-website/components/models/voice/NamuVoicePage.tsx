@@ -100,13 +100,14 @@ const SAMPLES = [
 const NUMBER_WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
 const dialectCount = NUMBER_WORDS[DIALECTS.length] ?? String(DIALECTS.length);
 
-/* The hero clip. Swap these three paths to change the footage — the gradient
-   behind it stays as the fallback if the video cannot play. */
+/* The hero clip, built from public/Funky.gif — ping-ponged and interpolated,
+   because the gif does not loop cleanly on its own. Swap these paths to change
+   the footage; the gradient behind stays as the fallback if it cannot play. */
 const HERO_CLIP = {
   mp4: "/editorial/voice-hero.mp4",
   webm: "/editorial/voice-hero.webm",
   poster: "/editorial/voice-hero.jpg",
-  alt: "Sunlight on open water, seen from the mouth of a cave",
+  alt: "Dark water turning slowly around a submerged plate",
 };
 
 const SECTIONS = [
