@@ -59,7 +59,7 @@ export const NAV_PANELS: Record<string, NavPanel> = {
       {
         title: "home.model.asr.name",
         body: "home.model.asr.body",
-        href: "/models",
+        href: "/models/namu-transcribe",
         image: "/modim/asr.png",
       },
       {

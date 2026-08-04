@@ -12,6 +12,7 @@ const PAGES: { path: string; priority: number }[] = [
   { path: "", priority: 1 },
   { path: "/models", priority: 0.9 },
   { path: "/models/namu-voice", priority: 0.8 },
+  { path: "/models/namu-transcribe", priority: 0.8 },
   { path: "/blog", priority: 0.8 },
   { path: "/playground", priority: 0.7 },
   { path: "/brand", priority: 0.5 },
