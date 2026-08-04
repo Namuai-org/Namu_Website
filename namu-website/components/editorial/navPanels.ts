@@ -45,16 +45,10 @@ export const NAV_PANELS: Record<string, NavPanel> = {
     /* Every model points at the catalogue until the individual pages exist. */
     items: [
       {
-        title: "home.model.haFr.name",
-        body: "home.model.haFr.body",
-        href: "/models",
+        title: "home.model.interpret.name",
+        body: "home.model.interpret.body",
+        href: "/models/namu-interpret",
         image: "/modim/hausa-french.png",
-      },
-      {
-        title: "home.model.frHa.name",
-        body: "home.model.frHa.body",
-        href: "/models",
-        image: "/modim/french-hausa.png",
       },
       {
         title: "home.model.asr.name",
@@ -86,7 +80,7 @@ export const NAV_PANELS: Record<string, NavPanel> = {
         title: "nav.product.studio.title",
         body: "nav.product.studio.body",
         href: "/playground",
-        image: "/Namu_mock_up.png",
+        image: "/studio.jpeg",
       },
       {
         title: "nav.product.app.title",
@@ -98,7 +92,7 @@ export const NAV_PANELS: Record<string, NavPanel> = {
         title: "nav.product.api.title",
         body: "nav.product.api.body",
         href: "/models",
-        image: "/editorial/paint-caravan-pale.jpg",
+        image: "/sdk.jpeg",
       },
     ],
   },

@@ -47,13 +47,9 @@ export const posts: Post[] = [
     date: "2025-10-12",
     readTime: "5 min read",
     author: "Mouhamad Mamane",
-    image: "/editorial/voices-in-the-dark.jpg",
+    image: "/folklore.jpeg",
     imageAlt:
-      "A dark street at dusk, rooftops in silhouette, and a glowing waveform passing between two points of light",
-    video: {
-      webm: "/editorial/voices-in-the-dark.webm",
-      mp4: "/editorial/voices-in-the-dark.mp4",
-    },
+      "Tall grasses leaning in the wind against a pale sky at dusk",
     body: [
       "One evening in Niamey, the electricity went out while my family was sitting together outside.",
       "The house went dark, and the voices coming from nearby homes and the occasional sound of a motorcycle passing through the street became more noticeable. Without a television or our phones to distract us, we began talking.",

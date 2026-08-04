@@ -17,8 +17,11 @@ export type ModelEntry = {
 };
 
 export const MODELS: ModelEntry[] = [
-  { key: "home.model.haFr", image: "/modim/hausa-french.png" },
-  { key: "home.model.frHa", image: "/modim/french-hausa.png" },
+  {
+    key: "home.model.interpret",
+    image: "/modim/hausa-french.png",
+    href: "/models/namu-interpret",
+  },
   { key: "home.model.asr", image: "/modim/asr.png", href: "/models/namu-transcribe" },
   { key: "home.model.tts", image: "/modim/tts.png", href: "/models/namu-voice" },
   { key: "home.model.agent", image: "/modim/voice-agent.png" },

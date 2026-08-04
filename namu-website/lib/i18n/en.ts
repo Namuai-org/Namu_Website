@@ -40,6 +40,11 @@ export const en = {
   "models.intro":      "Every model here is built speech-first, for languages the industry has passed over. Each one is trained on recordings given with consent by the communities that speak them, and shaped to work on the channels people already reach for.",
   "models.cta":        "Try the models",
 
+  "home.model.interpret.kicker": "Speech translation",
+  "home.model.interpret.name":   "Namu-Interpret",
+  "home.model.interpret.body":   "Hausa and French, carried both ways in speech. One side talks, the other hears it in their own language, and the conversation keeps its pace.",
+  "home.model.interpret.alt":    "Watercolour illustration of two speech bubbles, one marked HA and one marked FR, joined by flowing sound waves",
+
   "home.model.haFr.kicker": "Speech translation",
   "home.model.haFr.name":   "Namu-Interpret HA\u2192FR",
   "home.model.haFr.body":   "Speak or ask in Hausa and hear the answer in French. A whole conversation carried in speech, with nothing to type and nothing to read.",

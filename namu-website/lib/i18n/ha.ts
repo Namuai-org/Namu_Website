@@ -40,6 +40,11 @@ export const ha = {
   "models.intro":      "Kowane samfuri a nan an gina shi da magana tun farko, ga harsunan da masana'antar ta yi wa watsi. An horar da kowanne a kan rikodin da al'ummomin da suke magana da su suka bayar da yardarsu, an kuma tsara shi ya yi aiki a hanyoyin da mutane suka riga suka saba amfani da su.",
   "models.cta":        "Gwada samfuran",
 
+  "home.model.interpret.kicker": "Fassarar magana",
+  "home.model.interpret.name":   "Namu-Interpret",
+  "home.model.interpret.body":   "Hausa da Faransanci, a hanyoyi biyu cikin magana. Wani bangare ya yi magana, dayan ya ji da harshensa, tattaunawar kuma ta ci gaba da saurinta.",
+  "home.model.interpret.alt":    "Zanen ruwa na kumfar magana biyu, daya mai alamar HA daya kuma mai alamar FR, hade da igiyoyin sauti",
+
   "home.model.haFr.kicker": "Fassarar magana",
   "home.model.haFr.name":   "Namu-Interpret HA\u2192FR",
   "home.model.haFr.body":   "Ka yi magana ko ka yi tambaya da Hausa, ka ji amsa da Faransanci. Cikakkiyar tattaunawa cikin magana, ba sai ka rubuta ko ka karanta ba.",

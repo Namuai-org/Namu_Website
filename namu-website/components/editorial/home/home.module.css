@@ -196,6 +196,17 @@
 
 /* A short centred hairline that lengthens and fills with accent on hover —
    the signal that the card is a door, without a label spelling it out. */
+/* Without a destination the card is a statement, not a control: no pointer,
+   and none of the hover choreography that promises somewhere to go. */
+.featuredCardStatic {
+  cursor: default;
+}
+
+.featuredCardStatic:hover .featuredRule,
+.featuredCardStatic:hover .featuredRule::after {
+  transform: none;
+}
+
 .featuredRule {
   position: relative;
   display: block;
