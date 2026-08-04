@@ -100,14 +100,15 @@ const SAMPLES = [
 const NUMBER_WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
 const dialectCount = NUMBER_WORDS[DIALECTS.length] ?? String(DIALECTS.length);
 
-/* The hero clip, built from public/Funky.gif — ping-ponged and interpolated,
-   because the gif does not loop cleanly on its own. Swap these paths to change
-   the footage; the gradient behind stays as the fallback if it cannot play. */
+/* The hero clip, converted from public/"Paisajes Idílicos.gif". That gif does
+   loop cleanly on its own, so it is a straight transcode — no ping-pong, and
+   the grass keeps moving one way. Swap these paths to change the footage; the
+   gradient behind stays as the fallback if it cannot play. */
 const HERO_CLIP = {
   mp4: "/editorial/voice-hero.mp4",
   webm: "/editorial/voice-hero.webm",
   poster: "/editorial/voice-hero.jpg",
-  alt: "Dark water turning slowly around a submerged plate",
+  alt: "A field of grass moving in the wind under a clouded sky",
 };
 
 const SECTIONS = [
