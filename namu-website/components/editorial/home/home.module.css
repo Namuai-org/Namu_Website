@@ -745,12 +745,15 @@
   width: calc(var(--col24) * 12 + var(--gutter24) * 11);
   position: relative;
   flex: 0 0 auto;
+  /* Every definition shares one cell, so the block reserves the height of the
+     longest and stays put as you move between them. Letting only the active
+     one sit in flow would resize the section on hover, by as much as the
+     difference between the shortest value and the longest. */
+  display: grid;
 }
 
 .valueDef {
-  position: absolute;
-  top: 0;
-  left: 0;
+  grid-area: 1 / 1;
   width: calc(var(--col24) * 10 + var(--gutter24) * 9);
   opacity: 0;
   transition: opacity 0.6s var(--ease-out);
@@ -760,7 +763,6 @@
 .valueDefActive {
   opacity: 1;
   pointer-events: auto;
-  position: relative;
 }
 
 /* Hand-drawn annotation that draws itself alongside the active value. */
@@ -813,9 +815,12 @@
   }
   .valuesDefs {
     width: 100%;
+    /* Back to a plain stack: down here every value is shown at once, so they
+       must not share a cell. */
+    display: block;
   }
   .valueDef {
-    position: relative;
+    grid-area: auto;
     opacity: 1;
     width: 100%;
     pointer-events: auto;

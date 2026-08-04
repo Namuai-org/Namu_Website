@@ -314,6 +314,10 @@
 
 .panelStack > * {
   grid-area: 1 / 1;
+  /* Each panel keeps its own height. Sharing a cell would otherwise stretch
+     every panel to the tallest one, so a long panel silently inflates the
+     others' boxes — and the clip-path unfold then plays over empty space. */
+  align-self: start;
 }
 
 .panelHost {
