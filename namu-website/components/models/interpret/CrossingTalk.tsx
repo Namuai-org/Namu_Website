@@ -147,7 +147,8 @@ export function CrossingTalk({ turns }: { turns: Turn[] }) {
         const said = (
           <div
             data-said
-            className={`${styles.bubble} ${styles.bubbleSaid}`}
+            className={`slide-up ${styles.bubble} ${styles.bubbleSaid}`}
+            style={{ "--i": 0 } as React.CSSProperties}
             lang={turn.from}
           >
             <span className={`text-caption ${styles.bubbleTag}`}>
@@ -159,7 +160,9 @@ export function CrossingTalk({ turns }: { turns: Turn[] }) {
         const heard = (
           <div
             data-heard
-            className={`${styles.bubble} ${styles.bubbleHeard}`}
+            className={`slide-up ${styles.bubble} ${styles.bubbleHeard}`}
+            /* The interpretation lands a beat after what produced it. */
+            style={{ "--i": 1 } as React.CSSProperties}
             lang={turn.from === "ha" ? "fr" : "ha"}
           >
             <span className={`text-caption ${styles.bubbleTag}`}>
@@ -172,11 +175,7 @@ export function CrossingTalk({ turns }: { turns: Turn[] }) {
         /* Hausa always takes the left column and French the right, so the
            columns keep their identity and only the arc's lean changes. */
         return (
-          <ScrollObject
-            key={i}
-            className={`${styles.turn} slide-up`}
-            style={{ "--i": i % 3 } as React.CSSProperties}
-          >
+          <ScrollObject key={i} className={styles.turn}>
             {turn.from === "ha" ? said : heard}
             {turn.from === "ha" ? heard : said}
           </ScrollObject>

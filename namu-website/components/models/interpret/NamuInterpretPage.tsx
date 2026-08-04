@@ -399,46 +399,65 @@ export function NamuInterpretPage() {
         </section>
 
         {/* ---- Dig deeper ---------------------------------------------- */}
-        <section className={styles.section}>
-          <div className="ds-container ds-outer">
-            <ScrollObject className={styles.deeper}>
-              <Link href="/models" className={styles.deeperLink}>
-                <span className="text-ui">All Namu models</span>
-                <ArrowUpRight />
+        <div className="ds-container ds-outer">
+          <div className={styles.digDeeper}>
+            <h2 className="h7">Dig deeper</h2>
+            <div className={styles.digLinks}>
+              <Link href="/models" className={`text-ui ${styles.digLink}`}>
+                <span>Model card</span>
+                <ArrowUpRight className={styles.digArrow} />
               </Link>
-              <Link href="/models/namu-transcribe" className={styles.deeperLink}>
-                <span className="text-ui">Namu-Transcribe</span>
-                <ArrowUpRight />
+              <Link href="/blog" className={`text-ui ${styles.digLink}`}>
+                <span>Blog post</span>
+                <ArrowUpRight className={styles.digArrow} />
               </Link>
-              <Link href="/models/namu-voice" className={styles.deeperLink}>
-                <span className="text-ui">Namu-Voice</span>
-                <ArrowUpRight />
-              </Link>
-            </ScrollObject>
+            </div>
           </div>
-        </section>
+        </div>
 
         {/* ---- Try it out ---------------------------------------------- */}
-        <section id="try-it-out" className={styles.try}>
+        <section id="try-it-out" className={styles.tryOut}>
           <div className="ds-container ds-outer">
-            <ScrollObject className={styles.tryInner}>
-              <h2 className={`h3 ${styles.tryTitle}`}>
-                <SplitText text="Try it out" />
-              </h2>
-              <p className={`text-large ${styles.tryLede}`}>
-                <SplitText
-                  delay={0.2}
-                  text="Say something in either language and hear it come back in the other."
-                />
-              </p>
-              <div
-                className={`slide-up ${styles.tryCta}`}
-                style={{ "--i": 2 } as React.CSSProperties}
-              >
-                <Button href="/playground?model=interpret" variant="invert">
-                  Open the playground
-                </Button>
-              </div>
+            <h2 className={`h3 ${styles.tryTitle}`}>
+              <SplitText text="Try Namu-Interpret" />
+            </h2>
+
+            <ScrollObject className={styles.tryRow}>
+              {[
+                {
+                  title: "Namu Playground",
+                  body: "Say a line in Hausa or French and hear it come back in the other.",
+                  cta: "Try in playground",
+                  href: "/playground?model=interpret",
+                },
+                {
+                  title: "Namu API",
+                  body: "Put interpretation into a call flow, in either direction.",
+                  cta: "Contact sales",
+                  href: "mailto:contact@namuai.org",
+                },
+                {
+                  title: "All Namu models",
+                  body: "Speech recognition, speech synthesis and the end-to-end voice agent.",
+                  cta: "See all models",
+                  href: "/models",
+                },
+              ].map((c, i) => (
+                <article
+                  key={c.title}
+                  className={`slide-up ${styles.tryCard}`}
+                  style={{ "--i": i } as React.CSSProperties}
+                >
+                  <div>
+                    <h3 className={`h7 ${styles.tryCardTitle}`}>{c.title}</h3>
+                    <p className={`text-regular ${styles.tryCardBody}`}>{c.body}</p>
+                  </div>
+                  <Link href={c.href} className={`text-ui ${styles.digLink}`}>
+                    <span>{c.cta}</span>
+                    <ArrowUpRight className={styles.digArrow} />
+                  </Link>
+                </article>
+              ))}
             </ScrollObject>
           </div>
         </section>

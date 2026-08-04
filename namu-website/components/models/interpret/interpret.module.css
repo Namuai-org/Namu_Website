@@ -645,18 +645,28 @@
 
 /* ---- Dig deeper / try it out --------------------------------------------- */
 
-.deeper {
+.digDeeper {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
-  gap: calc(24 * var(--unit-fx));
-  padding: calc(26 * var(--unit-fx)) calc(30 * var(--unit-fx));
+  gap: calc(20 * var(--unit-fx));
+  margin-block: calc(120 * var(--unit-fx));
+  padding: calc(20 * var(--unit-fx)) calc(24 * var(--unit-fx));
   border-radius: calc(5 * var(--unit-fx));
   background: #fbf4e5;
 }
 
-.deeperLink {
+.digDeeper h2 {
+  margin: 0;
+}
+
+.digLinks {
+  display: flex;
+  align-items: center;
+  gap: calc(58 * var(--unit-fx));
+}
+
+.digLink {
   display: inline-flex;
   align-items: center;
   gap: calc(10 * var(--unit-fx));
@@ -664,39 +674,48 @@
   text-decoration: none;
 }
 
-.deeperLink:hover {
+.digLink:hover {
   text-decoration: underline;
 }
 
-.deeperLink svg {
+.digArrow {
   width: calc(12 * var(--unit-fx));
   min-width: 10px;
 }
 
-.try {
-  margin-block: calc(220 * var(--unit-fx)) calc(300 * var(--unit-fx));
-}
-
-.tryInner {
-  width: calc(var(--col24) * 13 + var(--gutter24) * 12);
-  max-width: 100%;
-  margin-inline: auto;
-  text-align: center;
+.tryOut {
+  margin-block: calc(220 * var(--unit-fx)) calc(340 * var(--unit-fx));
 }
 
 .tryTitle {
-  margin: 0 0 calc(24 * var(--unit-fx));
+  text-align: center;
+  margin: 0 0 calc(90 * var(--unit-fx));
 }
 
-.tryLede {
+.tryRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: calc(20 * var(--unit-fx));
+  padding-inline: calc(var(--col24) * 3 + var(--gutter24) * 3);
+}
+
+.tryCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: calc(40 * var(--unit-fx));
+  padding: calc(25 * var(--unit-fx)) calc(22 * var(--unit-fx));
+  border-radius: calc(5 * var(--unit-fx));
+  background: #fbf4e5;
+}
+
+.tryCardTitle {
+  margin: 0 0 calc(20 * var(--unit-fx));
+}
+
+.tryCardBody {
   margin: 0;
   color: var(--ds-text-soft);
-}
-
-.tryCta {
-  margin-top: calc(44 * var(--unit-fx));
-  display: flex;
-  justify-content: center;
 }
 
 /* ==========================================================================
@@ -705,7 +724,8 @@
 
 @media (max-width: 1100px) {
   .stats,
-  .specs {
+  .specs,
+  .tryRow {
     grid-template-columns: repeat(2, 1fr);
     padding-inline: 0;
   }
@@ -764,7 +784,7 @@
   .crossings,
   .timing,
   .using,
-  .try {
+  .tryOut {
     margin-block: calc(80 * var(--unit-fx));
   }
   .talkSection,
@@ -799,7 +819,8 @@
   }
 
   .stats,
-  .specs {
+  .specs,
+  .tryRow {
     grid-template-columns: 1fr;
   }
   .stats {
@@ -809,10 +830,15 @@
     font-size: calc(46 * var(--unit-fx-type));
   }
 
-  .deeper {
+  .digDeeper {
+    display: block;
+    margin-block: calc(60 * var(--unit-fx));
+    padding: calc(30 * var(--unit-fx)) calc(24 * var(--unit-fx));
+  }
+  .digLinks {
     flex-direction: column;
     align-items: flex-start;
     gap: calc(16 * var(--unit-fx));
-    padding: calc(26 * var(--unit-fx)) calc(24 * var(--unit-fx));
+    margin-top: calc(24 * var(--unit-fx));
   }
 }
