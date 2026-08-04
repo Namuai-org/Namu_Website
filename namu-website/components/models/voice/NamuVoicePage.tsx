@@ -103,10 +103,10 @@ const dialectCount = NUMBER_WORDS[DIALECTS.length] ?? String(DIALECTS.length);
 /* The hero clip. Swap these three paths to change the footage — the gradient
    behind it stays as the fallback if the video cannot play. */
 const HERO_CLIP = {
-  mp4: "/editorial/voices-in-the-dark.mp4",
-  webm: "/editorial/voices-in-the-dark.webm",
-  poster: "/editorial/voices-in-the-dark.jpg",
-  alt: "A slow shot of the river at dusk",
+  mp4: "/editorial/voice-hero.mp4",
+  webm: "/editorial/voice-hero.webm",
+  poster: "/editorial/voice-hero.jpg",
+  alt: "Sunlight on open water, seen from the mouth of a cave",
 };
 
 const SECTIONS = [
@@ -266,7 +266,16 @@ export function NamuVoicePage() {
 
         {/* ---- Using the model ----------------------------------------- */}
         <section className={styles.using}>
-          <div className={styles.usingBg} aria-hidden="true" />
+          {/* Full-bleed and scaling back from a slight zoom as it enters, the
+              way the reference sets its own blurred backdrop. */}
+          <ScrollObject className={styles.usingBg}>
+            <img
+              src="/windi.png"
+              alt=""
+              className={`${styles.usingBgImage} scale-out`}
+              loading="lazy"
+            />
+          </ScrollObject>
 
           <div className="ds-container ds-outer">
             <ScrollObject className={styles.usingHead}>

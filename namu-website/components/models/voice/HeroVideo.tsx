@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { clamp, useRafScroll } from "@/hooks/useRafScroll";
 import styles from "./voice.module.css";
 
@@ -21,13 +21,12 @@ type Props = {
  * The hero clip: full-bleed, silent, looping, and drifting slowly against the
  * scroll — the reference's treatment.
  *
- * If the video cannot play the poster stays put and the gradient behind it
- * still carries the section, so the hero is never a black hole.
+ * If the clip cannot decode, the poster stays on screen — the element is
+ * never hidden, because a blank hero is worse than a still one.
  */
 export function HeroVideo({ mp4, webm, poster, alt }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [failed, setFailed] = useState(false);
 
   // Autoplay only once it is actually on screen, and stop when it is not:
   // a hero that keeps decoding after you have scrolled past costs battery for
@@ -44,7 +43,7 @@ export function HeroVideo({ mp4, webm, poster, alt }: Props) {
 
     const io = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) video.play().catch(() => setFailed(true));
+        if (entry.isIntersecting) video.play().catch(() => {});
         else video.pause();
       },
       { threshold: 0 },
@@ -84,8 +83,6 @@ export function HeroVideo({ mp4, webm, poster, alt }: Props) {
         playsInline
         preload="metadata"
         aria-label={alt}
-        onError={() => setFailed(true)}
-        style={failed ? { opacity: 0 } : undefined}
       >
         {webm ? <source src={webm} type="video/webm" /> : null}
         <source src={mp4} type="video/mp4" />
