@@ -217,8 +217,8 @@ export function NamuVoicePage() {
         <section className={styles.longFormSection}>
           <div className="ds-container ds-outer">
             <LongFormHeading
-              text="Built for looooong form"
-              srText="Built for long form"
+              text="Built for the people"
+              srText="Built for the people"
             />
 
             <ScrollObject className={styles.longFormBody}>

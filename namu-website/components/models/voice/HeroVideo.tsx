@@ -5,9 +5,10 @@ import { clamp, useRafScroll } from "@/hooks/useRafScroll";
 import styles from "./voice.module.css";
 
 /** How far the clip drifts against the scroll, as a fraction of its height. */
-const PARALLAX_RATIO = -0.1;
-/** Overscale, so the drift never exposes an edge. */
-const SCALE = 1.2;
+const PARALLAX_RATIO = -0.06;
+/** Overscale, so the drift never exposes an edge. Kept just above the drift
+ *  range (2 x ratio) — any more and the footage reads as zoomed in. */
+const SCALE = 1.14;
 
 type Props = {
   mp4: string;

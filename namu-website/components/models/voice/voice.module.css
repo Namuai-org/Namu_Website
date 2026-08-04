@@ -35,7 +35,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: scale(1.2);
+  transform: scale(1.14);
   will-change: transform;
   transition: opacity 0.6s var(--ease-out);
 }
@@ -97,9 +97,7 @@
 /* ---- Section nav -------------------------------------------------------- */
 
 .sectionNav {
-  position: sticky;
-  top: calc(14 * var(--unit-fx));
-  z-index: 40;
+  position: relative;
   display: flex;
   justify-content: center;
   margin-bottom: calc(144 * var(--unit-fx));
@@ -111,12 +109,6 @@
   background: var(--ds-surface);
   border-radius: calc(5 * var(--unit-fx));
   padding: calc(12 * var(--unit-fx));
-  transition: box-shadow 0.6s var(--ease-out);
-}
-
-.sectionNavStuck .sectionNavInner {
-  box-shadow: 0 calc(10 * var(--unit-fx)) calc(40 * var(--unit-fx))
-    rgba(107, 62, 30, 0.12);
 }
 
 .sectionNavList {
@@ -503,16 +495,13 @@
 }
 
 /* The window the oversized word travels behind.
-   It runs the full measure rather than the reference's eight-column inset: our
-   phrase is longer than theirs, and behind a narrow window you only ever see a
-   two-letter fragment, which reads as broken rather than as a slide. Full
-   width shows most of the line at once and lets the travel do the reveal. */
+   Full-bleed, so the word runs off both screen edges exactly as it does on the
+   reference. Clipping it inside an inset box put two hard edges mid-page and
+   made the type look like it was sliding into a wall. */
 .longForm {
   overflow: hidden;
-  /* Four columns of inset. With the reference's five o's at this size the
-     phrase nearly fits the full measure, and without a narrower window there
-     is no travel left to read as a slide. */
-  margin-inline: calc(var(--col24) * 4 + var(--gutter24) * 4);
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
   margin-bottom: calc(80 * var(--unit-fx));
 }
 
@@ -524,7 +513,7 @@
   display: inline-block;
   width: max-content;
   font-family: var(--font-serif), Georgia, serif;
-  font-size: calc(150 * var(--unit-fx-type));
+  font-size: calc(270 * var(--unit-fx-type));
   font-weight: 450;
   line-height: 1.2;
   letter-spacing: -0.04em;
@@ -1031,6 +1020,7 @@
   /* No marquee on phones — a plain centred heading, as on the reference. */
   .longForm {
     overflow: visible;
+    width: auto;
     margin-inline: 0;
     margin-bottom: calc(30 * var(--unit-fx));
     text-align: center;
