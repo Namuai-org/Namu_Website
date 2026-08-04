@@ -625,17 +625,37 @@
   text-align: center;
 }
 
+/* Mono eyebrow, the same device the values and locations bands use. Tinted
+   from the band's own ink rather than the accent, which sits too close to
+   Dry Clay to read. */
+.missionLabel {
+  margin-top: calc(110 * var(--unit-fx));
+  color: color-mix(in srgb, var(--ds-text) 58%, transparent);
+  text-transform: uppercase;
+  transition-delay: 0.5s;
+}
+
 .missionExpand {
-  margin-top: calc(120 * var(--unit-fx));
-  color: var(--ds-text-soft);
+  margin-top: calc(24 * var(--unit-fx));
+  line-height: 1.2;
+  color: color-mix(in srgb, var(--ds-text) 76%, transparent);
 }
 
 @media (max-width: 600px) {
   .mission {
     padding-block: calc(100 * var(--unit-fx));
   }
-  .missionExpand {
+  /* h4's phone size is set for short headlines; this statement is a long
+     sentence, and at 38fx it runs to thirteen lines. */
+  .missionStatement {
+    font-size: calc(26 * var(--unit-fx-type));
+  }
+  .missionLabel {
     margin-top: calc(50 * var(--unit-fx));
+  }
+  .missionExpand {
+    margin-top: calc(16 * var(--unit-fx));
+    font-size: calc(20 * var(--unit-fx-type));
   }
 }
 

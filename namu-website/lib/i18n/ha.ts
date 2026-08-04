@@ -9,9 +9,6 @@ export const ha = {
   "mission.quote":           "Harshe bai kamata ya zama shinge ba ga samun kayan aikin da suka fi karfi a duniya.",
   "mission.attributionLine": "Mouhamad Mamane, Wanda ya kafa Namu",
   "mission.statement1":      "Manufarmu ita ce mu sa AI ya zama mai saukin samu ga al'ummomin Afirka cikin harshe da al'adunsu.",
-
-  "solution.intro.title": "AI na asalin magana, an gina shi domin harsunan Afirka.",
-  "solution.positioning": "Ba chatbot ba ne. Ba dandali na AI na gama-gari ba ne. Ginshikin AI na magana ga harsunan Afirka — zurfi kafin fadi.",
   "solution.step1.title": "Bayanan Magana, da Yarda",
   "solution.step1.body":  "Magana ta gaske, an tattara kuma an shirya tare da yardar al'ummomin da muke aiki da su.",
   "solution.step2.title": "Samfuran Asalin Magana",
@@ -31,6 +28,10 @@ export const ha = {
 
   "home.featured.title":     "Mayar da AI abin isa ga sauranmu",
   "home.featured.alt":       "Alamar Namu bisa bishiyar kirya a fili da safiya",
+  "home.mission.statement": "A Namu muna kera samfuran murya ga harsunan Afirka da aka yi wa watsi da su, muna gina abubuwan more rayuwa da ake bukata don isar da su ta hanyoyin da kowa zai iya samu, muna kuma aiki tare da kungiyoyi domin amfani da fasahar don gina al'umma.",
+  "home.mission.label":     "Manufarmu",
+  "home.mission.expand":    "Gaba inda al'ummomin Afirka za su iya samu, su tsara, su kuma amfana daga Basirar Dan Adam ta Roba cikin harsunan da suke magana da rayuwar da suke ciki.",
+
 
   "home.models.title": "Gano ka kuma gwada samfuran muryarmu na zamani",
   "home.models.more":  "Kara sani",

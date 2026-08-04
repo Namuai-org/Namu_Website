@@ -9,9 +9,6 @@ export const en = {
   "mission.quote":          "Language should never be a barrier to accessing the world's most powerful tools.",
   "mission.attributionLine":"Mouhamad Mamane, Co-founder, Namu",
   "mission.statement1":     "Our mission is to make AI accessible to African communities in their language and cultural context.",
-
-  "solution.intro.title": "Speech-native AI, built for African languages.",
-  "solution.positioning": "Not a chatbot. Not a general AI platform. Speech-native infrastructure for African languages — depth before breadth.",
   "solution.step1.title": "Speech Data, With Consent",
   "solution.step1.body":  "Real speech, collected and curated with the communities we work with.",
   "solution.step2.title": "Speech-Native Models",
@@ -31,6 +28,10 @@ export const en = {
 
   "home.featured.title":     "Making AI accessible to the rest of us",
   "home.featured.alt":       "The Namu mark above an acacia on the plain at sunrise",
+  "home.mission.statement": "At Namu we develop voice models for underserved African languages, build the infrastructure required to deliver them through accessible channels, and work with organizations to apply the technology in service of the community.",
+  "home.mission.label":     "Our mission",
+  "home.mission.expand":    "A future where African communities can access, shape, and benefit from Artificial Intelligence in the languages they speak and the realities they live.",
+
 
   "home.models.title": "Discover and experiment with our state-of-the-art voice models",
   "home.models.more":  "Learn more",
