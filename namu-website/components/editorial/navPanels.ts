@@ -65,7 +65,7 @@ export const NAV_PANELS: Record<string, NavPanel> = {
       {
         title: "home.model.tts.name",
         body: "home.model.tts.body",
-        href: "/models",
+        href: "/models/namu-voice",
         image: "/modim/tts.png",
       },
       {
