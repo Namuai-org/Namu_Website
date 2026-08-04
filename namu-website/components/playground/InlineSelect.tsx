@@ -9,6 +9,8 @@ type Props<T extends string> = {
   label: string;
   value: T;
   options: readonly T[];
+  /** Display text for a value, when the value is an id rather than a label. */
+  labelFor?: (value: T) => string;
   onChange: (value: T) => void;
 };
 
@@ -24,8 +26,10 @@ export function InlineSelect<T extends string>({
   label,
   value,
   options,
+  labelFor,
   onChange,
 }: Props<T>) {
+  const show = (v: T) => labelFor?.(v) ?? v;
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const id = useId();
@@ -56,10 +60,10 @@ export function InlineSelect<T extends string>({
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-controls={id}
-        aria-label={`${label}: ${value}`}
+        aria-label={`${label}: ${show(value)}`}
         onClick={() => setOpen((v) => !v)}
       >
-        <span className={styles.inlineValue}>{value}</span>
+        <span className={styles.inlineValue}>{show(value)}</span>
         <ChevronDown
           className={`${styles.inlineChevron} ${open ? styles.inlineChevronUp : ""}`}
         />
@@ -81,7 +85,7 @@ export function InlineSelect<T extends string>({
                 setOpen(false);
               }}
             >
-              {option}
+              {show(option)}
             </button>
           ))}
         </div>

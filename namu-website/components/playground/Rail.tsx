@@ -73,7 +73,7 @@ export function Rail({ open, activeId, onSelect, onReset, onClose }: Props) {
               >
                 <Glyph className={styles.modelGlyph} />
                 <span className={styles.modelName}>
-                  {t(`${model.key}.name`)}
+                  {model.railKey ? t(model.railKey) : t(`${model.key}.name`)}
                 </span>
               </button>
 
@@ -81,7 +81,9 @@ export function Rail({ open, activeId, onSelect, onReset, onClose }: Props) {
                 type="button"
                 className={styles.modelNew}
                 onClick={() => onReset(model)}
-                aria-label={`${t("playground.newSession")} — ${t(`${model.key}.name`)}`}
+                aria-label={`${t("playground.newSession")} — ${
+                  model.railKey ? t(model.railKey) : t(`${model.key}.name`)
+                }`}
               >
                 <IconPlusCircle />
               </button>

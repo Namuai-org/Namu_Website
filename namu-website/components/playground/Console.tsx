@@ -55,7 +55,13 @@ export function Console({
   resetToken: number;
 }) {
   const { t } = useTranslation();
-  const slug = slugOf(model);
+
+  // Families with variants take their copy from the chosen variant, so the
+  // headline and presets follow the direction rather than the family.
+  const [variantId, setVariantId] = useState(model.variants?.[0]?.id ?? "");
+  const variant =
+    model.variants?.find((v) => v.id === variantId) ?? model.variants?.[0];
+  const slug = variant?.slug ?? slugOf(model);
 
   const [text, setText] = useState("");
   const [clip, setClip] = useState<{ blob: Blob; name: string } | null>(null);
@@ -83,7 +89,8 @@ export function Console({
     setResult(null);
     setMessage(null);
     setStatus("idle");
-  }, [model.id, resetToken]);
+    setVariantId(model.variants?.[0]?.id ?? "");
+  }, [model.id, model.variants, resetToken]);
 
   useEffect(() => {
     if (recorder.state === "denied") setMessage(t("playground.micDenied"));
@@ -143,7 +150,7 @@ export function Console({
           );
           setResult({ heard: res.heard, reply: res.reply, audioUrl: res.audioUrl });
         } else {
-          const haFirst = model.id === "interpret-ha-fr";
+          const haFirst = (variant?.id ?? "ha-fr") === "ha-fr";
           const res = await runInterpret(
             model.endpoint,
             {
@@ -248,7 +255,26 @@ export function Console({
 
           <div className={styles.composerBarEnd}>
             <div className={styles.settings}>
-              <span className={styles.settingsModel}>{t(`${model.key}.name`)}</span>
+              <span className={styles.settingsModel}>
+                {model.railKey ? t(model.railKey) : t(`${model.key}.name`)}
+              </span>
+
+              {model.variants && (
+                <>
+                  <span className={styles.settingsDivider} aria-hidden="true" />
+                  <InlineSelect
+                    label={t("playground.directionLabel")}
+                    value={variantId}
+                    options={model.variants.map((v) => v.id)}
+                    labelFor={(id) =>
+                      t(
+                        model.variants?.find((v) => v.id === id)?.labelKey ?? "",
+                      )
+                    }
+                    onChange={setVariantId}
+                  />
+                </>
+              )}
 
               {writes ? (
                 <>

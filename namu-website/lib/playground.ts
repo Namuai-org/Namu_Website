@@ -18,6 +18,24 @@ import { MODELS } from "./models";
  */
 export type Modality = "speak" | "listen" | "write" | "converse";
 
+/**
+ * A variant chosen inside the composer rather than in the rail.
+ *
+ * The two interpreters are one model run in two directions, so listing both in
+ * the rail would spend two rows saying almost the same thing. The rail carries
+ * the family; the direction is a control next to the prompt, where you are
+ * already deciding what to send.
+ */
+export type Variant = {
+  id: string;
+  /** Catalogue key, for the full name. */
+  key: string;
+  /** Copy namespace under `playground.*` — headline, placeholder, presets. */
+  slug: string;
+  /** Short label for the composer pill. */
+  labelKey: string;
+};
+
 export type PlaygroundModel = {
   /** Matches a `key` in lib/models.ts, so names and copy stay in one place. */
   key: string;
@@ -28,22 +46,33 @@ export type PlaygroundModel = {
   endpoint: string;
   /** Overrides the catalogue icon in the sidebar rail. */
   icon: "interpret" | "transcribe" | "voice" | "agent";
+  /** Shown in the rail when the family name differs from the catalogue name. */
+  railKey?: string;
+  variants?: Variant[];
 };
 
 export const PLAYGROUND_MODELS: PlaygroundModel[] = [
   {
     key: "home.model.haFr",
-    id: "interpret-ha-fr",
+    railKey: "playground.interpret.family",
+    id: "interpret",
     modality: "speak",
     endpoint: "/api/playground/interpret",
     icon: "interpret",
-  },
-  {
-    key: "home.model.frHa",
-    id: "interpret-fr-ha",
-    modality: "speak",
-    endpoint: "/api/playground/interpret",
-    icon: "interpret",
+    variants: [
+      {
+        id: "ha-fr",
+        key: "home.model.haFr",
+        slug: "haFr",
+        labelKey: "playground.dir.haFr",
+      },
+      {
+        id: "fr-ha",
+        key: "home.model.frHa",
+        slug: "frHa",
+        labelKey: "playground.dir.frHa",
+      },
+    ],
   },
   {
     key: "home.model.asr",
