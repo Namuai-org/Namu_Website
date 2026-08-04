@@ -4,11 +4,12 @@ import Link from "next/link";
 import { Button } from "@/components/editorial/Button";
 import { Footer } from "@/components/editorial/Footer";
 import { GradientField } from "@/components/editorial/GradientField";
-import { ArrowUpRight } from "@/components/editorial/icons";
+import { ArrowUpRight, ChevronDown } from "@/components/editorial/icons";
 import { ScrollObject } from "@/components/editorial/ScrollObject";
 import { SplitText } from "@/components/editorial/SplitText";
 import { AudioSample } from "./AudioSample";
 import { DialectRing } from "./DialectRing";
+import { HeroVideo } from "./HeroVideo";
 import { Check, Waveform } from "./icons";
 import { LongFormHeading } from "./LongFormHeading";
 import { SectionNav } from "./SectionNav";
@@ -99,6 +100,15 @@ const SAMPLES = [
 const NUMBER_WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
 const dialectCount = NUMBER_WORDS[DIALECTS.length] ?? String(DIALECTS.length);
 
+/* The hero clip. Swap these three paths to change the footage — the gradient
+   behind it stays as the fallback if the video cannot play. */
+const HERO_CLIP = {
+  mp4: "/editorial/voices-in-the-dark.mp4",
+  webm: "/editorial/voices-in-the-dark.webm",
+  poster: "/editorial/voices-in-the-dark.jpg",
+  alt: "A slow shot of the river at dusk",
+};
+
 const SECTIONS = [
   { id: "features", label: "Features" },
   { id: "performance", label: "Performance" },
@@ -113,6 +123,7 @@ export function NamuVoicePage() {
         <section className={styles.hero}>
           <div className={styles.heroField} aria-hidden="true">
             <GradientField />
+            <HeroVideo {...HERO_CLIP} />
           </div>
 
           <ScrollObject className={styles.heroInner}>
@@ -205,7 +216,10 @@ export function NamuVoicePage() {
         {/* ---- Long form ----------------------------------------------- */}
         <section className={styles.longFormSection}>
           <div className="ds-container ds-outer">
-            <LongFormHeading before="Built for l" stretch="o" after="ng form" />
+            <LongFormHeading
+              text="Built for looooong form"
+              srText="Built for long form"
+            />
 
             <ScrollObject className={styles.longFormBody}>
               <p className={`text-regular ${styles.longFormLede}`}>
@@ -426,13 +440,19 @@ function ListenAcrossDialects() {
           <label className={styles.listenSelect}>
             <Waveform className={styles.listenSelectIcon} />
             <span className="sr-only">Select a dialect</span>
-            <select className={`text-ui ${styles.listenSelectInput}`} defaultValue="Kano">
+            <select
+              className={`text-ui ${styles.listenSelectInput}`}
+              defaultValue={DIALECTS[0].name}
+            >
               {DIALECTS.map((d) => (
                 <option key={d.name} value={d.name}>
                   {d.name}
                 </option>
               ))}
             </select>
+            {/* The native control is stripped of its own arrow, so the field
+                needs one back or it does not read as a dropdown at all. */}
+            <ChevronDown className={styles.listenSelectChevron} />
           </label>
         </div>
 

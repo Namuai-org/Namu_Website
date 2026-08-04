@@ -23,6 +23,23 @@
   pointer-events: none;
 }
 
+/* The clip sits over the gradient; the gradient shows through if it fails. */
+.heroClip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.heroClipMedia {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.2);
+  will-change: transform;
+  transition: opacity 0.6s var(--ease-out);
+}
+
 /* The field's brightness swings as it animates, so the copy cannot rely on it
    for contrast. A scrim weighted to the centre keeps the type legible at every
    point in the loop without flattening the colour at the edges. */
@@ -30,6 +47,7 @@
   content: "";
   position: absolute;
   inset: 0;
+  z-index: 1;
   background:
     radial-gradient(
       70% 55% at 50% 50%,
@@ -484,20 +502,29 @@
   overflow-x: clip;
 }
 
+/* The window the oversized word travels behind. Inset eight columns either
+   side, as on the reference — a narrow window is what makes the travel read. */
 .longForm {
-  text-align: center;
-  margin-bottom: calc(60 * var(--unit-fx));
+  overflow: hidden;
+  margin-inline: calc(var(--col24) * 8 + var(--gutter24) * 8);
+  margin-bottom: calc(80 * var(--unit-fx));
+}
+
+.longFormHeading {
+  margin: 0;
 }
 
 .longFormLine {
   display: inline-block;
-  margin: 0;
+  width: max-content;
   font-family: var(--font-serif), Georgia, serif;
-  font-size: calc(180 * var(--unit-fx-type));
+  font-size: calc(240 * var(--unit-fx-type));
   font-weight: 450;
-  line-height: 0.97;
+  line-height: 1.2;
   letter-spacing: -0.04em;
   white-space: nowrap;
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 .longFormBody {
@@ -739,6 +766,22 @@
   color: var(--ds-accent);
 }
 
+.listenSelectChevron {
+  position: absolute;
+  right: calc(22 * var(--unit-fx));
+  top: 50%;
+  transform: translateY(-50%);
+  width: calc(14 * var(--unit-fx));
+  min-width: 11px;
+  pointer-events: none;
+  color: var(--ds-text-soft);
+  transition: transform 0.4s var(--ease-out);
+}
+
+.listenSelect:hover .listenSelectChevron {
+  transform: translateY(calc(-50% + 2px));
+}
+
 .listenSelectInput {
   width: 100%;
   appearance: none;
@@ -746,7 +789,7 @@
   border-radius: calc(3 * var(--unit-fx));
   background: var(--ds-surface-2);
   color: inherit;
-  padding: calc(24 * var(--unit-fx)) calc(25 * var(--unit-fx))
+  padding: calc(24 * var(--unit-fx)) calc(48 * var(--unit-fx))
     calc(24 * var(--unit-fx)) calc(58 * var(--unit-fx));
   line-height: 1.2;
   cursor: pointer;
@@ -951,10 +994,20 @@
     transform: none !important;
   }
 
+  /* No marquee on phones — a plain centred heading, as on the reference. */
+  .longForm {
+    overflow: visible;
+    margin-inline: 0;
+    margin-bottom: calc(30 * var(--unit-fx));
+    text-align: center;
+  }
   .longFormLine {
+    width: auto;
     font-size: calc(50 * var(--unit-fx-type));
     letter-spacing: -0.03em;
+    line-height: 1;
     white-space: normal;
+    transform: none !important;
   }
   .useCases {
     gap: calc(14 * var(--unit-fx)) calc(24 * var(--unit-fx));
