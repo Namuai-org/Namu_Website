@@ -42,10 +42,7 @@ const COLUMNS = [
       { label: "nav.mission", href: "/#approach" },
       { label: "nav.blog", href: "/blog" },
       { label: "nav.brand", href: "/brand" },
-      /* No href on purpose: the page does not exist yet, and a footer link
-         that 404s is worse than a line that plainly is not one. Give it an
-         href when the page lands. */
-      { label: "footer.investors" },
+      { label: "footer.investors", href: "/investors" },
     ],
   },
 ] as const;
