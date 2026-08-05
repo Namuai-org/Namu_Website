@@ -195,6 +195,11 @@ export function NamuAgentPage() {
 
         {/* ---- Interruption -------------------------------------------- */}
         <section className={styles.repair}>
+          <div className={styles.repairMedia} aria-hidden="true">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/borroso.jpeg" alt="" className={styles.repairImage} />
+          </div>
+
           <div className="ds-container ds-outer">
             <ScrollObject className={styles.blockHead}>
               <h3 className={`h4 ${styles.blockTitle}`}>
