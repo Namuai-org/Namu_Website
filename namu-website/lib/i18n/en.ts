@@ -88,6 +88,9 @@ export const en = {
   "home.quote.name": "Mouhamad Mamane",
   "home.quote.role": "Co-founder & CEO of Namu",
 
+  "footer.modelsTitle":  "Models",
+  "footer.companyTitle": "Company",
+  "footer.investors":    "Investors",
   "footer.legalTitle":   "Legal",
   "footer.contactTitle": "Get in touch",
   "footer.privacy":      "Privacy",

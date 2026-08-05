@@ -11,28 +11,41 @@ import {
 } from "./icons";
 import styles from "./footer.module.css";
 
+/* Four balanced columns instead of "About / Products / Legal / Get in touch".
+
+   Models earns a column of its own now that all four have pages — they were
+   one line pointing at the catalogue. Privacy and Terms lose theirs: they were
+   listed twice, once here and again in the bar underneath, and the bar is the
+   conventional place for them. */
 const COLUMNS = [
   {
-    title: "nav.home",
+    title: "footer.modelsTitle",
     links: [
-      { label: "nav.mission", href: "/#approach" },
-      { label: "nav.models", href: "/models" },
-      { label: "nav.blog", href: "/blog" },
-      { label: "nav.brand", href: "/brand" },
+      { label: "home.model.interpret.name", href: "/models/namu-interpret" },
+      { label: "home.model.asr.name", href: "/models/namu-transcribe" },
+      { label: "home.model.tts.name", href: "/models/namu-voice" },
+      { label: "home.model.agent.name", href: "/models/namu-agent" },
+      { label: "nav.panel.allModels", href: "/models" },
     ],
   },
   {
     title: "nav.products",
     links: [
-      { label: "nav.tryFree", href: "/playground" },
+      { label: "nav.product.studio.title", href: "/playground" },
+      { label: "nav.product.app.title", href: "https://namu-app.com/" },
       { label: "nav.contactSales", href: "mailto:contact@namuai.org" },
     ],
   },
   {
-    title: "footer.legalTitle",
+    title: "footer.companyTitle",
     links: [
-      { label: "footer.privacy", href: "/privacy" },
-      { label: "footer.terms", href: "/terms" },
+      { label: "nav.mission", href: "/#approach" },
+      { label: "nav.blog", href: "/blog" },
+      { label: "nav.brand", href: "/brand" },
+      /* No href on purpose: the page does not exist yet, and a footer link
+         that 404s is worse than a line that plainly is not one. Give it an
+         href when the page lands. */
+      { label: "footer.investors" },
     ],
   },
 ] as const;
@@ -65,9 +78,6 @@ export function Footer() {
               <NamuMark className={styles.mark} />
               <span className={styles.word}>namu</span>
             </Link>
-            <p className={`text-regular ${styles.tagline}`}>
-              {t("mission.statement1")}
-            </p>
           </div>
 
           {COLUMNS.map((col) => (
@@ -77,12 +87,17 @@ export function Footer() {
               </span>
               <ul className={styles.list}>
                 {col.links.map((link) => {
-                  const external = link.href.startsWith("http");
+                  const href = "href" in link ? (link.href as string) : undefined;
+                  const external = href?.startsWith("http") ?? false;
                   return (
-                    <li key={link.href}>
-                      {external ? (
+                    <li key={link.label}>
+                      {!href ? (
+                        <span className={`text-ui ${styles.pending}`}>
+                          {t(link.label)}
+                        </span>
+                      ) : external ? (
                         <a
-                          href={link.href}
+                          href={href}
                           className="text-ui link-underline"
                           target="_blank"
                           rel="noreferrer"
@@ -90,7 +105,7 @@ export function Footer() {
                           {t(link.label)}
                         </a>
                       ) : (
-                        <Link href={link.href} className="text-ui link-underline">
+                        <Link href={href} className="text-ui link-underline">
                           {t(link.label)}
                         </Link>
                       )}

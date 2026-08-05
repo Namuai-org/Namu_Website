@@ -88,6 +88,9 @@ export const ha = {
   "home.quote.name": "Mouhamad Mamane",
   "home.quote.role": "Wanda ya kafa kuma Shugaba na Namu",
 
+  "footer.modelsTitle":  "Samfura",
+  "footer.companyTitle": "Kamfani",
+  "footer.investors":    "Masu zuba jari",
   "footer.legalTitle":   "Doka",
   "footer.contactTitle": "Tuntube mu",
   "footer.privacy":      "Sirri",
