@@ -843,10 +843,11 @@
 
 .portal {
   position: relative;
-  /* One viewport for the pinned copy, plus the reference's own runway of 0.3
-     viewports per panel — 2.1 for seven. Height rather than padding-top: the
-     sticky child needs a taller parent to travel in. */
-  height: 310vh;
+  /* 100vh for the pinned child, plus FLIGHT_END from Portal.tsx (1.7vh): the
+     point at which the last panel has gone. Any taller and the section stays
+     pinned on an empty screen after the flight is over. Height rather than
+     padding-top, because the sticky child needs a taller parent to travel in. */
+  height: 270vh;
 }
 
 .portalSlides {

@@ -63,10 +63,15 @@ const Z_END = 50; // vh, past it
    section: with a share, adding a panel silently re-times every other one. */
 const FLIGHT = 1;
 const STAGGER = 0.2;
-/* Scroll runway per panel. Seven panels give 2.1 viewports. */
-const RUNWAY_PER_PANEL = 0.3;
 /* The flight starts half a viewport before the section reaches the top. */
 const LEAD_IN = 0.5;
+
+/* When the last panel finishes, measured from the section's top. Everything
+   else is derived from this: the copy's exit, and the section's height in the
+   stylesheet, which must be 100vh (the pinned child) plus this. Leave them out
+   of step and the section stays pinned on an empty screen after the last panel
+   has gone, which is exactly the void this replaced. */
+const FLIGHT_END = (LAYOUT.length - 1) * STAGGER + FLIGHT - LEAD_IN; // 1.7vh
 
 /* Opacity is piecewise linear, and the ramp takes the whole first half of the
    flight. Ours reached full opacity by 30% on an eased curve, which is what
@@ -132,7 +137,6 @@ export function Portal({ images }: { images: PortalImage[] }) {
        flight step rather than glide. */
     const y = smoothY;
     const start = top - viewportH * LEAD_IN;
-    const runway = viewportH * RUNWAY_PER_PANEL * LAYOUT.length;
 
     // The panel layer is position:fixed, so it would otherwise keep painting
     // over every section below. Park it once the section is behind us.
@@ -187,10 +191,12 @@ export function Portal({ images }: { images: PortalImage[] }) {
     });
 
     /* The copy rises in over the first half viewport, holds, then goes back
-       out as the last panels pass — it does not simply latch on and stay. */
+       out just before the last panel does — it does not simply latch on and
+       stay. Timed off FLIGHT_END so it can never outlast the flight. */
     const travelled = y - top;
+    const flightEndPx = viewportH * FLIGHT_END;
+    const fadeOutFrom = flightEndPx - viewportH * 0.25;
     let copyOpacity: number;
-    const fadeOutFrom = runway - viewportH * 0.75;
     if (travelled < fadeOutFrom) {
       const raw = clamp(travelled / (viewportH * 0.5));
       copyOpacity = raw * raw * (3 - 2 * raw);
