@@ -47,7 +47,7 @@ const EMOTIONS: Emotion[] = [
   { name: "Warmth" },
 ];
 
-/* Where a Hausa TTS voice actually has to hold up. */
+/* Where a Hausa TTS voice has to hold up. */
 const USE_CASES = [
   "Radio",
   "Public health",
@@ -77,21 +77,24 @@ const STATS = [
   { value: "8", unit: "", label: "Dialects covered", note: "Nigeria and Niger" },
 ];
 
+/* The Hausa each clip reads, rather than an English note about it.
+   Between them they cover what the section claims: plain public-health copy,
+   a run of proper nouns and figures, and continuous narration. */
 const SAMPLES = [
   {
     title: "Health broadcast",
     voice: "Kanya",
-    body: "A clinic announcement read the way a nurse would read it — clear, unhurried, and warm enough that people listen to the end rather than tuning out at the third sentence.",
+    body: "Ku zo asibiti gobe daga karfe takwas na safe zuwa karfe biyu na rana, domin allurar rigakafi ga yara 'yan kasa da shekaru biyar. Ba a biyan komai.",
   },
   {
     title: "Market report",
     voice: "Marke",
-    body: "Prices and place names, one after another, at pace. The test here is the proper nouns: a voice that stumbles on Dawanau or Jibia is no use on air.",
+    body: "Farashin gero a Dawanau ya kai dubu talatin da biyar kan buhu. A Jibia kuwa, dubu talatin da uku. Masara ta tsaya kan dubu ashirin da takwas.",
   },
   {
     title: "Story reading",
     voice: "Baobab",
-    body: "Twenty minutes of continuous narration. Speaker consistency is the whole game — the voice at minute nineteen has to be the same voice as at minute one.",
+    body: "Da daddare, iska ta fara busawa daga gabas. Kowa ya shiga gida, sai tsohuwa daya tak ta zauna a bakin kofa tana jiran dawowar jikanta.",
   },
 ];
 
@@ -137,7 +140,7 @@ export function NamuVoicePage() {
               <SplitText
                 immediate
                 delay={0.2}
-                text="Turn Hausa text into speech people actually want to listen to."
+                text="Turn Hausa text into speech people want to listen to."
               />
             </p>
             <div
@@ -168,7 +171,7 @@ export function NamuVoicePage() {
               >
                 <SplitText
                   delay={0.2}
-                  text="Namu-Voice reads Hausa the way it is spoken, not the way it is spelled — tone, vowel length and sentence rhythm carried through from the text, with consent built into every voice it can use."
+                  text="Namu-Voice reads Hausa the way people say it, not the way it is written. Tone, vowel length and the rhythm of a sentence all come through. And every voice it uses is one somebody agreed to give."
                 />
               </p>
             </ScrollObject>
@@ -204,7 +207,7 @@ export function NamuVoicePage() {
               <p className={`text-regular ${styles.expressionLede}`}>
                 <SplitText
                   delay={0.2}
-                  text="Capture a voice from a short reference clip, with its owner's consent on file. No fine-tuning run, no dataset to assemble."
+                  text="Give it a short clip of someone speaking, with their permission, and it can read in their voice. No training run, no dataset to gather."
                 />
               </p>
             </ScrollObject>
@@ -257,7 +260,7 @@ export function NamuVoicePage() {
                   {`Natural across ${dialectCount} Hausa dialects`}
                 </h3>
                 <p className={`text-regular ${styles.expressionLede}`}>
-                  <SplitText text="Hausa is not one accent. The model is trained and measured on the varieties people actually speak across Niger, from Maradi to Zinder." />
+                  <SplitText text="Hausa is not one accent. The model is trained and measured on the varieties people speak across Niger, from Maradi to Zinder." />
                 </p>
               </div>
 
@@ -308,7 +311,9 @@ export function NamuVoicePage() {
                     </h3>
                     <AudioSample compact />
                   </div>
-                  <p className={`text-small ${styles.sampleBody}`}>{s.body}</p>
+                  <p className={`text-small ${styles.sampleBody}`} lang="ha">
+                    {s.body}
+                  </p>
                   <p className={styles.sampleMeta}>{s.voice}</p>
                 </article>
               ))}
