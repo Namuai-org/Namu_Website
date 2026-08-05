@@ -1,0 +1,333 @@
+/* ==========================================================================
+   Investors
+   --------------------------------------------------------------------------
+   Deliberately the quietest page on the site. Every other one opens on a
+   full-bleed photograph; this one opens on the argument, because that is what
+   the reader came for. The work it does is structural rather than atmospheric:
+   numbered claims, a stated position, and what the next round pays for.
+   ========================================================================== */
+
+/* ---- Hero ---------------------------------------------------------------- */
+
+.hero {
+  padding-block: calc(220 * var(--unit-fx)) calc(160 * var(--unit-fx));
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.heroInner {
+  width: calc(var(--col24) * 16 + var(--gutter24) * 15);
+  max-width: 100%;
+}
+
+.heroEyebrow {
+  margin: 0 0 calc(28 * var(--unit-fx));
+  color: var(--ds-accent);
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.heroTitle {
+  margin: 0;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(72 * var(--unit-fx-type));
+  font-weight: 450;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+}
+
+.heroLede {
+  margin: calc(34 * var(--unit-fx)) 0 0;
+  max-width: calc(var(--col24) * 11 + var(--gutter24) * 10);
+  color: var(--ds-text-soft);
+}
+
+.heroCta {
+  margin-top: calc(46 * var(--unit-fx));
+}
+
+/* ---- Shared furniture ---------------------------------------------------- */
+
+.blockHead {
+  margin-bottom: calc(70 * var(--unit-fx));
+}
+
+.kicker {
+  margin: 0;
+  color: var(--ds-text-soft);
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  letter-spacing: 0.06em;
+}
+
+.blockTitle {
+  margin: calc(18 * var(--unit-fx)) 0 0;
+  max-width: calc(var(--col24) * 13 + var(--gutter24) * 12);
+  line-height: 1.15;
+}
+
+.arrow {
+  width: calc(12 * var(--unit-fx));
+  min-width: 10px;
+}
+
+/* ---- The case ------------------------------------------------------------ */
+
+.thesis {
+  padding-block: calc(160 * var(--unit-fx));
+}
+
+.claims {
+  display: flex;
+  flex-direction: column;
+}
+
+/* A number in the margin and the claim beside it, ruled off from the next.
+   Reads as a document rather than a set of cards, which is the register this
+   page wants. */
+.claim {
+  display: grid;
+  grid-template-columns: calc(var(--col24) * 2 + var(--gutter24)) 1fr;
+  gap: calc(40 * var(--unit-fx));
+  padding-block: calc(56 * var(--unit-fx));
+}
+
+.claim + .claim {
+  border-top: 1px solid var(--rule-soft);
+}
+
+.claimNum {
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  font-size: calc(14 * var(--unit-fx-type));
+  letter-spacing: 0.08em;
+  color: var(--ds-accent);
+  padding-top: calc(10 * var(--unit-fx));
+}
+
+.claimBody {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(40 * var(--unit-fx));
+  align-items: start;
+}
+
+.claimTitle {
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.claimText {
+  margin: 0;
+  color: var(--ds-text-soft);
+  padding-top: calc(6 * var(--unit-fx));
+}
+
+/* ---- Where we are -------------------------------------------------------- */
+
+.built {
+  padding-block: calc(160 * var(--unit-fx));
+  background: var(--ds-surface);
+}
+
+.builtGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: calc(20 * var(--unit-fx));
+}
+
+.builtCard {
+  display: flex;
+  flex-direction: column;
+  gap: calc(14 * var(--unit-fx));
+  padding: calc(34 * var(--unit-fx)) calc(32 * var(--unit-fx));
+  border-radius: calc(5 * var(--unit-fx));
+  background: var(--paper);
+  color: inherit;
+  text-decoration: none;
+  transition: background-color 0.4s var(--ease-out);
+}
+
+.builtCard:hover {
+  background: var(--ds-surface-2);
+}
+
+.builtName {
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 450;
+  letter-spacing: -0.01em;
+}
+
+.builtBody {
+  color: var(--ds-text-soft);
+  flex: 1 1 auto;
+}
+
+.builtLink {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(9 * var(--unit-fx));
+  margin-top: calc(14 * var(--unit-fx));
+  color: var(--ds-text-soft);
+  transition: color 0.4s var(--ease-out);
+}
+
+.builtCard:hover .builtLink {
+  color: var(--ds-text);
+}
+
+.position {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: calc(20 * var(--unit-fx));
+  margin-top: calc(80 * var(--unit-fx));
+  padding-top: calc(60 * var(--unit-fx));
+  border-top: 1px solid var(--rule-soft);
+}
+
+.statValue {
+  margin: 0 0 calc(14 * var(--unit-fx));
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(64 * var(--unit-fx-type));
+  font-weight: 450;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.statLabel {
+  margin: 0 0 calc(8 * var(--unit-fx));
+}
+
+.statNote {
+  margin: 0;
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--ds-text-soft);
+}
+
+/* ---- What the work needs ------------------------------------------------- */
+
+.priorities {
+  padding-block: calc(160 * var(--unit-fx));
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: calc(var(--col24) * 7 + var(--gutter24) * 6) 1fr;
+  gap: calc(40 * var(--unit-fx));
+  padding-block: calc(40 * var(--unit-fx));
+  border-top: 1px solid var(--rule-soft);
+}
+
+.row:last-child {
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.rowTitle {
+  margin: 0;
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 450;
+  letter-spacing: -0.01em;
+}
+
+.rowBody {
+  margin: 0;
+  max-width: calc(var(--col24) * 12 + var(--gutter24) * 11);
+  color: var(--ds-text-soft);
+}
+
+/* ---- Talk to us ---------------------------------------------------------- */
+
+.contact {
+  padding-block: calc(180 * var(--unit-fx)) calc(240 * var(--unit-fx));
+  background: var(--ds-surface-2);
+}
+
+.contactInner {
+  width: calc(var(--col24) * 13 + var(--gutter24) * 12);
+  max-width: 100%;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.contactTitle {
+  margin: 0 0 calc(24 * var(--unit-fx));
+}
+
+.contactLede {
+  margin: 0;
+  color: var(--ds-text-soft);
+}
+
+.contactCta {
+  margin-top: calc(44 * var(--unit-fx));
+  display: flex;
+  justify-content: center;
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+@media (max-width: 1100px) {
+  .position {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .claimBody {
+    grid-template-columns: 1fr;
+    gap: calc(20 * var(--unit-fx));
+  }
+}
+
+@media (max-width: 900px) {
+  .builtGrid {
+    grid-template-columns: 1fr;
+  }
+  .row {
+    grid-template-columns: 1fr;
+    gap: calc(14 * var(--unit-fx));
+  }
+}
+
+@media (max-width: 600px) {
+  .hero {
+    padding-block: calc(140 * var(--unit-fx)) calc(90 * var(--unit-fx));
+  }
+  .heroTitle {
+    font-size: calc(40 * var(--unit-fx-type));
+  }
+  .heroInner {
+    width: 100%;
+  }
+
+  .thesis,
+  .built,
+  .priorities {
+    padding-block: calc(90 * var(--unit-fx));
+  }
+  .contact {
+    padding-block: calc(100 * var(--unit-fx)) calc(120 * var(--unit-fx));
+  }
+
+  /* The number moves above the claim rather than beside it. */
+  .claim {
+    grid-template-columns: 1fr;
+    gap: calc(16 * var(--unit-fx));
+    padding-block: calc(40 * var(--unit-fx));
+  }
+  .claimNum {
+    padding-top: 0;
+  }
+
+  .position {
+    grid-template-columns: 1fr;
+  }
+  .statValue {
+    font-size: calc(46 * var(--unit-fx-type));
+  }
+}

@@ -7,7 +7,7 @@ export const ha = {
   "nav.contactSales": "Tuntubi tallace-tallace",
   "nav.tryFree":      "Gwada kyauta",
 
-  "mission.quote":           "Harshe bai kamata ya zama shinge ba ga samun kayan aikin da suka fi karfi a duniya.",
+  "mission.quote":           "Fasaha na da ikon canza rayuwa, amma sai idan mutane za su iya amfani da ita da gaske. A Namu, muna gina tsarin da ke saduwa da mutane cikin harshensu da yanayinsu, domin damar rayuwa ta daina dogara kan inda mutum ya fito.",
   "mission.attributionLine": "Mouhamad Mamane, Wanda ya kafa Namu",
   "mission.statement1":      "Manufarmu ita ce mu sa AI ya zama mai saukin samu ga al'ummomin Afirka cikin harshe da al'adunsu.",
   "solution.step1.title": "Bayanan Magana, da Yarda",
@@ -88,6 +88,9 @@ export const ha = {
   "home.quote.name": "Mouhamad Mamane",
   "home.quote.role": "Wanda ya kafa kuma Shugaba na Namu",
 
+  "footer.modelsTitle":  "Samfura",
+  "footer.companyTitle": "Kamfani",
+  "footer.investors":    "Masu zuba jari",
   "footer.legalTitle":   "Doka",
   "footer.contactTitle": "Tuntube mu",
   "footer.privacy":      "Sirri",

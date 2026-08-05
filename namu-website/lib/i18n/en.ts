@@ -7,7 +7,7 @@ export const en = {
   "nav.contactSales": "Contact sales",
   "nav.tryFree":      "Try for free",
 
-  "mission.quote":          "Language should never be a barrier to accessing the world's most powerful tools.",
+  "mission.quote":          "Technology has the power to change lives, but only if people can truly access it. At Namu, we are building systems that meet people in their own language and context, so opportunity is no longer limited by where someone comes from.",
   "mission.attributionLine":"Mouhamad Mamane, Co-founder, Namu",
   "mission.statement1":     "Our mission is to make AI accessible to African communities in their language and cultural context.",
   "solution.step1.title": "Speech Data, With Consent",
@@ -88,6 +88,9 @@ export const en = {
   "home.quote.name": "Mouhamad Mamane",
   "home.quote.role": "Co-founder & CEO of Namu",
 
+  "footer.modelsTitle":  "Models",
+  "footer.companyTitle": "Company",
+  "footer.investors":    "Investors",
   "footer.legalTitle":   "Legal",
   "footer.contactTitle": "Get in touch",
   "footer.privacy":      "Privacy",

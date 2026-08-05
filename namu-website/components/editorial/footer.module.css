@@ -36,10 +36,6 @@
   letter-spacing: -0.01em;
 }
 
-.tagline {
-  color: var(--ds-text-soft);
-  max-width: calc(var(--col24) * 6 + var(--gutter24) * 5);
-}
 
 .colTitle {
   color: var(--ds-text-soft);
@@ -79,9 +75,6 @@
   }
   .brand {
     grid-column: 1 / -1;
-  }
-  .tagline {
-    max-width: 100%;
   }
 }
 
@@ -125,4 +118,11 @@
 
 .social:hover {
   color: var(--ds-text);
+}
+
+/* A footer entry with no destination yet. Muted and without the underline
+   affordance, so it does not read as a link that is failing to work. */
+.pending {
+  color: var(--ds-text-soft);
+  cursor: default;
 }

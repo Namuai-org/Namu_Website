@@ -843,10 +843,11 @@
 
 .portal {
   position: relative;
-  /* Scroll runway. The copy pins for all of it, so this is purely how long the
-     stream of panels lasts — roughly 0.2 viewports per panel. Height rather
-     than padding-top: the sticky child needs a taller parent to travel in. */
-  height: 320vh;
+  /* 100vh for the pinned child, plus FLIGHT_END from Portal.tsx (1.7vh): the
+     point at which the last panel has gone. Any taller and the section stays
+     pinned on an empty screen after the flight is over. Height rather than
+     padding-top, because the sticky child needs a taller parent to travel in. */
+  height: 270vh;
 }
 
 .portalSlides {
@@ -1162,12 +1163,15 @@
   margin: 0;
 }
 
+/* Set for a quote that runs several sentences. A line-height of 1 was right
+   when this was a single display line; at eight lines it closed up into a
+   block. */
 .quoteText {
   font-family: var(--font-serif), Georgia, serif;
-  font-size: calc(36 * var(--unit-fx-type));
+  font-size: calc(32 * var(--unit-fx-type));
   letter-spacing: -0.02em;
   font-weight: 450;
-  line-height: 1;
+  line-height: 1.25;
   margin: 0 0 calc(24 * var(--unit-fx));
 }
 
