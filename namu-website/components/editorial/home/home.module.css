@@ -1162,12 +1162,15 @@
   margin: 0;
 }
 
+/* Set for a quote that runs several sentences. A line-height of 1 was right
+   when this was a single display line; at eight lines it closed up into a
+   block. */
 .quoteText {
   font-family: var(--font-serif), Georgia, serif;
-  font-size: calc(36 * var(--unit-fx-type));
+  font-size: calc(32 * var(--unit-fx-type));
   letter-spacing: -0.02em;
   font-weight: 450;
-  line-height: 1;
+  line-height: 1.25;
   margin: 0 0 calc(24 * var(--unit-fx));
 }
 
