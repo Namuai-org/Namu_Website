@@ -434,43 +434,6 @@
   background: var(--sahel);
 }
 
-/* ---- What it can do ------------------------------------------------------ */
-
-.abilities {
-  margin-block: calc(200 * var(--unit-fx));
-}
-
-.abilityGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: calc(20 * var(--unit-fx));
-}
-
-.ability {
-  padding: calc(30 * var(--unit-fx)) calc(28 * var(--unit-fx));
-  border-radius: calc(5 * var(--unit-fx));
-  background: var(--ds-surface);
-}
-
-.abilityNum {
-  display: block;
-  margin-bottom: calc(20 * var(--unit-fx));
-  font-family: var(--font-mono-ui), ui-monospace, monospace;
-  font-size: calc(13 * var(--unit-fx-type));
-  letter-spacing: 0.08em;
-  color: var(--sahel);
-}
-
-.abilityTitle {
-  margin: 0 0 calc(12 * var(--unit-fx));
-  line-height: 1.25;
-}
-
-.abilityBody {
-  margin: 0;
-  color: var(--ds-text-soft);
-}
-
 /* ---- Performance --------------------------------------------------------- */
 
 .stats {
@@ -617,8 +580,7 @@
 @media (max-width: 1100px) {
   .stats,
   .specs,
-  .tryRow,
-  .abilityGrid {
+  .tryRow {
     grid-template-columns: repeat(2, 1fr);
     padding-inline: 0;
   }
@@ -657,7 +619,6 @@
   .section,
   .call,
   .repair,
-  .abilities,
   .tryOut {
     margin-block: calc(80 * var(--unit-fx));
   }
@@ -671,8 +632,7 @@
 
   .stats,
   .specs,
-  .tryRow,
-  .abilityGrid {
+  .tryRow {
     grid-template-columns: 1fr;
   }
   .stats {

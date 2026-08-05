@@ -54,35 +54,6 @@ const REPAIR = {
   recoverGloss: "Understood. In Zinder it is Mondays only.",
 };
 
-/* What it is allowed to do on a call. The last one is a capability, not a
-   caveat: knowing when to stop is part of the job. */
-const ABILITIES = [
-  {
-    title: "Answer from your own material",
-    body: "Timetables, prices, procedures. It reads from what you give it, and says so when it has nothing.",
-  },
-  {
-    title: "Look something up mid-call",
-    body: "A record, a stock level, a delivery date. The caller waits about as long as they would for a person.",
-  },
-  {
-    title: "Book, register, record",
-    body: "Hold a slot, take a name, log a complaint. The call ends with the thing done, not with a promise.",
-  },
-  {
-    title: "Send a message after",
-    body: "An SMS confirming what was agreed, so there is a record on a phone that may have no data.",
-  },
-  {
-    title: "Ask again when unsure",
-    body: "A name it did not catch gets asked for again rather than guessed at and written down wrong.",
-  },
-  {
-    title: "Hand over to a person",
-    body: "When the call is beyond it, or the caller asks, it stops and passes them on with what it has.",
-  },
-];
-
 /* Invented for now — real figures replace these. */
 const STATS = [
   { value: "0.6", unit: "s", label: "Reply gap", note: "Caller stops, agent starts" },
@@ -256,42 +227,6 @@ export function NamuAgentPage() {
                   {REPAIR.recoverGloss}
                 </p>
               </div>
-            </ScrollObject>
-          </div>
-        </section>
-
-        {/* ---- What it can do ------------------------------------------ */}
-        <section className={styles.abilities}>
-          <div className="ds-container ds-outer">
-            <ScrollObject className={styles.blockHead}>
-              <h3 className={`h4 ${styles.blockTitle}`}>
-                <SplitText text="Actions you define" />
-              </h3>
-              <p
-                className={`text-large ds-span ${styles.blockLede}`}
-                style={{ "--span": 12, marginInline: "auto" } as React.CSSProperties}
-              >
-                <SplitText
-                  delay={0.2}
-                  text="Namu-Agent answers from your own material and takes only the actions you have given it."
-                />
-              </p>
-            </ScrollObject>
-
-            <ScrollObject className={styles.abilityGrid}>
-              {ABILITIES.map((a, i) => (
-                <article
-                  key={a.title}
-                  className={`slide-up ${styles.ability}`}
-                  style={{ "--i": i % 3 } as React.CSSProperties}
-                >
-                  <span className={styles.abilityNum}>
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <h4 className={`text-large ${styles.abilityTitle}`}>{a.title}</h4>
-                  <p className={`text-regular ${styles.abilityBody}`}>{a.body}</p>
-                </article>
-              ))}
             </ScrollObject>
           </div>
         </section>
