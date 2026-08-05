@@ -1,0 +1,827 @@
+/* ==========================================================================
+   /playground — the console
+   --------------------------------------------------------------------------
+   Two panes. The rail on the left is a raised panel in Paper; the stage it
+   sits on is Harmattan, a shade warmer, which is what separates them — there
+   is no divider rule anywhere in this layout.
+
+   The page lives under the landing layout, so the site nav is already floating
+   above it. Everything here clears that rather than replacing it.
+   ========================================================================== */
+
+.shell {
+  display: flex;
+  gap: calc(14 * var(--unit-fx));
+  min-height: 100vh;
+  padding: calc(14 * var(--unit-fx));
+  background: var(--ds-surface);
+}
+
+/* ---- Rail ---------------------------------------------------------------- */
+
+.rail {
+  position: sticky;
+  top: calc(14 * var(--unit-fx));
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+  width: calc(330 * var(--unit-fx));
+  min-width: 248px;
+  height: calc(100vh - 28 * var(--unit-fx));
+  padding: calc(24 * var(--unit-fx)) calc(18 * var(--unit-fx));
+  border-radius: calc(10 * var(--unit-fx));
+  background: var(--paper);
+  overflow: hidden;
+  transition:
+    width 0.55s var(--ease-out-cubic),
+    padding 0.55s var(--ease-out-cubic),
+    opacity 0.35s var(--ease-out);
+}
+
+/* Collapsing animates the width to nothing rather than unmounting, so the
+   contents do not reflow on the way out. */
+.railClosed {
+  width: 0;
+  min-width: 0;
+  padding-inline: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.railHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(12 * var(--unit-fx));
+  margin-bottom: calc(28 * var(--unit-fx));
+  white-space: nowrap;
+}
+
+.wordmark {
+  display: inline-flex;
+  align-items: baseline;
+  gap: calc(10 * var(--unit-fx));
+  color: var(--ds-text);
+  text-decoration: none;
+}
+
+.wordmarkName {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(30 * var(--unit-fx-type));
+  font-weight: 450;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.wordmarkSuffix {
+  color: var(--ds-text-soft);
+}
+
+.railLabel {
+  display: block;
+  margin-bottom: calc(12 * var(--unit-fx));
+  color: var(--ds-text-soft);
+  white-space: nowrap;
+}
+
+.modelList {
+  display: flex;
+  flex-direction: column;
+  gap: calc(4 * var(--unit-fx));
+}
+
+/* The whole row is the button; the ⊕ is a second control layered on top of it,
+   so it needs its own stacking context rather than nesting. */
+.modelRow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: calc(16 * var(--unit-fx));
+  width: 100%;
+  padding: calc(13 * var(--unit-fx)) calc(14 * var(--unit-fx));
+  border: 0;
+  border-radius: calc(8 * var(--unit-fx));
+  background: none;
+  color: inherit;
+  text-align: left;
+  white-space: nowrap;
+  transition: background-color 0.45s var(--ease-out);
+}
+
+@media (hover: hover) {
+  .modelRow:hover {
+    background: var(--ds-surface);
+  }
+}
+
+.modelRowActive,
+.modelRowActive:hover {
+  background: var(--ds-surface-2);
+}
+
+/* The row is a container; this is the part that actually selects. */
+.modelRowMain {
+  display: flex;
+  align-items: center;
+  gap: calc(16 * var(--unit-fx));
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  padding: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  border-radius: calc(4 * var(--unit-fx));
+}
+
+.modelGlyph {
+  width: calc(22 * var(--unit-fx));
+  min-width: 18px;
+  flex: 0 0 auto;
+  color: var(--ds-text);
+}
+
+.modelName {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(21 * var(--unit-fx-type));
+  font-style: italic;
+  font-weight: 450;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.modelNew {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(24 * var(--unit-fx));
+  min-width: 20px;
+  flex: 0 0 auto;
+  border: 0;
+  background: none;
+  color: var(--ds-text-soft);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s var(--ease-out), color 0.3s var(--ease-out);
+}
+
+.modelRowActive .modelNew,
+.modelRow:hover .modelNew,
+.modelNew:focus-visible {
+  opacity: 1;
+}
+
+.modelNew:hover {
+  color: var(--ds-text);
+}
+
+.railRule {
+  height: 1px;
+  margin: calc(20 * var(--unit-fx)) 0;
+  background: var(--rule-soft);
+}
+
+.railSessions {
+  color: var(--ds-text-soft);
+  white-space: nowrap;
+}
+
+.railFoot {
+  margin-top: auto;
+  padding-top: calc(20 * var(--unit-fx));
+  border-top: 1px solid var(--rule-soft);
+}
+
+.railCta {
+  width: 100%;
+}
+
+.railCta :global(.button__pill) {
+  width: 100%;
+  padding-inline: 1.5em;
+}
+
+.railFootLabel {
+  display: block;
+  margin-bottom: calc(14 * var(--unit-fx));
+  color: var(--ds-text-soft);
+  line-height: 1.4;
+}
+
+/* ---- Stage --------------------------------------------------------------- */
+
+.stage {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+  padding: calc(30 * var(--unit-fx)) calc(24 * var(--unit-fx));
+}
+
+/* Only shown when the rail is closed — otherwise the rail carries the toggle. */
+.stageToggle {
+  position: absolute;
+  top: calc(30 * var(--unit-fx));
+  left: calc(24 * var(--unit-fx));
+}
+
+.iconButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(36 * var(--unit-fx));
+  height: calc(36 * var(--unit-fx));
+  min-width: 30px;
+  min-height: 30px;
+  flex: 0 0 auto;
+  border: 0;
+  border-radius: calc(6 * var(--unit-fx));
+  background: none;
+  color: var(--ds-text-soft);
+  cursor: pointer;
+  transition: background-color 0.4s var(--ease-out), color 0.4s var(--ease-out);
+}
+
+.iconButton svg {
+  width: calc(20 * var(--unit-fx));
+  min-width: 16px;
+  height: auto;
+}
+
+@media (hover: hover) {
+  .iconButton:hover {
+    background: var(--ds-surface);
+    color: var(--ds-text);
+  }
+}
+
+.stageInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: calc(820 * var(--unit-fx));
+  margin: auto 0;
+  padding-block: calc(40 * var(--unit-fx));
+}
+
+.exploreLink {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(8 * var(--unit-fx));
+  margin-bottom: calc(26 * var(--unit-fx));
+  padding: calc(10 * var(--unit-fx)) calc(20 * var(--unit-fx));
+  border-radius: calc(6 * var(--unit-fx));
+  background: var(--paper);
+  color: var(--ds-text);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.4s var(--ease-out);
+}
+
+.exploreLink:hover {
+  background: var(--ds-surface-2);
+}
+
+.exploreArrow {
+  width: calc(11 * var(--unit-fx));
+  min-width: 9px;
+}
+
+.stageTitle {
+  margin: 0 0 calc(34 * var(--unit-fx));
+  text-align: center;
+  text-wrap: balance;
+}
+
+/* ---- Composer ------------------------------------------------------------ */
+
+.composer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: calc(22 * var(--unit-fx)) calc(22 * var(--unit-fx))
+    calc(16 * var(--unit-fx));
+  border-radius: calc(10 * var(--unit-fx));
+  background: var(--paper);
+}
+
+.composerInput {
+  width: 100%;
+  min-height: calc(78 * var(--unit-fx));
+  border: 0;
+  padding: 0;
+  background: none;
+  color: var(--ds-text);
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(24 * var(--unit-fx-type));
+  font-weight: 450;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  resize: none;
+  outline: none;
+}
+
+.composerInput::placeholder {
+  color: var(--ds-text-soft);
+  font-style: italic;
+  opacity: 0.85;
+}
+
+/* For the record-first modes there is no textarea; the placeholder is a static
+   line so the box keeps the same shape either way. */
+.composerHint {
+  min-height: calc(78 * var(--unit-fx));
+  margin: 0;
+  color: var(--ds-text-soft);
+  font-style: italic;
+}
+
+.composerBar {
+  display: flex;
+  align-items: center;
+  gap: calc(10 * var(--unit-fx));
+  margin-top: calc(10 * var(--unit-fx));
+}
+
+.composerBarEnd {
+  display: flex;
+  align-items: center;
+  gap: calc(10 * var(--unit-fx));
+  margin-left: auto;
+  min-width: 0;
+}
+
+/* The compound "model, voice, register" control on the Namu-Voice mode. */
+.settings {
+  display: flex;
+  align-items: center;
+  gap: calc(10 * var(--unit-fx));
+  padding: calc(9 * var(--unit-fx)) calc(16 * var(--unit-fx));
+  border-radius: calc(4 * var(--unit-fx));
+  background: var(--ds-surface);
+  min-width: 0;
+}
+
+/* The model name yields first: on a narrow composer the value the user is
+   actually choosing matters more than repeating which model is selected. */
+.settingsModel {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(19 * var(--unit-fx-type));
+  font-style: italic;
+  white-space: nowrap;
+}
+
+.inlineSelect {
+  position: relative;
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+.inlineTrigger {
+  display: flex;
+  align-items: center;
+  gap: calc(6 * var(--unit-fx));
+  max-width: 100%;
+  border: 0;
+  padding: calc(4 * var(--unit-fx)) calc(6 * var(--unit-fx));
+  border-radius: calc(4 * var(--unit-fx));
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(19 * var(--unit-fx-type));
+  font-style: italic;
+  line-height: 1.2;
+  transition: background-color 0.35s var(--ease-out);
+}
+
+.inlineTrigger:hover {
+  background: var(--ds-surface-2);
+}
+
+.inlineValue {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.inlineChevron {
+  width: calc(11 * var(--unit-fx));
+  min-width: 9px;
+  flex: 0 0 auto;
+  color: var(--ds-text-soft);
+  transition: transform 0.35s var(--ease-out);
+}
+
+.inlineChevronUp {
+  transform: rotate(180deg);
+}
+
+/* Opens upward: the composer sits low on the stage, and a panel dropping down
+   would fall off the fold on a short window. */
+.inlinePanel {
+  position: absolute;
+  bottom: calc(100% + 8 * var(--unit-fx));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  min-width: calc(150 * var(--unit-fx));
+  max-height: calc(280 * var(--unit-fx));
+  overflow-y: auto;
+  padding: calc(6 * var(--unit-fx));
+  border-radius: calc(6 * var(--unit-fx));
+  background: var(--paper);
+  box-shadow: 0 calc(16 * var(--unit-fx)) calc(40 * var(--unit-fx))
+    rgba(107, 62, 30, 0.16);
+}
+
+.inlineOption {
+  border: 0;
+  padding: calc(10 * var(--unit-fx)) calc(14 * var(--unit-fx));
+  border-radius: calc(4 * var(--unit-fx));
+  background: none;
+  color: var(--ds-text);
+  cursor: pointer;
+  text-align: left;
+  white-space: nowrap;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(19 * var(--unit-fx-type));
+  font-style: italic;
+  transition: background-color 0.3s var(--ease-out);
+}
+
+.inlineOption:hover {
+  background: var(--ds-surface);
+}
+
+.inlineOptionActive {
+  background: var(--ds-surface-2);
+}
+
+.settingsDivider {
+  width: 1px;
+  height: calc(18 * var(--unit-fx));
+  background: var(--rule);
+  flex: 0 0 auto;
+}
+
+.submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(44 * var(--unit-fx));
+  height: calc(44 * var(--unit-fx));
+  min-width: 38px;
+  min-height: 38px;
+  flex: 0 0 auto;
+  border: 0;
+  border-radius: calc(4 * var(--unit-fx));
+  background: var(--ds-surface);
+  color: var(--ds-text);
+  cursor: pointer;
+  transition:
+    background-color 0.5s var(--ease-out-cubic),
+    color 0.5s var(--ease-out-cubic);
+}
+
+.submit svg {
+  width: calc(19 * var(--unit-fx));
+  min-width: 15px;
+  height: auto;
+}
+
+.submitReady {
+  background: var(--kola);
+  color: var(--paper);
+}
+
+.submit:disabled {
+  cursor: not-allowed;
+  background: var(--ds-surface);
+  color: var(--ds-text-soft);
+}
+
+/* Recording: the button holds a stop square and pulses instead of spinning, so
+   it reads as "live" rather than "loading". */
+.submitRecording {
+  background: var(--sahel);
+  color: var(--paper);
+  animation: pulse 1.8s var(--ease-out) infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(232, 147, 90, 0.5);
+  }
+  60% {
+    box-shadow: 0 0 0 calc(10 * var(--unit-fx)) rgba(232, 147, 90, 0);
+  }
+}
+
+.clock {
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  font-size: calc(14 * var(--unit-fx-type));
+  color: var(--ds-accent);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.attached {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(8 * var(--unit-fx));
+  min-width: 0;
+  color: var(--ds-text-soft);
+}
+
+.attachedName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: calc(220 * var(--unit-fx));
+}
+
+.attachedClear {
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  font: inherit;
+}
+
+/* Every control shares one ring rather than the UA outline — the reference's
+   pattern, and the only place a border-like line appears in this layout. */
+.modelRowMain:focus-visible,
+.modelNew:focus-visible,
+.iconButton:focus-visible,
+.preset:focus-visible,
+.submit:focus-visible,
+.exploreLink:focus-visible,
+.composerInput:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--ds-accent) 70%, transparent);
+}
+
+/* ---- Presets ------------------------------------------------------------- */
+
+.presets {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: calc(12 * var(--unit-fx));
+  margin-top: calc(24 * var(--unit-fx));
+}
+
+.preset {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(10 * var(--unit-fx));
+  padding: calc(11 * var(--unit-fx)) calc(20 * var(--unit-fx));
+  border: 0;
+  border-radius: calc(6 * var(--unit-fx));
+  background: var(--paper);
+  color: var(--ds-text);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.4s var(--ease-out);
+}
+
+.preset:hover {
+  background: var(--ds-surface-2);
+}
+
+.presetIcon {
+  width: calc(15 * var(--unit-fx));
+  min-width: 12px;
+  color: var(--ds-text-soft);
+}
+
+/* ---- Waiting ------------------------------------------------------------- */
+
+.pending {
+  display: flex;
+  align-items: center;
+  gap: calc(12 * var(--unit-fx));
+  width: 100%;
+  margin-top: calc(18 * var(--unit-fx));
+  padding: calc(18 * var(--unit-fx)) calc(22 * var(--unit-fx));
+  border-radius: calc(8 * var(--unit-fx));
+  background: var(--paper);
+}
+
+/* A breathing dot rather than a spinner — quieter, and it does not imply a
+   percentage the console cannot know. */
+.pendingDot {
+  width: calc(10 * var(--unit-fx));
+  height: calc(10 * var(--unit-fx));
+  min-width: 8px;
+  min-height: 8px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--ds-accent);
+  animation: breathe 1.6s var(--ease-out) infinite;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.pendingLabel {
+  color: var(--ds-text);
+}
+
+.pendingClock {
+  margin-left: auto;
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  font-size: calc(14 * var(--unit-fx-type));
+  color: var(--ds-text-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pendingDot {
+    animation: none;
+    opacity: 0.8;
+  }
+}
+
+/* ---- Result -------------------------------------------------------------- */
+
+.result {
+  width: 100%;
+  margin-top: calc(24 * var(--unit-fx));
+  padding: calc(24 * var(--unit-fx));
+  border-radius: calc(10 * var(--unit-fx));
+  background: var(--paper);
+}
+
+.resultBlock + .resultBlock {
+  margin-top: calc(20 * var(--unit-fx));
+  padding-top: calc(20 * var(--unit-fx));
+  border-top: 1px solid var(--rule-soft);
+}
+
+.resultLabel {
+  display: block;
+  margin-bottom: calc(8 * var(--unit-fx));
+  color: var(--ds-text-soft);
+  text-transform: uppercase;
+}
+
+.resultText {
+  margin: 0;
+  line-height: 1.4;
+}
+
+.resultActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(18 * var(--unit-fx));
+  margin-top: calc(20 * var(--unit-fx));
+  padding-top: calc(18 * var(--unit-fx));
+  border-top: 1px solid var(--rule-soft);
+}
+
+.resultAction {
+  border: 0;
+  padding: 0;
+  background: none;
+  color: var(--ds-text-soft);
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.35s var(--ease-out);
+}
+
+.resultAction:hover {
+  color: var(--ds-text);
+  text-decoration: underline;
+}
+
+.note {
+  width: 100%;
+  margin-top: calc(18 * var(--unit-fx));
+  padding: calc(16 * var(--unit-fx)) calc(20 * var(--unit-fx));
+  border-radius: calc(6 * var(--unit-fx));
+  background: var(--ds-surface-2);
+  color: var(--ds-text-soft);
+  line-height: 1.5;
+  text-align: left;
+}
+
+.disclaimer {
+  margin: calc(30 * var(--unit-fx)) 0 0;
+  color: var(--ds-text-soft);
+  text-align: center;
+  text-wrap: balance;
+}
+
+.srOnlyInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+@media (max-width: 900px) {
+  .rail {
+    width: calc(300 * var(--unit-fx));
+  }
+  .stageInner {
+    max-width: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .shell {
+    display: block;
+    padding: calc(12 * var(--unit-fx));
+  }
+
+  /* On a phone the rail becomes a sheet over the stage rather than a column
+     beside it — there is no room for both. */
+  .rail {
+    position: fixed;
+    inset: calc(12 * var(--unit-fx)) auto calc(12 * var(--unit-fx))
+      calc(12 * var(--unit-fx));
+    z-index: 30;
+    width: calc(100vw - 24 * var(--unit-fx));
+    max-width: calc(340 * var(--unit-fx));
+    height: auto;
+    box-shadow: 0 calc(20 * var(--unit-fx)) calc(60 * var(--unit-fx))
+      rgba(107, 62, 30, 0.18);
+  }
+  .railClosed {
+    transform: translateX(calc(-110%));
+    opacity: 0;
+  }
+
+  .stage {
+    padding: calc(50 * var(--unit-fx)) 0 0;
+  }
+  .stageInner {
+    padding-block: calc(20 * var(--unit-fx));
+  }
+  .composerBar {
+    flex-wrap: wrap;
+  }
+  .composerBarEnd {
+    width: 100%;
+    margin-left: 0;
+    justify-content: flex-end;
+  }
+  .settings {
+    flex: 1 1 auto;
+  }
+  .presets {
+    justify-content: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rail,
+  .modelRow,
+  .modelNew,
+  .iconButton,
+  .preset,
+  .submit,
+  .exploreLink {
+    transition-duration: 0.01ms;
+  }
+  .submitRecording {
+    animation: none;
+  }
+}

@@ -1,0 +1,666 @@
+/* ==========================================================================
+   Namu-Agent — model page
+   --------------------------------------------------------------------------
+   Same skeleton as the other three model pages: full-bleed hero, section
+   pills, features, performance, try-it-out.
+
+   What is particular here is that the page is about a call, so the middle of
+   it is built as a single vertical thread rather than the two columns the
+   Interpret page uses. The agent's working sits in that thread as its own
+   kind of line.
+   ========================================================================== */
+
+/* ---- Hero ---------------------------------------------------------------- */
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  overflow: hidden;
+  margin-bottom: calc(150 * var(--unit-fx));
+  color: var(--paper);
+  text-align: center;
+}
+
+.heroMedia {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.heroImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The hillside runs bright through the upper half, which is where the title
+   sits, so the wash is weighted there and lifts off toward the corners. */
+.heroMedia::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      78% 60% at 50% 46%,
+      rgba(28, 20, 16, 0.62),
+      rgba(28, 20, 16, 0.34) 62%,
+      rgba(28, 20, 16, 0.14) 100%
+    ),
+    linear-gradient(to bottom, rgba(28, 20, 16, 0.32), transparent 30%);
+}
+
+.heroInner {
+  position: relative;
+  z-index: 1;
+  width: calc(var(--col24) * 16 + var(--gutter24) * 15);
+  max-width: calc(100% - 2 * var(--outer-gutter));
+  letter-spacing: -0.03em;
+}
+
+.heroTitle {
+  margin: 0;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(72 * var(--unit-fx-type));
+  font-weight: 450;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.heroLede {
+  margin: calc(30 * var(--unit-fx)) auto 0;
+  max-width: calc(var(--col24) * 13 + var(--gutter24) * 12);
+}
+
+/* ---- Turn meter ---------------------------------------------------------- */
+
+/* The loop the agent runs, made visible before you have read anything. */
+.meter {
+  width: calc(var(--col24) * 11 + var(--gutter24) * 10);
+  max-width: 100%;
+  margin: calc(48 * var(--unit-fx)) auto 0;
+}
+
+.meterList {
+  display: flex;
+  justify-content: space-between;
+  gap: calc(16 * var(--unit-fx));
+  margin: 0 0 calc(18 * var(--unit-fx));
+  padding: 0;
+  list-style: none;
+}
+
+.meterStage {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(9 * var(--unit-fx));
+  color: rgba(255, 250, 241, 0.5);
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  transition: color 0.5s var(--ease-out);
+}
+
+.meterOn {
+  color: var(--paper);
+}
+
+.meterDot {
+  width: calc(7 * var(--unit-fx));
+  height: calc(7 * var(--unit-fx));
+  min-width: 5px;
+  min-height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.45;
+  transform: scale(1);
+  transition:
+    opacity 0.5s var(--ease-out),
+    transform 0.5s var(--ease-out);
+}
+
+.meterOn .meterDot {
+  opacity: 1;
+  transform: scale(1.5);
+  background: var(--sahel);
+}
+
+.meterRail {
+  position: relative;
+  height: 2px;
+  border-radius: 2px;
+  background: rgba(255, 250, 241, 0.2);
+  overflow: hidden;
+}
+
+/* Fills across all four stages and resets, so it reads as one turn completing
+   rather than four separate lights blinking. */
+.meterFill {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  border-radius: 2px;
+  background: var(--sahel);
+  transition: width 0.5s var(--ease-out);
+}
+
+.heroCta {
+  margin-top: calc(44 * var(--unit-fx));
+  display: flex;
+  justify-content: center;
+}
+
+/* ---- Shared furniture ---------------------------------------------------- */
+
+.section {
+  position: relative;
+  margin-block: calc(144 * var(--unit-fx)) calc(240 * var(--unit-fx));
+}
+
+.sectionHead {
+  text-align: center;
+}
+
+.sectionTitle {
+  margin: 0 0 0.4em;
+  line-height: 1.2;
+}
+
+.sectionLede {
+  margin-top: calc(20 * var(--unit-fx));
+}
+
+.blockHead {
+  width: calc(var(--col24) * 12 + var(--gutter24) * 11);
+  margin-inline: auto;
+  margin-bottom: calc(60 * var(--unit-fx));
+  text-align: center;
+}
+
+.blockTitle {
+  margin: 0 0 calc(16 * var(--unit-fx));
+  line-height: 1.2;
+}
+
+.blockLede {
+  margin: 0;
+  line-height: 1.35;
+  color: var(--ds-text-soft);
+}
+
+/* ---- The call ------------------------------------------------------------ */
+
+/* The page's one dark section, over the storm-lit field. */
+.call {
+  position: relative;
+  isolation: isolate;
+  margin-block: calc(200 * var(--unit-fx));
+  padding-block: calc(140 * var(--unit-fx));
+  overflow: hidden;
+  color: var(--paper);
+}
+
+.callMedia {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.callImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* A tall frame; anchoring high keeps the sky and the horizon rather than
+     the dark undergrowth at the bottom. */
+  object-position: 50% 28%;
+}
+
+.callMedia::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(18, 15, 12, 0.8),
+    rgba(18, 15, 12, 0.66) 40%,
+    rgba(18, 15, 12, 0.76) 100%
+  );
+}
+
+.call .blockTitle {
+  color: var(--paper);
+}
+
+.call .blockLede {
+  color: rgba(255, 250, 241, 0.72);
+}
+
+/* One column: this is a single conversation in a single language, so it runs
+   as a thread rather than the crossing the Interpret page draws. */
+.thread {
+  width: calc(var(--col24) * 14 + var(--gutter24) * 13);
+  max-width: 100%;
+  margin-inline: auto;
+}
+
+.threadItem + .threadItem {
+  margin-top: calc(18 * var(--unit-fx));
+}
+
+.turn {
+  padding: calc(22 * var(--unit-fx)) calc(26 * var(--unit-fx));
+  border-radius: calc(6 * var(--unit-fx));
+  border: 1px solid rgba(255, 250, 241, 0.16);
+  background: rgba(255, 250, 241, 0.08);
+  backdrop-filter: blur(calc(10 * var(--unit-fx)));
+}
+
+/* The agent takes the left of the thread and the caller is inset from it, so
+   who is speaking is legible before the label is read. */
+.turnAgent {
+  margin-right: calc(var(--col24) * 3);
+  border-color: rgba(232, 147, 90, 0.4);
+  background: rgba(255, 250, 241, 0.13);
+}
+
+.turnCaller {
+  margin-left: calc(var(--col24) * 3);
+}
+
+.turnWho {
+  display: block;
+  margin-bottom: calc(9 * var(--unit-fx));
+  color: rgba(255, 250, 241, 0.62);
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  letter-spacing: 0.06em;
+}
+
+.turnSaid {
+  margin: 0;
+  font-size: calc(18 * var(--unit-fx-type));
+  line-height: 1.5;
+  color: var(--paper);
+}
+
+.turnGloss {
+  margin: calc(10 * var(--unit-fx)) 0 0;
+  color: rgba(255, 250, 241, 0.5);
+  line-height: 1.5;
+}
+
+/* The work the agent did before it could answer. Deliberately unlike a turn:
+   no card, no fill, just a ruled line of machine text. */
+.work {
+  display: flex;
+  align-items: center;
+  gap: calc(14 * var(--unit-fx));
+  margin: 0 0 calc(18 * var(--unit-fx));
+  padding-left: calc(26 * var(--unit-fx));
+}
+
+.workRule {
+  flex: 0 0 auto;
+  width: calc(40 * var(--unit-fx));
+  min-width: 24px;
+  height: 1px;
+  background: var(--sahel);
+  opacity: 0.7;
+}
+
+.workText {
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  font-size: calc(13 * var(--unit-fx-type));
+  letter-spacing: 0.03em;
+  color: rgba(232, 147, 90, 0.95);
+}
+
+/* ---- Interruption -------------------------------------------------------- */
+
+/* Also over a photograph, but read against the call section above it rather
+   than matching it: there the turns are glass and the picture shows through,
+   here they are solid paper lifted off it. An interruption is the sharp moment
+   on this page, and the hard edge is what makes it read that way. */
+.repair {
+  position: relative;
+  isolation: isolate;
+  margin-block: calc(200 * var(--unit-fx));
+  padding-block: calc(140 * var(--unit-fx));
+  overflow: hidden;
+  color: var(--paper);
+}
+
+.repairMedia {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.repairImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Portrait frame: hold the horizon and the warm band rather than the empty
+     sky above it. */
+  object-position: 50% 62%;
+}
+
+/* Lighter at the horizon than the call section's wash, so the dusk colour
+   survives behind the cards instead of going flat grey. */
+.repairMedia::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(16, 24, 26, 0.78),
+    rgba(16, 24, 26, 0.52) 42%,
+    rgba(16, 24, 26, 0.7) 100%
+  );
+}
+
+.repair .blockTitle {
+  color: var(--paper);
+}
+
+.repair .blockLede {
+  color: rgba(255, 250, 241, 0.74);
+}
+
+.repairStage {
+  position: relative;
+  width: calc(var(--col24) * 13 + var(--gutter24) * 12);
+  max-width: 100%;
+  margin-inline: auto;
+}
+
+.repairCut,
+.repairIn,
+.repairBack {
+  padding: calc(22 * var(--unit-fx)) calc(26 * var(--unit-fx));
+  border-radius: calc(6 * var(--unit-fx));
+  background: var(--paper);
+  box-shadow: 0 calc(18 * var(--unit-fx)) calc(50 * var(--unit-fx))
+    rgba(12, 18, 20, 0.36);
+}
+
+.repairCut {
+  margin-right: calc(var(--col24) * 3);
+}
+
+/* The caller's line lands on top of the break rather than below it, which is
+   what an interruption looks like. The lift is what sells the overlap. */
+.repairIn {
+  position: relative;
+  z-index: 1;
+  margin-left: calc(var(--col24) * 4);
+  margin-top: calc(-26 * var(--unit-fx));
+  border: 1px solid var(--sahel);
+  box-shadow: 0 calc(22 * var(--unit-fx)) calc(60 * var(--unit-fx))
+    rgba(12, 18, 20, 0.5);
+}
+
+.repairBack {
+  margin-right: calc(var(--col24) * 3);
+  margin-top: calc(20 * var(--unit-fx));
+}
+
+.repairStage .turnWho {
+  color: var(--ds-text-soft);
+}
+
+.repairStage .turnGloss {
+  color: var(--ds-text-soft);
+}
+
+.repairText {
+  margin: 0;
+  font-size: calc(18 * var(--unit-fx-type));
+  line-height: 1.5;
+  color: var(--ds-text);
+}
+
+/* The sentence stops mid-clause, so the rule is the cut itself rather than an
+   ellipsis standing in for one. */
+.repairBreak {
+  display: inline-block;
+  width: calc(34 * var(--unit-fx));
+  min-width: 20px;
+  height: 1px;
+  margin-left: calc(8 * var(--unit-fx));
+  vertical-align: middle;
+  background: var(--sahel);
+}
+
+/* ---- Performance --------------------------------------------------------- */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: calc(20 * var(--unit-fx));
+  margin-top: calc(110 * var(--unit-fx));
+  padding-inline: calc(var(--col24) * 2 + var(--gutter24) * 2);
+}
+
+.stat {
+  padding: calc(34 * var(--unit-fx)) calc(30 * var(--unit-fx));
+  border-radius: calc(5 * var(--unit-fx));
+  background: var(--ds-surface);
+}
+
+.statValue {
+  margin: 0 0 calc(16 * var(--unit-fx));
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(64 * var(--unit-fx-type));
+  font-weight: 450;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.statUnit {
+  font-size: 0.42em;
+  margin-left: 0.25em;
+  color: var(--ds-text-soft);
+}
+
+.statLabel {
+  margin: 0 0 calc(8 * var(--unit-fx));
+}
+
+.statNote {
+  margin: 0;
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--ds-text-soft);
+}
+
+.specs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: calc(20 * var(--unit-fx));
+  margin-top: calc(30 * var(--unit-fx));
+  padding-inline: calc(var(--col24) * 2 + var(--gutter24) * 2);
+}
+
+.spec {
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 * var(--unit-fx));
+  padding: calc(24 * var(--unit-fx)) calc(26 * var(--unit-fx));
+  border-radius: calc(5 * var(--unit-fx));
+  background: var(--ds-surface-2);
+}
+
+.specLabel {
+  color: var(--ds-text-soft);
+}
+
+/* ---- Dig deeper / try it out --------------------------------------------- */
+
+.digDeeper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(20 * var(--unit-fx));
+  margin-block: calc(120 * var(--unit-fx));
+  padding: calc(20 * var(--unit-fx)) calc(24 * var(--unit-fx));
+  border-radius: calc(5 * var(--unit-fx));
+  background: #fbf4e5;
+}
+
+.digDeeper h2 {
+  margin: 0;
+}
+
+.digLinks {
+  display: flex;
+  align-items: center;
+  gap: calc(58 * var(--unit-fx));
+}
+
+.digLink {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(10 * var(--unit-fx));
+  color: inherit;
+  text-decoration: none;
+}
+
+.digLink:hover {
+  text-decoration: underline;
+}
+
+.digArrow {
+  width: calc(12 * var(--unit-fx));
+  min-width: 10px;
+}
+
+.tryOut {
+  margin-block: calc(220 * var(--unit-fx)) calc(340 * var(--unit-fx));
+}
+
+.tryTitle {
+  text-align: center;
+  margin: 0 0 calc(90 * var(--unit-fx));
+}
+
+.tryRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: calc(20 * var(--unit-fx));
+  padding-inline: calc(var(--col24) * 3 + var(--gutter24) * 3);
+}
+
+.tryCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: calc(40 * var(--unit-fx));
+  padding: calc(25 * var(--unit-fx)) calc(22 * var(--unit-fx));
+  border-radius: calc(5 * var(--unit-fx));
+  background: #fbf4e5;
+}
+
+.tryCardTitle {
+  margin: 0 0 calc(20 * var(--unit-fx));
+}
+
+.tryCardBody {
+  margin: 0;
+  color: var(--ds-text-soft);
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+@media (max-width: 1100px) {
+  .stats,
+  .specs,
+  .tryRow {
+    grid-template-columns: repeat(2, 1fr);
+    padding-inline: 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .turnAgent,
+  .turnCaller,
+  .repairCut,
+  .repairBack {
+    margin-inline: 0;
+  }
+  .repairIn {
+    margin-left: calc(24 * var(--unit-fx));
+  }
+}
+
+@media (max-width: 600px) {
+  .hero {
+    margin-bottom: calc(80 * var(--unit-fx));
+  }
+  .heroTitle {
+    font-size: calc(44 * var(--unit-fx-type));
+  }
+  .heroInner,
+  .meter {
+    width: 100%;
+  }
+  /* Four stages will not sit on one line on a phone. */
+  .meterList {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: calc(10 * var(--unit-fx)) calc(20 * var(--unit-fx));
+  }
+
+  .section,
+  .call,
+  .repair,
+  .tryOut {
+    margin-block: calc(80 * var(--unit-fx));
+  }
+  .call,
+  .repair {
+    padding-block: calc(70 * var(--unit-fx));
+  }
+  .blockHead {
+    width: 100%;
+  }
+
+  .stats,
+  .specs,
+  .tryRow {
+    grid-template-columns: 1fr;
+  }
+  .stats {
+    margin-top: calc(60 * var(--unit-fx));
+  }
+  .statValue {
+    font-size: calc(46 * var(--unit-fx-type));
+  }
+
+  .turn,
+  .repairCut,
+  .repairIn,
+  .repairBack {
+    padding: calc(18 * var(--unit-fx)) calc(20 * var(--unit-fx));
+  }
+  .work {
+    padding-left: calc(10 * var(--unit-fx));
+  }
+
+  .digDeeper {
+    display: block;
+    margin-block: calc(60 * var(--unit-fx));
+    padding: calc(30 * var(--unit-fx)) calc(24 * var(--unit-fx));
+  }
+  .digLinks {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: calc(16 * var(--unit-fx));
+    margin-top: calc(24 * var(--unit-fx));
+  }
+}

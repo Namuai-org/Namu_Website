@@ -10,7 +10,12 @@ import { SplitText } from "../SplitText";
 import styles from "./home.module.css";
 
 type Props = {
-  href: string;
+  /**
+   * Where the card leads. Without one it renders as a plain statement: no
+   * link, and no arrow tile either, since the arrow's whole job is to promise
+   * a destination.
+   */
+  href?: string;
   image: string;
   /**
    * Double-resolution file. The plate goes full bleed, so on a Retina screen a
@@ -93,21 +98,31 @@ export function FeaturedStory({ href, image, image2x, ratio }: Props) {
           <ScrollObject className={styles.featuredCaptionWrap}>
             {/* Named by its destination: the card carries a statement, not a
                 label saying where it goes. */}
-            <Link
-              href={href}
-              className={styles.featuredCard}
-              aria-label={`${t("home.featured.title")} — about Namu`}
-            >
-              <h2 className={styles.featuredTitle}>
-                <SplitText text={t("home.featured.title")} />
-              </h2>
+            {href ? (
+              <Link
+                href={href}
+                className={styles.featuredCard}
+                aria-label={`${t("home.featured.title")} — about Namu`}
+              >
+                <h2 className={styles.featuredTitle}>
+                  <SplitText text={t("home.featured.title")} />
+                </h2>
 
-              <span className={styles.featuredRule} aria-hidden="true" />
+                <span className={styles.featuredRule} aria-hidden="true" />
 
-              <span className={styles.featuredArrowTile} aria-hidden="true">
-                <ArrowRight className={styles.featuredArrow} />
-              </span>
-            </Link>
+                <span className={styles.featuredArrowTile} aria-hidden="true">
+                  <ArrowRight className={styles.featuredArrow} />
+                </span>
+              </Link>
+            ) : (
+              <div className={`${styles.featuredCard} ${styles.featuredCardStatic}`}>
+                <h2 className={styles.featuredTitle}>
+                  <SplitText text={t("home.featured.title")} />
+                </h2>
+
+                <span className={styles.featuredRule} aria-hidden="true" />
+              </div>
+            )}
           </ScrollObject>
         </div>
       </div>

@@ -106,22 +106,3 @@ a {
     transition: none;
   }
 }
-
-
-/* ==========================================================================
-   /playground — the one page-level block still living globally
-   ========================================================================== */
-
-
-.try-section::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.7;
-  background:
-    radial-gradient(circle at 18% 18%, rgba(255,255,255,0.9), transparent 20%),
-    radial-gradient(circle at 78% 16%, rgba(215,229,247,0.4), transparent 22%),
-    radial-gradient(circle at 56% 82%, rgba(239,233,226,0.45), transparent 24%);
-  filter: blur(24px);
- }

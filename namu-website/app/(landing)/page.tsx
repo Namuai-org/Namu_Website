@@ -65,7 +65,6 @@ export default function HomePage() {
         <Hero />
 
         <FeaturedStory
-          href="/about"
           image="/namu_im.jpg"
           image2x="/namu_im@2x.jpg"
           /* The frame takes the plate's own ratio so nothing is cropped — the

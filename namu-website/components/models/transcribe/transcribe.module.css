@@ -1,0 +1,688 @@
+/* ==========================================================================
+   Namu-Transcribe — model page
+   --------------------------------------------------------------------------
+   Same skeleton as the Namu-Voice page: full-bleed hero, section pills,
+   features, performance, try-it-out. What differs is the hero, which carries
+   the sound line, and the middle, which is about reading transcripts rather
+   than hearing voices.
+   ========================================================================== */
+
+/* ---- Hero ---------------------------------------------------------------- */
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  overflow: hidden;
+  margin-bottom: calc(150 * var(--unit-fx));
+  color: var(--paper);
+  text-align: center;
+}
+
+.heroMedia {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.heroImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The photograph runs bright through the middle, which is exactly where the
+   headline sits. A flat wash would grey the whole frame, so this is weighted
+   to the centre and lets the corners keep their colour. */
+.heroMedia::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      75% 60% at 50% 50%,
+      rgba(28, 20, 16, 0.58),
+      rgba(28, 20, 16, 0.28) 62%,
+      rgba(28, 20, 16, 0.12) 100%
+    ),
+    linear-gradient(to bottom, rgba(28, 20, 16, 0.28), transparent 30%);
+}
+
+.heroInner {
+  position: relative;
+  z-index: 1;
+  width: calc(var(--col24) * 16 + var(--gutter24) * 15);
+  max-width: calc(100% - 2 * var(--outer-gutter));
+  letter-spacing: -0.03em;
+}
+
+.heroTitle {
+  margin: 0;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(72 * var(--unit-fx-type));
+  font-weight: 450;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.heroLede {
+  margin: calc(30 * var(--unit-fx)) auto 0;
+  max-width: calc(var(--col24) * 13 + var(--gutter24) * 12);
+}
+
+/* ---- Sound line ---------------------------------------------------------- */
+
+.waveWrap {
+  margin: calc(50 * var(--unit-fx)) auto 0;
+  padding-inline: calc(30 * var(--unit-fx));
+}
+
+.wave {
+  width: 100%;
+  aspect-ratio: 700 / 100;
+  color: var(--paper);
+  cursor: pointer;
+  touch-action: none;
+}
+
+.waveSvg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.heroCta {
+  margin-top: calc(44 * var(--unit-fx));
+  display: flex;
+  justify-content: center;
+}
+
+/* ---- Shared furniture ---------------------------------------------------- */
+
+.section {
+  position: relative;
+  margin-block: calc(144 * var(--unit-fx)) calc(240 * var(--unit-fx));
+}
+
+.sectionHead {
+  text-align: center;
+}
+
+.sectionTitle,
+.sectionKicker {
+  margin: 0 0 0.4em;
+  line-height: 1.3;
+}
+
+.sectionLede {
+  margin-top: calc(20 * var(--unit-fx));
+}
+
+.performanceTitle {
+  margin: 0 0 0.4em;
+  line-height: 1.1;
+}
+
+.blockHead {
+  width: calc(var(--col24) * 10 + var(--gutter24) * 9);
+  margin-inline: auto;
+  margin-bottom: calc(50 * var(--unit-fx));
+  text-align: center;
+}
+
+.blockTitle {
+  margin: 0 0 calc(16 * var(--unit-fx));
+  line-height: 1.2;
+}
+
+.blockLede {
+  margin: 0;
+  line-height: 1.3;
+  color: var(--ds-text-soft);
+}
+
+/* ---- Dialect coverage ---------------------------------------------------- */
+
+.coverage {
+  margin-block: calc(200 * var(--unit-fx));
+}
+
+.coverageStage {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1200 / 590;
+}
+
+.coverageHead {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+  width: calc(var(--col24) * 9 + var(--gutter24) * 8);
+  text-align: center;
+}
+
+/* ---- Domain transcripts -------------------------------------------------- */
+
+/* Its own tint, as on the reference — the transcript panel needs a surface to
+   sit on that is not the page. */
+.domains {
+  margin-block: calc(200 * var(--unit-fx));
+  padding-block: calc(110 * var(--unit-fx));
+  background: #e4eadb;
+}
+
+.domainsInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: calc(60 * var(--unit-fx));
+}
+
+.domainsCopy {
+  flex: 1 1 calc(var(--col24) * 8 + var(--gutter24) * 7);
+  min-width: calc(260 * var(--unit-fx));
+  max-width: calc(var(--col24) * 9 + var(--gutter24) * 8);
+}
+
+.domainsPanel {
+  flex: 1 1 calc(var(--col24) * 12 + var(--gutter24) * 11);
+  min-width: calc(320 * var(--unit-fx));
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(10 * var(--unit-fx));
+  margin-bottom: calc(20 * var(--unit-fx));
+}
+
+.tab {
+  border: 0;
+  padding: calc(12 * var(--unit-fx)) calc(22 * var(--unit-fx));
+  border-radius: calc(4 * var(--unit-fx));
+  background: color-mix(in srgb, var(--paper) 65%, transparent);
+  color: var(--ds-text-soft);
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background-color 0.4s var(--ease-out),
+    color 0.4s var(--ease-out);
+}
+
+.tab:hover {
+  color: var(--ds-text);
+}
+
+.tabActive,
+.tabActive:hover {
+  background: var(--paper);
+  color: var(--ds-text);
+}
+
+.transcript {
+  padding: calc(30 * var(--unit-fx)) calc(32 * var(--unit-fx));
+  border-radius: calc(6 * var(--unit-fx));
+  background: var(--ds-surface);
+}
+
+.line {
+  display: flex;
+  align-items: flex-start;
+  gap: calc(20 * var(--unit-fx));
+  padding-block: calc(18 * var(--unit-fx));
+}
+
+.line + .line {
+  border-top: 1px solid var(--rule-soft);
+}
+
+/* Initials in place of the reference's portraits. */
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(42 * var(--unit-fx));
+  height: calc(42 * var(--unit-fx));
+  min-width: 34px;
+  min-height: 34px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--ds-surface-2);
+  color: var(--ds-text-soft);
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  font-size: calc(14 * var(--unit-fx-type));
+  letter-spacing: 0.04em;
+}
+
+.lineBody {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.lineHead {
+  display: flex;
+  align-items: baseline;
+  gap: calc(12 * var(--unit-fx));
+  margin: 0 0 calc(8 * var(--unit-fx));
+}
+
+.lineSpeaker {
+  color: var(--ds-text);
+}
+
+.lineClock {
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  font-size: calc(13 * var(--unit-fx-type));
+  color: var(--ds-text-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Mono: this is machine output shown as machine output. */
+.lineText {
+  margin: 0;
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  font-size: calc(15 * var(--unit-fx-type));
+  line-height: 1.65;
+  color: var(--ds-text);
+}
+
+.transcriptControls {
+  display: flex;
+  align-items: center;
+  gap: calc(14 * var(--unit-fx));
+  margin-top: calc(22 * var(--unit-fx));
+}
+
+/* ---- Noisy conditions ---------------------------------------------------- */
+
+.noisy {
+  position: relative;
+  margin-block: calc(200 * var(--unit-fx));
+  padding-block: calc(90 * var(--unit-fx));
+  background: var(--ds-surface-2);
+}
+
+.noisyInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: calc(60 * var(--unit-fx));
+}
+
+.noisyCopy {
+  flex: 1 1 calc(var(--col24) * 8 + var(--gutter24) * 7);
+  min-width: calc(260 * var(--unit-fx));
+  max-width: calc(var(--col24) * 9 + var(--gutter24) * 8);
+}
+
+.noisyMedia {
+  position: relative;
+  flex: 1 1 calc(var(--col24) * 11 + var(--gutter24) * 10);
+  min-width: calc(300 * var(--unit-fx));
+}
+
+.noisyImage {
+  display: block;
+  width: 100%;
+  aspect-ratio: 549 / 400;
+  object-fit: cover;
+  border-radius: calc(5 * var(--unit-fx));
+}
+
+/* The caption straddles the picture, half on and half off, so it reads as a
+   caption laid over the scene rather than a bar beneath it. */
+.noisyStrip {
+  position: absolute;
+  top: 50%;
+  left: calc(24 * var(--unit-fx));
+  right: calc(-34 * var(--unit-fx));
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: calc(24 * var(--unit-fx));
+  padding: calc(14 * var(--unit-fx)) calc(20 * var(--unit-fx));
+  border-radius: calc(8 * var(--unit-fx));
+  background: var(--paper);
+}
+
+.noisyText {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---- Using the model ----------------------------------------------------- */
+
+.using {
+  margin-block: calc(200 * var(--unit-fx));
+}
+
+.usingKicker {
+  margin: 0 0 0.7em;
+  color: var(--ds-text-soft);
+}
+
+.usingTitle {
+  margin: 0;
+}
+
+/* Centred here, unlike the domain tabs, so they line up over the card. */
+.using .tabs {
+  justify-content: center;
+}
+
+.sampleCard {
+  display: flex;
+  flex-direction: column;
+  gap: calc(24 * var(--unit-fx));
+  width: calc(var(--col24) * 16 + var(--gutter24) * 15);
+  max-width: 100%;
+  margin-inline: auto;
+  padding: calc(32 * var(--unit-fx));
+  border-radius: calc(6 * var(--unit-fx));
+  background: var(--ds-surface);
+}
+
+.sampleText {
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ---- Performance --------------------------------------------------------- */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: calc(20 * var(--unit-fx));
+  margin-top: calc(110 * var(--unit-fx));
+  padding-inline: calc(var(--col24) * 2 + var(--gutter24) * 2);
+}
+
+.stat {
+  padding: calc(34 * var(--unit-fx)) calc(30 * var(--unit-fx));
+  border-radius: calc(5 * var(--unit-fx));
+  background: var(--ds-surface);
+}
+
+.statValue {
+  margin: 0 0 calc(16 * var(--unit-fx));
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(64 * var(--unit-fx-type));
+  font-weight: 450;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.statUnit {
+  font-size: 0.42em;
+  margin-left: 0.25em;
+  color: var(--ds-text-soft);
+}
+
+.statLabel {
+  margin: 0 0 calc(8 * var(--unit-fx));
+}
+
+.statNote {
+  margin: 0;
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--ds-text-soft);
+}
+
+.specs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: calc(20 * var(--unit-fx));
+  margin-top: calc(30 * var(--unit-fx));
+  padding-inline: calc(var(--col24) * 2 + var(--gutter24) * 2);
+}
+
+.spec {
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 * var(--unit-fx));
+  padding: calc(24 * var(--unit-fx)) calc(26 * var(--unit-fx));
+  border-radius: calc(5 * var(--unit-fx));
+  background: var(--ds-surface-2);
+}
+
+.specLabel {
+  color: var(--ds-text-soft);
+}
+
+/* ---- Comparison ---------------------------------------------------------- */
+
+.compare {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: calc(20 * var(--unit-fx));
+  margin-top: calc(80 * var(--unit-fx));
+  padding-inline: calc(var(--col24) * 2 + var(--gutter24) * 2);
+}
+
+.card {
+  padding: calc(34 * var(--unit-fx));
+  border-radius: calc(5 * var(--unit-fx));
+  background: var(--ds-surface);
+}
+
+.cardTitle {
+  margin: 0 0 calc(24 * var(--unit-fx));
+}
+
+.row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: calc(20 * var(--unit-fx));
+  padding-block: calc(13 * var(--unit-fx));
+}
+
+.row + .row {
+  border-top: 1px solid var(--rule-soft);
+}
+
+.rowLabel {
+  color: var(--ds-text-soft);
+}
+
+.rowValue {
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ---- Dig deeper / try it out --------------------------------------------- */
+
+.digDeeper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(20 * var(--unit-fx));
+  margin-block: calc(120 * var(--unit-fx));
+  padding: calc(20 * var(--unit-fx)) calc(24 * var(--unit-fx));
+  border-radius: calc(5 * var(--unit-fx));
+  background: #fbf4e5;
+}
+
+.digDeeper h2 {
+  margin: 0;
+}
+
+.digLinks {
+  display: flex;
+  align-items: center;
+  gap: calc(58 * var(--unit-fx));
+}
+
+.digLink {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(10 * var(--unit-fx));
+  color: inherit;
+  text-decoration: none;
+}
+
+.digLink:hover {
+  text-decoration: underline;
+}
+
+.digArrow {
+  width: calc(12 * var(--unit-fx));
+  min-width: 10px;
+}
+
+.tryOut {
+  margin-block: calc(220 * var(--unit-fx)) calc(340 * var(--unit-fx));
+}
+
+.tryTitle {
+  text-align: center;
+  margin: 0 0 calc(90 * var(--unit-fx));
+}
+
+.tryRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: calc(20 * var(--unit-fx));
+  padding-inline: calc(var(--col24) * 3 + var(--gutter24) * 3);
+}
+
+.tryCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: calc(40 * var(--unit-fx));
+  padding: calc(25 * var(--unit-fx)) calc(22 * var(--unit-fx));
+  border-radius: calc(5 * var(--unit-fx));
+  background: #fbf4e5;
+}
+
+.tryCardTitle {
+  margin: 0 0 calc(20 * var(--unit-fx));
+}
+
+.tryCardBody {
+  margin: 0;
+  color: var(--ds-text-soft);
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+@media (max-width: 1100px) {
+  .stats,
+  .specs,
+  .tryRow {
+    grid-template-columns: repeat(2, 1fr);
+    padding-inline: 0;
+  }
+  .domainsCopy,
+  .domainsPanel {
+    max-width: none;
+  }
+  .compare {
+    padding-inline: 0;
+  }
+  .noisyCopy,
+  .noisyMedia {
+    width: 100%;
+  }
+  .noisyStrip {
+    left: 0;
+    right: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero {
+    margin-bottom: calc(80 * var(--unit-fx));
+  }
+  .heroTitle {
+    font-size: calc(44 * var(--unit-fx-type));
+  }
+  .heroInner {
+    width: 100%;
+  }
+  .waveWrap {
+    margin-top: calc(34 * var(--unit-fx));
+    padding-inline: 0;
+  }
+  .wave {
+    aspect-ratio: 340 / 70;
+  }
+
+  .section,
+  .coverage,
+  .domains,
+  .noisy,
+  .tryOut {
+    margin-block: calc(80 * var(--unit-fx));
+  }
+  .noisy {
+    padding-block: calc(60 * var(--unit-fx));
+  }
+  .blockHead {
+    width: 100%;
+  }
+
+  .transcript {
+    width: 100%;
+    padding: calc(24 * var(--unit-fx)) calc(22 * var(--unit-fx));
+  }
+
+  .stats,
+  .specs,
+  .compare,
+  .tryRow {
+    grid-template-columns: 1fr;
+  }
+  .domains {
+    padding-block: calc(70 * var(--unit-fx));
+  }
+  /* No ring on phones — eight chips orbiting a small square collide. */
+  .coverageStage {
+    aspect-ratio: auto;
+  }
+  .coverageHead {
+    position: static;
+    transform: none;
+    width: 100%;
+    margin-bottom: calc(40 * var(--unit-fx));
+  }
+  .transcript {
+    padding: calc(22 * var(--unit-fx)) calc(20 * var(--unit-fx));
+  }
+  .stats {
+    margin-top: calc(60 * var(--unit-fx));
+  }
+  .statValue {
+    font-size: calc(46 * var(--unit-fx-type));
+  }
+
+  .digDeeper {
+    display: block;
+    margin-block: calc(60 * var(--unit-fx));
+    padding: calc(30 * var(--unit-fx)) calc(24 * var(--unit-fx));
+  }
+  .digLinks {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: calc(16 * var(--unit-fx));
+    margin-top: calc(24 * var(--unit-fx));
+  }
+}

@@ -3,42 +3,60 @@
 import { useEffect, useRef } from "react";
 import styles from "./voice.module.css";
 
-const BARS = 160;
+/** Samples across the band. Enough that the quadratic smoothing reads as a curve. */
+const POINTS = 96;
+/** Viewbox the paths are authored in; the SVG stretches it to any real size. */
+const VB_W = 1280;
+const VB_H = 509;
 
 /**
- * The full-bleed waveform under "Instant voice matching".
+ * Build one stroked line through a set of points.
  *
- * Two travelling sine waves of different periods multiplied together, so the
+ * Quadratic segments anchored on each point and ending at the midpoint of the
+ * next pair — the standard smoothing, and the same path grammar the reference
+ * emits (`M … Q … L …`), which is what keeps the curve continuous instead of
+ * showing a corner at every sample.
+ */
+function toPath(ys: number[]) {
+  const step = VB_W / (POINTS - 1);
+  const x = (i: number) => i * step;
+
+  let d = `M${x(0).toFixed(1)} ${ys[0].toFixed(1)}`;
+  for (let i = 1; i < ys.length - 1; i++) {
+    const mx = (x(i) + x(i + 1)) / 2;
+    const my = (ys[i] + ys[i + 1]) / 2;
+    d += ` Q${x(i).toFixed(1)} ${ys[i].toFixed(1)} ${mx.toFixed(1)} ${my.toFixed(1)}`;
+  }
+  const last = ys.length - 1;
+  return `${d} L${x(last).toFixed(1)} ${ys[last].toFixed(1)}`;
+}
+
+/**
+ * The full-bleed wave under "Instant voice matching".
+ *
+ * Two lines rather than one, because the section is about matching: read it as
+ * the reference clip and the voice built from it. They run apart through the
+ * middle of the band and meet at both ends, which is the claim made without a
+ * caption.
+ *
+ * Each line is a sum of two travelling sines at different periods, so the
  * envelope swells and thins the way a spoken line does rather than pulsing
- * evenly. Drawn to a canvas because 160 animated DOM nodes is not worth it.
+ * evenly. SVG rather than canvas: two stroked paths are cheaper than 160
+ * animated rectangles, and they stay crisp at any width because the stroke is
+ * exempt from the viewBox stretch.
  */
 export function WaveBand() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const aRef = useRef<SVGPathElement>(null);
+  const bRef = useRef<SVGPathElement>(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    const a = aRef.current;
+    const b = bRef.current;
+    if (!a || !b) return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-    let w = 0;
-    let h = 0;
-    const resize = () => {
-      const rect = canvas.getBoundingClientRect();
-      w = Math.max(1, Math.round(rect.width));
-      h = Math.max(1, Math.round(rect.height));
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    };
-    resize();
-    const ro = new ResizeObserver(resize);
-    ro.observe(canvas);
-
-    // Only paint while on screen.
+    /* Only run while the band is on screen. */
     let onScreen = true;
     const io = new IntersectionObserver(
       ([entry]) => {
@@ -46,47 +64,62 @@ export function WaveBand() {
       },
       { threshold: 0 },
     );
-    io.observe(canvas);
+    io.observe(a.ownerSVGElement ?? a);
 
-    const accent = getComputedStyle(canvas).getPropertyValue("color") || "#E8935A";
+    const mid = VB_H / 2;
+    const amp = VB_H * 0.34;
+
+    /** One line's samples at time `t`. `phase` separates the two voices. */
+    const line = (t: number, phase: number, lean: number) => {
+      const ys: number[] = [];
+      for (let i = 0; i < POINTS; i++) {
+        const u = i / (POINTS - 1);
+        /* Zero at both ends, so the two lines converge where the band does. */
+        const edge = Math.sin(u * Math.PI) ** 1.4;
+        const slow = Math.sin(u * 6.2 + phase - t * 0.9);
+        const fast = Math.sin(u * 15.5 + phase * 1.7 - t * 1.6);
+        ys.push(mid + edge * amp * (slow * 0.62 + fast * 0.38) * lean);
+      }
+      return ys;
+    };
+
+    const draw = (t: number) => {
+      a.setAttribute("d", toPath(line(t, 0, 1)));
+      /* Offset in phase and mirrored, so the pair opens and closes rather than
+         running in parallel. */
+      b.setAttribute("d", toPath(line(t, 1.9, -0.86)));
+    };
+
+    /* Draw once up front so the band is never a pair of empty paths waiting on
+       the first frame, and so it still shows something if the section mounts
+       off screen. */
+    draw(0);
+    if (reduced) return () => io.disconnect();
 
     let raf = 0;
     const start = performance.now();
-
     const frame = (now: number) => {
       raf = requestAnimationFrame(frame);
       if (!onScreen || document.hidden) return;
-
-      const t = reduced ? 0 : (now - start) / 1000;
-      ctx.clearRect(0, 0, w, h);
-      ctx.fillStyle = accent;
-
-      const gap = w / BARS;
-      const barW = Math.max(1, gap * 0.34);
-
-      for (let i = 0; i < BARS; i++) {
-        const x = i * gap;
-        const u = i / BARS;
-        // Envelope: fades in and out at the edges so the band has no hard ends.
-        const edge = Math.sin(u * Math.PI);
-        const a = Math.sin(u * 22 - t * 1.7);
-        const b = Math.sin(u * 7 + t * 0.9);
-        const amp = Math.abs(a * b) * edge;
-        const barH = Math.max(2, amp * h * 0.86);
-        ctx.globalAlpha = 0.25 + edge * 0.55;
-        ctx.fillRect(x, (h - barH) / 2, barW, barH);
-      }
-
-      if (reduced) cancelAnimationFrame(raf);
+      draw((now - start) / 1000);
     };
     raf = requestAnimationFrame(frame);
 
     return () => {
       cancelAnimationFrame(raf);
-      ro.disconnect();
       io.disconnect();
     };
   }, []);
 
-  return <canvas ref={canvasRef} className={styles.wave} aria-hidden="true" />;
+  return (
+    <svg
+      className={styles.wave}
+      viewBox={`0 0 ${VB_W} ${VB_H}`}
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      <path ref={aRef} className={styles.waveLineA} />
+      <path ref={bRef} className={styles.waveLineB} />
+    </svg>
+  );
 }
