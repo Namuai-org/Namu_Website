@@ -219,7 +219,7 @@ export function NamuInterpretPage() {
           <div className="ds-container ds-outer">
             <ScrollObject className={styles.blockHead}>
               <h3 className={`h4 ${styles.blockTitle}`}>
-                <SplitText text="The hard part is what has to survive" />
+                <SplitText text="The words are the easy part" />
               </h3>
               <p
                 className={`text-large ds-span ${styles.blockLede}`}
@@ -227,7 +227,7 @@ export function NamuInterpretPage() {
               >
                 <SplitText
                   delay={0.2}
-                  text="Word-for-word is not wrong in an obvious way. It is wrong in a confident way, which is worse."
+                  text="Swap them one at a time and you get a sentence that sounds perfectly fine. That is the problem. Nobody thinks to check it."
                 />
               </p>
             </ScrollObject>
@@ -290,7 +290,7 @@ export function NamuInterpretPage() {
                 <SplitText text="Using the model" />
               </h2>
               <p className={`h4 ${styles.usingTitle}`}>
-                <SplitText delay={0.2} text="Speak either language. Pick neither." />
+                <SplitText delay={0.2} text="Just talk. It keeps up." />
               </p>
               <p
                 className={`text-regular ds-span ${styles.blockLede}`}
@@ -298,7 +298,7 @@ export function NamuInterpretPage() {
               >
                 <SplitText
                   delay={0.3}
-                  text="The model works out which language it just heard and answers in the other one, so nobody has to set a direction mid-conversation."
+                  text="It hears which language you spoke and answers in the other one. Nothing to switch, nothing to set up, and nobody has to stop halfway through to change it."
                 />
               </p>
             </ScrollObject>
@@ -340,7 +340,7 @@ export function NamuInterpretPage() {
           <div className="ds-container ds-outer">
             <ScrollObject className={styles.sectionHead}>
               <h2 className={`h4 ${styles.sectionTitle}`}>
-                <SplitText text="Measured on conversations, not sentences" />
+                <SplitText text="One sentence proves nothing" />
               </h2>
               <p
                 className={`text-large ds-span ${styles.sectionLede}`}
@@ -348,7 +348,7 @@ export function NamuInterpretPage() {
               >
                 <SplitText
                   delay={0.2}
-                  text="Single sentences are easy. What matters is whether a call still makes sense after twenty turns, with a price and a date in the middle of it."
+                  text="Anything can get one line right. What counts is whether a long call still holds together at the end, with a price and a date somewhere in the middle of it."
                 />
               </p>
             </ScrollObject>
