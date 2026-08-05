@@ -1,17 +1,53 @@
 /* ==========================================================================
    Investors
    --------------------------------------------------------------------------
-   Deliberately the quietest page on the site. Every other one opens on a
-   full-bleed photograph; this one opens on the argument, because that is what
-   the reader came for. The work it does is structural rather than atmospheric:
-   numbered claims, a stated position, and what the next round pays for.
+   Built to be scanned before it is read. The numbers sit directly under the
+   headline, the case is a ruled document rather than a set of cards, and the
+   two photographic sections are placed to break the page into thirds: one at
+   the top, one at the sectors, one at the close.
    ========================================================================== */
 
 /* ---- Hero ---------------------------------------------------------------- */
 
 .hero {
-  padding-block: calc(220 * var(--unit-fx)) calc(160 * var(--unit-fx));
-  border-bottom: 1px solid var(--rule-soft);
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: flex-end;
+  min-height: 88vh;
+  overflow: hidden;
+  padding-block: calc(180 * var(--unit-fx)) calc(120 * var(--unit-fx));
+  color: var(--paper);
+}
+
+.heroMedia {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.heroImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* A tall frame whose interest is the lower third; anchoring low keeps the
+     branch and drops the empty sky the copy would otherwise sit on. */
+  object-position: 50% 78%;
+}
+
+/* Heavier at the foot, where the copy sits, and light across the sky so the
+   teal survives. */
+.heroMedia::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(14, 26, 30, 0.34),
+    rgba(14, 26, 30, 0.5) 46%,
+    rgba(14, 26, 30, 0.82) 100%
+  );
 }
 
 .heroInner {
@@ -20,8 +56,8 @@
 }
 
 .heroEyebrow {
-  margin: 0 0 calc(28 * var(--unit-fx));
-  color: var(--ds-accent);
+  margin: 0 0 calc(26 * var(--unit-fx));
+  color: var(--sahel);
   font-family: var(--font-mono-ui), ui-monospace, monospace;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -37,13 +73,79 @@
 }
 
 .heroLede {
-  margin: calc(34 * var(--unit-fx)) 0 0;
+  margin: calc(30 * var(--unit-fx)) 0 0;
   max-width: calc(var(--col24) * 11 + var(--gutter24) * 10);
-  color: var(--ds-text-soft);
+  color: rgba(255, 250, 241, 0.8);
 }
 
 .heroCta {
-  margin-top: calc(46 * var(--unit-fx));
+  display: flex;
+  align-items: center;
+  gap: calc(34 * var(--unit-fx));
+  flex-wrap: wrap;
+  margin-top: calc(44 * var(--unit-fx));
+}
+
+.heroSecondary {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(10 * var(--unit-fx));
+  color: var(--paper);
+  text-decoration: none;
+}
+
+.heroSecondary:hover {
+  text-decoration: underline;
+}
+
+.arrow {
+  width: calc(12 * var(--unit-fx));
+  min-width: 10px;
+}
+
+/* ---- Headline numbers ---------------------------------------------------- */
+
+/* Directly under the hero, because it is the first thing an investor looks
+   for and the last thing they should have to hunt for. */
+.headline {
+  padding-block: calc(90 * var(--unit-fx));
+  background: var(--ds-surface);
+}
+
+.headlineRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: calc(20 * var(--unit-fx));
+}
+
+.figure {
+  padding-right: calc(20 * var(--unit-fx));
+}
+
+.figure + .figure {
+  padding-left: calc(30 * var(--unit-fx));
+  border-left: 1px solid var(--rule-soft);
+}
+
+.figureValue {
+  margin: 0 0 calc(14 * var(--unit-fx));
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(58 * var(--unit-fx-type));
+  font-weight: 450;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.figureLabel {
+  margin: 0 0 calc(8 * var(--unit-fx));
+}
+
+.figureNote {
+  margin: 0;
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--ds-text-soft);
 }
 
 /* ---- Shared furniture ---------------------------------------------------- */
@@ -65,15 +167,10 @@
   line-height: 1.15;
 }
 
-.arrow {
-  width: calc(12 * var(--unit-fx));
-  min-width: 10px;
-}
-
 /* ---- The case ------------------------------------------------------------ */
 
 .thesis {
-  padding-block: calc(160 * var(--unit-fx));
+  padding-block: calc(150 * var(--unit-fx));
 }
 
 .claims {
@@ -88,7 +185,7 @@
   display: grid;
   grid-template-columns: calc(var(--col24) * 2 + var(--gutter24)) 1fr;
   gap: calc(40 * var(--unit-fx));
-  padding-block: calc(56 * var(--unit-fx));
+  padding-block: calc(54 * var(--unit-fx));
 }
 
 .claim + .claim {
@@ -122,11 +219,210 @@
   padding-top: calc(6 * var(--unit-fx));
 }
 
-/* ---- Where we are -------------------------------------------------------- */
+/* ---- Traction ------------------------------------------------------------ */
+
+.traction {
+  padding-block: calc(150 * var(--unit-fx));
+  background: var(--ds-surface);
+}
+
+.chartWrap {
+  margin-bottom: calc(80 * var(--unit-fx));
+}
+
+.chart {
+  width: 100%;
+}
+
+.chartSvg {
+  display: block;
+  width: 100%;
+  height: calc(320 * var(--unit-fx));
+  min-height: 200px;
+  overflow: visible;
+}
+
+.chartAxis {
+  stroke: var(--ds-text-soft);
+  stroke-width: 1;
+  opacity: 0.4;
+  vector-effect: non-scaling-stroke;
+}
+
+.chartRule {
+  stroke: var(--ds-text-soft);
+  stroke-width: 1;
+  stroke-dasharray: 2 5;
+  opacity: 0.25;
+  vector-effect: non-scaling-stroke;
+}
+
+.chartLine {
+  fill: none;
+  stroke: var(--sahel);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 1.5s var(--ease-out);
+}
+
+.chartLineIn {
+  stroke-dashoffset: 0;
+}
+
+.chartArea {
+  fill: var(--sahel);
+  opacity: 0;
+  transition: opacity 1.1s var(--ease-out) 0.4s;
+}
+
+.chartAreaIn {
+  opacity: 0.1;
+}
+
+.chartDot {
+  fill: var(--sahel);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-out);
+  vector-effect: non-scaling-stroke;
+}
+
+.chartDotIn {
+  opacity: 1;
+}
+
+/* The most recent month is the one being pointed at. */
+.chartDotLast {
+  stroke: var(--paper);
+  stroke-width: 3;
+}
+
+.chartLabels {
+  display: flex;
+  justify-content: space-between;
+  margin: calc(14 * var(--unit-fx)) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chartLabel {
+  color: var(--ds-text-soft);
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+}
+
+.chartNote {
+  margin: calc(22 * var(--unit-fx)) 0 0;
+  color: var(--ds-text-soft);
+}
+
+.usageRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: calc(20 * var(--unit-fx));
+  padding-top: calc(60 * var(--unit-fx));
+  border-top: 1px solid var(--rule-soft);
+}
+
+.usageValue {
+  margin: 0 0 calc(12 * var(--unit-fx));
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(44 * var(--unit-fx-type));
+  font-weight: 450;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.usageLabel {
+  margin: 0 0 calc(8 * var(--unit-fx));
+}
+
+/* ---- Where it is used ---------------------------------------------------- */
+
+/* The page's dark band, and the break between the argument and the evidence. */
+.sectors {
+  position: relative;
+  isolation: isolate;
+  padding-block: calc(150 * var(--unit-fx));
+  overflow: hidden;
+  color: var(--paper);
+}
+
+.sectorsMedia {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.sectorsImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 40%;
+}
+
+.sectorsMedia::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(18, 20, 22, 0.84),
+    rgba(18, 20, 22, 0.7) 45%,
+    rgba(18, 20, 22, 0.86) 100%
+  );
+}
+
+.sectors .kicker {
+  color: rgba(255, 250, 241, 0.66);
+}
+
+.sectors .blockTitle {
+  color: var(--paper);
+}
+
+.sectorList {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: calc(2 * var(--unit-fx));
+}
+
+/* Ruled cells rather than cards, so the band stays photographic. */
+.sector {
+  padding: calc(38 * var(--unit-fx)) calc(34 * var(--unit-fx));
+  border: 1px solid rgba(255, 250, 241, 0.14);
+  background: rgba(255, 250, 241, 0.05);
+  backdrop-filter: blur(calc(8 * var(--unit-fx)));
+}
+
+.sectorNum {
+  display: block;
+  margin-bottom: calc(18 * var(--unit-fx));
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  font-size: calc(13 * var(--unit-fx-type));
+  letter-spacing: 0.08em;
+  color: var(--sahel);
+}
+
+.sectorName {
+  margin: 0 0 calc(12 * var(--unit-fx));
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 450;
+  letter-spacing: -0.01em;
+  color: var(--paper);
+}
+
+.sectorBody {
+  margin: 0;
+  color: rgba(255, 250, 241, 0.72);
+}
+
+/* ---- What has shipped ---------------------------------------------------- */
 
 .built {
-  padding-block: calc(160 * var(--unit-fx));
-  background: var(--ds-surface);
+  padding-block: calc(150 * var(--unit-fx));
 }
 
 .builtGrid {
@@ -141,7 +437,7 @@
   gap: calc(14 * var(--unit-fx));
   padding: calc(34 * var(--unit-fx)) calc(32 * var(--unit-fx));
   border-radius: calc(5 * var(--unit-fx));
-  background: var(--paper);
+  background: var(--ds-surface);
   color: inherit;
   text-decoration: none;
   transition: background-color 0.4s var(--ease-out);
@@ -175,40 +471,11 @@
   color: var(--ds-text);
 }
 
-.position {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: calc(20 * var(--unit-fx));
-  margin-top: calc(80 * var(--unit-fx));
-  padding-top: calc(60 * var(--unit-fx));
-  border-top: 1px solid var(--rule-soft);
-}
+/* ---- The round ----------------------------------------------------------- */
 
-.statValue {
-  margin: 0 0 calc(14 * var(--unit-fx));
-  font-family: var(--font-serif), Georgia, serif;
-  font-size: calc(64 * var(--unit-fx-type));
-  font-weight: 450;
-  line-height: 1;
-  letter-spacing: -0.02em;
-}
-
-.statLabel {
-  margin: 0 0 calc(8 * var(--unit-fx));
-}
-
-.statNote {
-  margin: 0;
-  font-family: var(--font-mono-ui), ui-monospace, monospace;
-  font-size: 12px;
-  line-height: 1.4;
-  color: var(--ds-text-soft);
-}
-
-/* ---- What the work needs ------------------------------------------------- */
-
-.priorities {
-  padding-block: calc(160 * var(--unit-fx));
+.round {
+  padding-block: calc(150 * var(--unit-fx));
+  background: var(--ds-surface);
 }
 
 .rows {
@@ -216,16 +483,31 @@
   flex-direction: column;
 }
 
+/* Share, heading, body — three columns, so the allocation reads down the left
+   edge without needing a pie chart to say it. */
 .row {
   display: grid;
-  grid-template-columns: calc(var(--col24) * 7 + var(--gutter24) * 6) 1fr;
+  grid-template-columns:
+    calc(var(--col24) * 2 + var(--gutter24))
+    calc(var(--col24) * 6 + var(--gutter24) * 5)
+    1fr;
   gap: calc(40 * var(--unit-fx));
-  padding-block: calc(40 * var(--unit-fx));
+  padding-block: calc(38 * var(--unit-fx));
   border-top: 1px solid var(--rule-soft);
+  align-items: baseline;
 }
 
 .row:last-child {
   border-bottom: 1px solid var(--rule-soft);
+}
+
+.rowShare {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(30 * var(--unit-fx-type));
+  font-weight: 450;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ds-accent);
 }
 
 .rowTitle {
@@ -237,35 +519,103 @@
 
 .rowBody {
   margin: 0;
-  max-width: calc(var(--col24) * 12 + var(--gutter24) * 11);
   color: var(--ds-text-soft);
 }
 
 /* ---- Talk to us ---------------------------------------------------------- */
 
 .contact {
-  padding-block: calc(180 * var(--unit-fx)) calc(240 * var(--unit-fx));
-  background: var(--ds-surface-2);
+  position: relative;
+  isolation: isolate;
+  padding-block: calc(170 * var(--unit-fx)) calc(190 * var(--unit-fx));
+  overflow: hidden;
+  color: var(--paper);
+}
+
+.contactMedia {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.contactImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 30%;
+}
+
+.contactMedia::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(16, 26, 26, 0.8),
+    rgba(16, 26, 26, 0.62) 40%,
+    rgba(16, 26, 26, 0.84) 100%
+  );
 }
 
 .contactInner {
-  width: calc(var(--col24) * 13 + var(--gutter24) * 12);
+  width: calc(var(--col24) * 18 + var(--gutter24) * 17);
   max-width: 100%;
   margin-inline: auto;
   text-align: center;
 }
 
 .contactTitle {
-  margin: 0 0 calc(24 * var(--unit-fx));
+  margin: 0 0 calc(20 * var(--unit-fx));
+  color: var(--paper);
 }
 
 .contactLede {
   margin: 0;
-  color: var(--ds-text-soft);
+  color: rgba(255, 250, 241, 0.78);
+}
+
+/* Everything needed to act, in one row, without hunting for it. */
+.contactGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: calc(20 * var(--unit-fx));
+  margin-top: calc(70 * var(--unit-fx));
+  padding-block: calc(44 * var(--unit-fx));
+  border-top: 1px solid rgba(255, 250, 241, 0.2);
+  border-bottom: 1px solid rgba(255, 250, 241, 0.2);
+  text-align: left;
+}
+
+.contactItem {
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 * var(--unit-fx));
+}
+
+.contactLabel {
+  color: rgba(255, 250, 241, 0.55);
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  letter-spacing: 0.06em;
+}
+
+.contactValue {
+  color: var(--paper);
+  text-decoration: none;
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 450;
+  letter-spacing: -0.01em;
+}
+
+a.contactValue:hover {
+  text-decoration: underline;
+}
+
+.contactSub {
+  color: rgba(255, 250, 241, 0.55);
 }
 
 .contactCta {
-  margin-top: calc(44 * var(--unit-fx));
+  margin-top: calc(50 * var(--unit-fx));
   display: flex;
   justify-content: center;
 }
@@ -275,28 +625,44 @@
    ========================================================================== */
 
 @media (max-width: 1100px) {
-  .position {
+  .headlineRow,
+  .usageRow {
     grid-template-columns: repeat(2, 1fr);
+    gap: calc(40 * var(--unit-fx)) calc(20 * var(--unit-fx));
+  }
+  /* The rules only make sense across a single row. */
+  .figure + .figure {
+    padding-left: 0;
+    border-left: 0;
   }
   .claimBody {
     grid-template-columns: 1fr;
     gap: calc(20 * var(--unit-fx));
   }
+  .row {
+    grid-template-columns: calc(var(--col24) * 3) 1fr;
+    row-gap: calc(14 * var(--unit-fx));
+  }
+  .rowBody {
+    grid-column: 2;
+  }
 }
 
 @media (max-width: 900px) {
-  .builtGrid {
+  .builtGrid,
+  .sectorList,
+  .contactGrid {
     grid-template-columns: 1fr;
   }
-  .row {
-    grid-template-columns: 1fr;
-    gap: calc(14 * var(--unit-fx));
+  .contactGrid {
+    gap: calc(30 * var(--unit-fx));
   }
 }
 
 @media (max-width: 600px) {
   .hero {
-    padding-block: calc(140 * var(--unit-fx)) calc(90 * var(--unit-fx));
+    min-height: 78vh;
+    padding-block: calc(140 * var(--unit-fx)) calc(80 * var(--unit-fx));
   }
   .heroTitle {
     font-size: calc(40 * var(--unit-fx-type));
@@ -304,30 +670,56 @@
   .heroInner {
     width: 100%;
   }
+  .heroCta {
+    gap: calc(22 * var(--unit-fx));
+  }
+
+  .headline {
+    padding-block: calc(70 * var(--unit-fx));
+  }
+  .headlineRow,
+  .usageRow {
+    grid-template-columns: 1fr;
+  }
+  .figureValue {
+    font-size: calc(44 * var(--unit-fx-type));
+  }
 
   .thesis,
+  .traction,
+  .sectors,
   .built,
-  .priorities {
+  .round {
     padding-block: calc(90 * var(--unit-fx));
   }
   .contact {
-    padding-block: calc(100 * var(--unit-fx)) calc(120 * var(--unit-fx));
+    padding-block: calc(100 * var(--unit-fx)) calc(110 * var(--unit-fx));
   }
 
   /* The number moves above the claim rather than beside it. */
   .claim {
     grid-template-columns: 1fr;
     gap: calc(16 * var(--unit-fx));
-    padding-block: calc(40 * var(--unit-fx));
+    padding-block: calc(38 * var(--unit-fx));
   }
   .claimNum {
     padding-top: 0;
   }
 
-  .position {
+  .row {
     grid-template-columns: 1fr;
+    gap: calc(12 * var(--unit-fx));
   }
-  .statValue {
-    font-size: calc(46 * var(--unit-fx-type));
+  .rowBody {
+    grid-column: 1;
+  }
+
+  .sector {
+    padding: calc(28 * var(--unit-fx)) calc(24 * var(--unit-fx));
+  }
+
+  /* Nine labels will not fit; show the ends and let the shape carry it. */
+  .chartLabel:not(:first-child):not(:last-child) {
+    display: none;
   }
 }
