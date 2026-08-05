@@ -96,7 +96,8 @@ export const NAV_PANELS: Record<string, NavPanel> = {
       {
         title: "nav.product.app.title",
         body: "nav.product.app.body",
-        href: "/playground",
+        /* The app is its own site, not a route on this one. */
+        href: "https://namu-app.com/",
         image: "/namu_app.jpg",
       },
       {
