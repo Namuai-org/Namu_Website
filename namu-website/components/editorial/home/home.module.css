@@ -843,10 +843,10 @@
 
 .portal {
   position: relative;
-  /* Scroll runway. The copy pins for all of it, so this is purely how long the
-     stream of panels lasts — roughly 0.2 viewports per panel. Height rather
-     than padding-top: the sticky child needs a taller parent to travel in. */
-  height: 320vh;
+  /* One viewport for the pinned copy, plus the reference's own runway of 0.3
+     viewports per panel — 2.1 for seven. Height rather than padding-top: the
+     sticky child needs a taller parent to travel in. */
+  height: 310vh;
 }
 
 .portalSlides {

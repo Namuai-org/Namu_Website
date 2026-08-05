@@ -49,29 +49,41 @@ const LAYOUT: Slot[] = [
   { right: -6, bottom: -10, w: 20, ratio: "736 / 920" }, // elephants-crossing
 ];
 
-/* Fixed pixels, not a viewport unit. The depth of the flight should not change
-   with the height of the window — on a short screen a vh-based perspective
-   flattened the whole effect. This is the reference's own value. */
-const PERSPECTIVE = 1800; // px — must match --perspective in the stylesheet
-const Z_START = -2600; // px, far from the camera
-const Z_END = 900; // px, past it
+/* Every number below is the reference's, read off its own scroll handler.
 
-/* How much of a viewport the stream gets as a head start. Without it the
-   flight only begins once the section's top has reached the top of the
-   screen, which left the first half-screen of the section empty — you arrived
-   to nothing and had to keep scrolling before anything showed up. */
-const LEAD_IN = 0.45;
+   Two of them I had previously "corrected" and should not have: the
+   perspective really is a viewport unit, and the depth really is in vh. What
+   was actually different was the shape of the curves, not their units. */
+const PERSPECTIVE = 250; // dvh — must match the stylesheet
+const Z_START = -300; // vh, far from the camera
+const Z_END = 50; // vh, past it
 
-/* Progress at which the copy starts revealing. The section pins at roughly
-   0.17, so this lands the reveal just after the copy settles into the middle
-   of the screen rather than while it is still rising into place. */
-const REVEAL_AT = 0.2;
+/* Each panel flies for exactly one viewport of scrolling, and each starts a
+   fifth of a viewport after the one before. Absolute, not a share of the
+   section: with a share, adding a panel silently re-times every other one. */
+const FLIGHT = 1;
+const STAGGER = 0.2;
+/* Scroll runway per panel. Seven panels give 2.1 viewports. */
+const RUNWAY_PER_PANEL = 0.3;
+/* The flight starts half a viewport before the section reaches the top. */
+const LEAD_IN = 0.5;
+
+/* Opacity is piecewise linear, and the ramp takes the whole first half of the
+   flight. Ours reached full opacity by 30% on an eased curve, which is what
+   made panels appear to pop in rather than swim up. */
+const FADE_IN_UNTIL = 0.5;
+const HOLD_UNTIL = 0.82;
+
+/* Sharp only as the panel crosses the focal plane, at the middle of its
+   flight. 14px is the reference's maximum. */
+const MAX_BLUR = 14;
 
 export function Portal({ images }: { images: PortalImage[] }) {
   const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const slidesRef = useRef<HTMLDivElement>(null);
   const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const contentRef = useRef<HTMLDivElement>(null);
   const [copyIn, setCopyIn] = useState(false);
 
   /* Resolve the vmax offsets to pixels once per viewport. Declarative now, so
@@ -107,20 +119,20 @@ export function Portal({ images }: { images: PortalImage[] }) {
     };
   }, [place]);
 
-  useRafScroll((scrollY, viewportH) => {
+  useRafScroll((scrollY, viewportH, smoothY) => {
     const section = sectionRef.current;
     if (!section) return;
     if (window.innerWidth <= 900) return;
 
     const rect = section.getBoundingClientRect();
     const top = rect.top + scrollY;
-    const runway = section.offsetHeight - viewportH;
-    if (runway <= 0) return;
 
-    // Progress starts LEAD_IN viewports before the section reaches the top of
-    // the screen, so panels are already streaming by the time you arrive.
-    const lead = viewportH * LEAD_IN;
-    const p = clamp((scrollY - (top - lead)) / (runway + lead));
+    /* Driven from the eased scroll position, not the raw one. A wheel notch
+       moves scrollY in a single jump; reading it directly is what made the
+       flight step rather than glide. */
+    const y = smoothY;
+    const start = top - viewportH * LEAD_IN;
+    const runway = viewportH * RUNWAY_PER_PANEL * LAYOUT.length;
 
     // The panel layer is position:fixed, so it would otherwise keep painting
     // over every section below. Park it once the section is behind us.
@@ -134,23 +146,20 @@ export function Portal({ images }: { images: PortalImage[] }) {
     slideRefs.current.forEach((el, i) => {
       if (!el) return;
 
-      // Each panel starts a fraction later than the one before it, so they
-      // arrive as a stream rather than all at once. Dividing by the full
-      // remaining range matters: every panel must still reach 1 by the end,
-      // or the last ones stay on screen over the sections below.
-      const stagger = (i / LAYOUT.length) * 0.55;
-      const local = clamp((p - stagger) / (1 - stagger));
+      // Absolute timing: panel i starts i * STAGGER viewports in, and flies
+      // for FLIGHT viewports, whatever the section's total height.
+      const local = clamp(
+        (y - start - i * viewportH * STAGGER) / (viewportH * FLIGHT),
+      );
 
       const z = Z_START + (Z_END - Z_START) * local;
 
-      // One curve for every panel. The founders used to get their own, faster
-      // ramp and longer hold; the reference marks a portrait out by giving it
-      // a wider slot instead, which it does here too, and one curve means the
-      // stream reads as a single flight rather than two overlapping ones.
       let opacity: number;
-      if (local < 0.3) opacity = Math.pow(local / 0.3, 1.25);
-      else if (local < 0.86) opacity = 1;
-      else opacity = clamp(1 - (local - 0.86) / 0.14);
+      if (local <= FADE_IN_UNTIL) opacity = local / FADE_IN_UNTIL;
+      else if (local >= HOLD_UNTIL)
+        opacity = 1 - (local - HOLD_UNTIL) / (1 - HOLD_UNTIL);
+      else opacity = 1;
+      opacity = clamp(opacity);
 
       // A fully transparent panel still costs a composited, blurred layer.
       // Taking it out of the render tree entirely is what keeps seven of
@@ -169,21 +178,35 @@ export function Portal({ images }: { images: PortalImage[] }) {
       el.style.visibility = "visible";
       el.style.willChange = "transform, opacity, filter";
 
-      // Depth of field: sharp only as the panel crosses the focal plane.
-      const blur = 8 * Math.abs(local * 2 - 1);
+      // Zero at the focal plane, full at both ends of the flight.
+      const blur = MAX_BLUR * Math.min(1, Math.abs(local - 0.5) / 0.5);
 
-      el.style.transform = `translate3d(0, 0, ${z.toFixed(1)}px)`;
+      el.style.transform = `translate3d(0, 0, ${z.toFixed(2)}vh)`;
       el.style.opacity = opacity.toFixed(3);
-      el.style.filter = `blur(${blur.toFixed(2)}px)`;
+      el.style.filter = blur === 0 ? "none" : `blur(${blur.toFixed(2)}px)`;
     });
 
-    // Reveal the copy just after the section pins, and latch it. This used to
-    // ramp the whole block's opacity with scroll, which meant the line-by-line
-    // reveal underneath ran — and finished — while the block was still at zero
-    // opacity. You never saw it: the text simply faded up already settled.
-    // Driving the reveal itself means the lines rise into place on screen, the
-    // way every other headline on the site does.
-    if (p > REVEAL_AT) setCopyIn((v) => v || true);
+    /* The copy rises in over the first half viewport, holds, then goes back
+       out as the last panels pass — it does not simply latch on and stay. */
+    const travelled = y - top;
+    let copyOpacity: number;
+    const fadeOutFrom = runway - viewportH * 0.75;
+    if (travelled < fadeOutFrom) {
+      const raw = clamp(travelled / (viewportH * 0.5));
+      copyOpacity = raw * raw * (3 - 2 * raw);
+    } else {
+      copyOpacity = 1 - clamp((travelled - fadeOutFrom) / (viewportH * 0.25));
+    }
+
+    const content = contentRef.current;
+    if (content) {
+      content.style.opacity = copyOpacity.toFixed(3);
+      content.style.pointerEvents = copyOpacity > 0 ? "auto" : "none";
+    }
+
+    // Latched separately: the line-by-line reveal should run once, on the way
+    // in, and not replay if the copy fades back up.
+    if (copyOpacity > 0.05) setCopyIn((v) => v || true);
   });
 
   return (
@@ -192,7 +215,7 @@ export function Portal({ images }: { images: PortalImage[] }) {
         ref={slidesRef}
         className={styles.portalSlides}
         aria-hidden="true"
-        style={{ perspective: `${PERSPECTIVE}px` }}
+        style={{ perspective: `${PERSPECTIVE}dvh` }}
       >
         {/* left/top/width come from place(); only the ratio is declarative,
             so height always follows the file rather than a guessed box. */}
@@ -217,10 +240,7 @@ export function Portal({ images }: { images: PortalImage[] }) {
           was what made it feel like a second frame landing on top of the
           flight rather than the thing the flight is happening around. */}
       <div className={styles.portalStick}>
-        <div
-          className={styles.portalContent}
-          style={{ pointerEvents: copyIn ? "auto" : "none" }}
-        >
+        <div ref={contentRef} className={styles.portalContent}>
           {/* `scroll-object` for the [data-fade] rule, but `in-view` comes from
               scroll progress rather than an observer: this block is pinned on
               screen for the whole section, so an observer fires immediately. */}
