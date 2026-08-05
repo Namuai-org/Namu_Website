@@ -147,7 +147,7 @@ export function NamuInterpretPage() {
               <SplitText
                 immediate
                 delay={0.2}
-                text="Hausa and French, carried both ways in speech, fast enough to keep a conversation going."
+                text="Speech translation between Hausa and French, in both directions, fast enough to hold a conversation."
               />
             </p>
 
@@ -180,7 +180,7 @@ export function NamuInterpretPage() {
               >
                 <SplitText
                   delay={0.2}
-                  text="Most translation tools hand you a finished paragraph. An interpreter has to work while someone is still talking, and hand it over before the moment passes."
+                  text="Namu-Interpret carries speech between Hausa and French while the speaker is still talking, with low latency in both directions."
                 />
               </p>
             </ScrollObject>
@@ -197,7 +197,7 @@ export function NamuInterpretPage() {
           <div className="ds-container ds-outer">
             <ScrollObject className={styles.blockHead}>
               <h3 className={`h4 ${styles.blockTitle}`}>
-                <SplitText text="One model, both ways" />
+                <SplitText text="Two-way interpretation" />
               </h3>
               <p
                 className={`text-large ds-span ${styles.blockLede}`}
@@ -205,7 +205,7 @@ export function NamuInterpretPage() {
               >
                 <SplitText
                   delay={0.2}
-                  text="A real conversation does not run in one direction. Here is a single call, with Hausa on the left and French on the right, and every turn crossing the middle."
+                  text="One model handles both directions of a conversation, with Hausa on one side and French on the other."
                 />
               </p>
             </ScrollObject>
@@ -219,7 +219,7 @@ export function NamuInterpretPage() {
           <div className="ds-container ds-outer">
             <ScrollObject className={styles.blockHead}>
               <h3 className={`h4 ${styles.blockTitle}`}>
-                <SplitText text="The words are the easy part" />
+                <SplitText text="Meaning over word order" />
               </h3>
               <p
                 className={`text-large ds-span ${styles.blockLede}`}
@@ -227,7 +227,7 @@ export function NamuInterpretPage() {
               >
                 <SplitText
                   delay={0.2}
-                  text="Swap them one at a time and you get a sentence that sounds perfectly fine. That is the problem. Nobody thinks to check it."
+                  text="Numbers, place names, greetings and negation carried across correctly, where a word-for-word reading would not be."
                 />
               </p>
             </ScrollObject>
@@ -290,7 +290,7 @@ export function NamuInterpretPage() {
                 <SplitText text="Using the model" />
               </h2>
               <p className={`h4 ${styles.usingTitle}`}>
-                <SplitText delay={0.2} text="Just talk. It keeps up." />
+                <SplitText delay={0.2} text="Live and on-demand interpretation." />
               </p>
               <p
                 className={`text-regular ds-span ${styles.blockLede}`}
@@ -298,7 +298,7 @@ export function NamuInterpretPage() {
               >
                 <SplitText
                   delay={0.3}
-                  text="It hears which language you spoke and answers in the other one. Nothing to switch, nothing to set up, and nobody has to stop halfway through to change it."
+                  text="Namu-Interpret detects which language was spoken and replies in the other, so no one has to set a direction."
                 />
               </p>
             </ScrollObject>
@@ -340,7 +340,7 @@ export function NamuInterpretPage() {
           <div className="ds-container ds-outer">
             <ScrollObject className={styles.sectionHead}>
               <h2 className={`h4 ${styles.sectionTitle}`}>
-                <SplitText text="One sentence proves nothing" />
+                <SplitText text="Accurate across whole conversations" />
               </h2>
               <p
                 className={`text-large ds-span ${styles.sectionLede}`}
@@ -348,7 +348,7 @@ export function NamuInterpretPage() {
               >
                 <SplitText
                   delay={0.2}
-                  text="Anything can get one line right. What counts is whether a long call still holds together at the end, with a price and a date somewhere in the middle of it."
+                  text="Namu-Interpret holds meaning, figures and names across long exchanges, not just across single sentences."
                 />
               </p>
             </ScrollObject>

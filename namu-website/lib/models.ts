@@ -24,5 +24,9 @@ export const MODELS: ModelEntry[] = [
   },
   { key: "home.model.asr", image: "/modim/asr.png", href: "/models/namu-transcribe" },
   { key: "home.model.tts", image: "/modim/tts.png", href: "/models/namu-voice" },
-  { key: "home.model.agent", image: "/modim/voice-agent.png" },
+  {
+    key: "home.model.agent",
+    image: "/modim/voice-agent.png",
+    href: "/models/namu-agent",
+  },
 ];

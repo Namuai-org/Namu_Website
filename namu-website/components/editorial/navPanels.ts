@@ -75,7 +75,7 @@ export const NAV_PANELS: Record<string, NavPanel> = {
       {
         title: "home.model.agent.name",
         body: "home.model.agent.body",
-        href: "/models",
+        href: "/models/namu-agent",
         image: "/modim/voice-agent.png",
       },
     ],
