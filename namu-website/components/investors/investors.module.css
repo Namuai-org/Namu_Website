@@ -1,10 +1,13 @@
 /* ==========================================================================
    Investors
    --------------------------------------------------------------------------
-   Built to be scanned before it is read. The numbers sit directly under the
-   headline, the case is a ruled document rather than a set of cards, and the
-   two photographic sections are placed to break the page into thirds: one at
-   the top, one at the sectors, one at the close.
+   Built at the scale of the model pages rather than as a quiet document: a
+   full-height hero at the image's own strength, one statement per section at
+   display size, figures that count themselves up, and a signature moment in
+   the middle where the coverage draws itself in.
+
+   Almost no body copy. Every claim is a headline with at most one sentence
+   under it — an investor scans, and the earlier version asked them to read.
    ========================================================================== */
 
 /* ---- Hero ---------------------------------------------------------------- */
@@ -13,10 +16,9 @@
   position: relative;
   isolation: isolate;
   display: flex;
-  align-items: flex-end;
-  min-height: 88vh;
+  align-items: center;
+  min-height: 100vh;
   overflow: hidden;
-  padding-block: calc(180 * var(--unit-fx)) calc(120 * var(--unit-fx));
   color: var(--paper);
 }
 
@@ -31,51 +33,49 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* A tall frame whose interest is the lower third; anchoring low keeps the
-     branch and drops the empty sky the copy would otherwise sit on. */
-  object-position: 50% 78%;
+  object-position: 50% 72%;
 }
 
-/* Heavier at the foot, where the copy sits, and light across the sky so the
-   teal survives. */
+/* Only as dark as the copy needs. The teal is the reason to use this frame,
+   so the wash sits on the lower half and lets the sky through. */
 .heroMedia::after {
   content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(
     to bottom,
-    rgba(14, 26, 30, 0.34),
-    rgba(14, 26, 30, 0.5) 46%,
-    rgba(14, 26, 30, 0.82) 100%
+    rgba(14, 26, 30, 0.18),
+    rgba(14, 26, 30, 0.34) 42%,
+    rgba(14, 26, 30, 0.74) 100%
   );
 }
 
 .heroInner {
-  width: calc(var(--col24) * 16 + var(--gutter24) * 15);
+  width: calc(var(--col24) * 15 + var(--gutter24) * 14);
   max-width: 100%;
 }
 
 .heroEyebrow {
-  margin: 0 0 calc(26 * var(--unit-fx));
+  margin: 0 0 calc(28 * var(--unit-fx));
   color: var(--sahel);
   font-family: var(--font-mono-ui), ui-monospace, monospace;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
 .heroTitle {
   margin: 0;
   font-family: var(--font-serif), Georgia, serif;
-  font-size: calc(72 * var(--unit-fx-type));
+  font-size: calc(96 * var(--unit-fx-type));
   font-weight: 450;
-  line-height: 1.02;
-  letter-spacing: -0.03em;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
 }
 
 .heroLede {
-  margin: calc(30 * var(--unit-fx)) 0 0;
-  max-width: calc(var(--col24) * 11 + var(--gutter24) * 10);
-  color: rgba(255, 250, 241, 0.8);
+  margin: calc(32 * var(--unit-fx)) 0 0;
+  max-width: calc(var(--col24) * 10 + var(--gutter24) * 9);
+  color: rgba(255, 250, 241, 0.82);
 }
 
 .heroCta {
@@ -83,7 +83,7 @@
   align-items: center;
   gap: calc(34 * var(--unit-fx));
   flex-wrap: wrap;
-  margin-top: calc(44 * var(--unit-fx));
+  margin-top: calc(48 * var(--unit-fx));
 }
 
 .heroSecondary {
@@ -103,74 +103,52 @@
   min-width: 10px;
 }
 
+/* ---- Display heading used by every section ------------------------------- */
+
+.bigTitle {
+  margin: 0;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(56 * var(--unit-fx-type));
+  font-weight: 450;
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+}
+
 /* ---- Headline numbers ---------------------------------------------------- */
 
-/* Directly under the hero, because it is the first thing an investor looks
-   for and the last thing they should have to hunt for. */
 .headline {
-  padding-block: calc(90 * var(--unit-fx));
-  background: var(--ds-surface);
+  padding-block: calc(150 * var(--unit-fx));
 }
 
 .headlineRow {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: calc(20 * var(--unit-fx));
-}
-
-.figure {
-  padding-right: calc(20 * var(--unit-fx));
-}
-
-.figure + .figure {
-  padding-left: calc(30 * var(--unit-fx));
-  border-left: 1px solid var(--rule-soft);
+  gap: calc(30 * var(--unit-fx));
 }
 
 .figureValue {
-  margin: 0 0 calc(14 * var(--unit-fx));
+  margin: 0 0 calc(20 * var(--unit-fx));
   font-family: var(--font-serif), Georgia, serif;
-  font-size: calc(58 * var(--unit-fx-type));
+  font-size: calc(92 * var(--unit-fx-type));
   font-weight: 450;
-  line-height: 1;
-  letter-spacing: -0.02em;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  /* Counting digits change width; tabular figures stop the label jittering. */
+  font-variant-numeric: tabular-nums;
+  color: var(--ds-text);
 }
 
 .figureLabel {
-  margin: 0 0 calc(8 * var(--unit-fx));
-}
-
-.figureNote {
   margin: 0;
-  font-family: var(--font-mono-ui), ui-monospace, monospace;
-  font-size: 12px;
-  line-height: 1.45;
+  padding-top: calc(18 * var(--unit-fx));
+  border-top: 1px solid var(--rule-soft);
   color: var(--ds-text-soft);
-}
-
-/* ---- Shared furniture ---------------------------------------------------- */
-
-.blockHead {
-  margin-bottom: calc(70 * var(--unit-fx));
-}
-
-.kicker {
-  margin: 0;
-  color: var(--ds-text-soft);
-  font-family: var(--font-mono-ui), ui-monospace, monospace;
-  letter-spacing: 0.06em;
-}
-
-.blockTitle {
-  margin: calc(18 * var(--unit-fx)) 0 0;
-  max-width: calc(var(--col24) * 13 + var(--gutter24) * 12);
-  line-height: 1.15;
 }
 
 /* ---- The case ------------------------------------------------------------ */
 
 .thesis {
-  padding-block: calc(150 * var(--unit-fx));
+  padding-block: 0 calc(150 * var(--unit-fx));
 }
 
 .claims {
@@ -178,56 +156,161 @@
   flex-direction: column;
 }
 
-/* A number in the margin and the claim beside it, ruled off from the next.
-   Reads as a document rather than a set of cards, which is the register this
-   page wants. */
+/* One claim per row at display size, with its evidence in a single line
+   beside it. No paragraphs. */
 .claim {
   display: grid;
-  grid-template-columns: calc(var(--col24) * 2 + var(--gutter24)) 1fr;
+  grid-template-columns:
+    calc(var(--col24) * 2)
+    calc(var(--col24) * 11 + var(--gutter24) * 10)
+    1fr;
   gap: calc(40 * var(--unit-fx));
-  padding-block: calc(54 * var(--unit-fx));
+  align-items: start;
+  padding-block: calc(60 * var(--unit-fx));
+  border-top: 1px solid var(--rule-soft);
 }
 
-.claim + .claim {
-  border-top: 1px solid var(--rule-soft);
+.claims .claim:last-child {
+  border-bottom: 1px solid var(--rule-soft);
 }
 
 .claimNum {
   font-family: var(--font-mono-ui), ui-monospace, monospace;
   font-size: calc(14 * var(--unit-fx-type));
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   color: var(--ds-accent);
-  padding-top: calc(10 * var(--unit-fx));
-}
-
-.claimBody {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: calc(40 * var(--unit-fx));
-  align-items: start;
+  padding-top: calc(14 * var(--unit-fx));
 }
 
 .claimTitle {
   margin: 0;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(40 * var(--unit-fx-type));
+  font-weight: 450;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
 }
 
 .claimText {
   margin: 0;
+  padding-top: calc(10 * var(--unit-fx));
   color: var(--ds-text-soft);
-  padding-top: calc(6 * var(--unit-fx));
+}
+
+/* ---- Reach --------------------------------------------------------------- */
+
+/* The signature. Dark, full-bleed, and the only place on the page where
+   something is drawn rather than laid out. */
+.reach {
+  position: relative;
+  isolation: isolate;
+  padding-block: calc(150 * var(--unit-fx));
+  overflow: hidden;
+  color: var(--paper);
+}
+
+.reachMedia {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.reachImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 45%;
+}
+
+.reachMedia::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(18, 20, 22, 0.8),
+    rgba(18, 20, 22, 0.66) 45%,
+    rgba(18, 20, 22, 0.84) 100%
+  );
+}
+
+.reachHead {
+  width: calc(var(--col24) * 13 + var(--gutter24) * 12);
+  max-width: 100%;
+  margin-bottom: calc(80 * var(--unit-fx));
+}
+
+.reach .bigTitle {
+  color: var(--paper);
+}
+
+.map {
+  width: 100%;
+}
+
+.mapSvg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.mapRoute {
+  fill: none;
+  stroke: var(--sahel);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0.85;
+  transition: stroke-dashoffset 2.2s var(--ease-out);
+}
+
+.mapRouteIn {
+  stroke-dashoffset: 0;
+}
+
+.mapPlace {
+  opacity: 0;
+  transition: opacity 0.6s var(--ease-out);
+}
+
+.mapPlaceIn {
+  opacity: 1;
+}
+
+.mapDot {
+  fill: var(--paper);
+}
+
+/* A ring rather than another colour: it is the same kind of place, it is just
+   where the work is done from. */
+.mapHome {
+  fill: none;
+  stroke: var(--sahel);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.mapLabel {
+  fill: rgba(255, 250, 241, 0.82);
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  font-size: 13px;
+  letter-spacing: 0.04em;
 }
 
 /* ---- Traction ------------------------------------------------------------ */
 
 .traction {
   padding-block: calc(150 * var(--unit-fx));
-  background: var(--ds-surface);
 }
 
-.chartWrap {
-  margin-bottom: calc(80 * var(--unit-fx));
+.tractionHead {
+  width: calc(var(--col24) * 13 + var(--gutter24) * 12);
+  max-width: 100%;
+  margin-bottom: calc(70 * var(--unit-fx));
 }
 
 .chart {
@@ -237,8 +320,8 @@
 .chartSvg {
   display: block;
   width: 100%;
-  height: calc(320 * var(--unit-fx));
-  min-height: 200px;
+  height: calc(340 * var(--unit-fx));
+  min-height: 210px;
   overflow: visible;
 }
 
@@ -266,7 +349,7 @@
   vector-effect: non-scaling-stroke;
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
-  transition: stroke-dashoffset 1.5s var(--ease-out);
+  transition: stroke-dashoffset 1.6s var(--ease-out);
 }
 
 .chartLineIn {
@@ -294,16 +377,15 @@
   opacity: 1;
 }
 
-/* The most recent month is the one being pointed at. */
 .chartDotLast {
-  stroke: var(--paper);
+  stroke: var(--ds-bg);
   stroke-width: 3;
 }
 
 .chartLabels {
   display: flex;
   justify-content: space-between;
-  margin: calc(14 * var(--unit-fx)) 0 0;
+  margin: calc(16 * var(--unit-fx)) 0 0;
   padding: 0;
   list-style: none;
 }
@@ -313,116 +395,30 @@
   font-family: var(--font-mono-ui), ui-monospace, monospace;
 }
 
-.chartNote {
-  margin: calc(22 * var(--unit-fx)) 0 0;
+/* Sectors as chips, not paragraphs. */
+.sectorRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(12 * var(--unit-fx));
+  margin-top: calc(60 * var(--unit-fx));
+}
+
+.sectorChip {
+  padding: calc(13 * var(--unit-fx)) calc(24 * var(--unit-fx));
+  border-radius: 100px;
+  border: 1px solid var(--rule-soft);
   color: var(--ds-text-soft);
-}
-
-.usageRow {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: calc(20 * var(--unit-fx));
-  padding-top: calc(60 * var(--unit-fx));
-  border-top: 1px solid var(--rule-soft);
-}
-
-.usageValue {
-  margin: 0 0 calc(12 * var(--unit-fx));
-  font-family: var(--font-serif), Georgia, serif;
-  font-size: calc(44 * var(--unit-fx-type));
-  font-weight: 450;
-  line-height: 1;
-  letter-spacing: -0.02em;
-}
-
-.usageLabel {
-  margin: 0 0 calc(8 * var(--unit-fx));
-}
-
-/* ---- Where it is used ---------------------------------------------------- */
-
-/* The page's dark band, and the break between the argument and the evidence. */
-.sectors {
-  position: relative;
-  isolation: isolate;
-  padding-block: calc(150 * var(--unit-fx));
-  overflow: hidden;
-  color: var(--paper);
-}
-
-.sectorsMedia {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-}
-
-.sectorsImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 40%;
-}
-
-.sectorsMedia::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(18, 20, 22, 0.84),
-    rgba(18, 20, 22, 0.7) 45%,
-    rgba(18, 20, 22, 0.86) 100%
-  );
-}
-
-.sectors .kicker {
-  color: rgba(255, 250, 241, 0.66);
-}
-
-.sectors .blockTitle {
-  color: var(--paper);
-}
-
-.sectorList {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: calc(2 * var(--unit-fx));
-}
-
-/* Ruled cells rather than cards, so the band stays photographic. */
-.sector {
-  padding: calc(38 * var(--unit-fx)) calc(34 * var(--unit-fx));
-  border: 1px solid rgba(255, 250, 241, 0.14);
-  background: rgba(255, 250, 241, 0.05);
-  backdrop-filter: blur(calc(8 * var(--unit-fx)));
-}
-
-.sectorNum {
-  display: block;
-  margin-bottom: calc(18 * var(--unit-fx));
-  font-family: var(--font-mono-ui), ui-monospace, monospace;
-  font-size: calc(13 * var(--unit-fx-type));
-  letter-spacing: 0.08em;
-  color: var(--sahel);
-}
-
-.sectorName {
-  margin: 0 0 calc(12 * var(--unit-fx));
-  font-family: var(--font-serif), Georgia, serif;
-  font-weight: 450;
-  letter-spacing: -0.01em;
-  color: var(--paper);
-}
-
-.sectorBody {
-  margin: 0;
-  color: rgba(255, 250, 241, 0.72);
 }
 
 /* ---- What has shipped ---------------------------------------------------- */
 
 .built {
   padding-block: calc(150 * var(--unit-fx));
+  background: var(--ds-surface);
+}
+
+.builtHead {
+  margin-bottom: calc(70 * var(--unit-fx));
 }
 
 .builtGrid {
@@ -433,11 +429,12 @@
 
 .builtCard {
   display: flex;
-  flex-direction: column;
-  gap: calc(14 * var(--unit-fx));
-  padding: calc(34 * var(--unit-fx)) calc(32 * var(--unit-fx));
+  align-items: center;
+  gap: calc(24 * var(--unit-fx));
+  height: 100%;
+  padding: calc(40 * var(--unit-fx)) calc(36 * var(--unit-fx));
   border-radius: calc(5 * var(--unit-fx));
-  background: var(--ds-surface);
+  background: var(--paper);
   color: inherit;
   text-decoration: none;
   transition: background-color 0.4s var(--ease-out);
@@ -448,34 +445,38 @@
 }
 
 .builtName {
+  flex: 0 0 auto;
   font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(30 * var(--unit-fx-type));
   font-weight: 450;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
 
 .builtBody {
-  color: var(--ds-text-soft);
   flex: 1 1 auto;
-}
-
-.builtLink {
-  display: inline-flex;
-  align-items: center;
-  gap: calc(9 * var(--unit-fx));
-  margin-top: calc(14 * var(--unit-fx));
   color: var(--ds-text-soft);
-  transition: color 0.4s var(--ease-out);
 }
 
-.builtCard:hover .builtLink {
-  color: var(--ds-text);
+.builtArrow {
+  flex: 0 0 auto;
+  width: calc(14 * var(--unit-fx));
+  min-width: 11px;
+  opacity: 0;
+  transition: opacity 0.35s var(--ease-out);
+}
+
+.builtCard:hover .builtArrow {
+  opacity: 1;
 }
 
 /* ---- The round ----------------------------------------------------------- */
 
 .round {
   padding-block: calc(150 * var(--unit-fx));
-  background: var(--ds-surface);
+}
+
+.roundHead {
+  margin-bottom: calc(60 * var(--unit-fx));
 }
 
 .rows {
@@ -483,43 +484,58 @@
   flex-direction: column;
 }
 
-/* Share, heading, body — three columns, so the allocation reads down the left
-   edge without needing a pie chart to say it. */
 .row {
   display: grid;
   grid-template-columns:
-    calc(var(--col24) * 2 + var(--gutter24))
-    calc(var(--col24) * 6 + var(--gutter24) * 5)
+    calc(var(--col24) * 3)
+    calc(var(--col24) * 9 + var(--gutter24) * 8)
     1fr;
   gap: calc(40 * var(--unit-fx));
-  padding-block: calc(38 * var(--unit-fx));
+  align-items: center;
+  padding-block: calc(34 * var(--unit-fx));
   border-top: 1px solid var(--rule-soft);
-  align-items: baseline;
 }
 
-.row:last-child {
+.rows .row:last-child {
   border-bottom: 1px solid var(--rule-soft);
 }
 
 .rowShare {
   font-family: var(--font-serif), Georgia, serif;
-  font-size: calc(30 * var(--unit-fx-type));
+  font-size: calc(42 * var(--unit-fx-type));
   font-weight: 450;
   line-height: 1;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
   color: var(--ds-accent);
 }
 
 .rowTitle {
-  margin: 0;
   font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(24 * var(--unit-fx-type));
   font-weight: 450;
   letter-spacing: -0.01em;
 }
 
-.rowBody {
-  margin: 0;
-  color: var(--ds-text-soft);
+/* The allocation drawn in line, which says what a pie chart would. */
+.rowBar {
+  position: relative;
+  display: block;
+  height: 2px;
+  background: var(--rule-soft);
+}
+
+.rowBarFill {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: 0;
+  background: var(--ds-accent);
+  transition: width 1.3s var(--ease-out);
+}
+
+:global(.in-view) .rowBarFill {
+  width: var(--w);
 }
 
 /* ---- Talk to us ---------------------------------------------------------- */
@@ -527,7 +543,7 @@
 .contact {
   position: relative;
   isolation: isolate;
-  padding-block: calc(170 * var(--unit-fx)) calc(190 * var(--unit-fx));
+  padding-block: calc(170 * var(--unit-fx));
   overflow: hidden;
   color: var(--paper);
 }
@@ -542,7 +558,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 50% 30%;
+  object-position: 50% 34%;
 }
 
 .contactMedia::after {
@@ -551,45 +567,39 @@
   inset: 0;
   background: linear-gradient(
     to bottom,
-    rgba(16, 26, 26, 0.8),
-    rgba(16, 26, 26, 0.62) 40%,
+    rgba(16, 26, 26, 0.72),
+    rgba(16, 26, 26, 0.58) 40%,
     rgba(16, 26, 26, 0.84) 100%
   );
 }
 
 .contactInner {
-  width: calc(var(--col24) * 18 + var(--gutter24) * 17);
-  max-width: 100%;
-  margin-inline: auto;
-  text-align: center;
+  width: 100%;
 }
 
 .contactTitle {
-  margin: 0 0 calc(20 * var(--unit-fx));
+  margin: 0;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(84 * var(--unit-fx-type));
+  font-weight: 450;
+  line-height: 1;
+  letter-spacing: -0.035em;
   color: var(--paper);
 }
 
-.contactLede {
-  margin: 0;
-  color: rgba(255, 250, 241, 0.78);
-}
-
-/* Everything needed to act, in one row, without hunting for it. */
 .contactGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: calc(20 * var(--unit-fx));
-  margin-top: calc(70 * var(--unit-fx));
-  padding-block: calc(44 * var(--unit-fx));
-  border-top: 1px solid rgba(255, 250, 241, 0.2);
-  border-bottom: 1px solid rgba(255, 250, 241, 0.2);
-  text-align: left;
+  gap: calc(30 * var(--unit-fx));
+  margin-top: calc(80 * var(--unit-fx));
+  padding-top: calc(44 * var(--unit-fx));
+  border-top: 1px solid rgba(255, 250, 241, 0.24);
 }
 
 .contactItem {
   display: flex;
   flex-direction: column;
-  gap: calc(8 * var(--unit-fx));
+  gap: calc(10 * var(--unit-fx));
 }
 
 .contactLabel {
@@ -602,8 +612,9 @@
   color: var(--paper);
   text-decoration: none;
   font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(26 * var(--unit-fx-type));
   font-weight: 450;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
 }
 
 a.contactValue:hover {
@@ -615,9 +626,7 @@ a.contactValue:hover {
 }
 
 .contactCta {
-  margin-top: calc(50 * var(--unit-fx));
-  display: flex;
-  justify-content: center;
+  margin-top: calc(60 * var(--unit-fx));
 }
 
 /* ==========================================================================
@@ -625,47 +634,44 @@ a.contactValue:hover {
    ========================================================================== */
 
 @media (max-width: 1100px) {
-  .headlineRow,
-  .usageRow {
+  .headlineRow {
     grid-template-columns: repeat(2, 1fr);
-    gap: calc(40 * var(--unit-fx)) calc(20 * var(--unit-fx));
+    gap: calc(50 * var(--unit-fx)) calc(30 * var(--unit-fx));
   }
-  /* The rules only make sense across a single row. */
-  .figure + .figure {
-    padding-left: 0;
-    border-left: 0;
+  .claim {
+    grid-template-columns: calc(var(--col24) * 2) 1fr;
+    row-gap: calc(18 * var(--unit-fx));
   }
-  .claimBody {
-    grid-template-columns: 1fr;
-    gap: calc(20 * var(--unit-fx));
+  .claimText {
+    grid-column: 2;
+    padding-top: 0;
   }
   .row {
-    grid-template-columns: calc(var(--col24) * 3) 1fr;
-    row-gap: calc(14 * var(--unit-fx));
+    grid-template-columns: calc(var(--col24) * 4) 1fr;
+    row-gap: calc(16 * var(--unit-fx));
   }
-  .rowBody {
-    grid-column: 2;
+  .rowBar {
+    grid-column: 1 / -1;
   }
 }
 
 @media (max-width: 900px) {
   .builtGrid,
-  .sectorList,
   .contactGrid {
     grid-template-columns: 1fr;
   }
   .contactGrid {
-    gap: calc(30 * var(--unit-fx));
+    gap: calc(34 * var(--unit-fx));
+  }
+  /* Nine labels on a narrow map collide; the line still carries the shape. */
+  .mapLabel {
+    display: none;
   }
 }
 
 @media (max-width: 600px) {
-  .hero {
-    min-height: 78vh;
-    padding-block: calc(140 * var(--unit-fx)) calc(80 * var(--unit-fx));
-  }
   .heroTitle {
-    font-size: calc(40 * var(--unit-fx-type));
+    font-size: calc(52 * var(--unit-fx-type));
   }
   .heroInner {
     width: 100%;
@@ -674,51 +680,61 @@ a.contactValue:hover {
     gap: calc(22 * var(--unit-fx));
   }
 
-  .headline {
-    padding-block: calc(70 * var(--unit-fx));
+  .bigTitle {
+    font-size: calc(34 * var(--unit-fx-type));
   }
-  .headlineRow,
-  .usageRow {
-    grid-template-columns: 1fr;
-  }
-  .figureValue {
-    font-size: calc(44 * var(--unit-fx-type));
+  .contactTitle {
+    font-size: calc(46 * var(--unit-fx-type));
   }
 
+  .headline,
   .thesis,
+  .reach,
   .traction,
-  .sectors,
   .built,
-  .round {
+  .round,
+  .contact {
     padding-block: calc(90 * var(--unit-fx));
   }
-  .contact {
-    padding-block: calc(100 * var(--unit-fx)) calc(110 * var(--unit-fx));
+  .thesis {
+    padding-top: 0;
   }
 
-  /* The number moves above the claim rather than beside it. */
+  .headlineRow {
+    grid-template-columns: 1fr;
+    gap: calc(44 * var(--unit-fx));
+  }
+  .figureValue {
+    font-size: calc(64 * var(--unit-fx-type));
+  }
+
   .claim {
     grid-template-columns: 1fr;
-    gap: calc(16 * var(--unit-fx));
-    padding-block: calc(38 * var(--unit-fx));
+    gap: calc(14 * var(--unit-fx));
+    padding-block: calc(40 * var(--unit-fx));
   }
   .claimNum {
     padding-top: 0;
   }
-
-  .row {
-    grid-template-columns: 1fr;
-    gap: calc(12 * var(--unit-fx));
+  .claimTitle {
+    font-size: calc(30 * var(--unit-fx-type));
   }
-  .rowBody {
+  .claimText {
     grid-column: 1;
   }
 
-  .sector {
-    padding: calc(28 * var(--unit-fx)) calc(24 * var(--unit-fx));
+  .row {
+    grid-template-columns: 1fr;
+    gap: calc(10 * var(--unit-fx));
   }
 
-  /* Nine labels will not fit; show the ends and let the shape carry it. */
+  .builtCard {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: calc(10 * var(--unit-fx));
+    padding: calc(30 * var(--unit-fx)) calc(26 * var(--unit-fx));
+  }
+
   .chartLabel:not(:first-child):not(:last-child) {
     display: none;
   }
