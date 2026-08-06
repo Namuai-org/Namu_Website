@@ -6,86 +6,81 @@ import { Footer } from "@/components/editorial/Footer";
 import { ArrowUpRight } from "@/components/editorial/icons";
 import { ScrollObject } from "@/components/editorial/ScrollObject";
 import { SplitText } from "@/components/editorial/SplitText";
+import { CountUp } from "./CountUp";
+import { GrowthChart, type Point } from "./GrowthChart";
+import { ReachMap } from "./ReachMap";
 import styles from "./investors.module.css";
 
-/**
- * The case, laid out as a case.
- *
- * Investors read for the argument, so the middle of this page is three
- * numbered claims rather than a feature tour — each one a sentence you could
- * disagree with, followed by why we think it holds.
- */
+/* ==========================================================================
+   PLACEHOLDER FIGURES
+   --------------------------------------------------------------------------
+   Every number in HEADLINE, VOLUME and ROUND below is invented, at the
+   founder's request, so the page can be designed before the real reporting
+   exists. They are plausible rather than arbitrary, which is exactly what
+   makes them dangerous to forget.
+
+   Replace them before this page is shown to anyone. The figures that are NOT
+   invented are the four shipped models and the eight dialects, both of which
+   the rest of this site already stands behind.
+   ========================================================================== */
+
+const HEADLINE = [
+  { to: 1.2, decimals: 1, suffix: "M", label: "Minutes of Hausa processed" },
+  { to: 34, suffix: "%", label: "Growth, month on month" },
+  { to: 240, suffix: "k", label: "People reached" },
+  { to: 4, label: "Models in production" },
+];
+
+const VOLUME: Point[] = [
+  { label: "Mar", value: 42 },
+  { label: "Apr", value: 58 },
+  { label: "May", value: 71 },
+  { label: "Jun", value: 96 },
+  { label: "Jul", value: 118 },
+  { label: "Aug", value: 149 },
+  { label: "Sep", value: 187 },
+  { label: "Oct", value: 244 },
+  { label: "Nov", value: 312 },
+];
+
+/* One line each. The argument is the headline; the sentence is the evidence. */
 const THESIS = [
   {
-    claim: "The languages most people speak have almost no working speech AI.",
-    body: "Hausa is one of the most widely spoken languages on the continent. The speech systems people meet every day were not built to hear it, and the ones that claim to were measured on an average across dozens of languages rather than on this one.",
+    claim: "Nobody built speech AI for this language.",
+    body: "Hausa is among the most spoken on the continent, and the systems people meet every day were not built to hear it.",
   },
   {
-    claim: "Voice is the interface, not a feature on top of one.",
-    body: "Where typing and literacy are barriers, speech is already how people use a phone. A model that works by voice reaches people no text interface will, on the handset they own rather than the one they would need to buy.",
+    claim: "Voice is the interface, not a feature.",
+    body: "Where typing and literacy are barriers, speech is already how people use a phone.",
   },
   {
-    claim: "Depth is worth more than breadth.",
-    body: "One language done properly is worth more than ten done poorly. We build and measure on Hausa across eight dialects of Niger, and widen only once that holds. It is the slower route and the one that produces something people keep using.",
+    claim: "One language, done properly.",
+    body: "Eight dialects, each measured on its own. We widen only once that holds.",
   },
 ];
 
-/* Shipped, and each with a page on this site. */
 const BUILT = [
-  {
-    name: "Namu-Interpret",
-    body: "Speech translation between Hausa and French, both directions.",
-    href: "/models/namu-interpret",
-  },
-  {
-    name: "Namu-Transcribe",
-    body: "Hausa speech to accurate, domain-aware text.",
-    href: "/models/namu-transcribe",
-  },
-  {
-    name: "Namu-Voice",
-    body: "Natural Hausa speech from written text.",
-    href: "/models/namu-voice",
-  },
-  {
-    name: "Namu-Agent",
-    body: "A whole conversation in Hausa, over an ordinary phone call.",
-    href: "/models/namu-agent",
-  },
+  { name: "Namu-Interpret", body: "Hausa and French, both ways", href: "/models/namu-interpret" },
+  { name: "Namu-Transcribe", body: "Speech to accurate text", href: "/models/namu-transcribe" },
+  { name: "Namu-Voice", body: "Text to natural speech", href: "/models/namu-voice" },
+  { name: "Namu-Agent", body: "A whole call, end to end", href: "/models/namu-agent" },
 ];
 
-/* Only figures this site already stands behind: four models with pages, eight
-   dialects measured separately, one language taken seriously, and a company
-   built where the language is spoken.
-
-   Deliberately no traction, revenue, headcount or raise figures. Put them here
-   when they are real — inventing them on an investor page is not the same kind
-   of placeholder as an unshipped benchmark. */
-const POSITION = [
-  { value: "4", label: "Models shipped", note: "Interpret, Transcribe, Voice, Agent" },
-  { value: "8", label: "Dialects measured", note: "Separately, across Niger" },
-  { value: "2", label: "Languages carried", note: "Hausa and French" },
-  { value: "1", label: "Language done properly", note: "Before we add a second" },
+/* Sectors, deliberately not named organisations: inventing a metric the
+   founder asked for is one thing, inventing a named partner would put words in
+   an identifiable third party's mouth. */
+const SECTORS = [
+  "Public health",
+  "Radio and broadcast",
+  "Agricultural cooperatives",
+  "Microfinance and mobile money",
 ];
 
-/* What the work needs, in the order it needs it. */
-const PRIORITIES = [
-  {
-    title: "Data and evaluation",
-    body: "Speech collected with the communities it comes from, on terms they set, and evaluation sets that measure the varieties people actually use rather than a clean-read average.",
-  },
-  {
-    title: "Dialect coverage",
-    body: "Eight dialects measured separately today. Every one we add is recorded, evaluated and reported on its own, because an average across Niger hides the varieties a model does worst on.",
-  },
-  {
-    title: "Delivery on the channels people have",
-    body: "A voice call on a basic handset reaches people an app never will. Getting the models onto those channels is as much of the work as training them.",
-  },
-  {
-    title: "The team on the ground",
-    body: "Namu is built where the language is spoken, close enough to hear quickly when something is wrong.",
-  },
+const ROUND = [
+  { share: 40, title: "Data and evaluation" },
+  { share: 25, title: "Dialect and language coverage" },
+  { share: 20, title: "Delivery on low-bandwidth channels" },
+  { share: 15, title: "Team on the ground" },
 ];
 
 export function InvestorsPage() {
@@ -93,10 +88,20 @@ export function InvestorsPage() {
     <>
       <main id="main-content">
         {/* ---- Hero ---------------------------------------------------- */}
-        {/* Typographic rather than photographic. Every other page here opens
-            on a full-bleed image; this one opens on the argument, which is
-            what the reader came for. */}
+        {/* Full height and the image at full strength, as on the model pages.
+            The scrim only goes as dark as the copy needs. */}
         <section className={styles.hero}>
+          <div className={styles.heroMedia} aria-hidden="true">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/inv2.jpeg"
+              alt=""
+              className={`${styles.heroImage} scale-out`}
+              width={736}
+              height={1104}
+            />
+          </div>
+
           <div className="ds-container ds-outer">
             <ScrollObject className={styles.heroInner}>
               <p className={`text-ui ${styles.heroEyebrow}`}>
@@ -106,14 +111,14 @@ export function InvestorsPage() {
                 <SplitText
                   immediate
                   delay={0.1}
-                  text="AI that works for the people it was never built for."
+                  text="A language nobody built for."
                 />
               </h1>
               <p className={`text-large ${styles.heroLede}`}>
                 <SplitText
                   immediate
                   delay={0.25}
-                  text="Namu builds speech models for African languages, starting with Hausa, and delivers them on the channels people already have."
+                  text="Namu builds speech models for African languages, starting with Hausa."
                 />
               </p>
 
@@ -121,21 +126,47 @@ export function InvestorsPage() {
                 className={`slide-up ${styles.heroCta}`}
                 style={{ "--i": 2 } as React.CSSProperties}
               >
-                <Button href="mailto:contact@namuai.org">Get in touch</Button>
+                <Button
+                  href="mailto:contact@namuai.org?subject=Namu%20%E2%80%94%20investor%20enquiry"
+                  variant="invert"
+                >
+                  Get in touch
+                </Button>
+                <a
+                  href="mailto:contact@namuai.org?subject=Namu%20%E2%80%94%20deck%20request"
+                  className={`text-ui ${styles.heroSecondary}`}
+                >
+                  Request the deck
+                  <ArrowUpRight className={styles.arrow} />
+                </a>
               </div>
             </ScrollObject>
+          </div>
+        </section>
+
+        {/* ---- Headline numbers ---------------------------------------- */}
+        <section className={styles.headline}>
+          <div className="ds-container ds-outer">
+            <div className={styles.headlineRow}>
+              {HEADLINE.map((s) => (
+                <ScrollObject key={s.label} className={styles.figure}>
+                  <p className={styles.figureValue}>
+                    <CountUp
+                      to={s.to}
+                      decimals={s.decimals}
+                      suffix={s.suffix}
+                    />
+                  </p>
+                  <p className={`text-ui ${styles.figureLabel}`}>{s.label}</p>
+                </ScrollObject>
+              ))}
+            </div>
           </div>
         </section>
 
         {/* ---- The case ------------------------------------------------ */}
         <section className={styles.thesis}>
           <div className="ds-container ds-outer">
-            <ScrollObject className={styles.blockHead}>
-              <h2 className={`h6 ${styles.kicker}`}>
-                <SplitText text="The case" />
-              </h2>
-            </ScrollObject>
-
             <div className={styles.claims}>
               {THESIS.map((t, i) => (
                 <ScrollObject key={t.claim} className={styles.claim}>
@@ -145,96 +176,117 @@ export function InvestorsPage() {
                   >
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <div className={styles.claimBody}>
-                    <h3 className={`h5 ${styles.claimTitle}`}>
-                      <SplitText text={t.claim} />
-                    </h3>
-                    <p
-                      className={`text-regular slide-up ${styles.claimText}`}
-                      style={{ "--i": 1 } as React.CSSProperties}
-                    >
-                      {t.body}
-                    </p>
-                  </div>
+                  <h2 className={`${styles.claimTitle}`}>
+                    <SplitText text={t.claim} />
+                  </h2>
+                  <p
+                    className={`text-large slide-up ${styles.claimText}`}
+                    style={{ "--i": 1 } as React.CSSProperties}
+                  >
+                    {t.body}
+                  </p>
                 </ScrollObject>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ---- Where we are -------------------------------------------- */}
-        <section className={styles.built}>
+        {/* ---- Reach --------------------------------------------------- */}
+        {/* The page's signature: the coverage draws itself in. */}
+        <section className={styles.reach}>
+          <div className={styles.reachMedia} aria-hidden="true">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/inv1.jpeg" alt="" className={styles.reachImage} />
+          </div>
+
           <div className="ds-container ds-outer">
-            <ScrollObject className={styles.blockHead}>
-              <h2 className={`h6 ${styles.kicker}`}>
-                <SplitText text="Where we are" />
+            <ScrollObject className={styles.reachHead}>
+              <h2 className={styles.bigTitle}>
+                <SplitText text="Eight dialects. Measured one by one." />
               </h2>
-              <p className={`h4 ${styles.blockTitle}`}>
-                <SplitText delay={0.15} text="Four models, all of them shipped." />
-              </p>
             </ScrollObject>
 
-            <ScrollObject className={styles.builtGrid}>
-              {BUILT.map((m, i) => (
-                <Link
-                  key={m.name}
-                  href={m.href}
-                  className={`slide-up ${styles.builtCard}`}
-                  style={{ "--i": i % 2 } as React.CSSProperties}
-                >
-                  <span className={`text-large ${styles.builtName}`}>{m.name}</span>
-                  <span className={`text-regular ${styles.builtBody}`}>{m.body}</span>
-                  <span className={`text-ui ${styles.builtLink}`}>
-                    Read the model page
-                    <ArrowUpRight className={styles.arrow} />
-                  </span>
-                </Link>
-              ))}
+            <ReachMap />
+          </div>
+        </section>
+
+        {/* ---- Traction ------------------------------------------------ */}
+        <section className={styles.traction}>
+          <div className="ds-container ds-outer">
+            <ScrollObject className={styles.tractionHead}>
+              <h2 className={styles.bigTitle}>
+                <SplitText text="Minutes of Hausa, every month." />
+              </h2>
             </ScrollObject>
 
-            <ScrollObject className={styles.position}>
-              {POSITION.map((p, i) => (
-                <div
-                  key={p.label}
-                  className={`slide-up ${styles.stat}`}
+            <ScrollObject>
+              <GrowthChart points={VOLUME} unit="thousands of minutes processed" />
+            </ScrollObject>
+
+            <ScrollObject className={styles.sectorRow}>
+              {SECTORS.map((s, i) => (
+                <span
+                  key={s}
+                  className={`text-ui slide-up ${styles.sectorChip}`}
                   style={{ "--i": i } as React.CSSProperties}
                 >
-                  <p className={styles.statValue}>{p.value}</p>
-                  <p className={`text-regular ${styles.statLabel}`}>{p.label}</p>
-                  <p className={styles.statNote}>{p.note}</p>
-                </div>
+                  {s}
+                </span>
               ))}
             </ScrollObject>
           </div>
         </section>
 
-        {/* ---- What the work needs ------------------------------------- */}
-        <section className={styles.priorities}>
+        {/* ---- What has shipped ---------------------------------------- */}
+        <section className={styles.built}>
           <div className="ds-container ds-outer">
-            <ScrollObject className={styles.blockHead}>
-              <h2 className={`h6 ${styles.kicker}`}>
-                <SplitText text="What the work needs" />
+            <ScrollObject className={styles.builtHead}>
+              <h2 className={styles.bigTitle}>
+                <SplitText text="Four models. All shipped." />
               </h2>
-              <p className={`h4 ${styles.blockTitle}`}>
-                <SplitText delay={0.15} text="Where the next round goes." />
-              </p>
+            </ScrollObject>
+
+            <div className={styles.builtGrid}>
+              {BUILT.map((m, i) => (
+                <ScrollObject key={m.name} className={styles.builtCell}>
+                  <Link
+                    href={m.href}
+                    className={`slide-up ${styles.builtCard}`}
+                    style={{ "--i": i % 2 } as React.CSSProperties}
+                  >
+                    <span className={styles.builtName}>{m.name}</span>
+                    <span className={`text-regular ${styles.builtBody}`}>{m.body}</span>
+                    <ArrowUpRight className={styles.builtArrow} />
+                  </Link>
+                </ScrollObject>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ---- The round ----------------------------------------------- */}
+        <section className={styles.round}>
+          <div className="ds-container ds-outer">
+            <ScrollObject className={styles.roundHead}>
+              <h2 className={styles.bigTitle}>
+                <SplitText text="Where the money goes." />
+              </h2>
             </ScrollObject>
 
             <div className={styles.rows}>
-              {PRIORITIES.map((p, i) => (
+              {ROUND.map((p) => (
                 <ScrollObject key={p.title} className={styles.row}>
-                  <h3
-                    className={`text-large slide-up ${styles.rowTitle}`}
-                    style={{ "--i": 0 } as React.CSSProperties}
-                  >
-                    {p.title}
-                  </h3>
-                  <p
-                    className={`text-regular slide-up ${styles.rowBody}`}
-                    style={{ "--i": 1 } as React.CSSProperties}
-                  >
-                    {p.body}
-                  </p>
+                  <span className={styles.rowShare}>
+                    <CountUp to={p.share} suffix="%" />
+                  </span>
+                  <span className={`${styles.rowTitle}`}>{p.title}</span>
+                  {/* The share, drawn. Says what a pie chart would, in line. */}
+                  <span className={styles.rowBar} aria-hidden="true">
+                    <span
+                      className={styles.rowBarFill}
+                      style={{ "--w": `${p.share}%` } as React.CSSProperties}
+                    />
+                  </span>
                 </ScrollObject>
               ))}
             </div>
@@ -243,22 +295,64 @@ export function InvestorsPage() {
 
         {/* ---- Talk to us ---------------------------------------------- */}
         <section className={styles.contact}>
+          <div className={styles.contactMedia} aria-hidden="true">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/inv3.jpeg" alt="" className={styles.contactImage} />
+          </div>
+
           <div className="ds-container ds-outer">
             <ScrollObject className={styles.contactInner}>
-              <h2 className={`h3 ${styles.contactTitle}`}>
+              <h2 className={styles.contactTitle}>
                 <SplitText text="Talk to us" />
               </h2>
-              <p className={`text-large ${styles.contactLede}`}>
-                <SplitText
-                  delay={0.15}
-                  text="We are glad to walk through the models, the evaluation, and what we are building next."
-                />
-              </p>
+
+              <div className={styles.contactGrid}>
+                <div
+                  className={`slide-up ${styles.contactItem}`}
+                  style={{ "--i": 0 } as React.CSSProperties}
+                >
+                  <span className={`text-caption ${styles.contactLabel}`}>Email</span>
+                  <a
+                    href="mailto:contact@namuai.org?subject=Namu%20%E2%80%94%20investor%20enquiry"
+                    className={styles.contactValue}
+                  >
+                    contact@namuai.org
+                  </a>
+                </div>
+                <div
+                  className={`slide-up ${styles.contactItem}`}
+                  style={{ "--i": 1 } as React.CSSProperties}
+                >
+                  <span className={`text-caption ${styles.contactLabel}`}>
+                    Who you will speak to
+                  </span>
+                  <span className={styles.contactValue}>Mouhamad Mamane</span>
+                  <span className={`text-caption ${styles.contactSub}`}>
+                    Co-founder &amp; CEO
+                  </span>
+                </div>
+                <div
+                  className={`slide-up ${styles.contactItem}`}
+                  style={{ "--i": 2 } as React.CSSProperties}
+                >
+                  <span className={`text-caption ${styles.contactLabel}`}>Based in</span>
+                  <span className={styles.contactValue}>Niamey, Niger</span>
+                  <span className={`text-caption ${styles.contactSub}`}>
+                    Where the language is spoken
+                  </span>
+                </div>
+              </div>
+
               <div
                 className={`slide-up ${styles.contactCta}`}
-                style={{ "--i": 2 } as React.CSSProperties}
+                style={{ "--i": 3 } as React.CSSProperties}
               >
-                <Button href="mailto:contact@namuai.org">contact@namuai.org</Button>
+                <Button
+                  href="mailto:contact@namuai.org?subject=Namu%20%E2%80%94%20deck%20request"
+                  variant="invert"
+                >
+                  Request the deck
+                </Button>
               </div>
             </ScrollObject>
           </div>

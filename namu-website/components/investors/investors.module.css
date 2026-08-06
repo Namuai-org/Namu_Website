@@ -1,68 +1,101 @@
 /* ==========================================================================
    Investors
    --------------------------------------------------------------------------
-   Deliberately the quietest page on the site. Every other one opens on a
-   full-bleed photograph; this one opens on the argument, because that is what
-   the reader came for. The work it does is structural rather than atmospheric:
-   numbered claims, a stated position, and what the next round pays for.
+   Built at the scale of the model pages rather than as a quiet document: a
+   full-height hero at the image's own strength, one statement per section at
+   display size, figures that count themselves up, and a signature moment in
+   the middle where the coverage draws itself in.
+
+   Almost no body copy. Every claim is a headline with at most one sentence
+   under it — an investor scans, and the earlier version asked them to read.
    ========================================================================== */
 
 /* ---- Hero ---------------------------------------------------------------- */
 
 .hero {
-  padding-block: calc(220 * var(--unit-fx)) calc(160 * var(--unit-fx));
-  border-bottom: 1px solid var(--rule-soft);
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden;
+  color: var(--paper);
+}
+
+.heroMedia {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.heroImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 72%;
+}
+
+/* Only as dark as the copy needs. The teal is the reason to use this frame,
+   so the wash sits on the lower half and lets the sky through. */
+.heroMedia::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(14, 26, 30, 0.18),
+    rgba(14, 26, 30, 0.34) 42%,
+    rgba(14, 26, 30, 0.74) 100%
+  );
 }
 
 .heroInner {
-  width: calc(var(--col24) * 16 + var(--gutter24) * 15);
+  width: calc(var(--col24) * 15 + var(--gutter24) * 14);
   max-width: 100%;
 }
 
 .heroEyebrow {
   margin: 0 0 calc(28 * var(--unit-fx));
-  color: var(--ds-accent);
+  color: var(--sahel);
   font-family: var(--font-mono-ui), ui-monospace, monospace;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
 .heroTitle {
   margin: 0;
   font-family: var(--font-serif), Georgia, serif;
-  font-size: calc(72 * var(--unit-fx-type));
+  font-size: calc(96 * var(--unit-fx-type));
   font-weight: 450;
-  line-height: 1.02;
-  letter-spacing: -0.03em;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
 }
 
 .heroLede {
-  margin: calc(34 * var(--unit-fx)) 0 0;
-  max-width: calc(var(--col24) * 11 + var(--gutter24) * 10);
-  color: var(--ds-text-soft);
+  margin: calc(32 * var(--unit-fx)) 0 0;
+  max-width: calc(var(--col24) * 10 + var(--gutter24) * 9);
+  color: rgba(255, 250, 241, 0.82);
 }
 
 .heroCta {
-  margin-top: calc(46 * var(--unit-fx));
+  display: flex;
+  align-items: center;
+  gap: calc(34 * var(--unit-fx));
+  flex-wrap: wrap;
+  margin-top: calc(48 * var(--unit-fx));
 }
 
-/* ---- Shared furniture ---------------------------------------------------- */
-
-.blockHead {
-  margin-bottom: calc(70 * var(--unit-fx));
+.heroSecondary {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(10 * var(--unit-fx));
+  color: var(--paper);
+  text-decoration: none;
 }
 
-.kicker {
-  margin: 0;
-  color: var(--ds-text-soft);
-  font-family: var(--font-mono-ui), ui-monospace, monospace;
-  letter-spacing: 0.06em;
-}
-
-.blockTitle {
-  margin: calc(18 * var(--unit-fx)) 0 0;
-  max-width: calc(var(--col24) * 13 + var(--gutter24) * 12);
-  line-height: 1.15;
+.heroSecondary:hover {
+  text-decoration: underline;
 }
 
 .arrow {
@@ -70,10 +103,52 @@
   min-width: 10px;
 }
 
+/* ---- Display heading used by every section ------------------------------- */
+
+.bigTitle {
+  margin: 0;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(56 * var(--unit-fx-type));
+  font-weight: 450;
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+}
+
+/* ---- Headline numbers ---------------------------------------------------- */
+
+.headline {
+  padding-block: calc(150 * var(--unit-fx));
+}
+
+.headlineRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: calc(30 * var(--unit-fx));
+}
+
+.figureValue {
+  margin: 0 0 calc(20 * var(--unit-fx));
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(92 * var(--unit-fx-type));
+  font-weight: 450;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  /* Counting digits change width; tabular figures stop the label jittering. */
+  font-variant-numeric: tabular-nums;
+  color: var(--ds-text);
+}
+
+.figureLabel {
+  margin: 0;
+  padding-top: calc(18 * var(--unit-fx));
+  border-top: 1px solid var(--rule-soft);
+  color: var(--ds-text-soft);
+}
+
 /* ---- The case ------------------------------------------------------------ */
 
 .thesis {
-  padding-block: calc(160 * var(--unit-fx));
+  padding-block: 0 calc(150 * var(--unit-fx));
 }
 
 .claims {
@@ -81,52 +156,269 @@
   flex-direction: column;
 }
 
-/* A number in the margin and the claim beside it, ruled off from the next.
-   Reads as a document rather than a set of cards, which is the register this
-   page wants. */
+/* One claim per row at display size, with its evidence in a single line
+   beside it. No paragraphs. */
 .claim {
   display: grid;
-  grid-template-columns: calc(var(--col24) * 2 + var(--gutter24)) 1fr;
+  grid-template-columns:
+    calc(var(--col24) * 2)
+    calc(var(--col24) * 11 + var(--gutter24) * 10)
+    1fr;
   gap: calc(40 * var(--unit-fx));
-  padding-block: calc(56 * var(--unit-fx));
+  align-items: start;
+  padding-block: calc(60 * var(--unit-fx));
+  border-top: 1px solid var(--rule-soft);
 }
 
-.claim + .claim {
-  border-top: 1px solid var(--rule-soft);
+.claims .claim:last-child {
+  border-bottom: 1px solid var(--rule-soft);
 }
 
 .claimNum {
   font-family: var(--font-mono-ui), ui-monospace, monospace;
   font-size: calc(14 * var(--unit-fx-type));
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   color: var(--ds-accent);
-  padding-top: calc(10 * var(--unit-fx));
-}
-
-.claimBody {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: calc(40 * var(--unit-fx));
-  align-items: start;
+  padding-top: calc(14 * var(--unit-fx));
 }
 
 .claimTitle {
   margin: 0;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(40 * var(--unit-fx-type));
+  font-weight: 450;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
 }
 
 .claimText {
   margin: 0;
+  padding-top: calc(10 * var(--unit-fx));
   color: var(--ds-text-soft);
-  padding-top: calc(6 * var(--unit-fx));
 }
 
-/* ---- Where we are -------------------------------------------------------- */
+/* ---- Reach --------------------------------------------------------------- */
+
+/* The signature. Dark, full-bleed, and the only place on the page where
+   something is drawn rather than laid out. */
+.reach {
+  position: relative;
+  isolation: isolate;
+  padding-block: calc(150 * var(--unit-fx));
+  overflow: hidden;
+  color: var(--paper);
+}
+
+.reachMedia {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.reachImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 45%;
+}
+
+.reachMedia::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(18, 20, 22, 0.8),
+    rgba(18, 20, 22, 0.66) 45%,
+    rgba(18, 20, 22, 0.84) 100%
+  );
+}
+
+.reachHead {
+  width: calc(var(--col24) * 13 + var(--gutter24) * 12);
+  max-width: 100%;
+  margin-bottom: calc(80 * var(--unit-fx));
+}
+
+.reach .bigTitle {
+  color: var(--paper);
+}
+
+.map {
+  width: 100%;
+}
+
+.mapSvg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.mapRoute {
+  fill: none;
+  stroke: var(--sahel);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0.85;
+  transition: stroke-dashoffset 2.2s var(--ease-out);
+}
+
+.mapRouteIn {
+  stroke-dashoffset: 0;
+}
+
+.mapPlace {
+  opacity: 0;
+  transition: opacity 0.6s var(--ease-out);
+}
+
+.mapPlaceIn {
+  opacity: 1;
+}
+
+.mapDot {
+  fill: var(--paper);
+}
+
+/* A ring rather than another colour: it is the same kind of place, it is just
+   where the work is done from. */
+.mapHome {
+  fill: none;
+  stroke: var(--sahel);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.mapLabel {
+  fill: rgba(255, 250, 241, 0.82);
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+
+/* ---- Traction ------------------------------------------------------------ */
+
+.traction {
+  padding-block: calc(150 * var(--unit-fx));
+}
+
+.tractionHead {
+  width: calc(var(--col24) * 13 + var(--gutter24) * 12);
+  max-width: 100%;
+  margin-bottom: calc(70 * var(--unit-fx));
+}
+
+.chart {
+  width: 100%;
+}
+
+.chartSvg {
+  display: block;
+  width: 100%;
+  height: calc(340 * var(--unit-fx));
+  min-height: 210px;
+  overflow: visible;
+}
+
+.chartAxis {
+  stroke: var(--ds-text-soft);
+  stroke-width: 1;
+  opacity: 0.4;
+  vector-effect: non-scaling-stroke;
+}
+
+.chartRule {
+  stroke: var(--ds-text-soft);
+  stroke-width: 1;
+  stroke-dasharray: 2 5;
+  opacity: 0.25;
+  vector-effect: non-scaling-stroke;
+}
+
+.chartLine {
+  fill: none;
+  stroke: var(--sahel);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 1.6s var(--ease-out);
+}
+
+.chartLineIn {
+  stroke-dashoffset: 0;
+}
+
+.chartArea {
+  fill: var(--sahel);
+  opacity: 0;
+  transition: opacity 1.1s var(--ease-out) 0.4s;
+}
+
+.chartAreaIn {
+  opacity: 0.1;
+}
+
+.chartDot {
+  fill: var(--sahel);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-out);
+  vector-effect: non-scaling-stroke;
+}
+
+.chartDotIn {
+  opacity: 1;
+}
+
+.chartDotLast {
+  stroke: var(--ds-bg);
+  stroke-width: 3;
+}
+
+.chartLabels {
+  display: flex;
+  justify-content: space-between;
+  margin: calc(16 * var(--unit-fx)) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chartLabel {
+  color: var(--ds-text-soft);
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+}
+
+/* Sectors as chips, not paragraphs. */
+.sectorRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(12 * var(--unit-fx));
+  margin-top: calc(60 * var(--unit-fx));
+}
+
+.sectorChip {
+  padding: calc(13 * var(--unit-fx)) calc(24 * var(--unit-fx));
+  border-radius: 100px;
+  border: 1px solid var(--rule-soft);
+  color: var(--ds-text-soft);
+}
+
+/* ---- What has shipped ---------------------------------------------------- */
 
 .built {
-  padding-block: calc(160 * var(--unit-fx));
+  padding-block: calc(150 * var(--unit-fx));
   background: var(--ds-surface);
+}
+
+.builtHead {
+  margin-bottom: calc(70 * var(--unit-fx));
 }
 
 .builtGrid {
@@ -137,9 +429,10 @@
 
 .builtCard {
   display: flex;
-  flex-direction: column;
-  gap: calc(14 * var(--unit-fx));
-  padding: calc(34 * var(--unit-fx)) calc(32 * var(--unit-fx));
+  align-items: center;
+  gap: calc(24 * var(--unit-fx));
+  height: 100%;
+  padding: calc(40 * var(--unit-fx)) calc(36 * var(--unit-fx));
   border-radius: calc(5 * var(--unit-fx));
   background: var(--paper);
   color: inherit;
@@ -152,63 +445,38 @@
 }
 
 .builtName {
+  flex: 0 0 auto;
   font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(30 * var(--unit-fx-type));
   font-weight: 450;
-  letter-spacing: -0.01em;
-}
-
-.builtBody {
-  color: var(--ds-text-soft);
-  flex: 1 1 auto;
-}
-
-.builtLink {
-  display: inline-flex;
-  align-items: center;
-  gap: calc(9 * var(--unit-fx));
-  margin-top: calc(14 * var(--unit-fx));
-  color: var(--ds-text-soft);
-  transition: color 0.4s var(--ease-out);
-}
-
-.builtCard:hover .builtLink {
-  color: var(--ds-text);
-}
-
-.position {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: calc(20 * var(--unit-fx));
-  margin-top: calc(80 * var(--unit-fx));
-  padding-top: calc(60 * var(--unit-fx));
-  border-top: 1px solid var(--rule-soft);
-}
-
-.statValue {
-  margin: 0 0 calc(14 * var(--unit-fx));
-  font-family: var(--font-serif), Georgia, serif;
-  font-size: calc(64 * var(--unit-fx-type));
-  font-weight: 450;
-  line-height: 1;
   letter-spacing: -0.02em;
 }
 
-.statLabel {
-  margin: 0 0 calc(8 * var(--unit-fx));
-}
-
-.statNote {
-  margin: 0;
-  font-family: var(--font-mono-ui), ui-monospace, monospace;
-  font-size: 12px;
-  line-height: 1.4;
+.builtBody {
+  flex: 1 1 auto;
   color: var(--ds-text-soft);
 }
 
-/* ---- What the work needs ------------------------------------------------- */
+.builtArrow {
+  flex: 0 0 auto;
+  width: calc(14 * var(--unit-fx));
+  min-width: 11px;
+  opacity: 0;
+  transition: opacity 0.35s var(--ease-out);
+}
 
-.priorities {
-  padding-block: calc(160 * var(--unit-fx));
+.builtCard:hover .builtArrow {
+  opacity: 1;
+}
+
+/* ---- The round ----------------------------------------------------------- */
+
+.round {
+  padding-block: calc(150 * var(--unit-fx));
+}
+
+.roundHead {
+  margin-bottom: calc(60 * var(--unit-fx));
 }
 
 .rows {
@@ -218,56 +486,147 @@
 
 .row {
   display: grid;
-  grid-template-columns: calc(var(--col24) * 7 + var(--gutter24) * 6) 1fr;
+  grid-template-columns:
+    calc(var(--col24) * 3)
+    calc(var(--col24) * 9 + var(--gutter24) * 8)
+    1fr;
   gap: calc(40 * var(--unit-fx));
-  padding-block: calc(40 * var(--unit-fx));
+  align-items: center;
+  padding-block: calc(34 * var(--unit-fx));
   border-top: 1px solid var(--rule-soft);
 }
 
-.row:last-child {
+.rows .row:last-child {
   border-bottom: 1px solid var(--rule-soft);
 }
 
-.rowTitle {
-  margin: 0;
+.rowShare {
   font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(42 * var(--unit-fx-type));
+  font-weight: 450;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ds-accent);
+}
+
+.rowTitle {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(24 * var(--unit-fx-type));
   font-weight: 450;
   letter-spacing: -0.01em;
 }
 
-.rowBody {
-  margin: 0;
-  max-width: calc(var(--col24) * 12 + var(--gutter24) * 11);
-  color: var(--ds-text-soft);
+/* The allocation drawn in line, which says what a pie chart would. */
+.rowBar {
+  position: relative;
+  display: block;
+  height: 2px;
+  background: var(--rule-soft);
+}
+
+.rowBarFill {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: 0;
+  background: var(--ds-accent);
+  transition: width 1.3s var(--ease-out);
+}
+
+:global(.in-view) .rowBarFill {
+  width: var(--w);
 }
 
 /* ---- Talk to us ---------------------------------------------------------- */
 
 .contact {
-  padding-block: calc(180 * var(--unit-fx)) calc(240 * var(--unit-fx));
-  background: var(--ds-surface-2);
+  position: relative;
+  isolation: isolate;
+  padding-block: calc(170 * var(--unit-fx));
+  overflow: hidden;
+  color: var(--paper);
+}
+
+.contactMedia {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.contactImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 34%;
+}
+
+.contactMedia::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(16, 26, 26, 0.72),
+    rgba(16, 26, 26, 0.58) 40%,
+    rgba(16, 26, 26, 0.84) 100%
+  );
 }
 
 .contactInner {
-  width: calc(var(--col24) * 13 + var(--gutter24) * 12);
-  max-width: 100%;
-  margin-inline: auto;
-  text-align: center;
+  width: 100%;
 }
 
 .contactTitle {
-  margin: 0 0 calc(24 * var(--unit-fx));
+  margin: 0;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(84 * var(--unit-fx-type));
+  font-weight: 450;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  color: var(--paper);
 }
 
-.contactLede {
-  margin: 0;
-  color: var(--ds-text-soft);
+.contactGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: calc(30 * var(--unit-fx));
+  margin-top: calc(80 * var(--unit-fx));
+  padding-top: calc(44 * var(--unit-fx));
+  border-top: 1px solid rgba(255, 250, 241, 0.24);
+}
+
+.contactItem {
+  display: flex;
+  flex-direction: column;
+  gap: calc(10 * var(--unit-fx));
+}
+
+.contactLabel {
+  color: rgba(255, 250, 241, 0.55);
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  letter-spacing: 0.06em;
+}
+
+.contactValue {
+  color: var(--paper);
+  text-decoration: none;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(26 * var(--unit-fx-type));
+  font-weight: 450;
+  letter-spacing: -0.015em;
+}
+
+a.contactValue:hover {
+  text-decoration: underline;
+}
+
+.contactSub {
+  color: rgba(255, 250, 241, 0.55);
 }
 
 .contactCta {
-  margin-top: calc(44 * var(--unit-fx));
-  display: flex;
-  justify-content: center;
+  margin-top: calc(60 * var(--unit-fx));
 }
 
 /* ==========================================================================
@@ -275,59 +634,108 @@
    ========================================================================== */
 
 @media (max-width: 1100px) {
-  .position {
+  .headlineRow {
     grid-template-columns: repeat(2, 1fr);
+    gap: calc(50 * var(--unit-fx)) calc(30 * var(--unit-fx));
   }
-  .claimBody {
-    grid-template-columns: 1fr;
-    gap: calc(20 * var(--unit-fx));
+  .claim {
+    grid-template-columns: calc(var(--col24) * 2) 1fr;
+    row-gap: calc(18 * var(--unit-fx));
+  }
+  .claimText {
+    grid-column: 2;
+    padding-top: 0;
+  }
+  .row {
+    grid-template-columns: calc(var(--col24) * 4) 1fr;
+    row-gap: calc(16 * var(--unit-fx));
+  }
+  .rowBar {
+    grid-column: 1 / -1;
   }
 }
 
 @media (max-width: 900px) {
-  .builtGrid {
+  .builtGrid,
+  .contactGrid {
     grid-template-columns: 1fr;
   }
-  .row {
-    grid-template-columns: 1fr;
-    gap: calc(14 * var(--unit-fx));
+  .contactGrid {
+    gap: calc(34 * var(--unit-fx));
+  }
+  /* Nine labels on a narrow map collide; the line still carries the shape. */
+  .mapLabel {
+    display: none;
   }
 }
 
 @media (max-width: 600px) {
-  .hero {
-    padding-block: calc(140 * var(--unit-fx)) calc(90 * var(--unit-fx));
-  }
   .heroTitle {
-    font-size: calc(40 * var(--unit-fx-type));
+    font-size: calc(52 * var(--unit-fx-type));
   }
   .heroInner {
     width: 100%;
   }
+  .heroCta {
+    gap: calc(22 * var(--unit-fx));
+  }
 
+  .bigTitle {
+    font-size: calc(34 * var(--unit-fx-type));
+  }
+  .contactTitle {
+    font-size: calc(46 * var(--unit-fx-type));
+  }
+
+  .headline,
   .thesis,
+  .reach,
+  .traction,
   .built,
-  .priorities {
+  .round,
+  .contact {
     padding-block: calc(90 * var(--unit-fx));
   }
-  .contact {
-    padding-block: calc(100 * var(--unit-fx)) calc(120 * var(--unit-fx));
+  .thesis {
+    padding-top: 0;
   }
 
-  /* The number moves above the claim rather than beside it. */
+  .headlineRow {
+    grid-template-columns: 1fr;
+    gap: calc(44 * var(--unit-fx));
+  }
+  .figureValue {
+    font-size: calc(64 * var(--unit-fx-type));
+  }
+
   .claim {
     grid-template-columns: 1fr;
-    gap: calc(16 * var(--unit-fx));
+    gap: calc(14 * var(--unit-fx));
     padding-block: calc(40 * var(--unit-fx));
   }
   .claimNum {
     padding-top: 0;
   }
-
-  .position {
-    grid-template-columns: 1fr;
+  .claimTitle {
+    font-size: calc(30 * var(--unit-fx-type));
   }
-  .statValue {
-    font-size: calc(46 * var(--unit-fx-type));
+  .claimText {
+    grid-column: 1;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+    gap: calc(10 * var(--unit-fx));
+  }
+
+  .builtCard {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: calc(10 * var(--unit-fx));
+    padding: calc(30 * var(--unit-fx)) calc(26 * var(--unit-fx));
+  }
+
+  .chartLabel:not(:first-child):not(:last-child) {
+    display: none;
   }
 }
