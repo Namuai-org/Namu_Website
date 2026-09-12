@@ -130,9 +130,14 @@
   transition: background-color 0.4s var(--ease-out);
 }
 
-.sectionNavLink:hover,
 .sectionNavLinkActive {
   background: var(--paper);
+}
+
+@media (hover: hover) {
+  .sectionNavLink:hover {
+    background: var(--paper);
+  }
 }
 
 /* ---- Shared section furniture ------------------------------------------- */
@@ -250,9 +255,14 @@
   transition: background-color 0.4s var(--ease-out);
 }
 
-.gridTab:hover,
 .gridTabActive {
   background: var(--ds-surface);
+}
+
+@media (hover: hover) {
+  .gridTab:hover {
+    background: var(--ds-surface);
+  }
 }
 
 .gridSwatch {
@@ -829,8 +839,10 @@
   transition: transform 0.4s var(--ease-out);
 }
 
-.listenSelect:hover .listenSelectChevron {
-  transform: translateY(calc(-50% + 2px));
+@media (hover: hover) {
+  .listenSelect:hover .listenSelectChevron {
+    transform: translateY(calc(-50% + 2px));
+  }
 }
 
 .listenSelectInput {
@@ -888,8 +900,10 @@
   text-decoration: none;
 }
 
-.digLink:hover {
-  text-decoration: underline;
+@media (hover: hover) {
+  .digLink:hover {
+    text-decoration: underline;
+  }
 }
 
 .digArrow {
@@ -1162,5 +1176,18 @@
   .gridRound:not(:disabled):active {
     background: var(--paper);
     transform: scale(1.06);
+  }
+  .sectionNavLink:active {
+    background: var(--paper);
+  }
+  /* The selected chip keeps its own fill rather than flashing lighter. */
+  .gridTab:not(.gridTabActive):active {
+    background: var(--ds-surface);
+  }
+  .listenSelect:active .listenSelectChevron {
+    transform: translateY(calc(-50% + 2px));
+  }
+  .digLink:active {
+    text-decoration: underline;
   }
 }

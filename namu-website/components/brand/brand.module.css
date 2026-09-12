@@ -324,8 +324,10 @@
     opacity 0.4s var(--ease-out);
 }
 
-.downloadAction:hover {
-  background: var(--ds-accent);
+@media (hover: hover) {
+  .downloadAction:hover {
+    background: var(--ds-accent);
+  }
 }
 
 .downloadOff {
@@ -663,9 +665,11 @@
     opacity 0.4s var(--ease-out);
 }
 
-.galleryControl:hover:not(:disabled) {
-  background: var(--kola);
-  color: var(--paper);
+@media (hover: hover) {
+  .galleryControl:hover:not(:disabled) {
+    background: var(--kola);
+    color: var(--paper);
+  }
 }
 
 .galleryControl:disabled {
@@ -743,8 +747,10 @@
   transition: transform 0.6s var(--ease-out);
 }
 
-.swatch:hover .swatchChip {
-  transform: translateY(calc(-8 * var(--unit-fx)));
+@media (hover: hover) {
+  .swatch:hover .swatchChip {
+    transform: translateY(calc(-8 * var(--unit-fx)));
+  }
 }
 
 .swatchMeta {

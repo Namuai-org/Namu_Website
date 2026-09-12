@@ -104,10 +104,16 @@
   transition: transform 0.6s var(--ease-out);
 }
 
-.link:hover::after,
 .linkActive::after {
   transform: scaleX(1);
   transform-origin: left center;
+}
+
+@media (hover: hover) {
+  .link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
 }
 
 .right {
@@ -138,8 +144,10 @@
   transition: transform 0.5s var(--ease-out);
 }
 
-.feature:hover .featureArrow {
-  transform: translate(2px, -2px);
+@media (hover: hover) {
+  .feature:hover .featureArrow {
+    transform: translate(2px, -2px);
+  }
 }
 
 .langToggle {
@@ -165,8 +173,10 @@
   transition: opacity 0.4s var(--ease-out);
 }
 
-.langToggle:hover .langOff {
-  opacity: 0.7;
+@media (hover: hover) {
+  .langToggle:hover .langOff {
+    opacity: 0.7;
+  }
 }
 
 .burger {
@@ -666,17 +676,24 @@
   transition: opacity 0.2s var(--ease-out);
 }
 
-.panelRow:hover .panelRowArrow,
 .panelRowActive .panelRowArrow {
   opacity: 1;
+}
+
+@media (hover: hover) {
+  .panelRow:hover .panelRowArrow {
+    opacity: 1;
+  }
 }
 
 .panelAll {
   text-decoration: none;
 }
 
-.panelAll:hover {
-  text-decoration: underline;
+@media (hover: hover) {
+  .panelAll:hover {
+    text-decoration: underline;
+  }
 }
 
 /* ---- Stories layout (blog panel) ---------------------------------------- */
@@ -717,8 +734,10 @@
   transition: background-color 0.45s var(--ease-out);
 }
 
-.storyCard:hover {
-  background: var(--ds-surface-2);
+@media (hover: hover) {
+  .storyCard:hover {
+    background: var(--ds-surface-2);
+  }
 }
 
 .storyThumb {
@@ -776,8 +795,10 @@
   opacity: 0;
 }
 
-.storyCard:hover .panelRowArrow {
-  opacity: 1;
+@media (hover: hover) {
+  .storyCard:hover .panelRowArrow {
+    opacity: 1;
+  }
 }
 
 /* All previews occupy the same grid cell and cross-fade between them. */
@@ -825,8 +846,10 @@
   gap: 12px;
 }
 
-.panelPreview:hover .panelPreviewHead .metaTitle {
-  text-decoration: underline;
+@media (hover: hover) {
+  .panelPreview:hover .panelPreviewHead .metaTitle {
+    text-decoration: underline;
+  }
 }
 
 /* The trigger keeps its underline while its panel is open. */
@@ -868,5 +891,16 @@
   }
   .feature:active .featureArrow {
     transform: translate(2px, -2px);
+  }
+  .link:active::after {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+  .langToggle:active .langOff {
+    opacity: 0.7;
+  }
+  .panelAll:active,
+  .panelPreview:active .panelPreviewHead .metaTitle {
+    text-decoration: underline;
   }
 }

@@ -35,6 +35,10 @@ html {
   /* clip, not hidden: `overflow-x: hidden` turns html/body into scroll
      containers, which silently breaks every position:sticky on the site. */
   overflow-x: clip;
+  /* Taps answer with the site's own press states (the (hover: none) blocks),
+     so the system's grey tap box would only draw a second, square-cornered
+     flash over them. */
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {

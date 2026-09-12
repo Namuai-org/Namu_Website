@@ -94,8 +94,10 @@
   text-decoration: none;
 }
 
-.heroSecondary:hover {
-  text-decoration: underline;
+@media (hover: hover) {
+  .heroSecondary:hover {
+    text-decoration: underline;
+  }
 }
 
 .arrow {
@@ -444,8 +446,10 @@
   transition: background-color 0.4s var(--ease-out);
 }
 
-.builtCard:hover {
-  background: var(--ds-surface-2);
+@media (hover: hover) {
+  .builtCard:hover {
+    background: var(--ds-surface-2);
+  }
 }
 
 .builtName {
@@ -469,8 +473,10 @@
   transition: opacity 0.35s var(--ease-out);
 }
 
-.builtCard:hover .builtArrow {
-  opacity: 1;
+@media (hover: hover) {
+  .builtCard:hover .builtArrow {
+    opacity: 1;
+  }
 }
 
 /* ---- The round ----------------------------------------------------------- */
@@ -621,8 +627,10 @@
   letter-spacing: -0.015em;
 }
 
-a.contactValue:hover {
-  text-decoration: underline;
+@media (hover: hover) {
+  a.contactValue:hover {
+    text-decoration: underline;
+  }
 }
 
 .contactSub {
@@ -788,5 +796,12 @@ a.contactValue:hover {
 @media (hover: none) {
   .builtCard:active {
     background: var(--ds-surface-2);
+  }
+  .builtCard:active .builtArrow {
+    opacity: 1;
+  }
+  .heroSecondary:active,
+  a.contactValue:active {
+    text-decoration: underline;
   }
 }

@@ -335,14 +335,22 @@
     color 0.4s var(--ease-out);
 }
 
-.tab:hover {
+@media (hover: hover) {
+  .tab:hover {
+    color: var(--ds-text);
+  }
+}
+
+.tabActive {
+  background: var(--ds-surface-2);
   color: var(--ds-text);
 }
 
-.tabActive,
-.tabActive:hover {
-  background: var(--ds-surface-2);
-  color: var(--ds-text);
+@media (hover: hover) {
+  .tabActive:hover {
+    background: var(--ds-surface-2);
+    color: var(--ds-text);
+  }
 }
 
 /* The source above, the two readings of it side by side below. Laid out as a
@@ -594,8 +602,10 @@
   text-decoration: none;
 }
 
-.digLink:hover {
-  text-decoration: underline;
+@media (hover: hover) {
+  .digLink:hover {
+    text-decoration: underline;
+  }
 }
 
 .digArrow {
@@ -756,5 +766,15 @@
     align-items: flex-start;
     gap: calc(16 * var(--unit-fx));
     margin-top: calc(24 * var(--unit-fx));
+  }
+}
+
+/* Touch has no hover, so the same feedback answers a press. */
+@media (hover: none) {
+  .tab:active {
+    color: var(--ds-text);
+  }
+  .digLink:active {
+    text-decoration: underline;
   }
 }

@@ -116,8 +116,16 @@
   height: auto;
 }
 
-.social:hover {
-  color: var(--ds-text);
+@media (hover: hover) {
+  .social:hover {
+    color: var(--ds-text);
+  }
+}
+
+@media (hover: none) {
+  .social:active {
+    color: var(--ds-text);
+  }
 }
 
 /* A footer entry with no destination yet. Muted and without the underline

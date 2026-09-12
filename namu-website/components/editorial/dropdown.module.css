@@ -98,8 +98,17 @@
   transition: background-color 0.35s var(--ease-out), color 0.35s var(--ease-out);
 }
 
-.option:hover {
-  background: var(--ds-surface);
+@media (hover: hover) {
+  .option:hover {
+    background: var(--ds-surface);
+  }
+}
+
+/* Touch has no hover, so the same feedback answers a press. */
+@media (hover: none) {
+  .option:active {
+    background: var(--ds-surface);
+  }
 }
 
 .optionActive {

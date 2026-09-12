@@ -156,7 +156,6 @@
     box-shadow 0.7s var(--ease-out);
 }
 
-.featuredCard:hover,
 .featuredCard:focus-visible {
   transform: translateY(calc(-8 * var(--unit-fx)));
   background: rgba(255, 250, 241, 0.88);
@@ -165,15 +164,30 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
+@media (hover: hover) {
+  .featuredCard:hover {
+    transform: translateY(calc(-8 * var(--unit-fx)));
+    background: rgba(255, 250, 241, 0.88);
+    box-shadow:
+      0 calc(22 * var(--unit-fx)) calc(60 * var(--unit-fx)) rgba(28, 20, 16, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  }
+}
+
 /* Browsers without backdrop-filter would show the raw 76% wash over a busy
    photograph, which is unreadable. Give those a solid panel instead. */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .featuredCard {
     background: var(--ds-bg);
   }
-  .featuredCard:hover,
   .featuredCard:focus-visible {
     background: var(--ds-bg);
+  }
+
+  @media (hover: hover) {
+    .featuredCard:hover {
+      background: var(--ds-bg);
+    }
   }
 }
 
@@ -223,14 +237,24 @@
   transition: transform 0.8s var(--ease-out);
 }
 
-.featuredCard:hover .featuredRule,
 .featuredCard:focus-visible .featuredRule {
   width: calc(104 * var(--unit-fx));
 }
 
-.featuredCard:hover .featuredRule::after,
+@media (hover: hover) {
+  .featuredCard:hover .featuredRule {
+    width: calc(104 * var(--unit-fx));
+  }
+}
+
 .featuredCard:focus-visible .featuredRule::after {
   transform: scaleX(1);
+}
+
+@media (hover: hover) {
+  .featuredCard:hover .featuredRule::after {
+    transform: scaleX(1);
+  }
 }
 
 .featuredArrowTile {
@@ -248,10 +272,16 @@
     border-color 0.6s var(--ease-out);
 }
 
-.featuredCard:hover .featuredArrowTile,
 .featuredCard:focus-visible .featuredArrowTile {
   background: var(--ds-accent);
   border-color: var(--ds-accent);
+}
+
+@media (hover: hover) {
+  .featuredCard:hover .featuredArrowTile {
+    background: var(--ds-accent);
+    border-color: var(--ds-accent);
+  }
 }
 
 .featuredArrow {
@@ -264,16 +294,21 @@
     transform 0.6s var(--ease-out);
 }
 
-.featuredCard:hover .featuredArrow,
 .featuredCard:focus-visible .featuredArrow {
   color: var(--paper);
   transform: translateX(calc(4 * var(--unit-fx)));
 }
 
+@media (hover: hover) {
+  .featuredCard:hover .featuredArrow {
+    color: var(--paper);
+    transform: translateX(calc(4 * var(--unit-fx)));
+  }
+}
+
 /* A card with nowhere to go does none of that. The rule's fill is reset to
    scaleX(0) explicitly: `transform: none` means full scale, which is how this
    used to fill with accent on hover despite saying it did not. */
-.featuredCard.featuredCardStatic:hover,
 .featuredCard.featuredCardStatic:active {
   transform: none;
   background: rgba(255, 250, 241, 0.76);
@@ -281,15 +316,35 @@
     0 calc(12 * var(--unit-fx)) calc(40 * var(--unit-fx)) rgba(28, 20, 16, 0.22),
     inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
+
+@media (hover: hover) {
+  .featuredCard.featuredCardStatic:hover {
+    transform: none;
+    background: rgba(255, 250, 241, 0.76);
+    box-shadow:
+      0 calc(12 * var(--unit-fx)) calc(40 * var(--unit-fx)) rgba(28, 20, 16, 0.22),
+      inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  }
+}
 /* Both classes, so these outrank the touch press rules further down, which
    would otherwise win on source order alone. */
-.featuredCard.featuredCardStatic:hover .featuredRule,
 .featuredCard.featuredCardStatic:active .featuredRule {
   width: calc(36 * var(--unit-fx));
 }
-.featuredCard.featuredCardStatic:hover .featuredRule::after,
+
+@media (hover: hover) {
+  .featuredCard.featuredCardStatic:hover .featuredRule {
+    width: calc(36 * var(--unit-fx));
+  }
+}
 .featuredCard.featuredCardStatic:active .featuredRule::after {
   transform: scaleX(0);
+}
+
+@media (hover: hover) {
+  .featuredCard.featuredCardStatic:hover .featuredRule::after {
+    transform: scaleX(0);
+  }
 }
 
 /* On touch the lift, the lengthening rule and the filled tile answer a press,
@@ -318,6 +373,9 @@
     background: var(--kola);
     border-color: var(--kola);
     color: var(--paper);
+  }
+  .railCard:active .railThumbInner img {
+    transform: scale(1.2);
   }
 }
 
@@ -422,8 +480,10 @@
   transition: transform 0.8s var(--ease-out);
 }
 
-.railCard:hover .railThumbInner img {
-  transform: scale(1.2);
+@media (hover: hover) {
+  .railCard:hover .railThumbInner img {
+    transform: scale(1.2);
+  }
 }
 
 .railBody {
@@ -470,10 +530,12 @@
     opacity 0.4s var(--ease-out);
 }
 
-.railNav:hover:not(:disabled) {
-  background: var(--kola);
-  border-color: var(--kola);
-  color: var(--paper);
+@media (hover: hover) {
+  .railNav:hover:not(:disabled) {
+    background: var(--kola);
+    border-color: var(--kola);
+    color: var(--paper);
+  }
 }
 
 /* Inert rather than hidden at the ends: a control that vanishes is worse than
