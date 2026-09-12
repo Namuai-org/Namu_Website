@@ -234,7 +234,10 @@ export function NamuTranscribePage() {
                 </p>
               </div>
 
-              <DialectRing dialects={DIALECTS} />
+              <DialectRing
+                dialects={DIALECTS}
+                center={{ value: String(DIALECTS.length), caption: "dialects" }}
+              />
             </ScrollObject>
           </div>
         </section>

@@ -24,6 +24,12 @@ const LERP = 0.1;
  *
  * At rest every bar is as tall as it is wide with fully rounded ends, which is
  * what makes the resting state read as a dotted rule.
+ *
+ * A phone has no pointer to hover with, so there the crest sweeps back and
+ * forth on its own and a finger dragged across the line takes it over,
+ * handing back to the sweep when lifted. The element only claims horizontal
+ * drags (`touch-action: pan-y`), so a thumb that lands on it while scrolling
+ * still scrolls the page.
  */
 export function SoundWave({ className = "" }: { className?: string }) {
   const hostRef = useRef<HTMLDivElement>(null);
@@ -35,6 +41,10 @@ export function SoundWave({ className = "" }: { className?: string }) {
     if (!host || !svg) return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const touch = window.matchMedia("(hover: none), (pointer: coarse)").matches;
+    /** Cycles per second of the unattended sweep. Slow enough to read as a
+        voice passing, not a scanner. */
+    const SWEEP = 0.11;
 
     let width = 1;
     let height = 1;
@@ -86,13 +96,32 @@ export function SoundWave({ className = "" }: { className?: string }) {
     const onLeave = () => {
       pointerX = null;
     };
+    /* Lifting a finger releases the crest back to the sweep. A mouse button
+       coming up does not — the cursor is still over the line. */
+    const onLift = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") pointerX = null;
+    };
+    host.addEventListener("pointerdown", onMove);
     host.addEventListener("pointermove", onMove);
     host.addEventListener("pointerleave", onLeave);
+    host.addEventListener("pointerup", onLift);
+    host.addEventListener("pointercancel", onLift);
 
     let raf = 0;
-    const frame = () => {
+    const start = performance.now();
+    const frame = (now: number) => {
       raf = requestAnimationFrame(frame);
       if (!bars.length) return;
+
+      /* Unattended on touch: the crest travels the line on an eased back and
+         forth, never quite reaching the ends, where half of it would fall
+         off the edge. */
+      const crestX =
+        pointerX ??
+        (touch && !reduced
+          ? width *
+            (0.5 + 0.4 * Math.sin(((now - start) / 1000) * SWEEP * Math.PI * 2))
+          : null);
 
       const count = bars.length;
       const spacing =
@@ -107,9 +136,9 @@ export function SoundWave({ className = "" }: { className?: string }) {
 
         // Linear falloff from the pointer; zero everywhere when it has left.
         const influence =
-          pointerX === null
+          crestX === null
             ? 0
-            : Math.max(0, 1 - Math.abs(pointerX - centre) / reach);
+            : Math.max(0, 1 - Math.abs(crestX - centre) / reach);
 
         const target = BAR_WIDTH + (peaks[i] * amp - BAR_WIDTH) * influence;
         const h = heights[i] + (target - heights[i]) * LERP;
@@ -123,13 +152,16 @@ export function SoundWave({ className = "" }: { className?: string }) {
     };
 
     if (!reduced) raf = requestAnimationFrame(frame);
-    else frame();
+    else frame(performance.now());
 
     return () => {
       cancelAnimationFrame(raf);
       ro.disconnect();
+      host.removeEventListener("pointerdown", onMove);
       host.removeEventListener("pointermove", onMove);
       host.removeEventListener("pointerleave", onLeave);
+      host.removeEventListener("pointerup", onLift);
+      host.removeEventListener("pointercancel", onLift);
     };
   }, []);
 

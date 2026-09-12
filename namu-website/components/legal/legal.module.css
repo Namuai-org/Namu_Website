@@ -194,21 +194,32 @@
 @media (max-width: 900px) {
   .hero { padding: 132px 24px 48px; }
 
+  /* Block, not a one-column grid: a grid item's sticky range is its own row,
+     which here would be exactly as tall as the table of contents, leaving it
+     nowhere to stick. As a block child it sticks for the whole document. */
   .layout {
-    grid-template-columns: 1fr;
-    gap: 0;
+    display: block;
     padding: 40px 24px 120px;
   }
 
+  /* Still sticky, as it is beside the text on a wide screen — here as a
+     strip along the top edge that stays in reach however far down the terms
+     you are, instead of scrolling away after the first screen. */
   .toc {
-    position: static;
+    position: sticky;
+    top: 0;
+    z-index: 5;
     flex-direction: row;
     overflow-x: auto;
     gap: 20px;
-    padding-bottom: 14px;
-    margin-bottom: 40px;
+    margin: 0 -24px 40px;
+    padding: 14px 24px 0;
     border-bottom: 1px solid var(--rule);
+    background: var(--cream);
+    scrollbar-width: none;
   }
+
+  .toc::-webkit-scrollbar { display: none; }
 
   .tocLabel { display: none; }
 

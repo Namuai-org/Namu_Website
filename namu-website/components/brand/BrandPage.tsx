@@ -25,7 +25,8 @@ const CLAY_TEXT = "#4A2A12";
 
 /* ── Scroll progress ───────────────────────────────────────────────────────
    A hairline in the right-hand gutter. This document is long and otherwise
-   gives no sense of how much of it is left. */
+   gives no sense of how much of it is left — on a phone, where it is longer
+   still, the same hairline runs across the top of the screen instead. */
 function ProgressRail() {
   const fillRef = useRef<HTMLDivElement>(null);
 
@@ -33,7 +34,9 @@ function ProgressRail() {
     const el = fillRef.current;
     if (!el) return;
     const runway = document.documentElement.scrollHeight - window.innerHeight;
-    el.style.transform = `scaleY(${runway > 0 ? clamp(scrollY / runway) : 0})`;
+    // A variable rather than a transform: the stylesheet decides the axis,
+    // down the right-hand gutter on a wide screen, across the top on a phone.
+    el.style.setProperty("--p", String(runway > 0 ? clamp(scrollY / runway) : 0));
   });
 
   return (

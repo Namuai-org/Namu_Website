@@ -657,6 +657,11 @@
 /* Below this the conversation stacks, so CrossingTalk stops drawing arcs.
    Keep the two breakpoints in step. */
 @media (max-width: 900px) {
+  /* A channel down the left for the arcs to run in, now that there is no
+     gutter between the columns to cross. */
+  .talk {
+    padding-left: calc(26 * var(--unit-fx));
+  }
   .turn {
     grid-template-columns: 1fr;
     row-gap: calc(12 * var(--unit-fx));

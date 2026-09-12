@@ -43,6 +43,19 @@ export function VoiceEmotionGrid({ voices, emotions, clips }: Props) {
     setPlaying(false);
   }, [voice, emotion]);
 
+  /* On a phone each list is a swipeable row, and a chip tapped at the edge
+     would otherwise stay half out of view. Centre it within its own row —
+     scrolling the row rather than calling scrollIntoView, which would also
+     move the page. */
+  const centre = (tab: HTMLElement) => {
+    const list = tab.parentElement;
+    if (!list || list.scrollWidth <= list.clientWidth) return;
+    list.scrollTo({
+      left: tab.offsetLeft - (list.clientWidth - tab.offsetWidth) / 2,
+      behavior: "smooth",
+    });
+  };
+
   const toggle = () => {
     const el = audioRef.current;
     if (!el) return;
@@ -72,7 +85,10 @@ export function VoiceEmotionGrid({ voices, emotions, clips }: Props) {
               role="tab"
               aria-selected={voice === i}
               className={`${styles.gridTab} ${voice === i ? styles.gridTabActive : ""}`}
-              onClick={() => setVoice(i)}
+              onClick={(e) => {
+                setVoice(i);
+                centre(e.currentTarget);
+              }}
             >
               <span
                 className={styles.gridSwatch}
@@ -130,7 +146,10 @@ export function VoiceEmotionGrid({ voices, emotions, clips }: Props) {
               role="tab"
               aria-selected={emotion === i}
               className={`${styles.gridTab} ${emotion === i ? styles.gridTabActive : ""}`}
-              onClick={() => setEmotion(i)}
+              onClick={(e) => {
+                setEmotion(i);
+                centre(e.currentTarget);
+              }}
             >
               <span className="text-ui">{e.name}</span>
             </button>

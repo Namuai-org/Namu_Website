@@ -264,7 +264,10 @@ export function NamuVoicePage() {
                 </p>
               </div>
 
-              <DialectRing dialects={DIALECTS} />
+              <DialectRing
+                dialects={DIALECTS}
+                center={{ value: String(DIALECTS.length), caption: "dialects" }}
+              />
             </ScrollObject>
           </div>
         </section>

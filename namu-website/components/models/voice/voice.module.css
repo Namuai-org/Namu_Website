@@ -609,6 +609,11 @@
   z-index: 1;
 }
 
+/* Only shown where the heading has moved out of the ring. */
+.ringCenter {
+  display: none;
+}
+
 .ringChip {
   position: absolute;
   top: 0;
@@ -1006,19 +1011,60 @@
     max-width: none;
   }
 
+  /* Voice above the stage, emotion below it, as swipeable rows of chips —
+     the desktop's two columns turned on their side. Stacked as full lists,
+     the emotion picker sat a screen below the stage it changes, so every tap
+     happened out of sight of its result. */
   .grid {
     grid-template-columns: 1fr;
-    gap: calc(20 * var(--unit-fx));
+    gap: calc(12 * var(--unit-fx));
   }
   .gridStage {
     order: 0;
-    min-height: calc(200 * var(--unit-fx));
+    min-height: calc(210 * var(--unit-fx));
   }
   .gridStageEmotion {
-    font-size: calc(38 * var(--unit-fx-type));
+    font-size: calc(40 * var(--unit-fx-type));
+  }
+  .gridCol {
+    padding: calc(12 * var(--unit-fx)) 0 calc(12 * var(--unit-fx));
+    overflow: hidden;
+  }
+  .gridColTitle {
+    margin: 0 0 calc(10 * var(--unit-fx));
+    padding-inline: calc(14 * var(--unit-fx));
+  }
+  .gridList {
+    position: relative;
+    flex-direction: row;
+    gap: 8px;
+    padding-inline: calc(14 * var(--unit-fx));
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: calc(14 * var(--unit-fx));
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+  .gridList::-webkit-scrollbar {
+    display: none;
+  }
+  .gridTab {
+    flex: 0 0 auto;
+    width: auto;
+    padding: calc(9 * var(--unit-fx)) calc(14 * var(--unit-fx));
+    border-radius: calc(40 * var(--unit-fx));
+    background: color-mix(in srgb, var(--ds-surface) 55%, transparent);
+    white-space: nowrap;
+    scroll-snap-align: start;
+  }
+  .gridTabActive {
+    background: var(--ds-surface-2);
   }
 
-  /* No ring on phones: the heading sits above a plain wrapped row. */
+  /* The ring still orbits on a phone, below the heading instead of around
+     it. Its box is slightly taller than wide, which gives the chips near the
+     top and bottom of the ellipse — where neighbours sit closest — room to
+     pass each other. */
   .dialectStage {
     aspect-ratio: auto;
   }
@@ -1026,36 +1072,51 @@
     position: static;
     transform: none;
     width: 100%;
-    margin-bottom: calc(40 * var(--unit-fx));
+    margin-bottom: calc(20 * var(--unit-fx));
   }
   .ring {
-    position: static;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    gap: calc(12 * var(--unit-fx));
+    position: relative;
+    inset: auto;
+    width: 100%;
+    aspect-ratio: 1 / 1.08;
   }
   .ringChip {
-    position: static;
-    transform: none !important;
+    padding: calc(5 * var(--unit-fx)) calc(11 * var(--unit-fx));
+    font-size: calc(11.5 * var(--unit-fx-type));
   }
-
-  /* No marquee on phones — a plain centred heading, as on the reference. */
-  .longForm {
-    overflow: visible;
-    width: auto;
-    margin-inline: 0;
-    margin-bottom: calc(30 * var(--unit-fx));
+  .ringCenter {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: calc(4 * var(--unit-fx));
+    transform: translate(-50%, -50%);
+    color: var(--kola);
     text-align: center;
   }
+  .ringCenterValue {
+    font-family: var(--font-serif), Georgia, serif;
+    font-size: calc(96 * var(--unit-fx-type));
+    font-weight: 450;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+  }
+  .ringCenterCaption {
+    color: var(--ds-text-soft);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* The marquee still slides on a phone. The phrase is sized to overrun the
+     screen by well over a screen's width, so the travel reads as travel
+     rather than a nudge. */
+  .longForm {
+    margin-bottom: calc(30 * var(--unit-fx));
+  }
   .longFormLine {
-    width: auto;
-    font-size: calc(50 * var(--unit-fx-type));
-    letter-spacing: -0.03em;
-    line-height: 1;
-    white-space: normal;
-    transform: none !important;
+    font-size: calc(104 * var(--unit-fx-type));
   }
   .useCases {
     gap: calc(14 * var(--unit-fx)) calc(24 * var(--unit-fx));

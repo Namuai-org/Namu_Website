@@ -11,8 +11,8 @@ export type Turn = {
   heard: string;
 };
 
-/** Below this the columns stack, and there is no gutter left to draw across. */
-const STACK_AT = 900;
+/** How far a stacked arc bows out into the channel beside the bubbles. */
+const HOOK = 20;
 
 /**
  * Where `el` sits inside `host`, in layout coordinates.
@@ -59,11 +59,6 @@ export function CrossingTalk({ turns }: { turns: Turn[] }) {
     if (!host) return;
 
     const measure = () => {
-      if (window.innerWidth <= STACK_AT) {
-        setPaths([]);
-        return;
-      }
-
       const next: string[] = [];
       host.querySelectorAll<HTMLElement>(`.${styles.turn}`).forEach((row) => {
         const said = row.querySelector<HTMLElement>("[data-said]");
@@ -72,6 +67,29 @@ export function CrossingTalk({ turns }: { turns: Turn[] }) {
 
         const a = offsetWithin(said, host);
         const b = offsetWithin(heard, host);
+
+        /* Stacked — a phone, where the columns collapse into one — the two
+           bubbles overlap horizontally, so there is no gutter to cross. The
+           arc runs down the channel the stylesheet opens on the left instead,
+           hooking out from the edge of what was said and back into the edge
+           of what was heard, a little above each box's middle. It still
+           draws from source to target, so the direction of each turn shows
+           as it arrives. */
+        const stacked =
+          Math.min(a.x + said.offsetWidth, b.x + heard.offsetWidth) -
+            Math.max(a.x, b.x) >
+          Math.min(said.offsetWidth, heard.offsetWidth) / 2;
+
+        if (stacked) {
+          const x1 = a.x;
+          const y1 = a.y + said.offsetHeight * 0.42;
+          const x2 = b.x;
+          const y2 = b.y + heard.offsetHeight * 0.42;
+          const cx = Math.min(x1, x2) - HOOK;
+          next.push(`M ${x1} ${y1} C ${cx} ${y1}, ${cx} ${y2}, ${x2} ${y2}`);
+          return;
+        }
+
         const leftIsSource = a.x < b.x;
 
         /* Leave from the inner edge of the source and arrive at the inner edge

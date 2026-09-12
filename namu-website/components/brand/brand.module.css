@@ -32,7 +32,7 @@
   width: 100%;
   height: 100%;
   background: var(--ds-accent);
-  transform: scaleY(0);
+  transform: scaleY(var(--p, 0));
   transform-origin: top center;
 }
 
@@ -1046,8 +1046,18 @@
     font-size: calc(72 * var(--unit-fx-type));
   }
 
+  /* No gutter to run down on a narrow screen, so the hairline turns to run
+     across the top edge. */
   .progress {
-    display: none;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+  }
+  .progressFill {
+    transform: scaleX(var(--p, 0));
+    transform-origin: left center;
   }
 }
 
