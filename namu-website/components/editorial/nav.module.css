@@ -104,10 +104,16 @@
   transition: transform 0.6s var(--ease-out);
 }
 
-.link:hover::after,
 .linkActive::after {
   transform: scaleX(1);
   transform-origin: left center;
+}
+
+@media (hover: hover) {
+  .link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
 }
 
 .right {
@@ -138,8 +144,10 @@
   transition: transform 0.5s var(--ease-out);
 }
 
-.feature:hover .featureArrow {
-  transform: translate(2px, -2px);
+@media (hover: hover) {
+  .feature:hover .featureArrow {
+    transform: translate(2px, -2px);
+  }
 }
 
 .langToggle {
@@ -165,11 +173,22 @@
   transition: opacity 0.4s var(--ease-out);
 }
 
-.langToggle:hover .langOff {
-  opacity: 0.7;
+@media (hover: hover) {
+  .langToggle:hover .langOff {
+    opacity: 0.7;
+  }
 }
 
 .burger {
+  display: none;
+}
+
+.linkItem {
+  position: relative;
+}
+
+.sheetTrigger,
+.sheetSection {
   display: none;
 }
 
@@ -237,58 +256,259 @@
     transform: translateY(calc(-3.25 * var(--unit-fx))) rotate(-45deg);
   }
 
+  /* The sheet. `position: fixed` resolves against the bar here, not the
+     viewport — the bar's backdrop-filter makes it the containing block — so
+     rather than pretend to be full screen and run off the bottom, this is a
+     sheet the size of the screen minus the bar's inset, and it unfolds down
+     out of the bar the way the desktop panels unfold below it: same
+     clip-path, same easing, same duration. */
   .menu {
-    display: flex;
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 100dvh;
-    background: var(--ds-bg);
+    height: calc(var(--vhfix, 100svh) - 40 * var(--unit-fx));
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: calc(110 * var(--unit-fx)) calc(34 * var(--unit-fx))
-      calc(40 * var(--unit-fx));
+    justify-content: flex-start;
+    align-items: stretch;
+    padding: calc(92 * var(--unit-fx)) calc(24 * var(--unit-fx))
+      calc(26 * var(--unit-fx));
+    border-radius: 5px;
+    background: var(--ds-bg);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    clip-path: inset(0 0 100% 0 round 5px);
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.5s var(--ease-out);
+    transition:
+      clip-path 0.8s cubic-bezier(0, 0, 0.2, 1),
+      opacity 0.5s cubic-bezier(0, 0, 0.2, 1);
   }
 
   .menuOpen {
+    clip-path: inset(0 0 0 0 round 5px);
     opacity: 1;
     pointer-events: auto;
   }
 
+  /* Neither the list nor its items may shrink. The sheet has a fixed height,
+     so without this an opening section squeezed the list to fit instead of
+     letting the sheet scroll — and a section whose inner box clips to
+     min-height 0 squeezes all the way to nothing. */
   .links {
     flex-direction: column;
-    align-items: flex-start;
-    gap: calc(18 * var(--unit-fx));
+    flex-shrink: 0;
+    align-items: stretch;
+    gap: 0;
     justify-content: flex-start;
     grid-column: auto;
+    width: 100%;
   }
 
+  .linkItem {
+    flex-shrink: 0;
+  }
+
+  /* Each heading rises into place a beat after the one above it. Closing
+     drops the delay, so the sheet folds away at once. */
+  .linkItem,
+  .right {
+    opacity: 0;
+    transform: translateY(calc(18 * var(--unit-fx)));
+    transition:
+      opacity 0.3s var(--ease-out),
+      transform 0.3s var(--ease-out);
+  }
+
+  .menuOpen .linkItem,
+  .menuOpen .right {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.7s var(--ease-out),
+      transform 0.8s var(--ease-out);
+    transition-delay: calc(0.14s + var(--i, 0) * 0.07s);
+  }
+
+  .menuOpen .right {
+    --i: 3;
+  }
+
+  /* On a phone the heading is a disclosure, not a route: a tap unfolds the
+     panel beneath it, as a pointer resting on it does on a wide screen. The
+     section's own "All …" link is the route. */
   .link {
-    font-family: var(--font-serif), Georgia, serif;
-    font-size: calc(40 * var(--unit-fx-type));
-    letter-spacing: -0.02em;
-  }
-
-  .link::after {
     display: none;
   }
 
-  .right {
+  .sheetTrigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: calc(14 * var(--unit-fx)) 0;
+    border: 0;
+    border-bottom: 1px solid var(--rule-soft);
+    background: none;
+    color: inherit;
+    cursor: pointer;
+    font-family: var(--font-serif), Georgia, serif;
+    font-size: calc(36 * var(--unit-fx-type));
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    text-align: left;
+  }
+
+  .sheetChevron {
+    width: calc(15 * var(--unit-fx));
+    height: auto;
+    flex: 0 0 auto;
+    opacity: 0.6;
+    transition: transform 0.6s var(--ease-out);
+  }
+
+  .sheetTriggerOpen .sheetChevron {
+    transform: rotate(180deg);
+  }
+
+  /* Height animates through a 0fr → 1fr grid track, which reaches the
+     content's real height without measuring it. */
+  .sheetSection {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.6s var(--ease-out);
+  }
+
+  .sheetSectionOpen {
+    grid-template-rows: 1fr;
+  }
+
+  .sheetSectionInner {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .sheetDesc {
+    margin: calc(14 * var(--unit-fx)) 0 calc(12 * var(--unit-fx));
+  }
+
+  .sheetList {
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    gap: 8px;
+    margin: 0;
+    padding: 0 0 calc(18 * var(--unit-fx));
+    list-style: none;
+  }
+
+  .sheetItem {
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity 0.25s var(--ease-out),
+      transform 0.25s var(--ease-out);
+  }
+
+  .sheetSectionOpen .sheetItem {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.5s var(--ease-out),
+      transform 0.6s var(--ease-out);
+    transition-delay: calc(0.12s + var(--j, 0) * 0.05s);
+  }
+
+  /* The desktop panel's tinted row, deepening on a press as it does under a
+     pointer. */
+  .sheetRow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 14px 6px 6px;
+    border-radius: 3px;
+    background: #fbf0dc;
+    color: inherit;
+    text-decoration: none;
+    transition: background-color 0.3s var(--ease-out);
+  }
+
+  .sheetRow:active {
+    background: var(--ds-surface-2);
+  }
+
+  .sheetThumb {
+    position: relative;
+    display: block;
+    width: 44px;
+    aspect-ratio: 1 / 1;
+    flex: 0 0 auto;
+    overflow: hidden;
+    border-radius: 2px;
+  }
+
+  .sheetThumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .sheetRowStory .sheetThumb {
+    width: 78px;
+    aspect-ratio: 3 / 2;
+  }
+
+  .sheetText {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .sheetStoryTitle {
+    font-family: var(--font-serif), Georgia, serif;
+    font-size: calc(17 * var(--unit-fx-type));
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--ds-text);
+  }
+
+  .sheetArrow {
+    width: 9px;
+    height: auto;
+    flex: 0 0 auto;
+    opacity: 0.55;
+  }
+
+  .sheetAll {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+    padding-block: 8px;
+    text-decoration: none;
+  }
+
+  .sheetAllArrow {
+    width: 10px;
+    height: auto;
+  }
+
+  .right {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     gap: calc(20 * var(--unit-fx));
     justify-self: start;
     width: 100%;
     grid-column: auto;
+    margin-top: auto;
+    padding-top: calc(28 * var(--unit-fx));
   }
 
   .feature {
-    font-size: calc(20 * var(--unit-fx-type));
+    font-size: calc(19 * var(--unit-fx-type));
   }
 }
 
@@ -297,6 +517,13 @@
   .link::after,
   .featureArrow {
     transition: none;
+  }
+  .menu,
+  .linkItem,
+  .right,
+  .sheetSection,
+  .sheetItem {
+    transition: opacity 0.25s linear !important;
   }
 }
 
@@ -449,17 +676,24 @@
   transition: opacity 0.2s var(--ease-out);
 }
 
-.panelRow:hover .panelRowArrow,
 .panelRowActive .panelRowArrow {
   opacity: 1;
+}
+
+@media (hover: hover) {
+  .panelRow:hover .panelRowArrow {
+    opacity: 1;
+  }
 }
 
 .panelAll {
   text-decoration: none;
 }
 
-.panelAll:hover {
-  text-decoration: underline;
+@media (hover: hover) {
+  .panelAll:hover {
+    text-decoration: underline;
+  }
 }
 
 /* ---- Stories layout (blog panel) ---------------------------------------- */
@@ -500,8 +734,10 @@
   transition: background-color 0.45s var(--ease-out);
 }
 
-.storyCard:hover {
-  background: var(--ds-surface-2);
+@media (hover: hover) {
+  .storyCard:hover {
+    background: var(--ds-surface-2);
+  }
 }
 
 .storyThumb {
@@ -559,8 +795,10 @@
   opacity: 0;
 }
 
-.storyCard:hover .panelRowArrow {
-  opacity: 1;
+@media (hover: hover) {
+  .storyCard:hover .panelRowArrow {
+    opacity: 1;
+  }
 }
 
 /* All previews occupy the same grid cell and cross-fade between them. */
@@ -608,8 +846,10 @@
   gap: 12px;
 }
 
-.panelPreview:hover .panelPreviewHead .metaTitle {
-  text-decoration: underline;
+@media (hover: hover) {
+  .panelPreview:hover .panelPreviewHead .metaTitle {
+    text-decoration: underline;
+  }
 }
 
 /* The trigger keeps its underline while its panel is open. */
@@ -618,7 +858,9 @@
   transform-origin: left center;
 }
 
-@media (max-width: 900px) {
+/* Phones get the sheet instead. Tablets keep the panels — on a touch tablet
+   a tap opens them, since there is no hover to do it. */
+@media (max-width: 600px) {
   .panelHost {
     display: none;
   }
@@ -636,4 +878,29 @@
   }
 }
 
-
+/* Touch tablets tap the panels open; their rows answer a press the way they
+   answer a pointer. */
+@media (hover: none) {
+  .panelRow:active,
+  .storyCard:active {
+    background: var(--ds-surface-2);
+  }
+  .panelRow:active .panelRowArrow,
+  .storyCard:active .panelRowArrow {
+    opacity: 1;
+  }
+  .feature:active .featureArrow {
+    transform: translate(2px, -2px);
+  }
+  .link:active::after {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+  .langToggle:active .langOff {
+    opacity: 0.7;
+  }
+  .panelAll:active,
+  .panelPreview:active .panelPreviewHead .metaTitle {
+    text-decoration: underline;
+  }
+}

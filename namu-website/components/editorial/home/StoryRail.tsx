@@ -20,6 +20,12 @@ export type Story = {
  * A horizontal rail you drag through. Pointer drag and horizontal wheel both
  * move it; releasing hands off to a short inertial glide that settles against
  * the track's bounds.
+ *
+ * The same rail on a phone, where the drag is a finger. The track declares
+ * `touch-action: pan-y`, which is what makes that work: the browser keeps
+ * vertical swipes for scrolling the page and hands horizontal ones to the
+ * pointer handlers below, instead of claiming every touch as a pan and
+ * cancelling the drag before it starts.
  */
 export function StoryRail({ stories }: { stories: Story[] }) {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -45,7 +51,6 @@ export function StoryRail({ stories }: { stories: Story[] }) {
     const track = trackRef.current;
     const viewport = viewportRef.current;
     if (!track || !viewport) return;
-    if (window.matchMedia("(max-width: 600px)").matches) return;
 
     const s = state.current;
 
@@ -130,6 +135,22 @@ export function StoryRail({ stories }: { stories: Story[] }) {
       setDragging(false);
       if (track.hasPointerCapture(e.pointerId))
         track.releasePointerCapture(e.pointerId);
+
+      /* A finger lands on a card. With a mouse the free glide is the point,
+         but a flick on a phone that stops a third of the way into a card
+         reads as the rail jamming. Project where the momentum would have
+         carried it, settle on the nearest card, and never skip more than one
+         per flick. The existing lerp does the easing. */
+      if (e.pointerType === "touch" && e.type === "pointerup" && s.moved) {
+        const st = step();
+        const max = maxScroll();
+        const from = Math.round(s.startTarget / st) * st;
+        const projected = s.target + s.velocity * 12;
+        let snapped = Math.round(projected / st) * st;
+        snapped = Math.min(from + st, Math.max(from - st, snapped));
+        s.target = Math.min(0, Math.max(-max, snapped));
+        s.velocity = 0;
+      }
     };
 
     // Swallow the click that ends a drag so it doesn't follow the card link.

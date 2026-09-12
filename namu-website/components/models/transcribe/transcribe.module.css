@@ -85,7 +85,9 @@
   aspect-ratio: 700 / 100;
   color: var(--paper);
   cursor: pointer;
-  touch-action: none;
+  /* Horizontal drags steer the crest; vertical ones stay the page's. `none`
+     here trapped a thumb that happened to land on the line mid-scroll. */
+  touch-action: pan-y;
 }
 
 .waveSvg {
@@ -217,14 +219,22 @@
     color 0.4s var(--ease-out);
 }
 
-.tab:hover {
+@media (hover: hover) {
+  .tab:hover {
+    color: var(--ds-text);
+  }
+}
+
+.tabActive {
+  background: var(--paper);
   color: var(--ds-text);
 }
 
-.tabActive,
-.tabActive:hover {
-  background: var(--paper);
-  color: var(--ds-text);
+@media (hover: hover) {
+  .tabActive:hover {
+    background: var(--paper);
+    color: var(--ds-text);
+  }
 }
 
 .transcript {
@@ -536,8 +546,10 @@
   text-decoration: none;
 }
 
-.digLink:hover {
-  text-decoration: underline;
+@media (hover: hover) {
+  .digLink:hover {
+    text-decoration: underline;
+  }
 }
 
 .digArrow {
@@ -654,7 +666,8 @@
   .domains {
     padding-block: calc(70 * var(--unit-fx));
   }
-  /* No ring on phones — eight chips orbiting a small square collide. */
+  /* The heading moves above the ring; the ring itself still orbits (see
+     .ring in the voice stylesheet, which DialectRing uses). */
   .coverageStage {
     aspect-ratio: auto;
   }
@@ -662,7 +675,7 @@
     position: static;
     transform: none;
     width: 100%;
-    margin-bottom: calc(40 * var(--unit-fx));
+    margin-bottom: calc(20 * var(--unit-fx));
   }
   .transcript {
     padding: calc(22 * var(--unit-fx)) calc(20 * var(--unit-fx));
@@ -684,5 +697,15 @@
     align-items: flex-start;
     gap: calc(16 * var(--unit-fx));
     margin-top: calc(24 * var(--unit-fx));
+  }
+}
+
+/* Touch has no hover, so the same feedback answers a press. */
+@media (hover: none) {
+  .tab:active {
+    color: var(--ds-text);
+  }
+  .digLink:active {
+    text-decoration: underline;
   }
 }

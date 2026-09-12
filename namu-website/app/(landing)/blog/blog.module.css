@@ -65,8 +65,10 @@
   transition: transform 1.2s var(--ease-out);
 }
 
-.featured:hover .featuredFrame img {
-  transform: scale(1.05);
+@media (hover: hover) {
+  .featured:hover .featuredFrame img {
+    transform: scale(1.05);
+  }
 }
 
 .featuredBody {
@@ -137,8 +139,10 @@
   transition: transform 1.2s var(--ease-out);
 }
 
-.card:hover .cardFrame img {
-  transform: scale(1.05);
+@media (hover: hover) {
+  .card:hover .cardFrame img {
+    transform: scale(1.05);
+  }
 }
 
 .cardTitle {
@@ -149,10 +153,16 @@
   color: inherit;
 }
 
-.cardTitle a:hover,
 .cardTitle a:focus-visible {
   text-decoration: underline;
   text-underline-offset: 0.14em;
+}
+
+@media (hover: hover) {
+  .cardTitle a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.14em;
+  }
 }
 
 .cardMeta {
@@ -245,5 +255,17 @@
   .cardFrame,
   .featuredFrame {
     aspect-ratio: 340 / 362;
+  }
+}
+
+/* Touch has no hover, so the same feedback answers a press. */
+@media (hover: none) {
+  .featured:active .featuredFrame img,
+  .card:active .cardFrame img {
+    transform: scale(1.05);
+  }
+  .cardTitle a:active {
+    text-decoration: underline;
+    text-underline-offset: 0.14em;
   }
 }

@@ -385,14 +385,16 @@
   display: block;
 }
 
-.button:hover .button__pill,
-.button:hover .button__tile {
-  background: var(--kola);
-  color: var(--paper);
-}
+@media (hover: hover) {
+  .button:hover .button__pill,
+  .button:hover .button__tile {
+    background: var(--kola);
+    color: var(--paper);
+  }
 
-.button:hover .button__tile {
-  border-radius: 50%;
+  .button:hover .button__tile {
+    border-radius: 50%;
+  }
 }
 
 .button:active {
@@ -409,9 +411,12 @@
   background: var(--sahel);
   color: var(--paper);
 }
-.button--accent:hover .button__pill,
-.button--accent:hover .button__tile {
-  background: var(--kola);
+
+@media (hover: hover) {
+  .button--accent:hover .button__pill,
+  .button--accent:hover .button__tile {
+    background: var(--kola);
+  }
 }
 
 .button--invert .button__pill,
@@ -419,10 +424,13 @@
   background: var(--kola);
   color: var(--paper);
 }
-.button--invert:hover .button__pill,
-.button--invert:hover .button__tile {
-  background: var(--sahel);
-  color: var(--paper);
+
+@media (hover: hover) {
+  .button--invert:hover .button__pill,
+  .button--invert:hover .button__tile {
+    background: var(--sahel);
+    color: var(--paper);
+  }
 }
 
 @media (max-width: 600px) {
@@ -455,9 +463,11 @@
   transition: transform 0.6s var(--ease-out);
 }
 
-.link-underline:hover::after {
-  transform-origin: left center;
-  transform: scaleX(1);
+@media (hover: hover) {
+  .link-underline:hover::after {
+    transform-origin: left center;
+    transform: scaleX(1);
+  }
 }
 
 /* ==========================================================================
@@ -597,5 +607,32 @@
      amplitude, so they simply rest in their settled state. */
   .doodle path {
     transition: stroke-dashoffset 0.3s linear !important;
+  }
+}
+
+/* On touch the button's hover inversion — colours swap, the tile rounds into a
+   circle — answers a press instead, so a tap still visibly lands. */
+@media (hover: none) {
+  .button:active .button__pill,
+  .button:active .button__tile {
+    background: var(--kola);
+    color: var(--paper);
+    transition-duration: 0.2s;
+  }
+  .button:active .button__tile {
+    border-radius: 50%;
+  }
+  .button--accent:active .button__pill,
+  .button--accent:active .button__tile {
+    background: var(--kola);
+  }
+  .button--invert:active .button__pill,
+  .button--invert:active .button__tile {
+    background: var(--sahel);
+    color: var(--paper);
+  }
+  .link-underline:active::after {
+    transform-origin: left center;
+    transform: scaleX(1);
   }
 }

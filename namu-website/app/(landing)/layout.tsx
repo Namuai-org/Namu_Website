@@ -5,10 +5,12 @@ import { Nav } from "@/components/editorial/Nav";
 import { PageTransition } from "@/components/PageTransition";
 import { LanguageProvider, useTranslation } from "@/hooks/useTranslation";
 import { useFluidScale } from "@/hooks/useFluidScale";
+import { usePressStates } from "@/hooks/usePressStates";
 
 function LandingContent({ children }: { children: ReactNode }) {
   const { isTransitioning } = useTranslation();
   useFluidScale();
+  usePressStates();
 
   return (
     <div className={`ds-root landing-root ${isTransitioning ? "fading" : ""}`}>

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "@/hooks/useTranslation";
-import { ArrowRight, ArrowUpRight, NamuMark } from "./icons";
+import { ArrowRight, ArrowUpRight, ChevronDown, NamuMark } from "./icons";
 import { NAV_PANELS, type PanelItem } from "./navPanels";
 import styles from "./nav.module.css";
 
@@ -26,6 +26,9 @@ export function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openPanel, setOpenPanel] = useState<string | null>(null);
   const [activeItem, setActiveItem] = useState(0);
+  /* The phone menu's own open section. Kept apart from `openPanel`, which is
+     driven by hover and must never be set by a tap inside the sheet. */
+  const [sheetPanel, setSheetPanel] = useState<string | null>(null);
   const lastY = useRef(0);
   const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -85,6 +88,7 @@ export function Nav() {
   }, [pathname]);
 
   useEffect(() => {
+    if (!menuOpen) setSheetPanel(null);
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
@@ -104,6 +108,24 @@ export function Nav() {
   useEffect(() => {
     if (hidden) closeNow();
   }, [hidden]);
+
+  /* A touch tablet shows the inline bar but cannot hover it, so its panels
+     would never open. There, a tap on a trigger unfolds the panel the way a
+     pointer resting on it does, and a tap anywhere outside the header folds
+     it again. Phones use the sheet instead, and mice keep hover. */
+  const tapOpensPanel = () =>
+    window.matchMedia("(hover: none)").matches && window.innerWidth > 600;
+
+  useEffect(() => {
+    if (!openPanel) return;
+    const onDown = (e: PointerEvent) => {
+      if (!tapOpensPanel()) return;
+      const header = (e.target as Element | null)?.closest("header");
+      if (!header) closeNow();
+    };
+    document.addEventListener("pointerdown", onDown);
+    return () => document.removeEventListener("pointerdown", onDown);
+  }, [openPanel]);
 
   return (
     <header
@@ -133,25 +155,123 @@ export function Nav() {
             className={`${styles.menu} ${menuOpen ? styles.menuOpen : ""}`}
           >
             <ul className={styles.links}>
-              {LINKS.map(({ href, key, panel }) => (
-                <li
-                  key={href}
-                  onMouseEnter={() => scheduleOpen(panel)}
-                  onMouseLeave={() => scheduleOpen(null)}
-                >
-                  <Link
-                    href={href}
-                    className={`${styles.link} ${
-                      pathname === href ? styles.linkActive : ""
-                    } ${panel && openPanel === panel ? styles.linkOpen : ""}`}
-                    aria-expanded={panel ? openPanel === panel : undefined}
-                    onFocus={() => panel && setOpenPanel(panel)}
-                    onClick={closeNow}
+              {LINKS.map(({ href, key, panel }, index) => {
+                const sheetOpen = sheetPanel === panel;
+                const content = NAV_PANELS[panel];
+                return (
+                  <li
+                    key={href}
+                    className={styles.linkItem}
+                    style={{ "--i": index } as React.CSSProperties}
+                    onMouseEnter={() => scheduleOpen(panel)}
+                    onMouseLeave={() => scheduleOpen(null)}
                   >
-                    {t(key)}
-                  </Link>
-                </li>
-              ))}
+                    <Link
+                      href={href}
+                      className={`${styles.link} ${
+                        pathname === href ? styles.linkActive : ""
+                      } ${panel && openPanel === panel ? styles.linkOpen : ""}`}
+                      aria-expanded={panel ? openPanel === panel : undefined}
+                      onFocus={() => panel && setOpenPanel(panel)}
+                      onClick={(e) => {
+                        if (panel && tapOpensPanel()) {
+                          e.preventDefault();
+                          setActiveItem(0);
+                          setOpenPanel((cur) => (cur === panel ? null : panel));
+                          return;
+                        }
+                        closeNow();
+                      }}
+                    >
+                      {t(key)}
+                    </Link>
+
+                    {/* Phones: the same panel, unfolded in place under its
+                        heading rather than floating below the bar. */}
+                    <button
+                      type="button"
+                      className={`${styles.sheetTrigger} ${
+                        sheetOpen ? styles.sheetTriggerOpen : ""
+                      }`}
+                      aria-expanded={sheetOpen}
+                      aria-controls={`sheet-${panel}`}
+                      onClick={() =>
+                        setSheetPanel((cur) => (cur === panel ? null : panel))
+                      }
+                    >
+                      <span>{t(key)}</span>
+                      <ChevronDown className={styles.sheetChevron} />
+                    </button>
+
+                    <div
+                      id={`sheet-${panel}`}
+                      className={`${styles.sheetSection} ${
+                        sheetOpen ? styles.sheetSectionOpen : ""
+                      }`}
+                      aria-hidden={!sheetOpen}
+                    >
+                      <div className={styles.sheetSectionInner}>
+                        <p className={`${styles.metaDesc} ${styles.sheetDesc}`}>
+                          {t(content.bodyKey)}
+                        </p>
+                        <ul className={styles.sheetList}>
+                          {content.items.map((item, j) => (
+                            <li
+                              key={item.href + item.title}
+                              className={styles.sheetItem}
+                              style={{ "--j": j } as React.CSSProperties}
+                            >
+                              <Link
+                                href={item.href}
+                                className={`${styles.sheetRow} ${
+                                  content.layout === "stories"
+                                    ? styles.sheetRowStory
+                                    : ""
+                                }`}
+                                tabIndex={sheetOpen ? 0 : -1}
+                                onClick={() => setMenuOpen(false)}
+                              >
+                                <span className={styles.sheetThumb}>
+                                  <img src={item.image} alt="" loading="lazy" />
+                                </span>
+                                <span className={styles.sheetText}>
+                                  <span
+                                    className={
+                                      content.layout === "stories"
+                                        ? styles.sheetStoryTitle
+                                        : styles.metaTitle
+                                    }
+                                  >
+                                    {copy(item, "title")}
+                                  </span>
+                                  {item.meta ? (
+                                    <span className={styles.storyMeta}>{item.meta}</span>
+                                  ) : null}
+                                </span>
+                                <ArrowRight className={styles.sheetArrow} />
+                              </Link>
+                            </li>
+                          ))}
+                          <li
+                            className={styles.sheetItem}
+                            style={{ "--j": content.items.length } as React.CSSProperties}
+                          >
+                            <Link
+                              href={content.allHref}
+                              className={`${styles.metaTitle} ${styles.sheetAll}`}
+                              tabIndex={sheetOpen ? 0 : -1}
+                              onClick={() => setMenuOpen(false)}
+                            >
+                              {t(content.allKey)}
+                              <ArrowRight className={styles.sheetAllArrow} />
+                            </Link>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
 
             <div className={styles.right}>

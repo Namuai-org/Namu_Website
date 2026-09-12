@@ -529,8 +529,10 @@
   text-decoration: none;
 }
 
-.digLink:hover {
-  text-decoration: underline;
+@media (hover: hover) {
+  .digLink:hover {
+    text-decoration: underline;
+  }
 }
 
 .digArrow {
@@ -662,5 +664,12 @@
     align-items: flex-start;
     gap: calc(16 * var(--unit-fx));
     margin-top: calc(24 * var(--unit-fx));
+  }
+}
+
+/* Touch has no hover, so the same feedback answers a press. */
+@media (hover: none) {
+  .digLink:active {
+    text-decoration: underline;
   }
 }

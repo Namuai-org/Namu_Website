@@ -112,6 +112,24 @@ export function ReachMap() {
           </g>
         ))}
       </svg>
+
+      {/* Narrow screens cannot fit nine names beside their dots — Zinder and
+          Mirriah are a few pixels apart there. The names become a legend
+          instead, lighting up in the same west-to-east order and at the same
+          moments as the dots they belong to. */}
+      <ol className={styles.mapLegend} aria-hidden="true">
+        {ORDER.map((p, i) => (
+          <li
+            key={p.name}
+            className={`${styles.mapLegendItem} ${drawn ? styles.mapLegendItemIn : ""} ${
+              p.home ? styles.mapLegendHome : ""
+            }`}
+            style={{ transitionDelay: `${0.3 + i * 0.11}s` }}
+          >
+            {p.name}
+          </li>
+        ))}
+      </ol>
     </div>
   );
 }

@@ -19,7 +19,17 @@ const START_ANGLE = -Math.PI * 0.6;
  * scroll loop — putting them through React state would re-render eight nodes a
  * frame for no benefit.
  */
-export function DialectRing({ dialects }: { dialects: Dialect[] }) {
+export function DialectRing({
+  dialects,
+  center,
+}: {
+  dialects: Dialect[];
+  /**
+   * Shown in the middle of the orbit where the heading cannot be — on a phone
+   * the heading sits above the ring, so the centre would otherwise be empty.
+   */
+  center?: { value: string; caption: string };
+}) {
   const hostRef = useRef<HTMLDivElement>(null);
   const chipRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
@@ -27,16 +37,10 @@ export function DialectRing({ dialects }: { dialects: Dialect[] }) {
     const host = hostRef.current;
     if (!host) return;
 
-    /* Below 600 the ring is abandoned for a plain wrapped row — eight chips
-       orbiting a 315px square land on top of both the copy and each other.
-       The stylesheet lays them out; clear the transforms so it can. */
-    if (window.innerWidth <= 600) {
-      for (const chip of chipRefs.current) {
-        if (chip) chip.style.transform = "";
-      }
-      return;
-    }
-
+    /* The same orbit at every width. On a phone the heading moves above the
+       ring rather than sitting inside it — eight chips circling a narrow box
+       would land on the copy — and the stylesheet shrinks the chips so
+       neighbours clear each other at every angle the ring turns through. */
     const w = host.clientWidth;
     const h = host.clientHeight;
     const step = (Math.PI * 2) / dialects.length;
@@ -72,7 +76,6 @@ export function DialectRing({ dialects }: { dialects: Dialect[] }) {
   useRafScroll((scrollY, viewportH) => {
     const host = hostRef.current;
     if (!host) return;
-    if (window.innerWidth <= 600) return;
 
     const rect = host.getBoundingClientRect();
     // Skip while the block is nowhere near the viewport.
@@ -83,6 +86,14 @@ export function DialectRing({ dialects }: { dialects: Dialect[] }) {
 
   return (
     <div ref={hostRef} className={styles.ring}>
+      {center ? (
+        <div className={styles.ringCenter} aria-hidden="true">
+          <span className={styles.ringCenterValue}>{center.value}</span>
+          <span className={`text-caption ${styles.ringCenterCaption}`}>
+            {center.caption}
+          </span>
+        </div>
+      ) : null}
       {dialects.map((d, i) => (
         <span
           key={d.name}

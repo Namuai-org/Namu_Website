@@ -114,9 +114,14 @@
   }
 }
 
-.modelRowActive,
-.modelRowActive:hover {
+.modelRowActive {
   background: var(--ds-surface-2);
+}
+
+@media (hover: hover) {
+  .modelRowActive:hover {
+    background: var(--ds-surface-2);
+  }
 }
 
 /* The row is a container; this is the part that actually selects. */
@@ -171,13 +176,18 @@
 }
 
 .modelRowActive .modelNew,
-.modelRow:hover .modelNew,
 .modelNew:focus-visible {
   opacity: 1;
 }
 
-.modelNew:hover {
-  color: var(--ds-text);
+@media (hover: hover) {
+  .modelRow:hover .modelNew {
+    opacity: 1;
+  }
+
+  .modelNew:hover {
+    color: var(--ds-text);
+  }
 }
 
 .railRule {
@@ -286,8 +296,10 @@
   transition: background-color 0.4s var(--ease-out);
 }
 
-.exploreLink:hover {
-  background: var(--ds-surface-2);
+@media (hover: hover) {
+  .exploreLink:hover {
+    background: var(--ds-surface-2);
+  }
 }
 
 .exploreArrow {
@@ -407,8 +419,10 @@
   transition: background-color 0.35s var(--ease-out);
 }
 
-.inlineTrigger:hover {
-  background: var(--ds-surface-2);
+@media (hover: hover) {
+  .inlineTrigger:hover {
+    background: var(--ds-surface-2);
+  }
 }
 
 .inlineValue {
@@ -464,8 +478,10 @@
   transition: background-color 0.3s var(--ease-out);
 }
 
-.inlineOption:hover {
-  background: var(--ds-surface);
+@media (hover: hover) {
+  .inlineOption:hover {
+    background: var(--ds-surface);
+  }
 }
 
 .inlineOptionActive {
@@ -603,8 +619,10 @@
   transition: background-color 0.4s var(--ease-out);
 }
 
-.preset:hover {
-  background: var(--ds-surface-2);
+@media (hover: hover) {
+  .preset:hover {
+    background: var(--ds-surface-2);
+  }
 }
 
 .presetIcon {
@@ -717,9 +735,11 @@
   transition: color 0.35s var(--ease-out);
 }
 
-.resultAction:hover {
-  color: var(--ds-text);
-  text-decoration: underline;
+@media (hover: hover) {
+  .resultAction:hover {
+    color: var(--ds-text);
+    text-decoration: underline;
+  }
 }
 
 .note {
@@ -823,5 +843,53 @@
   }
   .submitRecording {
     animation: none;
+  }
+}
+
+/* Touch has no hover, so the same feedback answers a press. */
+@media (hover: none) {
+  .modelRow:active,
+  .inlineOption:active {
+    background: var(--ds-surface);
+  }
+  .iconButton:active {
+    background: var(--ds-surface);
+    color: var(--ds-text);
+  }
+  .modelRowActive:active {
+    background: var(--ds-surface-2);
+  }
+  .exploreLink:active,
+  .inlineTrigger:active,
+  .preset:active {
+    background: var(--ds-surface-2);
+  }
+  .modelNew:active {
+    color: var(--ds-text);
+  }
+  .resultAction:active {
+    color: var(--ds-text);
+    text-decoration: underline;
+  }
+
+  /* A finger needs the whole row, not just the line of text inside its
+     padding, so the select button is stretched across the row with the ⊕
+     layered above it. */
+  .modelRowMain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+  .modelNew {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* A pointer reveals a row's ⊕ before it can be clicked; a finger cannot.
+     Left live, the invisible ⊕ on another model's row would take a tap near
+     its edge and wipe that model's session unseen. Until its row is selected
+     and it is showing, a tap there selects the row instead. */
+  .modelRow:not(.modelRowActive) .modelNew {
+    pointer-events: none;
   }
 }

@@ -3,9 +3,11 @@
 import type { ReactNode } from "react";
 import { LanguageProvider } from "@/hooks/useTranslation";
 import { useFluidScale } from "@/hooks/useFluidScale";
+import { usePressStates } from "@/hooks/usePressStates";
 
 function ConsoleContent({ children }: { children: ReactNode }) {
   useFluidScale();
+  usePressStates();
   return <div className="ds-root">{children}</div>;
 }
 

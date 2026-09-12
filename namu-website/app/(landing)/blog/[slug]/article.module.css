@@ -15,8 +15,10 @@
   transition: color 0.4s var(--ease-out);
 }
 
-.back:hover {
-  color: var(--ds-text);
+@media (hover: hover) {
+  .back:hover {
+    color: var(--ds-text);
+  }
 }
 
 .backArrow {
@@ -26,8 +28,10 @@
   transition: transform 0.5s var(--ease-out);
 }
 
-.back:hover .backArrow {
-  transform: rotate(180deg) translateX(calc(4 * var(--unit-fx)));
+@media (hover: hover) {
+  .back:hover .backArrow {
+    transform: rotate(180deg) translateX(calc(4 * var(--unit-fx)));
+  }
 }
 
 /* ---- Header -------------------------------------------------------------- */
@@ -162,13 +166,15 @@
   transition: transform 1.2s var(--ease-out);
 }
 
-.moreCard:hover .moreFrame img {
-  transform: scale(1.05);
-}
+@media (hover: hover) {
+  .moreCard:hover .moreFrame img {
+    transform: scale(1.05);
+  }
 
-.moreCard:hover .moreTitle {
-  text-decoration: underline;
-  text-underline-offset: 0.14em;
+  .moreCard:hover .moreTitle {
+    text-decoration: underline;
+    text-underline-offset: 0.14em;
+  }
 }
 
 .moreMeta {
@@ -215,5 +221,22 @@
   }
   .signoff {
     display: block;
+  }
+}
+
+/* Touch has no hover, so the same feedback answers a press. */
+@media (hover: none) {
+  .back:active {
+    color: var(--ds-text);
+  }
+  .back:active .backArrow {
+    transform: rotate(180deg) translateX(calc(4 * var(--unit-fx)));
+  }
+  .moreCard:active .moreFrame img {
+    transform: scale(1.05);
+  }
+  .moreCard:active .moreTitle {
+    text-decoration: underline;
+    text-underline-offset: 0.14em;
   }
 }

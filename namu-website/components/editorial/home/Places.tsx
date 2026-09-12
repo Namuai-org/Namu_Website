@@ -36,10 +36,12 @@ export function Places({ images }: { images: string[] }) {
   const runwayRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
 
+  /* Pinned at every width: each place takes a viewport of scroll, the picture
+     settles out of its zoom and the name rises letter by letter, on a phone
+     exactly as on a wide screen. Only where the copy sits changes. */
   useRafScroll((scrollY, viewportH) => {
     const runway = runwayRef.current;
     if (!runway) return;
-    if (window.innerWidth <= 900) return;
 
     const rect = runway.getBoundingClientRect();
     const top = rect.top + scrollY;

@@ -40,6 +40,10 @@ const ease = bezier(EASE[0], EASE[1], EASE[2], EASE[3]);
  * The word itself never changes — the joke is in the travel. It runs from its
  * left edge to its right over one and a half viewports, eased, then lerped
  * each frame so it trails the scroll instead of tracking it exactly.
+ *
+ * Phones get the same travel. The reference drops the marquee there for a
+ * centred heading; here the stylesheet sets the phrase large enough to
+ * overrun a phone's width, so there is still a distance to slide.
  */
 export function LongFormHeading({ text, srText }: { text: string; srText: string }) {
   const hostRef = useRef<HTMLDivElement>(null);
@@ -92,16 +96,6 @@ export function LongFormHeading({ text, srText }: { text: string; srText: string
     let raf = 0;
     const frame = () => {
       raf = requestAnimationFrame(frame);
-
-      /* The reference drops the marquee on phones and centres a plain
-         heading instead; the stylesheet does that, so stand well clear. */
-      if (window.innerWidth <= 600) {
-        if (x !== 0) {
-          x = 0;
-          title.style.transform = "";
-        }
-        return;
-      }
 
       const rect = host.getBoundingClientRect();
       // Idle unless the block is within a runway of the viewport.
