@@ -32,22 +32,50 @@ type Slot = {
   bottom?: number;
   /** Width in vmax. */
   w: number;
-  /** True aspect ratio of the file in this slot, so `cover` never crops. */
-  ratio: string;
 };
+
+/* True aspect ratio of each file, in PORTAL_IMAGES order, so `cover` never
+   crops. Shared by both arrangements below — the picture does not change
+   shape because the screen did. */
+const RATIOS = [
+  "736 / 1022", // children-dusk
+  "736 / 1104", // portrait-headwrap
+  "1179 / 861", // Mouhamad
+  "736 / 736", // baskets-wall
+  "1179 / 1262", // co-founder
+  "736 / 1041", // acacia-sunset
+  "736 / 920", // elephants-crossing
+];
 
 /* Order matches PORTAL_IMAGES on the home page. The two founders take the two
    widest slots: on the reference, size is what marks a portrait out, rather
    than a separate opacity and blur curve for it. */
 const LAYOUT: Slot[] = [
-  { left: 2, top: 0, w: 12.5, ratio: "736 / 1022" },     // children-dusk
-  { right: -6, top: 15, w: 20, ratio: "736 / 1104" },    // portrait-headwrap
-  { right: -4, top: 2, w: 20, ratio: "1179 / 861" },     // Mouhamad
-  { right: -2.4, top: 10, w: 12.5, ratio: "736 / 736" }, // baskets-wall
-  { left: -6, top: 0, w: 20, ratio: "1179 / 1262" },     // co-founder
-  { left: -0.8, bottom: -10, w: 15, ratio: "736 / 1041" }, // acacia-sunset
-  { right: -6, bottom: -10, w: 20, ratio: "736 / 920" }, // elephants-crossing
+  { left: 2, top: 0, w: 12.5 }, // children-dusk
+  { right: -6, top: 15, w: 20 }, // portrait-headwrap
+  { right: -4, top: 2, w: 20 }, // Mouhamad
+  { right: -2.4, top: 10, w: 12.5 }, // baskets-wall
+  { left: -6, top: 0, w: 20 }, // co-founder
+  { left: -0.8, bottom: -10, w: 15 }, // acacia-sunset
+  { right: -6, bottom: -10, w: 20 }, // elephants-crossing
 ];
+
+/* The same flight on a portrait screen, which is a different shape of room.
+   On a phone the copy fills the middle band edge to edge, so the panels rest
+   above and below it and hang off the sides, rather than flanking a narrow
+   column the way they do on a wide screen. vmax is the screen's height here,
+   so these widths come out at roughly a third of a phone's width. */
+const PORTRAIT_LAYOUT: Slot[] = [
+  { left: -2, top: 3, w: 15 }, // children-dusk
+  { right: -5, top: 1, w: 15 }, // portrait-headwrap
+  { left: 3, bottom: 2, w: 24 }, // Mouhamad
+  { right: 14, top: -3, w: 11 }, // baskets-wall
+  { right: -4, bottom: 6, w: 20 }, // co-founder
+  { left: -8, top: 24, w: 13 }, // acacia-sunset
+  { right: -8, bottom: 22, w: 14 }, // elephants-crossing
+];
+
+const portrait = (vw: number, vh: number) => vw <= 900 || vh > vw;
 
 /* Every number below is the reference's, read off its own scroll handler.
 
@@ -80,8 +108,13 @@ const FADE_IN_UNTIL = 0.5;
 const HOLD_UNTIL = 0.82;
 
 /* Sharp only as the panel crosses the focal plane, at the middle of its
-   flight. 14px is the reference's maximum. */
+   flight. 14px is the reference's maximum, for panels a fifth of a wide
+   screen across. Blur reads relative to the size of what is blurred, so in
+   the portrait arrangement, where the panels are far smaller, it scales down
+   with the viewport — which also halves the cost of seven blurred layers on a
+   phone's GPU. The wide arrangement keeps the reference's 14px untouched. */
 const MAX_BLUR = 14;
+const blurScale = (vw: number) => Math.min(1, Math.max(0.5, vw / 1440));
 
 export function Portal({ images }: { images: PortalImage[] }) {
   const { t } = useTranslation();
@@ -91,18 +124,17 @@ export function Portal({ images }: { images: PortalImage[] }) {
   const contentRef = useRef<HTMLDivElement>(null);
   const [copyIn, setCopyIn] = useState(false);
 
-  /* Resolve the vmax offsets to pixels once per viewport. Declarative now, so
-     this is a unit conversion rather than the old inverse-perspective solve.
-     Below 900px the stylesheet lays the panels out as a static grid with
-     !important, so these values are ignored. */
+  /* Resolve the vmax offsets to pixels once per viewport, choosing the wide
+     or portrait arrangement from the screen's shape. Declarative, so this is a
+     unit conversion rather than an inverse-perspective solve. */
   const place = useCallback(() => {
     const vw = window.innerWidth;
     const vh = window.innerHeight;
-    if (vw <= 900) return;
     const vmax = Math.max(vw, vh);
     const u = (n: number) => `${((n / 100) * vmax).toFixed(1)}px`;
+    const slots = portrait(vw, vh) ? PORTRAIT_LAYOUT : LAYOUT;
 
-    LAYOUT.forEach((slot, i) => {
+    slots.forEach((slot, i) => {
       const el = slideRefs.current[i];
       if (!el) return;
 
@@ -127,10 +159,12 @@ export function Portal({ images }: { images: PortalImage[] }) {
   useRafScroll((scrollY, viewportH, smoothY) => {
     const section = sectionRef.current;
     if (!section) return;
-    if (window.innerWidth <= 900) return;
 
     const rect = section.getBoundingClientRect();
     const top = rect.top + scrollY;
+    const maxBlur =
+      MAX_BLUR *
+      (portrait(window.innerWidth, viewportH) ? blurScale(window.innerWidth) : 1);
 
     /* Driven from the eased scroll position, not the raw one. A wheel notch
        moves scrollY in a single jump; reading it directly is what made the
@@ -183,7 +217,7 @@ export function Portal({ images }: { images: PortalImage[] }) {
       el.style.willChange = "transform, opacity, filter";
 
       // Zero at the focal plane, full at both ends of the flight.
-      const blur = MAX_BLUR * Math.min(1, Math.abs(local - 0.5) / 0.5);
+      const blur = maxBlur * Math.min(1, Math.abs(local - 0.5) / 0.5);
 
       el.style.transform = `translate3d(0, 0, ${z.toFixed(2)}vh)`;
       el.style.opacity = opacity.toFixed(3);
@@ -234,7 +268,7 @@ export function Portal({ images }: { images: PortalImage[] }) {
             className={styles.portalSlide}
             /* Authored stacking, fixed for the whole flight. Deriving it from
                progress made panels swap order mid-air. */
-            style={{ aspectRatio: LAYOUT[i].ratio, zIndex: LAYOUT.length - i }}
+            style={{ aspectRatio: RATIOS[i], zIndex: LAYOUT.length - i }}
           >
             <img src={img.src} alt={img.alt} loading="lazy" />
           </div>

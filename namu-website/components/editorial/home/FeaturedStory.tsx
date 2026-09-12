@@ -50,7 +50,6 @@ export function FeaturedStory({ href, image, image2x, ratio }: Props) {
     const media = mediaRef.current;
     const img = imgRef.current;
     if (!section || !frame || !media || !img) return;
-    if (window.innerWidth <= 600) return;
 
     const rect = section.getBoundingClientRect();
     const top = rect.top + scrollY;

@@ -201,7 +201,12 @@ export function GradientField({ className = "", resolutionScale = 0.6 }: Props) 
     const uMouse = gl.getUniformLocation(program, "uMouse");
     const uIntro = gl.getUniformLocation(program, "uIntro");
 
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    /* A phone is usually 3x but its GPU budget is a laptop's fraction, and
+       this field is soft enough that the extra density is invisible — twenty
+       noise samples per pixel at 3x is the single most expensive thing on
+       the page. Touch devices render at 1x; everything else keeps up to 2x. */
+    const coarse = window.matchMedia("(hover: none), (pointer: coarse)").matches;
+    const dpr = Math.min(window.devicePixelRatio || 1, coarse ? 1 : 2);
 
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
@@ -228,11 +233,30 @@ export function GradientField({ className = "", resolutionScale = 0.6 }: Props) 
     // Cursor influence, smoothed so it drifts rather than snaps.
     const mouse = { x: 0, y: 0 };
     const target = { x: 0, y: 0 };
-    const onPointer = (e: PointerEvent) => {
-      target.x = (e.clientX / window.innerWidth) * 2 - 1;
-      target.y = (e.clientY / window.innerHeight) * 2 - 1;
+    const aim = (clientX: number, clientY: number) => {
+      target.x = (clientX / window.innerWidth) * 2 - 1;
+      target.y = (clientY / window.innerHeight) * 2 - 1;
     };
+    const onPointer = (e: PointerEvent) => aim(e.clientX, e.clientY);
     window.addEventListener("pointermove", onPointer, { passive: true });
+
+    /* A phone has no cursor to follow. pointermove only fires while a finger is
+       down, and the browser cancels it the moment the gesture becomes a
+       scroll — so on touch the field sat still. Touches steer it directly, and
+       between touches the scroll position does, since scrolling is the gesture
+       a phone is actually making. */
+    const touch = coarse;
+    let lastTouch = -Infinity;
+    const onTouch = (e: TouchEvent) => {
+      const t = e.touches[0];
+      if (!t) return;
+      aim(t.clientX, t.clientY);
+      lastTouch = performance.now();
+    };
+    if (touch) {
+      window.addEventListener("touchstart", onTouch, { passive: true });
+      window.addEventListener("touchmove", onTouch, { passive: true });
+    }
 
     // Only run while the canvas is actually on screen.
     let onScreen = true;
@@ -262,6 +286,13 @@ export function GradientField({ className = "", resolutionScale = 0.6 }: Props) 
       const eased = 1 - Math.pow(1 - intro, 3);
 
       gl.uniform1f(uTime, reduced ? 12 : (now - start) / 1000);
+      if (touch && now - lastTouch > 1200) {
+        // Between touches, the scroll steers: a slow sway across and a pull
+        // downward as the hero is scrolled away.
+        const s = window.scrollY / Math.max(1, window.innerHeight);
+        target.x = Math.sin(s * 1.6) * 0.6;
+        target.y = Math.min(1, s) * 0.9 - 0.3;
+      }
       mouse.x += (target.x - mouse.x) * 0.04;
       mouse.y += (target.y - mouse.y) * 0.04;
       gl.uniform2f(uMouse, reduced ? 0 : mouse.x, reduced ? 0 : mouse.y);
@@ -279,6 +310,8 @@ export function GradientField({ className = "", resolutionScale = 0.6 }: Props) 
       ro.disconnect();
       io.disconnect();
       window.removeEventListener("pointermove", onPointer);
+      window.removeEventListener("touchstart", onTouch);
+      window.removeEventListener("touchmove", onTouch);
       gl.deleteBuffer(buffer);
       gl.deleteProgram(program);
       gl.deleteShader(vs);

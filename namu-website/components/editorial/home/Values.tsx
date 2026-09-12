@@ -88,16 +88,28 @@ export function Values() {
       if (mode === "connect") {
         const defs = defsRef.current;
         const termEnd = t0.right - l0.left;
-        const defStart = defs
-          ? defs.getBoundingClientRect().left - l0.left
-          : termEnd + 220;
-        setBox({
-          left: termEnd,
-          top: t0.top - l0.top + t0.height * 0.28,
-          width: Math.max(180, defStart - termEnd),
-          height: t0.height * 1.15,
-        });
-      } else if (mode === "circled") {
+        const d0 = defs?.getBoundingClientRect();
+        /* Side by side, the line crosses the gutter to where the definition
+           starts. Stacked — a phone, where the definition sits below — there
+           is no gutter to cross, so it runs out into the empty row to the
+           right of the term instead. A term that fills its row leaves no
+           room for that, and gets the underline. */
+        const stacked = !d0 || d0.left - l0.left < termEnd;
+        const reach = stacked
+          ? l0.width - termEnd - 6
+          : (d0 ? d0.left - l0.left : termEnd + 220) - termEnd;
+        if (!stacked || reach >= 64) {
+          setBox({
+            left: termEnd,
+            top: t0.top - l0.top + t0.height * 0.28,
+            width: stacked ? reach : Math.max(180, reach),
+            height: t0.height * 1.15,
+          });
+          return;
+        }
+      }
+
+      if (mode === "circled") {
         const height = t0.height * 1.5;
         setBox({
           left: t0.left - l0.left - t0.width * 0.12,
@@ -153,10 +165,22 @@ export function Values() {
     return () => cancelAnimationFrame(id);
   }, [active, hasEntered]);
 
+  /* A width change reflows the terms, so the annotation has to be re-measured
+     against wherever the active one now sits. */
+  useEffect(() => {
+    const cols = listRef.current;
+    if (!cols) return;
+    const ro = new ResizeObserver(() => placeDoodle(active));
+    ro.observe(cols);
+    return () => ro.disconnect();
+  }, [active, placeDoodle]);
+
+  /* The same pinned walk through the values at every width: on a phone the
+     terms stack above the definition instead of beside it, but scrolling still
+     advances them one at a time and the annotation still draws on each. */
   useRafScroll((scrollY, viewportH) => {
     const section = sectionRef.current;
     if (!section) return;
-    if (window.innerWidth <= 900) return;
 
     const rect = section.getBoundingClientRect();
     const top = rect.top + scrollY;
@@ -242,9 +266,6 @@ export function Values() {
                     }`}
                     aria-hidden={i !== active}
                   >
-                    <h3 className={`h5 ${styles.valueMobileTerm}`}>
-                      {t(`${key}.name`)}
-                    </h3>
                     <p className="h5">{t(`${key}.body`)}</p>
                   </div>
                 ))}
