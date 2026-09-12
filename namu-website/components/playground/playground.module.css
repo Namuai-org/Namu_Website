@@ -825,3 +825,20 @@
     animation: none;
   }
 }
+
+/* Touch has no hover, so the same feedback answers a press. */
+@media (hover: none) {
+  .modelRow:active,
+  .inlineOption:active {
+    background: var(--ds-surface);
+  }
+  .iconButton:active {
+    background: var(--ds-surface);
+    color: var(--ds-text);
+  }
+  .exploreLink:active,
+  .inlineTrigger:active,
+  .preset:active {
+    background: var(--ds-surface-2);
+  }
+}

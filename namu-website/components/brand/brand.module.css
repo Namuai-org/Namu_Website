@@ -1114,3 +1114,17 @@
     align-items: flex-start;
   }
 }
+
+/* Touch has no hover, so the same feedback answers a press. */
+@media (hover: none) {
+  .downloadAction:active {
+    background: var(--ds-accent);
+  }
+  .galleryControl:active:not(:disabled) {
+    background: var(--kola);
+    color: var(--paper);
+  }
+  .swatch:active .swatchChip {
+    transform: translateY(calc(-8 * var(--unit-fx)));
+  }
+}

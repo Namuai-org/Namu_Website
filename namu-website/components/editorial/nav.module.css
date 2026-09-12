@@ -855,4 +855,18 @@
   }
 }
 
-
+/* Touch tablets tap the panels open; their rows answer a press the way they
+   answer a pointer. */
+@media (hover: none) {
+  .panelRow:active,
+  .storyCard:active {
+    background: var(--ds-surface-2);
+  }
+  .panelRow:active .panelRowArrow,
+  .storyCard:active .panelRowArrow {
+    opacity: 1;
+  }
+  .feature:active .featureArrow {
+    transform: translate(2px, -2px);
+  }
+}

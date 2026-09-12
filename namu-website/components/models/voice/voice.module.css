@@ -1156,3 +1156,11 @@
     margin-top: calc(24 * var(--unit-fx));
   }
 }
+
+/* Touch has no hover, so the same feedback answers a press. */
+@media (hover: none) {
+  .gridRound:not(:disabled):active {
+    background: var(--paper);
+    transform: scale(1.06);
+  }
+}

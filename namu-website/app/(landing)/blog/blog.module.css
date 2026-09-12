@@ -247,3 +247,11 @@
     aspect-ratio: 340 / 362;
   }
 }
+
+/* Touch has no hover, so the same feedback answers a press. */
+@media (hover: none) {
+  .featured:active .featuredFrame img,
+  .card:active .cardFrame img {
+    transform: scale(1.05);
+  }
+}

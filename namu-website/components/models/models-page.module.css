@@ -144,3 +144,11 @@
     font-size: calc(18 * var(--unit-fx-type));
   }
 }
+
+/* Touch has no hover, so the same feedback answers a press. */
+@media (hover: none) {
+  .card:active {
+    box-shadow: 0 0 calc(74 * var(--unit-fx)) calc(14 * var(--unit-fx))
+      rgba(107, 62, 30, 0.1);
+  }
+}

@@ -783,3 +783,10 @@ a.contactValue:hover {
     display: none;
   }
 }
+
+/* Touch has no hover, so the same feedback answers a press. */
+@media (hover: none) {
+  .builtCard:active {
+    background: var(--ds-surface-2);
+  }
+}

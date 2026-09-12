@@ -599,3 +599,26 @@
     transition: stroke-dashoffset 0.3s linear !important;
   }
 }
+
+/* On touch the button's hover inversion — colours swap, the tile rounds into a
+   circle — answers a press instead, so a tap still visibly lands. */
+@media (hover: none) {
+  .button:active .button__pill,
+  .button:active .button__tile {
+    background: var(--kola);
+    color: var(--paper);
+    transition-duration: 0.2s;
+  }
+  .button:active .button__tile {
+    border-radius: 50%;
+  }
+  .button--accent:active .button__pill,
+  .button--accent:active .button__tile {
+    background: var(--kola);
+  }
+  .button--invert:active .button__pill,
+  .button--invert:active .button__tile {
+    background: var(--sahel);
+    color: var(--paper);
+  }
+}
