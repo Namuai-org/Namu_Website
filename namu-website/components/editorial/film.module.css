@@ -1,0 +1,511 @@
+/* ==========================================================================
+   Film player
+   --------------------------------------------------------------------------
+   The reference's core-video anatomy — poster, round play button, controls
+   that surface on movement — with Aya's way of watching: it starts silently
+   on arrival and sound is one tap away.
+
+   Every overlay is the lead card's paper glass, so the controls belong to the
+   same family as the card directly above the film, and they stay legible on
+   all three of its grounds: harmattan, kola and ink.
+   ========================================================================== */
+
+.player {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  /* The film opens on this exact cream, so a frame still waiting for its first
+     picture never flashes a different colour. */
+  background: var(--harmattan);
+  /* Keeps the radius clipping the video and the blurred overlays in Safari. */
+  isolation: isolate;
+  color: var(--kola);
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.player[data-phase="playing"][data-controls="false"] {
+  cursor: none;
+}
+
+.player[data-phase="error"] {
+  cursor: default;
+}
+
+.player[data-fullscreen="true"] {
+  border-radius: 0;
+  background: var(--ink);
+}
+
+.video {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Full screen on a screen that is not 16:9 letterboxes rather than cropping
+   the words out of the frame. */
+.player[data-fullscreen="true"] .video {
+  object-fit: contain;
+}
+
+/* ---- Shared glass --------------------------------------------------------- */
+
+.bigPlay,
+.replay,
+.bar,
+.chip {
+  background: rgba(255, 250, 241, 0.8);
+  -webkit-backdrop-filter: blur(16px) saturate(1.15);
+  backdrop-filter: blur(16px) saturate(1.15);
+  box-shadow:
+    0 calc(12 * var(--unit-fx)) calc(40 * var(--unit-fx)) rgba(28, 20, 16, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  color: var(--kola);
+}
+
+/* ---- The round play button ------------------------------------------------ */
+
+/* Set below centre rather than on it: this film's words sit in the middle of
+   the frame, the poster's sentence included, and a centred button covered
+   them. */
+.bigPlay {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 64%;
+  display: grid;
+  place-items: center;
+  width: calc(144 * var(--unit-fx));
+  height: calc(144 * var(--unit-fx));
+  min-width: 64px;
+  min-height: 64px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  transition:
+    opacity 0.4s var(--ease-out),
+    visibility 0s linear 0s,
+    transform 0.6s var(--ease-out-cubic),
+    background-color 0.6s var(--ease-out-cubic),
+    color 0.6s var(--ease-out-cubic);
+}
+
+.bigIconPlay {
+  width: 26%;
+  height: auto;
+  /* A triangle's visual centre sits left of its box's centre. */
+  margin-left: 7%;
+}
+
+/* Only while the film is waiting on the viewer: before a first play it will
+   not start by itself, or paused. */
+.player:not([data-phase="idle"]):not([data-phase="paused"]) .bigPlay {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.92);
+  transition:
+    opacity 0.4s var(--ease-out),
+    visibility 0s linear 0.4s,
+    transform 0.6s var(--ease-out-cubic);
+}
+
+@media (hover: hover) {
+  .bigPlay:hover {
+    background: var(--kola);
+    color: var(--paper);
+    transform: translate(-50%, -50%) scale(1.04);
+  }
+}
+
+/* ---- Play again ----------------------------------------------------------- */
+
+/* Low in the frame, clear of the Namu mark the film ends on. */
+.replay {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  bottom: calc(28 * var(--unit-fx));
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65em;
+  height: calc(48 * var(--unit-fx));
+  min-height: 36px;
+  padding: 0 1.5em 0 1.25em;
+  border: 0;
+  border-radius: 2em;
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  font-size: calc(15 * var(--unit-fx-type));
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, calc(10 * var(--unit-fx)));
+  transition:
+    opacity 0.4s var(--ease-out),
+    transform 0.6s var(--ease-out),
+    visibility 0s linear 0.6s,
+    background-color 0.6s var(--ease-out-cubic),
+    color 0.6s var(--ease-out-cubic);
+}
+
+.replay svg {
+  width: 1.15em;
+  height: auto;
+  flex: 0 0 auto;
+}
+
+/* A beat after the last frame lands, so the end card is seen before it is
+   offered again. */
+.player[data-phase="ended"] .replay {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+  transition:
+    opacity 0.6s var(--ease-out) 0.5s,
+    transform 0.8s var(--ease-out) 0.5s,
+    visibility 0s linear 0s,
+    background-color 0.6s var(--ease-out-cubic),
+    color 0.6s var(--ease-out-cubic);
+}
+
+@media (hover: hover) {
+  .replay:hover {
+    background: var(--kola);
+    color: var(--paper);
+  }
+}
+
+/* ---- Unmute --------------------------------------------------------------- */
+
+.chip {
+  position: absolute;
+  z-index: 2;
+  top: calc(20 * var(--unit-fx));
+  right: calc(20 * var(--unit-fx));
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  height: calc(40 * var(--unit-fx));
+  min-height: 34px;
+  padding: 0 1.3em 0 1.05em;
+  border: 0;
+  border-radius: 2em;
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  font-size: calc(14 * var(--unit-fx-type));
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(calc(-8 * var(--unit-fx)));
+  transition:
+    opacity 0.4s var(--ease-out),
+    transform 0.6s var(--ease-out),
+    visibility 0s linear 0.6s,
+    background-color 0.6s var(--ease-out-cubic),
+    color 0.6s var(--ease-out-cubic);
+}
+
+.chip svg {
+  width: 1.2em;
+  height: auto;
+  flex: 0 0 auto;
+}
+
+/* Arrives a beat after the film does, so the first thing that moves is the
+   picture, not the chrome. */
+.player[data-phase="playing"][data-muted="true"] .chip {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition:
+    opacity 0.6s var(--ease-out) 1.2s,
+    transform 0.8s var(--ease-out) 1.2s,
+    visibility 0s linear 0s,
+    background-color 0.6s var(--ease-out-cubic),
+    color 0.6s var(--ease-out-cubic);
+}
+
+@media (hover: hover) {
+  .chip:hover {
+    background: var(--kola);
+    color: var(--paper);
+  }
+}
+
+/* ---- Control bar ---------------------------------------------------------- */
+
+.bar {
+  position: absolute;
+  z-index: 2;
+  left: calc(20 * var(--unit-fx));
+  right: calc(20 * var(--unit-fx));
+  bottom: calc(20 * var(--unit-fx));
+  display: flex;
+  align-items: center;
+  gap: calc(4 * var(--unit-fx));
+  padding: calc(6 * var(--unit-fx));
+  border-radius: calc(40 * var(--unit-fx));
+  cursor: default;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(calc(12 * var(--unit-fx)));
+  transition:
+    opacity 0.4s var(--ease-out),
+    transform 0.6s var(--ease-out);
+}
+
+/* Faded rather than hidden while the film runs, so the buttons stay in the
+   tab order — focusing one brings the bar back. Before the first play there
+   is nothing for it to control, and at the end the pill takes its place, so
+   then it leaves the tab order entirely. */
+.player[data-phase="loading"] .bar,
+.player[data-phase="idle"] .bar,
+.player[data-phase="ended"] .bar,
+.player[data-phase="error"] .bar,
+.player[data-phase="loading"] .chip,
+.player[data-phase="error"] .chip {
+  visibility: hidden;
+}
+
+.player[data-controls="true"]:not([data-phase="loading"]):not([data-phase="idle"]):not([data-phase="ended"]):not([data-phase="error"]) .bar {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+}
+
+.tile {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: calc(40 * var(--unit-fx));
+  height: calc(40 * var(--unit-fx));
+  min-width: 34px;
+  min-height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: calc(6 * var(--unit-fx));
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition:
+    background-color 0.6s var(--ease-out-cubic),
+    color 0.6s var(--ease-out-cubic),
+    border-radius 0.6s var(--ease-out-cubic);
+}
+
+.tile svg {
+  width: 44%;
+  min-width: 14px;
+  height: auto;
+}
+
+/* The design system's button inversion: colours swap, the tile rounds. */
+@media (hover: hover) {
+  .tile:hover {
+    background: var(--kola);
+    color: var(--paper);
+    border-radius: 50%;
+  }
+}
+
+.time {
+  flex: 0 0 auto;
+  min-width: 4.2ch;
+  padding-inline: calc(6 * var(--unit-fx));
+  font-family: var(--font-mono-ui), ui-monospace, monospace;
+  font-size: calc(14 * var(--unit-fx-type));
+  font-weight: 500;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.timeTotal {
+  color: var(--muted);
+}
+
+/* The hit area is the full height of the bar; the line inside is two pixels. */
+.scrub {
+  position: relative;
+  flex: 1 1 auto;
+  align-self: stretch;
+  min-width: 0;
+  margin-inline: calc(10 * var(--unit-fx));
+  cursor: pointer;
+  /* A sideways drag scrubs; a vertical one is still the page's. */
+  touch-action: pan-y;
+  outline: none;
+}
+
+.scrubRail,
+.scrubFill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  margin-top: -1px;
+  border-radius: 2px;
+}
+
+.scrubRail {
+  background: rgba(107, 62, 30, 0.2);
+}
+
+.scrubFill {
+  background: var(--kola);
+  transform-origin: left center;
+  transform: scaleX(var(--p, 0));
+}
+
+/* Moved with a transform of its own width, so following the playhead never
+   triggers layout. */
+.scrubHead {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transform: translateX(calc(var(--p, 0) * 100%));
+}
+
+.scrubThumb {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  border-radius: 50%;
+  background: var(--kola);
+  transform: scale(0);
+  transition: transform 0.35s var(--ease-out-cubic);
+}
+
+.player[data-scrubbing="true"] .scrubThumb,
+.scrub:focus-visible .scrubThumb {
+  transform: scale(1);
+}
+
+@media (hover: hover) {
+  .scrub:hover .scrubThumb {
+    transform: scale(1);
+  }
+}
+
+.bigPlay:focus-visible,
+.replay:focus-visible,
+.chip:focus-visible,
+.tile:focus-visible {
+  outline: 2px solid var(--sahel);
+  outline-offset: 2px;
+}
+
+.scrub:focus-visible .scrubRail {
+  box-shadow: 0 0 0 3px rgba(232, 147, 90, 0.45);
+}
+
+/* ---- Phones --------------------------------------------------------------- */
+
+@media (max-width: 600px) {
+  .bigPlay {
+    width: 64px;
+    height: 64px;
+  }
+
+  .chip {
+    top: 8px;
+    right: 8px;
+    height: 32px;
+    min-height: 32px;
+    font-size: calc(12 * var(--unit-fx-type));
+  }
+
+  .replay {
+    bottom: 10px;
+    height: 36px;
+    font-size: calc(13 * var(--unit-fx-type));
+  }
+
+  .bar {
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    gap: 0;
+    padding: 3px;
+  }
+
+  .tile {
+    width: 34px;
+    height: 34px;
+  }
+
+  .time {
+    padding-inline: 4px;
+    font-size: calc(12 * var(--unit-fx-type));
+  }
+
+  /* No room for both clocks on a 358px frame; elapsed time is the useful one. */
+  .timeTotal {
+    display: none;
+  }
+
+  .scrub {
+    margin-inline: 6px;
+  }
+}
+
+/* ---- Touch ---------------------------------------------------------------- */
+
+/* A tap answers with the same inversion a pointer gets on hover. */
+@media (hover: none) {
+  .bigPlay:active {
+    background: var(--kola);
+    color: var(--paper);
+    transform: translate(-50%, -50%) scale(0.97);
+  }
+  .chip:active,
+  .replay:active,
+  .tile:active {
+    background: var(--kola);
+    color: var(--paper);
+  }
+  .tile:active {
+    border-radius: 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar,
+  .chip {
+    transform: none !important;
+  }
+
+  .replay {
+    transform: translate(-50%, 0) !important;
+  }
+
+  .bigPlay,
+  .replay,
+  .bar,
+  .chip,
+  .player:not([data-phase="idle"]):not([data-phase="paused"]) .bigPlay,
+  .player[data-phase="ended"] .replay,
+  .player[data-phase="playing"][data-muted="true"] .chip {
+    transition:
+      opacity 0.2s linear,
+      background-color 0.2s linear,
+      color 0.2s linear !important;
+  }
+}

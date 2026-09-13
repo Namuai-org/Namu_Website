@@ -29,6 +29,21 @@ export const ha = {
 
   "home.featured.title":     "Mayar da AI abin isa ga sauranmu",
   "home.featured.alt":       "Alamar Namu bisa bishiyar kirya a fili da safiya",
+
+  "home.film.kicker":      "Gajeren fim",
+  "home.film.title":       "Namu cikin minti biyu",
+  "home.film.intro":       "Dalilin da ya sa dole AI ta koyi sauraron mutanen da ba a taba gina ta dominsu ba, da kuma dalilin da ya sa muka fara da Hausa.",
+  "home.film.description": "Gajeren fim cikin launukan Namu. A kan shafi mai launin kirim, rubutu ya ce AI na zama daya daga cikin kayan aiki mafi karfi a duniya, amma ga mutanen da ba sa rubutu, ko masu magana da harsunan da kwamfutoci ba su kula da su, ba a taba gina duniyar dijital domin ta saurare su ba. Shafin ya koma launin ruwan kasa, sai igiyar sauti ta bayyana: me zai faru idan AI za ta iya haduwa da mutane ta muryarsu? Fim din ya nuna Namu ta fara da Hausa, da bayanan magana da aka gina tare da al'ummomin da take yi wa hidima, da kuma iyawa uku: gane magana, samar da murya ta dabi'a, da fahimtar harshe. Ya kare cikin duhu da alamar Namu, a kan katunan da ke dauke da sunayen karin harsunan Afirka: ya kamata AI ta dace da mu, da muryoyinmu da harsunanmu.",
+
+  "film.play":           "Kunna fim",
+  "film.pause":          "Dakatar da fim",
+  "film.replay":         "Sake kunnawa",
+  "film.unmute":         "Kunna sauti",
+  "film.mute":           "Kashe sauti",
+  "film.fullscreen":     "Cikakken allo",
+  "film.exitFullscreen": "Fita daga cikakken allo",
+  "film.progress":       "Ci gaban fim",
+  "film.of":             "cikin",
   "home.mission.statement": "A Namu muna kera samfuran murya ga harsunan Afirka da aka yi wa watsi da su, muna gina abubuwan more rayuwa da ake bukata don isar da su ta hanyoyin da kowa zai iya samu, muna kuma aiki tare da kungiyoyi domin amfani da fasahar don gina al'umma.",
   "home.mission.label":     "Manufarmu",
   "home.mission.expand":    "Gaba inda al'ummomin Afirka za su iya samu, su tsara, su kuma amfana daga Basirar Dan Adam ta Roba cikin harsunan da suke magana da rayuwar da suke ciki.",

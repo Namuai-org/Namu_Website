@@ -96,6 +96,107 @@ export function NamuMark({ className, style }: IconProps) {
   );
 }
 
+/* --- Film controls ------------------------------------------------------- */
+
+/* Play and pause are filled rather than stroked: at the size a control bar
+   draws them, a one-pixel outline of a triangle reads as a smudge. */
+
+export function IconPlay({ className, style }: IconProps) {
+  return (
+    <svg className={className} style={style} viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path
+        d="M4.5 2.9v10.2c0 .6.6.9 1.1.6l7.7-5.1a.7.7 0 0 0 0-1.2L5.6 2.3c-.5-.3-1.1 0-1.1.6Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+export function IconPause({ className, style }: IconProps) {
+  return (
+    <svg className={className} style={style} viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <rect x="3.6" y="2.5" width="3" height="11" rx="0.9" fill="currentColor" />
+      <rect x="9.4" y="2.5" width="3" height="11" rx="0.9" fill="currentColor" />
+    </svg>
+  );
+}
+
+export function IconReplay({ className, style }: IconProps) {
+  return (
+    <svg className={className} style={style} viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path
+        d="M3.2 8.6A5 5 0 1 0 4.6 4.2"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+      />
+      <path
+        d="M4.4 1.6v2.8h2.8"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function IconSoundOn({ className, style }: IconProps) {
+  return (
+    <svg className={className} style={style} viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M2 6.1h2.3L7.6 3.3v9.4L4.3 9.9H2z" fill="currentColor" />
+      <path
+        d="M10.2 5.9a3 3 0 0 1 0 4.2M12.2 3.9a5.8 5.8 0 0 1 0 8.2"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+export function IconSoundOff({ className, style }: IconProps) {
+  return (
+    <svg className={className} style={style} viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M2 6.1h2.3L7.6 3.3v9.4L4.3 9.9H2z" fill="currentColor" />
+      <path
+        d="M10.3 6.3l3.4 3.4M13.7 6.3l-3.4 3.4"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+export function IconFullscreen({ className, style }: IconProps) {
+  return (
+    <svg className={className} style={style} viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path
+        d="M2.5 6V2.5H6M10 2.5h3.5V6M13.5 10v3.5H10M6 13.5H2.5V10"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function IconFullscreenExit({ className, style }: IconProps) {
+  return (
+    <svg className={className} style={style} viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path
+        d="M6 2.5V6H2.5M13.5 6H10V2.5M10 13.5V10h3.5M2.5 10H6v3.5"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 /* --- Social marks -------------------------------------------------------- */
 
 export function IconInstagram({ className, style }: IconProps) {

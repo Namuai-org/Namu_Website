@@ -29,6 +29,21 @@ export const en = {
 
   "home.featured.title":     "Making AI accessible to the rest of us",
   "home.featured.alt":       "The Namu mark above an acacia on the plain at sunrise",
+
+  "home.film.kicker":      "Film",
+  "home.film.title":       "Namu in two minutes",
+  "home.film.intro":       "Why AI has to learn to listen to the people it was never built for, and why we started with Hausa.",
+  "home.film.description": "A short film in Namu's colours. On a cream page, lines of text say that AI is becoming one of the most powerful tools in the world, but that for people who do not type, or who speak languages computers overlook, the digital world was never built to listen. The page turns brown and a sound wave appears: what if AI could meet people through their voice? The film shows Namu starting with Hausa, speech data built with the communities it serves, and three abilities: speech recognition, natural voice generation and language understanding. It closes in darkness on the Namu mark, over cards naming more African languages: AI should adapt to us, to our voices and our languages.",
+
+  "film.play":           "Play film",
+  "film.pause":          "Pause film",
+  "film.replay":         "Play again",
+  "film.unmute":         "Unmute",
+  "film.mute":           "Mute",
+  "film.fullscreen":     "Full screen",
+  "film.exitFullscreen": "Exit full screen",
+  "film.progress":       "Film progress",
+  "film.of":             "of",
   "home.mission.statement": "At Namu we develop voice models for underserved African languages, build the infrastructure required to deliver them through accessible channels, and work with organizations to apply the technology in service of the community.",
   "home.mission.label":     "Our mission",
   "home.mission.expand":    "A future where African communities can access, shape, and benefit from Artificial Intelligence in the languages they speak and the realities they live.",

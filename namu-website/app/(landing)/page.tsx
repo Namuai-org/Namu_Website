@@ -4,6 +4,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { BgFade } from "@/components/editorial/BgFade";
 import { Footer } from "@/components/editorial/Footer";
 import { FeaturedStory } from "@/components/editorial/home/FeaturedStory";
+import { Film } from "@/components/editorial/home/Film";
 import { Hero } from "@/components/editorial/home/Hero";
 import { Mission } from "@/components/editorial/home/Mission";
 import { Models } from "@/components/editorial/home/Models";
@@ -71,6 +72,8 @@ export default function HomePage() {
              mark, the tagline and the acacia all have to survive. */
           ratio="1536 / 1024"
         />
+
+        <Film />
 
         <StoryRail stories={stories} />
 
