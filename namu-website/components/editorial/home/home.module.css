@@ -30,6 +30,21 @@
   overflow: hidden;
 }
 
+/* The canvas stops where the runway does. On a wide screen the plate covers
+   that edge; on a phone or a portrait tablet the plate is too short, and the
+   edge landed as a hard orange line across the film or the stories below,
+   at a height that depended on the screen. The runway's last half-viewport
+   dissolves into the page instead — well below anything the hero shows. */
+.glRunway::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 50vh;
+  background: linear-gradient(to bottom, transparent, var(--ds-bg));
+}
+
 .heroContent {
   position: relative;
   height: 100svh;
@@ -415,6 +430,83 @@
   }
   .featuredCard {
     padding: calc(22 * var(--unit-fx));
+  }
+}
+
+/* ---- 2b. Film ----------------------------------------------------------- */
+
+.film {
+  position: relative;
+  padding-top: calc(24 * var(--unit-fx));
+}
+
+/* Eighteen of the twenty-four columns: the width the reference gives its own
+   film block, 1033px on a 1440 screen. */
+.filmInner {
+  width: calc(18 * var(--col24) + 17 * var(--gutter24));
+  margin-inline: auto;
+}
+
+/* Title on the left, the one-sentence introduction set against it on the
+   right, both sitting on the same baseline above the frame. */
+.filmHead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) calc(7 * var(--col24) + 6 * var(--gutter24));
+  column-gap: var(--gutter24);
+  align-items: end;
+  margin-bottom: calc(48 * var(--unit-fx));
+}
+
+.filmKicker {
+  grid-column: 1 / -1;
+  margin-bottom: calc(24 * var(--unit-fx));
+  color: var(--ds-text-soft);
+}
+
+.filmDot {
+  margin-inline: 0.3em;
+}
+
+.filmTitle {
+  grid-column: 1;
+  margin: 0;
+}
+
+.filmIntro {
+  grid-column: 2;
+  margin: 0;
+  color: var(--ds-text-soft);
+  text-wrap: pretty;
+}
+
+@media (max-width: 900px) {
+  .filmInner {
+    width: 100%;
+  }
+  .filmHead {
+    grid-template-columns: 1fr;
+    row-gap: calc(18 * var(--unit-fx));
+  }
+  .filmIntro {
+    grid-column: 1;
+    max-width: 36em;
+  }
+}
+
+@media (max-width: 600px) {
+  .film {
+    padding-top: 0;
+  }
+  .filmHead {
+    margin-bottom: calc(28 * var(--unit-fx));
+  }
+  /* The film's words are small on a phone, so the frame takes the outer
+     gutter as well as the text column: 358px rather than 328 on a 390 screen. */
+  .filmStage {
+    margin-inline: calc(-1 * var(--outer-gutter));
+  }
+  .filmKicker {
+    margin-bottom: calc(14 * var(--unit-fx));
   }
 }
 
