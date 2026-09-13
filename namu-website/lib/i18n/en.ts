@@ -23,15 +23,15 @@ export const en = {
   "nav.approach":  "Models",
   "nav.blog":      "Blog",
   "nav.brand":     "Brand",
+  "nav.language":  "Language",
 
   "home.hero.line1": "Speech-native",
   "home.hero.line2": "Intelligence",
 
-  "home.featured.title":     "Making AI accessible to the rest of us",
-  "home.featured.alt":       "The Namu mark above an acacia on the plain at sunrise",
+  "home.featured.alt":       "The Namu mark and the line “Making AI work for every language and every community” over an acacia and a mountain at sunset",
 
   "home.film.kicker":      "Film",
-  "home.film.title":       "Namu in two minutes",
+  "home.film.name":        "The Namu film",
   "home.film.intro":       "Why AI has to learn to listen to the people it was never built for, and why we started with Hausa.",
   "home.film.description": "A short film in Namu's colours. On a cream page, lines of text say that AI is becoming one of the most powerful tools in the world, but that for people who do not type, or who speak languages computers overlook, the digital world was never built to listen. The page turns brown and a sound wave appears: what if AI could meet people through their voice? The film shows Namu starting with Hausa, speech data built with the communities it serves, and three abilities: speech recognition, natural voice generation and language understanding. It closes in darkness on the Namu mark, over cards naming more African languages: AI should adapt to us, to our voices and our languages.",
 
@@ -158,7 +158,10 @@ export const en = {
   "playground.collapse":     "Collapse sidebar",
   "playground.expand":       "Open sidebar",
   "playground.disclaimer":   "Namu Playground is an early preview. The models are still learning, and they can be wrong.",
-  "playground.notConnected": "This console is wired to the API, but no endpoint is answering yet. What you entered is still here.",
+  "playground.soon.label":   "Coming soon",
+  "playground.soon.title":   "The next version is on its way",
+  "playground.soon.body":    "We're developing a second version of these models. Stay tuned, and come back soon to test them out.",
+  "playground.soon.follow":  "Follow our progress",
   "playground.attach":       "Attach audio",
   "playground.record":       "Start recording",
   "playground.stop":         "Stop recording",

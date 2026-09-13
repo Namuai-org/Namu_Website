@@ -3,9 +3,9 @@
  *
  * None of these endpoints exist yet. Rather than fake a result — which would
  * make a disconnected playground look like a working one — each call posts for
- * real and surfaces `NotConnectedError` when nothing answers. The console shows
- * that as a plain note under the composer, so what you see is always the truth
- * about what is wired up.
+ * real and surfaces `NotConnectedError` when nothing answers. The console
+ * answers that with a card saying the second version of the models is on its
+ * way, so a visitor is never shown a result that did not happen.
  *
  * To go live: implement the routes in lib/playground.ts's `endpoint` fields to
  * accept the request shapes below and return the response shapes. Nothing in

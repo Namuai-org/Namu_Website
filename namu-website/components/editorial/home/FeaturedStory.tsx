@@ -1,55 +1,67 @@
 "use client";
 
-import Link from "next/link";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useTranslation } from "@/hooks/useTranslation";
 import { clamp, useRafScroll } from "@/hooks/useRafScroll";
-import { ArrowRight } from "../icons";
-import { ScrollObject } from "../ScrollObject";
-import { SplitText } from "../SplitText";
 import styles from "./home.module.css";
 
 type Props = {
-  /**
-   * Where the card leads. Without one it renders as a plain statement: no
-   * link, and no arrow tile either, since the arrow's whole job is to promise
-   * a destination.
-   */
-  href?: string;
   image: string;
-  /**
-   * Double-resolution file. The plate goes full bleed, so on a Retina screen a
-   * 1440px viewport asks for ~2880 device pixels — without this the browser
-   * upscales the 1x file by nearly 2x and the wordmark goes soft.
-   */
-  image2x?: string;
   /** The image's true aspect ratio. The frame takes it so nothing is cropped. */
   ratio: string;
+  /**
+   * A square crop for phones. The plate is a designed composition with its
+   * words in the middle; at a phone's width the full landscape frame shrinks
+   * them past reading, so a phone gets the centre of it, full bleed.
+   */
+  phoneImage?: string;
 };
 
+const PHONE = "(max-width: 600px)";
+
 /**
- * The lead card. As the section crosses the viewport the frame widens from 80%
- * to full bleed and its corners square off, while the photograph inside eases
- * back from a 1.2 zoom — so the image appears to settle into place.
+ * The cover plate, straight after the hero.
  *
- * The caption is one link rather than a row with two small ones. It overhangs
- * the bottom of the frame so it reads as pinned to the picture, and everything
- * in it responds on hover — the dot swells, a rule sweeps across in accent, the
- * arrow tile fills — so it is obvious the whole thing is a door.
+ * On a wide screen the frame widens from 85% to full bleed as the section
+ * crosses the viewport, its corners square off, and the picture eases back
+ * from a 1.2 zoom — so it appears to settle into place.
+ *
+ * On a phone it is simply there, full bleed and still, the way the reference
+ * sets its lead image on mobile: a screen-wide square straight after the
+ * hero, with nothing laid over it. The words are part of the picture, so
+ * there is no card on top of it at any size.
  */
-export function FeaturedStory({ href, image, image2x, ratio }: Props) {
+export function FeaturedStory({ image, ratio, phoneImage }: Props) {
   const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
   const mediaRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
+  const phone = useRef(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia(PHONE);
+    const apply = () => {
+      phone.current = mq.matches;
+      if (!mq.matches) return;
+      // Clear whatever the wide-screen animation last wrote, so a window
+      // narrowed mid-scroll lands on the phone layout rather than a frozen
+      // frame of the animation.
+      frameRef.current?.style.removeProperty("max-width");
+      mediaRef.current?.style.removeProperty("border-radius");
+      imgRef.current?.style.removeProperty("transform");
+    };
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
 
   useRafScroll((scrollY, viewportH) => {
     const section = sectionRef.current;
     const frame = frameRef.current;
     const media = mediaRef.current;
     const img = imgRef.current;
-    if (!section || !frame || !media || !img) return;
+    if (!section || !frame || !media || !img || phone.current) return;
 
     const rect = section.getBoundingClientRect();
     const top = rect.top + scrollY;
@@ -59,9 +71,6 @@ export function FeaturedStory({ href, image, image2x, ratio }: Props) {
     const start = top - viewportH;
     const p = clamp((scrollY - start) / viewportH);
 
-    // Ends at full bleed. The band the card sits in is a fraction of the frame,
-    // so the start has to stay high enough that the card still fits inside it
-    // while the frame is at its smallest.
     frame.style.maxWidth = `${85 + p * 15}%`;
     media.style.borderRadius = `calc(${(1 - p) * 6} * var(--unit-fx))`;
     img.style.transform = `scale(${1.2 - p * 0.2})`;
@@ -71,58 +80,23 @@ export function FeaturedStory({ href, image, image2x, ratio }: Props) {
     <section ref={sectionRef} className={styles.featured}>
       <div className={styles.featuredStage}>
         <div ref={frameRef} className={styles.featuredFrame}>
-          {/* The clip lives here rather than on the frame, so the card can be
-              overlaid on the plate on desktop and sit below it on a phone —
-              where there is no room to overlay without hiding the tagline —
-              without being cut off in either case. */}
           <div
             ref={mediaRef}
             className={styles.featuredMedia}
-            style={{ aspectRatio: ratio }}
+            style={{ "--plate-ratio": ratio } as React.CSSProperties}
           >
-            <img
-              ref={imgRef}
-              src={image}
-              srcSet={image2x ? `${image} 1x, ${image2x} 2x` : undefined}
-              alt={t("home.featured.alt")}
-              className={styles.featuredImage}
-              loading="eager"
-              decoding="async"
-            />
+            <picture>
+              {phoneImage ? <source media={PHONE} srcSet={phoneImage} /> : null}
+              <img
+                ref={imgRef}
+                src={image}
+                alt={t("home.featured.alt")}
+                className={styles.featuredImage}
+                loading="eager"
+                decoding="async"
+              />
+            </picture>
           </div>
-
-          {/* Sits on the plate, in the band below the tagline. The band is
-              defined as a fraction of the frame, so it clears "our language.
-              our future." at every size the frame animates through. */}
-          <ScrollObject className={styles.featuredCaptionWrap}>
-            {/* Named by its destination: the card carries a statement, not a
-                label saying where it goes. */}
-            {href ? (
-              <Link
-                href={href}
-                className={styles.featuredCard}
-                aria-label={`${t("home.featured.title")} — about Namu`}
-              >
-                <h2 className={styles.featuredTitle}>
-                  <SplitText text={t("home.featured.title")} />
-                </h2>
-
-                <span className={styles.featuredRule} aria-hidden="true" />
-
-                <span className={styles.featuredArrowTile} aria-hidden="true">
-                  <ArrowRight className={styles.featuredArrow} />
-                </span>
-              </Link>
-            ) : (
-              <div className={`${styles.featuredCard} ${styles.featuredCardStatic}`}>
-                <h2 className={styles.featuredTitle}>
-                  <SplitText text={t("home.featured.title")} />
-                </h2>
-
-                <span className={styles.featuredRule} aria-hidden="true" />
-              </div>
-            )}
-          </ScrollObject>
         </div>
       </div>
     </section>

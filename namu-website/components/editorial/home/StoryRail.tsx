@@ -19,13 +19,13 @@ export type Story = {
 /**
  * A horizontal rail you drag through. Pointer drag and horizontal wheel both
  * move it; releasing hands off to a short inertial glide that settles against
- * the track's bounds.
+ * the track's bounds. On a touch tablet the drag is a finger: the track
+ * declares `touch-action: pan-y`, so the browser keeps vertical swipes for the
+ * page and hands horizontal ones to the pointer handlers below.
  *
- * The same rail on a phone, where the drag is a finger. The track declares
- * `touch-action: pan-y`, which is what makes that work: the browser keeps
- * vertical swipes for scrolling the page and hands horizontal ones to the
- * pointer handlers below, instead of claiming every touch as a pan and
- * cancelling the drag before it starts.
+ * On a phone it is not a rail at all. The stories stack down the page, as the
+ * reference lists them on mobile, so the drag, the glide and the transform
+ * all stand down below 600px and pick up again if the window widens.
  */
 export function StoryRail({ stories }: { stories: Story[] }) {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -53,6 +53,16 @@ export function StoryRail({ stories }: { stories: Story[] }) {
     if (!track || !viewport) return;
 
     const s = state.current;
+
+    const stacked = window.matchMedia("(max-width: 600px)");
+    const onLayoutChange = () => {
+      if (!stacked.matches) return;
+      s.x = s.target = s.velocity = 0;
+      s.pointerDown = false;
+      track.style.removeProperty("transform");
+    };
+    onLayoutChange();
+    stacked.addEventListener("change", onLayoutChange);
 
     const maxScroll = () =>
       Math.max(0, track.scrollWidth - viewport.clientWidth);
@@ -83,6 +93,7 @@ export function StoryRail({ stories }: { stories: Story[] }) {
     let lastBounds = "";
     const loop = () => {
       raf = requestAnimationFrame(loop);
+      if (stacked.matches) return;
 
       if (!s.pointerDown) {
         s.target += s.velocity;
@@ -109,7 +120,7 @@ export function StoryRail({ stories }: { stories: Story[] }) {
     raf = requestAnimationFrame(loop);
 
     const onPointerDown = (e: PointerEvent) => {
-      if (e.button !== 0) return;
+      if (e.button !== 0 || stacked.matches) return;
       s.pointerDown = true;
       s.moved = false;
       s.startX = e.clientX;
@@ -163,7 +174,7 @@ export function StoryRail({ stories }: { stories: Story[] }) {
     };
 
     const onWheel = (e: WheelEvent) => {
-      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+      if (stacked.matches || Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
       e.preventDefault();
       s.velocity = 0;
       s.target -= e.deltaX;
@@ -179,6 +190,7 @@ export function StoryRail({ stories }: { stories: Story[] }) {
 
     return () => {
       cancelAnimationFrame(raf);
+      stacked.removeEventListener("change", onLayoutChange);
       track.removeEventListener("pointerdown", onPointerDown);
       track.removeEventListener("pointermove", onPointerMove);
       track.removeEventListener("pointerup", onPointerUp);
@@ -220,10 +232,10 @@ export function StoryRail({ stories }: { stories: Story[] }) {
 
                 <div className={styles.railBody}>
                   <div>
-                    <div className="text-caption text-soft">
+                    <div className={`text-caption text-soft ${styles.railKicker}`}>
                       {story.category}
                     </div>
-                    <h3 className="h7" style={{ marginTop: "0.6em" }}>
+                    <h3 className={`h7 ${styles.railTitle}`}>
                       <Link href={story.href} draggable={false}>
                         <SplitText text={story.title} />
                       </Link>

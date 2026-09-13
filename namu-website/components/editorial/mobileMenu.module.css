@@ -1,0 +1,395 @@
+/* ==========================================================================
+   Phone menu
+   --------------------------------------------------------------------------
+   The reference's mobile menu, in Namu's paper and type: a full page under
+   the bar, mono routes with thin chevrons, panels that unfold into tinted
+   rows, and the small print gathered at the foot.
+   ========================================================================== */
+
+.menu {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  /* Under the header (999), so the bar's logo and close button stay on top
+     of it exactly where they were. */
+  .menu {
+    position: fixed;
+    inset: 0;
+    z-index: 998;
+    display: block;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: var(--paper);
+    color: var(--ds-text);
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.3s var(--ease-out),
+      visibility 0s linear 0.3s;
+  }
+
+  .open {
+    opacity: 1;
+    visibility: visible;
+    transition:
+      opacity 0.5s var(--ease-out),
+      visibility 0s linear 0s;
+  }
+
+  /* Starts just under the bar and lines up with its logo, so the routes read
+     as the bar's own contents. */
+  .inner {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    padding: calc(104 * var(--unit-fx)) calc(31 * var(--unit-fx))
+      calc(30 * var(--unit-fx));
+  }
+
+  .list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Each line rises into place a beat after the one above it. Closing drops
+     the delay, so the page folds away at once. */
+  .item,
+  .foot {
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity 0.25s var(--ease-out),
+      transform 0.25s var(--ease-out);
+  }
+
+  .open .item,
+  .open .foot {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.6s var(--ease-out),
+      transform 0.7s var(--ease-out);
+    transition-delay: calc(0.08s + var(--i, 0) * 0.06s);
+  }
+
+  .head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .headLink {
+    flex: 1 1 auto;
+    padding-block: calc(12 * var(--unit-fx));
+    font-family: var(--font-mono-ui), ui-monospace, monospace;
+    font-size: calc(16 * var(--unit-fx-type));
+    font-weight: 500;
+    line-height: 1;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* Wider than the chevron it holds, so the target is a thumb's size. */
+  .chevronButton {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 40px;
+    margin-right: -13px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .chevron {
+    width: 17px;
+    height: auto;
+    transition: transform 0.5s var(--ease-out);
+  }
+
+  .itemOpen .chevron {
+    transform: rotate(180deg);
+  }
+
+  /* Height through a 0fr → 1fr grid track, which reaches the content's real
+     height without measuring it. */
+  .section {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.55s var(--ease-out);
+  }
+
+  .sectionOpen {
+    grid-template-rows: 1fr;
+  }
+
+  .sectionInner {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* The rule under an open panel is what separates it from the next route. */
+  .sectionOpen .sectionInner {
+    margin-bottom: calc(6 * var(--unit-fx));
+    border-bottom: 1px solid rgba(107, 62, 30, 0.3);
+  }
+
+  .label {
+    margin: calc(14 * var(--unit-fx)) 0 0;
+    font-family: var(--font-mono-ui), ui-monospace, monospace;
+    font-size: calc(15 * var(--unit-fx-type));
+    line-height: 1;
+    color: var(--ds-text-soft);
+  }
+
+  .rows {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: calc(16 * var(--unit-fx)) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rowItem {
+    opacity: 0;
+    transform: translateY(6px);
+    transition:
+      opacity 0.2s var(--ease-out),
+      transform 0.2s var(--ease-out);
+  }
+
+  .sectionOpen .rowItem {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.5s var(--ease-out),
+      transform 0.6s var(--ease-out);
+    transition-delay: calc(0.1s + var(--j, 0) * 0.05s);
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 10px;
+    border-radius: 2px;
+    background: #fbf0dc;
+    color: inherit;
+    text-decoration: none;
+    transition: background-color 0.3s var(--ease-out);
+  }
+
+  .thumb {
+    position: relative;
+    display: block;
+    width: 34px;
+    aspect-ratio: 1 / 1;
+    flex: 0 0 auto;
+    overflow: hidden;
+    border-radius: 2px;
+  }
+
+  .thumb img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .rowTitle {
+    font-family: var(--font-mono-ui), ui-monospace, monospace;
+    font-size: calc(15 * var(--unit-fx-type));
+    line-height: 1.2;
+  }
+
+  /* A story is a picture you recognise and a headline you read: the picture
+     takes a real share of the row, the title sits beside it in serif. */
+  .rowStory {
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .rowStory .thumb {
+    width: 42%;
+    aspect-ratio: 3 / 2;
+  }
+
+  .storyTitle {
+    padding-top: 2px;
+    font-family: var(--font-serif), Georgia, serif;
+    font-size: calc(17 * var(--unit-fx-type));
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+
+  .all {
+    display: inline-block;
+    margin: calc(12 * var(--unit-fx)) 0 calc(10 * var(--unit-fx));
+    padding-block: calc(10 * var(--unit-fx));
+    font-family: var(--font-mono-ui), ui-monospace, monospace;
+    font-size: calc(16 * var(--unit-fx-type));
+    font-weight: 500;
+    line-height: 1;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* ---- Foot ---------------------------------------------------------------- */
+
+  .foot {
+    margin-top: auto;
+    padding-top: calc(56 * var(--unit-fx));
+  }
+
+  /* The bar's editorial slot, moved to the foot as the reference moves its
+     own: small-caps serif, letterspaced, with the 45° arrow. */
+  .feature {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-family: var(--font-serif), Georgia, serif;
+    font-size: calc(19 * var(--unit-fx-type));
+    font-variant-caps: small-caps;
+    text-transform: lowercase;
+    letter-spacing: 0.05em;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .featureArrow {
+    width: 11px;
+    height: auto;
+    color: var(--sahel);
+    transition: transform 0.5s var(--ease-out);
+  }
+
+  .small {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 16px;
+    margin-top: calc(32 * var(--unit-fx));
+  }
+
+  .small ul {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .small a {
+    font-family: var(--font-mono-ui), ui-monospace, monospace;
+    font-size: calc(13 * var(--unit-fx-type));
+    line-height: 1.35;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .lang {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: calc(34 * var(--unit-fx));
+  }
+
+  .langPill {
+    display: inline-flex;
+    padding: 3px;
+    border-radius: 2em;
+    background: var(--ds-surface-2);
+  }
+
+  .langOption {
+    padding: 7px 14px;
+    border: 0;
+    border-radius: 2em;
+    background: transparent;
+    color: var(--ds-text-soft);
+    font-family: var(--font-mono-ui), ui-monospace, monospace;
+    font-size: calc(12 * var(--unit-fx-type));
+    letter-spacing: 0.08em;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+      background-color 0.4s var(--ease-out),
+      color 0.4s var(--ease-out);
+  }
+
+  .langOption[aria-pressed="true"] {
+    background: var(--paper);
+    color: var(--ds-text);
+    box-shadow: 0 1px 2px rgba(28, 20, 16, 0.08);
+  }
+
+  .langLabel {
+    font-family: var(--font-mono-ui), ui-monospace, monospace;
+    font-size: calc(13 * var(--unit-fx-type));
+    color: var(--ds-text-soft);
+  }
+
+  .headLink:focus-visible,
+  .chevronButton:focus-visible,
+  .row:focus-visible,
+  .all:focus-visible,
+  .feature:focus-visible,
+  .small a:focus-visible,
+  .langOption:focus-visible {
+    outline: 2px solid var(--sahel);
+    outline-offset: 2px;
+  }
+}
+
+@media (max-width: 600px) and (hover: hover) {
+  .row:hover {
+    background: var(--ds-surface-2);
+  }
+  .headLink:hover,
+  .all:hover,
+  .small a:hover {
+    text-decoration: underline;
+  }
+  .feature:hover .featureArrow {
+    transform: translate(2px, -2px);
+  }
+}
+
+/* A tap answers with the same change a pointer gets. */
+@media (max-width: 600px) and (hover: none) {
+  .row:active {
+    background: var(--ds-surface-2);
+  }
+  .headLink:active,
+  .all:active,
+  .small a:active {
+    text-decoration: underline;
+  }
+  .feature:active .featureArrow {
+    transform: translate(2px, -2px);
+  }
+  .chevronButton:active {
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item,
+  .foot,
+  .rowItem,
+  .open .item,
+  .open .foot,
+  .sectionOpen .rowItem {
+    transform: none !important;
+    transition: opacity 0.25s linear !important;
+  }
+  .section,
+  .chevron {
+    transition: none !important;
+  }
+}

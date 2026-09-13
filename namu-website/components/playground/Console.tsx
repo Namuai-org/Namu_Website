@@ -22,6 +22,7 @@ import {
   runTranscribe,
   runVoice,
 } from "@/lib/playgroundApi";
+import { ComingSoon } from "./ComingSoon";
 import { InlineSelect } from "./InlineSelect";
 import { Pending } from "./Pending";
 import {
@@ -34,7 +35,8 @@ import {
 } from "./icons";
 import styles from "./playground.module.css";
 
-type Status = "idle" | "running" | "done" | "error";
+/** `soon`: the request went out and nothing is answering yet. */
+type Status = "idle" | "running" | "done" | "error" | "soon";
 
 type Result = {
   heard?: string;
@@ -171,12 +173,14 @@ export function Console({
         setStatus("idle");
         return;
       }
+      // No endpoint yet: the models' next version is still being built, so
+      // this is news to share rather than a fault to report.
+      if (err instanceof NotConnectedError) {
+        setStatus("soon");
+        return;
+      }
       setStatus("error");
-      setMessage(
-        err instanceof NotConnectedError
-          ? t("playground.notConnected")
-          : (err as Error).message,
-      );
+      setMessage((err as Error).message);
     } finally {
       abortRef.current = null;
     }
@@ -342,6 +346,8 @@ export function Console({
       </div>
 
       {status === "running" && <Pending modality={model.modality} />}
+
+      {status === "soon" && <ComingSoon />}
 
       {message && (
         <p className={`text-ui ${styles.note}`} role="status">

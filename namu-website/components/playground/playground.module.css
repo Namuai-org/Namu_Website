@@ -753,6 +753,85 @@
   text-align: left;
 }
 
+/* ---- Coming soon ----------------------------------------------------------- */
+
+/* A result card's shape and paper, so the answer to a send still lands where
+   answers do — it just says the models are on their way. */
+.soon {
+  width: 100%;
+  margin-top: calc(24 * var(--unit-fx));
+  padding: calc(28 * var(--unit-fx)) calc(28 * var(--unit-fx)) calc(22 * var(--unit-fx));
+  border-radius: calc(10 * var(--unit-fx));
+  background: var(--paper);
+  text-align: left;
+  animation: soonIn 0.8s var(--ease-out) both;
+}
+
+.soonHead {
+  display: flex;
+  align-items: center;
+  gap: calc(10 * var(--unit-fx));
+  margin-bottom: calc(18 * var(--unit-fx));
+}
+
+.soonMark {
+  width: calc(22 * var(--unit-fx));
+  min-width: 18px;
+  height: auto;
+  flex: 0 0 auto;
+  color: var(--ds-text);
+}
+
+.soonLabel {
+  color: var(--ds-text-soft);
+  text-transform: uppercase;
+}
+
+.soonTitle {
+  margin: 0;
+  color: var(--ds-text);
+  text-wrap: balance;
+}
+
+.soonBody {
+  margin: calc(10 * var(--unit-fx)) 0 0;
+  color: var(--ds-text-soft);
+  line-height: 1.4;
+  text-wrap: pretty;
+}
+
+.soonActions {
+  margin-top: calc(22 * var(--unit-fx));
+  padding-top: calc(16 * var(--unit-fx));
+  border-top: 1px solid var(--rule-soft);
+}
+
+@keyframes soonIn {
+  from {
+    opacity: 0;
+    transform: translateY(calc(12 * var(--unit-fx)));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes soonFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .soon {
+    animation: soonFade 0.3s linear both;
+  }
+}
+
 .disclaimer {
   margin: calc(30 * var(--unit-fx)) 0 0;
   color: var(--ds-text-soft);

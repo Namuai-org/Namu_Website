@@ -23,15 +23,15 @@ export const ha = {
   "nav.approach":  "Samfura",
   "nav.blog":      "Blog",
   "nav.brand":     "Alama",
+  "nav.language":  "Harshe",
 
   "home.hero.line1": "Basira Mai",
   "home.hero.line2": "Jin Magana",
 
-  "home.featured.title":     "Mayar da AI abin isa ga sauranmu",
-  "home.featured.alt":       "Alamar Namu bisa bishiyar kirya a fili da safiya",
+  "home.featured.alt":       "Alamar Namu da rubutun “Sanya AI ta yi aiki ga kowane harshe da kowace al'umma” bisa bishiyar kirya da dutse a faduwar rana",
 
   "home.film.kicker":      "Gajeren fim",
-  "home.film.title":       "Namu cikin minti biyu",
+  "home.film.name":        "Fim din Namu",
   "home.film.intro":       "Dalilin da ya sa dole AI ta koyi sauraron mutanen da ba a taba gina ta dominsu ba, da kuma dalilin da ya sa muka fara da Hausa.",
   "home.film.description": "Gajeren fim cikin launukan Namu. A kan shafi mai launin kirim, rubutu ya ce AI na zama daya daga cikin kayan aiki mafi karfi a duniya, amma ga mutanen da ba sa rubutu, ko masu magana da harsunan da kwamfutoci ba su kula da su, ba a taba gina duniyar dijital domin ta saurare su ba. Shafin ya koma launin ruwan kasa, sai igiyar sauti ta bayyana: me zai faru idan AI za ta iya haduwa da mutane ta muryarsu? Fim din ya nuna Namu ta fara da Hausa, da bayanan magana da aka gina tare da al'ummomin da take yi wa hidima, da kuma iyawa uku: gane magana, samar da murya ta dabi'a, da fahimtar harshe. Ya kare cikin duhu da alamar Namu, a kan katunan da ke dauke da sunayen karin harsunan Afirka: ya kamata AI ta dace da mu, da muryoyinmu da harsunanmu.",
 
@@ -158,7 +158,10 @@ export const ha = {
   "playground.collapse":     "Rufe gefen shafi",
   "playground.expand":       "Bude gefen shafi",
   "playground.disclaimer":   "Filin gwajin Namu sabo ne. Samfuran suna cikin koyo, kuma suna iya yin kuskure.",
-  "playground.notConnected": "An hada wannan da API, amma babu wanda ke amsawa tukuna. Abin da ka shigar yana nan.",
+  "playground.soon.label":   "Nan ba da jimawa ba",
+  "playground.soon.title":   "Juzu'i na gaba yana kan hanya",
+  "playground.soon.body":    "Muna kera juzu'i na biyu na wadannan samfura. Ku kasance tare da mu, ku dawo nan ba da jimawa ba don gwada su.",
+  "playground.soon.follow":  "Bi ci gabanmu",
   "playground.attach":       "Hada sauti",
   "playground.record":       "Fara rikodi",
   "playground.stop":         "Tsayar da rikodi",
