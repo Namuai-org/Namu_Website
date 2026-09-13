@@ -23,12 +23,12 @@ export const ha = {
   "nav.approach":  "Samfura",
   "nav.blog":      "Blog",
   "nav.brand":     "Alama",
+  "nav.language":  "Harshe",
 
   "home.hero.line1": "Basira Mai",
   "home.hero.line2": "Jin Magana",
 
-  "home.featured.title":     "Mayar da AI abin isa ga sauranmu",
-  "home.featured.alt":       "Alamar Namu bisa bishiyar kirya a fili da safiya",
+  "home.featured.alt":       "Alamar Namu da rubutun “Sanya AI ta yi aiki ga kowane harshe da kowace al'umma” bisa bishiyar kirya da dutse a faduwar rana",
 
   "home.film.kicker":      "Gajeren fim",
   "home.film.name":        "Fim din Namu",

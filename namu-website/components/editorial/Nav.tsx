@@ -4,7 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "@/hooks/useTranslation";
-import { ArrowRight, ArrowUpRight, ChevronDown, NamuMark } from "./icons";
+import { ArrowRight, ArrowUpRight, NamuMark } from "./icons";
+import { MobileMenu } from "./MobileMenu";
 import { NAV_PANELS, type PanelItem } from "./navPanels";
 import styles from "./nav.module.css";
 
@@ -26,9 +27,6 @@ export function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openPanel, setOpenPanel] = useState<string | null>(null);
   const [activeItem, setActiveItem] = useState(0);
-  /* The phone menu's own open section. Kept apart from `openPanel`, which is
-     driven by hover and must never be set by a tap inside the sheet. */
-  const [sheetPanel, setSheetPanel] = useState<string | null>(null);
   const lastY = useRef(0);
   const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -88,12 +86,22 @@ export function Nav() {
   }, [pathname]);
 
   useEffect(() => {
-    if (!menuOpen) setSheetPanel(null);
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
   }, [menuOpen]);
+
+  // The phone menu has no wide-screen form. Widening past it closes the menu
+  // rather than leaving the page locked behind a menu nobody can see.
+  useEffect(() => {
+    const phone = window.matchMedia("(max-width: 600px)");
+    const onChange = () => {
+      if (!phone.matches) setMenuOpen(false);
+    };
+    phone.addEventListener("change", onChange);
+    return () => phone.removeEventListener("change", onChange);
+  }, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -112,7 +120,7 @@ export function Nav() {
   /* A touch tablet shows the inline bar but cannot hover it, so its panels
      would never open. There, a tap on a trigger unfolds the panel the way a
      pointer resting on it does, and a tap anywhere outside the header folds
-     it again. Phones use the sheet instead, and mice keep hover. */
+     it again. Phones use the full-page menu instead, and mice keep hover. */
   const tapOpensPanel = () =>
     window.matchMedia("(hover: none)").matches && window.innerWidth > 600;
 
@@ -128,8 +136,11 @@ export function Nav() {
   }, [openPanel]);
 
   return (
+    <>
     <header
-      className={`${styles.header} ${hidden && !menuOpen ? styles.hidden : ""}`}
+      className={`${styles.header} ${hidden && !menuOpen ? styles.hidden : ""} ${
+        menuOpen ? styles.headerMenuOpen : ""
+      }`}
     >
       <div className={styles.shell}>
         <nav className={styles.bar} aria-label="Primary">
@@ -143,6 +154,7 @@ export function Nav() {
             className={`${styles.burger} ${menuOpen ? styles.burgerOpen : ""}`}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
             onClick={() => setMenuOpen((v) => !v)}
           >
             <span className={styles.burgerLine} />
@@ -150,15 +162,9 @@ export function Nav() {
             <span className={styles.burgerLine} />
           </button>
 
-          <div
-            id="primary-menu"
-            className={`${styles.menu} ${menuOpen ? styles.menuOpen : ""}`}
-          >
+          <div id="primary-menu" className={styles.menu}>
             <ul className={styles.links}>
-              {LINKS.map(({ href, key, panel }, index) => {
-                const sheetOpen = sheetPanel === panel;
-                const content = NAV_PANELS[panel];
-                return (
+              {LINKS.map(({ href, key, panel }, index) => (
                   <li
                     key={href}
                     className={styles.linkItem}
@@ -186,92 +192,8 @@ export function Nav() {
                       {t(key)}
                     </Link>
 
-                    {/* Phones: the same panel, unfolded in place under its
-                        heading rather than floating below the bar. */}
-                    <button
-                      type="button"
-                      className={`${styles.sheetTrigger} ${
-                        sheetOpen ? styles.sheetTriggerOpen : ""
-                      }`}
-                      aria-expanded={sheetOpen}
-                      aria-controls={`sheet-${panel}`}
-                      onClick={() =>
-                        setSheetPanel((cur) => (cur === panel ? null : panel))
-                      }
-                    >
-                      <span>{t(key)}</span>
-                      <ChevronDown className={styles.sheetChevron} />
-                    </button>
-
-                    <div
-                      id={`sheet-${panel}`}
-                      className={`${styles.sheetSection} ${
-                        sheetOpen ? styles.sheetSectionOpen : ""
-                      }`}
-                      aria-hidden={!sheetOpen}
-                    >
-                      <div className={styles.sheetSectionInner}>
-                        <p className={`${styles.metaDesc} ${styles.sheetDesc}`}>
-                          {t(content.bodyKey)}
-                        </p>
-                        <ul className={styles.sheetList}>
-                          {content.items.map((item, j) => (
-                            <li
-                              key={item.href + item.title}
-                              className={styles.sheetItem}
-                              style={{ "--j": j } as React.CSSProperties}
-                            >
-                              <Link
-                                href={item.href}
-                                className={`${styles.sheetRow} ${
-                                  content.layout === "stories"
-                                    ? styles.sheetRowStory
-                                    : ""
-                                }`}
-                                tabIndex={sheetOpen ? 0 : -1}
-                                onClick={() => setMenuOpen(false)}
-                              >
-                                <span className={styles.sheetThumb}>
-                                  <img src={item.image} alt="" loading="lazy" />
-                                </span>
-                                <span className={styles.sheetText}>
-                                  <span
-                                    className={
-                                      content.layout === "stories"
-                                        ? styles.sheetStoryTitle
-                                        : styles.metaTitle
-                                    }
-                                  >
-                                    {copy(item, "title")}
-                                  </span>
-                                  {item.meta ? (
-                                    <span className={styles.storyMeta}>{item.meta}</span>
-                                  ) : null}
-                                </span>
-                                <ArrowRight className={styles.sheetArrow} />
-                              </Link>
-                            </li>
-                          ))}
-                          <li
-                            className={styles.sheetItem}
-                            style={{ "--j": content.items.length } as React.CSSProperties}
-                          >
-                            <Link
-                              href={content.allHref}
-                              className={`${styles.metaTitle} ${styles.sheetAll}`}
-                              tabIndex={sheetOpen ? 0 : -1}
-                              onClick={() => setMenuOpen(false)}
-                            >
-                              {t(content.allKey)}
-                              <ArrowRight className={styles.sheetAllArrow} />
-                            </Link>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
                   </li>
-                );
-              })}
+              ))}
             </ul>
 
             <div className={styles.right}>
@@ -442,5 +364,8 @@ export function Nav() {
         </div>
       </div>
     </header>
+
+    <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
+    </>
   );
 }

@@ -23,12 +23,12 @@ export const en = {
   "nav.approach":  "Models",
   "nav.blog":      "Blog",
   "nav.brand":     "Brand",
+  "nav.language":  "Language",
 
   "home.hero.line1": "Speech-native",
   "home.hero.line2": "Intelligence",
 
-  "home.featured.title":     "Making AI accessible to the rest of us",
-  "home.featured.alt":       "The Namu mark above an acacia on the plain at sunrise",
+  "home.featured.alt":       "The Namu mark and the line “Making AI work for every language and every community” over an acacia and a mountain at sunset",
 
   "home.film.kicker":      "Film",
   "home.film.name":        "The Namu film",
