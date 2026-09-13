@@ -7,6 +7,9 @@ import styles from "./playground.module.css";
 
 /** After this long, the card admits the wait rather than repeating itself. */
 const REASSURE_AFTER = 7;
+/** A reply faster than this never shows the card at all, so a quick answer —
+ *  or a quick "not yet" — is not preceded by a flash of "Transcribing". */
+const SHOW_AFTER_MS = 400;
 
 /**
  * The waiting card.
@@ -19,14 +22,21 @@ const REASSURE_AFTER = 7;
 export function Pending({ modality }: { modality: Modality }) {
   const { t } = useTranslation();
   const [elapsed, setElapsed] = useState(0);
+  const [shown, setShown] = useState(false);
 
   useEffect(() => {
     const id = setInterval(() => setElapsed((s) => s + 1), 1000);
-    return () => clearInterval(id);
+    const show = setTimeout(() => setShown(true), SHOW_AFTER_MS);
+    return () => {
+      clearInterval(id);
+      clearTimeout(show);
+    };
   }, []);
 
   // Fixed per mount, so the line does not shuffle while you read it.
   const [slow] = useState(() => 1 + Math.floor(Math.random() * 3));
+
+  if (!shown) return null;
 
   const label =
     elapsed >= REASSURE_AFTER
