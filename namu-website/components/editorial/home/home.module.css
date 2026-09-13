@@ -447,36 +447,32 @@
   margin-inline: auto;
 }
 
-/* Title on the left, the one-sentence introduction set against it on the
-   right, both sitting on the same baseline above the frame. */
+/* One line above the frame: the label, then the sentence beside it on the
+   same baseline. A sentence long enough to wrap hangs under itself rather
+   than under the label. */
 .filmHead {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) calc(7 * var(--col24) + 6 * var(--gutter24));
-  column-gap: var(--gutter24);
-  align-items: end;
-  margin-bottom: calc(48 * var(--unit-fx));
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: calc(2 * var(--col24) + 2 * var(--gutter24));
+  align-items: baseline;
+  margin-bottom: calc(40 * var(--unit-fx));
 }
 
 .filmKicker {
-  grid-column: 1 / -1;
-  margin-bottom: calc(24 * var(--unit-fx));
+  margin: 0;
   color: var(--ds-text-soft);
+  white-space: nowrap;
 }
 
 .filmDot {
   margin-inline: 0.3em;
 }
 
-.filmTitle {
-  grid-column: 1;
-  margin: 0;
-}
-
 .filmIntro {
-  grid-column: 2;
+  max-width: 40em;
   margin: 0;
   color: var(--ds-text-soft);
-  text-wrap: pretty;
+  text-wrap: balance;
 }
 
 @media (max-width: 900px) {
@@ -484,12 +480,7 @@
     width: 100%;
   }
   .filmHead {
-    grid-template-columns: 1fr;
-    row-gap: calc(18 * var(--unit-fx));
-  }
-  .filmIntro {
-    grid-column: 1;
-    max-width: 36em;
+    column-gap: calc(40 * var(--unit-fx));
   }
 }
 
@@ -497,16 +488,23 @@
   .film {
     padding-top: 0;
   }
+  /* Two columns leave the sentence twenty characters a line on a phone, so
+     the label runs in at the start of it instead, still on the same line. */
   .filmHead {
+    display: block;
     margin-bottom: calc(28 * var(--unit-fx));
+  }
+  .filmKicker,
+  .filmIntro {
+    display: inline;
+  }
+  .filmKicker {
+    margin-right: 0.7em;
   }
   /* The film's words are small on a phone, so the frame takes the outer
      gutter as well as the text column: 358px rather than 328 on a 390 screen. */
   .filmStage {
     margin-inline: calc(-1 * var(--outer-gutter));
-  }
-  .filmKicker {
-    margin-bottom: calc(14 * var(--unit-fx));
   }
 }
 
