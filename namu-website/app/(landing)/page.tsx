@@ -66,11 +66,11 @@ export default function HomePage() {
         <Hero />
 
         <FeaturedStory
-          image="/namu_im.jpg"
-          image2x="/namu_im@2x.jpg"
+          image="/editorial/cover-web.jpg"
+          phoneImage="/editorial/cover-web-square.jpg"
           /* The frame takes the plate's own ratio so nothing is cropped — the
-             mark, the tagline and the acacia all have to survive. */
-          ratio="1536 / 1024"
+             mark, the line under it and the acacia all have to survive. */
+          ratio="1920 / 1080"
         />
 
         <Film />
