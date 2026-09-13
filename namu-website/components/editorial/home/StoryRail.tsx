@@ -126,14 +126,19 @@ export function StoryRail({ stories }: { stories: Story[] }) {
       s.startX = e.clientX;
       s.startTarget = s.target;
       s.velocity = 0;
-      setDragging(true);
-      track.setPointerCapture(e.pointerId);
     };
 
     const onPointerMove = (e: PointerEvent) => {
       if (!s.pointerDown) return;
       const delta = e.clientX - s.startX;
-      if (Math.abs(delta) > 4) s.moved = true;
+      /* The pointer is captured only once the press has become a drag. Capturing
+         it on press made the track the target of every click that followed, so
+         a plain click on a story never reached its link and went nowhere. */
+      if (!s.moved && Math.abs(delta) > 4) {
+        s.moved = true;
+        setDragging(true);
+        track.setPointerCapture(e.pointerId);
+      }
       const next = s.startTarget + delta;
       s.velocity = next - s.target;
       s.target = next;
@@ -183,8 +188,10 @@ export function StoryRail({ stories }: { stories: Story[] }) {
 
     track.addEventListener("pointerdown", onPointerDown);
     track.addEventListener("pointermove", onPointerMove);
-    track.addEventListener("pointerup", onPointerUp);
-    track.addEventListener("pointercancel", onPointerUp);
+    // On the window: until a drag has captured the pointer, a press can be
+    // released off the track, and the rail must still hear it end.
+    window.addEventListener("pointerup", onPointerUp);
+    window.addEventListener("pointercancel", onPointerUp);
     track.addEventListener("click", onClickCapture, true);
     viewport.addEventListener("wheel", onWheel, { passive: false });
 
@@ -193,8 +200,8 @@ export function StoryRail({ stories }: { stories: Story[] }) {
       stacked.removeEventListener("change", onLayoutChange);
       track.removeEventListener("pointerdown", onPointerDown);
       track.removeEventListener("pointermove", onPointerMove);
-      track.removeEventListener("pointerup", onPointerUp);
-      track.removeEventListener("pointercancel", onPointerUp);
+      window.removeEventListener("pointerup", onPointerUp);
+      window.removeEventListener("pointercancel", onPointerUp);
       track.removeEventListener("click", onClickCapture, true);
       viewport.removeEventListener("wheel", onWheel);
     };
@@ -212,13 +219,7 @@ export function StoryRail({ stories }: { stories: Story[] }) {
           >
             {stories.map((story, i) => (
               <article key={`${story.href}-${i}`} className={styles.railCard}>
-                <Link
-                  href={story.href}
-                  className={styles.railThumb}
-                  draggable={false}
-                  tabIndex={-1}
-                  aria-hidden="true"
-                >
+                <div className={styles.railThumb}>
                   <span className={styles.railThumbInner}>
                     <img
                       src={story.image}
@@ -228,7 +229,7 @@ export function StoryRail({ stories }: { stories: Story[] }) {
                       className="scale-out"
                     />
                   </span>
-                </Link>
+                </div>
 
                 <div className={styles.railBody}>
                   <div>
@@ -236,7 +237,10 @@ export function StoryRail({ stories }: { stories: Story[] }) {
                       {story.category}
                     </div>
                     <h3 className={`h7 ${styles.railTitle}`}>
-                      <Link href={story.href} draggable={false}>
+                      {/* One link for the whole card: its hit area is stretched
+                          over the picture and the copy, so a click anywhere on
+                          the story opens it. */}
+                      <Link href={story.href} className={styles.railLink} draggable={false}>
                         <SplitText text={story.title} />
                       </Link>
                     </h3>
