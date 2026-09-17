@@ -147,6 +147,39 @@ export const en = {
   "nav.product.api.body":     "Clean APIs, SDKs, and deployment tools, so any team can integrate speech-native AI.",
 
   // ---- Playground ---------------------------------------------------------
+
+  /* ---- The 3D playground --------------------------------------------------
+     The park's own copy: the sculptures, what each one does, and the words
+     painted or printed inside the scene. */
+
+  "park.eyebrow":           "Namu Playground",
+  "park.title":             "A park you can talk to.",
+  "park.intro":             "Four Namu models, built as things you walk up to and try. Pick one below, or click a sculpture.",
+  "park.back":              "The whole park",
+  "park.classic":           "Classic console",
+  "park.explore":           "Explore the models",
+  "park.loading":           "Building the playground",
+  "park.hint.pointer":      "Drag to look around · Scroll to zoom · Click a sculpture to play",
+  "park.hint.touch":        "Drag to look around · Pinch to zoom · Tap a sculpture to play",
+  "park.hint.compact":      "Drag to look · Tap a sculpture",
+  "park.station":           "Station",
+  "park.hub.name":          "The Blossom",
+  "park.hub.how":           "Namu's own mark, built as an arch you could walk through. The four stations stand around it.",
+  "park.interpret.name":    "Whisper Dishes",
+  "park.interpret.how":     "Speak into the Hausa dish. French arrives at the one across the grass.",
+  "park.interpret.ha":      "Hausa",
+  "park.interpret.fr":      "Français",
+  "park.interpret.hint":    "speak here",
+  "park.transcribe.name":   "Listening Tunnel",
+  "park.transcribe.how":    "Speak into the wide end. Your words drop out of the far end as letter blocks.",
+  "park.voice.name":        "Speaking Horn",
+  "park.voice.how":         "Write on the slate, and the horn says it out loud over the park.",
+  "park.voice.hint":        "write something here",
+  "park.agent.name":        "Talk Tubes",
+  "park.agent.how":         "Say something into one tube. Namu answers out of the other.",
+  "park.agent.ask":         "You",
+  "park.agent.answer":      "Namu",
+
   "playground.title":        "Playground",
   "playground.wordmark":     ":playground",
   "playground.models":       "Models",
@@ -154,6 +187,7 @@ export const en = {
   "playground.newSession":   "New session",
   "playground.explore":      "Explore the models",
   "playground.discover":     "Built on Namu's own speech models",
+  "playground.park":         "Open the 3D park",
   "playground.contact":      "Contact sales",
   "playground.collapse":     "Collapse sidebar",
   "playground.expand":       "Open sidebar",

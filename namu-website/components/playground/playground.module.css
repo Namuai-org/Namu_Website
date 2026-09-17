@@ -216,6 +216,29 @@
   padding-inline: 1.5em;
 }
 
+.railBack {
+  display: inline-block;
+  margin-bottom: calc(14 * var(--unit-fx));
+  padding: calc(9 * var(--unit-fx)) calc(16 * var(--unit-fx));
+  border-radius: calc(6 * var(--unit-fx));
+  background: var(--ds-surface);
+  color: var(--ds-text);
+  text-decoration: none;
+  transition: background-color 0.4s var(--ease-out);
+}
+
+@media (hover: hover) {
+  .railBack:hover {
+    background: var(--ds-surface-2);
+  }
+}
+
+@media (hover: none) {
+  .railBack:active {
+    background: var(--ds-surface-2);
+  }
+}
+
 .railFootLabel {
   display: block;
   margin-bottom: calc(14 * var(--unit-fx));
@@ -971,4 +994,17 @@
   .modelRow:not(.modelRowActive) .modelNew {
     pointer-events: none;
   }
+}
+
+/* ---- Inside the park ------------------------------------------------------
+   The 3D playground puts this console in a panel a few hundred pixels wide.
+   The panel rescales --unit-fx for everything inside it, so the console keeps
+   its own proportions; only the headline, which is set for a whole stage,
+   needs to come down to a panel's size. */
+
+.stageTitleCompact {
+  margin-bottom: calc(22 * var(--unit-fx));
+  font-size: calc(40 * var(--unit-fx-type));
+  text-align: left;
+  text-wrap: pretty;
 }

@@ -1,0 +1,583 @@
+/* ==========================================================================
+   /playground — the park
+   --------------------------------------------------------------------------
+   One canvas, and a few cards floating over it. The cards never cover the
+   part of the screen the camera is composing into: the page tells the engine
+   which rectangle is free, and the camera reframes itself to fit it.
+   ========================================================================== */
+
+.root {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--paper);
+  color: var(--ds-text);
+  user-select: none;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+/* ---- Top bar -------------------------------------------------------------- */
+
+.bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(16 * var(--unit-fx));
+  padding: calc(18 * var(--unit-fx)) calc(24 * var(--unit-fx));
+  pointer-events: none;
+}
+
+.bar > * {
+  pointer-events: auto;
+}
+
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(10 * var(--unit-fx));
+  padding: calc(8 * var(--unit-fx)) calc(14 * var(--unit-fx));
+  border-radius: calc(8 * var(--unit-fx));
+  background: rgba(255, 250, 241, 0.82);
+  backdrop-filter: blur(6px);
+  color: var(--ds-text);
+  text-decoration: none;
+}
+
+.wordmarkLabel {
+  color: var(--ds-text-soft);
+}
+
+.barLinks {
+  display: flex;
+  align-items: center;
+  gap: calc(8 * var(--unit-fx));
+}
+
+.barLink {
+  padding: calc(9 * var(--unit-fx)) calc(16 * var(--unit-fx));
+  border-radius: calc(8 * var(--unit-fx));
+  background: rgba(255, 250, 241, 0.82);
+  backdrop-filter: blur(6px);
+  color: var(--ds-text);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.4s var(--ease-out);
+}
+
+@media (hover: hover) {
+  .barLink:hover,
+  .wordmark:hover {
+    background: var(--ds-surface-2);
+  }
+}
+
+@media (hover: none) {
+  .barLink:active,
+  .wordmark:active {
+    background: var(--ds-surface-2);
+  }
+}
+
+/* ---- Labels pinned over the sculptures ------------------------------------ */
+
+.labels {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: calc(9 * var(--unit-fx));
+  padding: calc(7 * var(--unit-fx)) calc(14 * var(--unit-fx));
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 250, 241, 0.9);
+  color: var(--ds-text);
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(19 * var(--unit-fx-type));
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  pointer-events: auto;
+  opacity: 0;
+  will-change: transform;
+  transition:
+    opacity 0.4s var(--ease-out),
+    background-color 0.35s var(--ease-out),
+    box-shadow 0.35s var(--ease-out);
+}
+
+.label[data-onscreen="true"] {
+  opacity: 1;
+}
+
+.label[data-dim="true"] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.label[data-kind="hub"] {
+  font-style: italic;
+  color: var(--ds-text-soft);
+}
+
+.label[data-active="true"] {
+  background: var(--paper);
+  box-shadow: 0 calc(4 * var(--unit-fx)) calc(18 * var(--unit-fx)) rgba(28, 20, 16, 0.14);
+}
+
+.labelNumber {
+  color: var(--ds-accent);
+}
+
+.labelName {
+  letter-spacing: -0.01em;
+}
+
+/* ---- The card you land on ------------------------------------------------- */
+
+.intro {
+  position: absolute;
+  left: calc(24 * var(--unit-fx));
+  bottom: calc(24 * var(--unit-fx));
+  z-index: 3;
+  width: min(calc(420 * var(--unit-fx)), 30vw);
+  min-width: 320px;
+  padding: calc(26 * var(--unit-fx));
+  border-radius: calc(12 * var(--unit-fx));
+  background: rgba(255, 250, 241, 0.94);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 calc(10 * var(--unit-fx)) calc(40 * var(--unit-fx)) rgba(28, 20, 16, 0.12);
+  transition:
+    opacity 0.5s var(--ease-out),
+    transform 0.6s var(--ease-out-cubic);
+}
+
+.intro[data-open="false"] {
+  opacity: 0;
+  transform: translateY(calc(20 * var(--unit-fx)));
+  pointer-events: none;
+}
+
+.eyebrow {
+  display: block;
+  margin-bottom: calc(12 * var(--unit-fx));
+  color: var(--ds-text-soft);
+}
+
+.title {
+  margin: 0 0 calc(12 * var(--unit-fx));
+  text-wrap: balance;
+}
+
+.introBody {
+  margin: 0 0 calc(20 * var(--unit-fx));
+  color: var(--ds-text-soft);
+}
+
+.chips {
+  display: flex;
+  flex-direction: column;
+  gap: calc(6 * var(--unit-fx));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chip {
+  display: flex;
+  align-items: baseline;
+  gap: calc(12 * var(--unit-fx));
+  width: 100%;
+  padding: calc(11 * var(--unit-fx)) calc(14 * var(--unit-fx));
+  border: 0;
+  border-radius: calc(8 * var(--unit-fx));
+  background: var(--ds-surface);
+  color: var(--ds-text);
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(21 * var(--unit-fx-type));
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 0.35s var(--ease-out),
+    transform 0.35s var(--ease-out-cubic);
+}
+
+.chipNumber {
+  color: var(--ds-accent);
+}
+
+.chipName {
+  flex: 1 1 auto;
+  letter-spacing: -0.01em;
+}
+
+.chipModel {
+  color: var(--ds-text-soft);
+  white-space: nowrap;
+}
+
+@media (hover: hover) {
+  .chip:hover {
+    background: var(--ds-surface-2);
+    transform: translateX(calc(4 * var(--unit-fx)));
+  }
+}
+
+@media (hover: none) {
+  .chip:active {
+    background: var(--ds-surface-2);
+  }
+}
+
+/* ---- The station panel ---------------------------------------------------- */
+
+.panel {
+  position: absolute;
+  z-index: 4;
+  top: calc(84 * var(--unit-fx));
+  right: calc(24 * var(--unit-fx));
+  bottom: calc(24 * var(--unit-fx));
+  display: flex;
+  flex-direction: column;
+  width: clamp(380px, 30vw, 470px);
+  padding: calc(26 * var(--unit-fx)) calc(24 * var(--unit-fx));
+  border-radius: calc(12 * var(--unit-fx));
+  background: rgba(255, 250, 241, 0.96);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 calc(12 * var(--unit-fx)) calc(46 * var(--unit-fx)) rgba(28, 20, 16, 0.16);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  transition:
+    opacity 0.45s var(--ease-out),
+    transform 0.6s var(--ease-out-cubic);
+}
+
+.panel[data-open="false"] {
+  opacity: 0;
+  transform: translateX(calc(30 * var(--unit-fx)));
+  pointer-events: none;
+}
+
+.panelHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(14 * var(--unit-fx));
+  margin-bottom: calc(18 * var(--unit-fx));
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(8 * var(--unit-fx));
+  padding: calc(8 * var(--unit-fx)) calc(14 * var(--unit-fx));
+  margin-left: calc(-14 * var(--unit-fx));
+  border: 0;
+  border-radius: calc(6 * var(--unit-fx));
+  background: none;
+  color: var(--ds-text-soft);
+  cursor: pointer;
+  transition:
+    background-color 0.35s var(--ease-out),
+    color 0.35s var(--ease-out);
+}
+
+@media (hover: hover) {
+  .back:hover {
+    background: var(--ds-surface);
+    color: var(--ds-text);
+  }
+}
+
+@media (hover: none) {
+  .back:active {
+    background: var(--ds-surface);
+    color: var(--ds-text);
+  }
+}
+
+.count {
+  color: var(--ds-text-soft);
+}
+
+.panelName {
+  margin: 0 0 calc(6 * var(--unit-fx));
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: calc(30 * var(--unit-fx-type));
+  font-weight: 450;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.panelHow {
+  margin: 0 0 calc(22 * var(--unit-fx));
+  color: var(--ds-text-soft);
+  text-wrap: pretty;
+}
+
+/* The console is built in fluid units sized for a whole page. The panel is a
+   few hundred pixels wide, so it rescales that unit rather than restyling
+   every part of the console. */
+.console {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  --unit-fx: 0.74px;
+  --unit-fx-type: 0.78px;
+}
+
+.panelNav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(10 * var(--unit-fx));
+  margin-top: auto;
+  padding-top: calc(22 * var(--unit-fx));
+}
+
+.navButton {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(8 * var(--unit-fx));
+  max-width: 48%;
+  padding: calc(9 * var(--unit-fx)) calc(14 * var(--unit-fx));
+  border: 0;
+  border-radius: calc(6 * var(--unit-fx));
+  background: none;
+  color: var(--ds-text-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition:
+    background-color 0.35s var(--ease-out),
+    color 0.35s var(--ease-out);
+}
+
+@media (hover: hover) {
+  .navButton:hover {
+    background: var(--ds-surface);
+    color: var(--ds-text);
+  }
+}
+
+@media (hover: none) {
+  .navButton:active {
+    background: var(--ds-surface);
+    color: var(--ds-text);
+  }
+}
+
+/* ---- Hint and loading ----------------------------------------------------- */
+
+.hint {
+  position: absolute;
+  z-index: 2;
+  right: calc(26 * var(--unit-fx));
+  bottom: calc(24 * var(--unit-fx));
+  margin: 0;
+  padding: calc(8 * var(--unit-fx)) calc(16 * var(--unit-fx));
+  border-radius: var(--radius-pill);
+  background: rgba(255, 250, 241, 0.8);
+  backdrop-filter: blur(6px);
+  color: var(--ds-text-soft);
+  text-align: right;
+  pointer-events: none;
+  transition: opacity 0.5s var(--ease-out);
+}
+
+.hint[data-open="false"] {
+  opacity: 0;
+}
+
+.loading {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(18 * var(--unit-fx));
+  background: var(--paper);
+  transition:
+    opacity 0.7s var(--ease-out),
+    visibility 0s linear 0.7s;
+}
+
+.loading[data-done="true"] {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loadingLabel {
+  color: var(--ds-text-soft);
+}
+
+.loadingTrack {
+  width: min(240px, 40vw);
+  height: 2px;
+  background: var(--ds-surface-2);
+  overflow: hidden;
+}
+
+.loadingBar {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--ds-accent);
+  transform-origin: left center;
+  transition: transform 0.5s var(--ease-out);
+}
+
+/* ---- Phones --------------------------------------------------------------- */
+
+@media (max-width: 899px) {
+  .bar {
+    padding: calc(14 * var(--unit-fx)) calc(16 * var(--unit-fx));
+  }
+
+  .barLink:first-child {
+    display: none;
+  }
+
+  /* A phone has no room for five names over a small park, so the labels
+     become the numbers painted on the ground, and the sheet carries the names. */
+  .label {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    justify-content: center;
+    font-size: 13px;
+  }
+
+  .label[data-kind="hub"] {
+    display: none;
+  }
+
+  .labelName {
+    display: none;
+  }
+
+  .labelNumber {
+    font-size: 13px;
+  }
+
+  .intro,
+  .panel {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    width: auto;
+    min-width: 0;
+    border-radius: calc(16 * var(--unit-fx)) calc(16 * var(--unit-fx)) 0 0;
+    box-shadow: 0 calc(-8 * var(--unit-fx)) calc(40 * var(--unit-fx)) rgba(28, 20, 16, 0.14);
+  }
+
+  .intro {
+    padding: calc(22 * var(--unit-fx)) calc(18 * var(--unit-fx))
+      calc(26 * var(--unit-fx));
+    max-height: 44dvh;
+    overflow-y: auto;
+  }
+
+  .intro[data-open="false"] {
+    transform: translateY(100%);
+  }
+
+  .panel {
+    height: 62dvh;
+    padding: calc(18 * var(--unit-fx)) calc(18 * var(--unit-fx))
+      calc(24 * var(--unit-fx));
+  }
+
+  .panel .console {
+    --unit-fx: 0.76px;
+    --unit-fx-type: 0.74px;
+  }
+
+  .panel[data-open="false"] {
+    transform: translateY(100%);
+  }
+
+  /* A handle, so the sheet reads as one. */
+  .panel::before,
+  .intro::before {
+    content: "";
+    display: block;
+    width: calc(44 * var(--unit-fx));
+    height: calc(4 * var(--unit-fx));
+    margin: 0 auto calc(14 * var(--unit-fx));
+    border-radius: 99px;
+    background: var(--ds-surface-2);
+  }
+
+  .chips {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: calc(8 * var(--unit-fx));
+    margin-inline: calc(-18 * var(--unit-fx));
+    padding-inline: calc(18 * var(--unit-fx));
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .chips::-webkit-scrollbar {
+    display: none;
+  }
+
+  .chip {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: calc(4 * var(--unit-fx));
+    width: max-content;
+    min-width: calc(150 * var(--unit-fx));
+  }
+
+  .hint {
+    left: 50%;
+    right: auto;
+    bottom: calc(45dvh + 8px);
+    transform: translateX(-50%);
+    padding: calc(6 * var(--unit-fx)) calc(14 * var(--unit-fx));
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  .panelNav {
+    padding-top: calc(18 * var(--unit-fx));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro,
+  .panel,
+  .label,
+  .chip,
+  .loadingBar {
+    transition-duration: 0.01ms;
+  }
+}
