@@ -20,13 +20,13 @@ export const MODELS: ModelEntry[] = [
   {
     key: "home.model.interpret",
     image: "/modim/hausa-french.png",
-    href: "/models/namu-interpret",
+    href: "/models/kora",
   },
-  { key: "home.model.asr", image: "/modim/asr.png", href: "/models/namu-transcribe" },
-  { key: "home.model.tts", image: "/modim/tts.png", href: "/models/namu-voice" },
+  { key: "home.model.asr", image: "/modim/asr.png", href: "/models/tatsuniya" },
+  { key: "home.model.tts", image: "/modim/tts.png", href: "/models/tafiya" },
   {
     key: "home.model.agent",
     image: "/modim/voice-agent.png",
-    href: "/models/namu-agent",
+    href: "/models/air",
   },
 ];

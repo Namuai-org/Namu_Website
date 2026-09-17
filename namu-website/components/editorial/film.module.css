@@ -56,7 +56,6 @@
 
 /* ---- Shared glass --------------------------------------------------------- */
 
-.bigPlay,
 .replay,
 .bar,
 .chip {
@@ -73,7 +72,13 @@
 
 /* Set below centre rather than on it: this film's words sit in the middle of
    the frame, the poster's sentence included, and a centred button covered
-   them. */
+   them.
+
+   The film opens on cream, so the button cannot be cream glass like the rest
+   of the controls — it had nothing to hold it and read as a pale disc laid on
+   the frame. A Sahel hairline draws it on cream, and the paper fill keeps it
+   legible once the picture turns dark. It is the one place on the page where
+   the accent is used as a line rather than a mark. */
 .bigPlay {
   position: absolute;
   z-index: 2;
@@ -81,13 +86,20 @@
   top: 64%;
   display: grid;
   place-items: center;
-  width: calc(144 * var(--unit-fx));
-  height: calc(144 * var(--unit-fx));
-  min-width: 64px;
-  min-height: 64px;
+  width: calc(86 * var(--unit-fx));
+  height: calc(86 * var(--unit-fx));
+  min-width: 56px;
+  min-height: 56px;
   padding: 0;
-  border: 0;
+  border: calc(1.5 * var(--unit-fx)) solid var(--sahel);
   border-radius: 50%;
+  background: rgba(255, 250, 241, 0.94);
+  -webkit-backdrop-filter: blur(12px) saturate(1.15);
+  backdrop-filter: blur(12px) saturate(1.15);
+  /* The ring draws the shape now, so the shadow only has to lift it off a
+     moving picture. */
+  box-shadow: 0 calc(4 * var(--unit-fx)) calc(14 * var(--unit-fx)) rgba(28, 20, 16, 0.1);
+  color: var(--kola);
   cursor: pointer;
   transform: translate(-50%, -50%);
   transition:
@@ -99,10 +111,10 @@
 }
 
 .bigIconPlay {
-  width: 26%;
+  width: 30%;
   height: auto;
   /* A triangle's visual centre sits left of its box's centre. */
-  margin-left: 7%;
+  margin-left: 8%;
 }
 
 /* Only while the film is waiting on the viewer: before a first play it will
@@ -121,8 +133,9 @@
 @media (hover: hover) {
   .bigPlay:hover {
     background: var(--kola);
+    border-color: var(--kola);
     color: var(--paper);
-    transform: translate(-50%, -50%) scale(1.04);
+    transform: translate(-50%, -50%) scale(1.06);
   }
 }
 
@@ -404,12 +417,16 @@
   }
 }
 
-.bigPlay:focus-visible,
 .replay:focus-visible,
 .chip:focus-visible,
 .tile:focus-visible {
   outline: 2px solid var(--sahel);
   outline-offset: 2px;
+}
+
+.bigPlay:focus-visible {
+  outline: 2px solid var(--kola);
+  outline-offset: 3px;
 }
 
 .scrub:focus-visible .scrubRail {
@@ -472,6 +489,7 @@
 @media (hover: none) {
   .bigPlay:active {
     background: var(--kola);
+    border-color: var(--kola);
     color: var(--paper);
     transform: translate(-50%, -50%) scale(0.97);
   }

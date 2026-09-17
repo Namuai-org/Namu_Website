@@ -38,6 +38,18 @@ import styles from "./playground.module.css";
 /** `soon`: the request went out and nothing is answering yet. */
 type Status = "idle" | "running" | "done" | "error" | "soon";
 
+/**
+ * What the console is doing, for anything drawing alongside it — the 3D park
+ * uses this to make a sculpture listen, think and answer in step with the run.
+ */
+export type ConsoleReport = {
+  activity: Status | "recording";
+  /** Which direction an interpreter is running, when it has directions. */
+  variantId: string;
+  /** What is being written, or what came back. */
+  text: string;
+};
+
 type Result = {
   heard?: string;
   reply?: string;
@@ -51,10 +63,15 @@ const slugOf = (model: PlaygroundModel) => model.key.split(".").pop() ?? "";
 export function Console({
   model,
   resetToken,
+  compact = false,
+  onReport,
 }: {
   model: PlaygroundModel;
   /** Bumped by the rail's ⊕ to clear the console without remounting it. */
   resetToken: number;
+  /** Inside the park's panel, where the console is one column of several. */
+  compact?: boolean;
+  onReport?: (report: ConsoleReport) => void;
 }) {
   const { t } = useTranslation();
 
@@ -125,6 +142,15 @@ export function Console({
     setMessage(null);
     setResult(null);
 
+    // A run that ends in a few milliseconds reads as a glitch rather than an
+    // answer — and in the park, the sound never gets to travel. Hold the
+    // working state long enough to be seen.
+    const started = Date.now();
+    const settle = async () => {
+      const left = 900 - (Date.now() - started);
+      if (left > 0) await new Promise((resolve) => setTimeout(resolve, left));
+    };
+
     try {
       if (writes) {
         const res = await runVoice(
@@ -167,12 +193,14 @@ export function Console({
           setResult({ heard: res.heard, reply: res.spoken, audioUrl: res.audioUrl });
         }
       }
+      await settle();
       setStatus("done");
     } catch (err) {
       if ((err as Error)?.name === "AbortError") {
         setStatus("idle");
         return;
       }
+      await settle();
       // No endpoint yet: the models' next version is still being built, so
       // this is news to share rather than a fault to report.
       if (err instanceof NotConnectedError) {
@@ -188,17 +216,27 @@ export function Console({
 
   const presets = [1, 2, 3].map((n) => t(`playground.${slug}.p${n}`));
 
+  // What the park is shown: the stage of the run, and the words involved in it.
+  const activity: ConsoleReport["activity"] = recorder.recording ? "recording" : status;
+  const spoken = writes
+    ? text
+    : (result?.transcript ?? result?.reply ?? result?.heard ?? "");
+  useEffect(() => {
+    onReport?.({ activity, variantId, text: spoken });
+  }, [activity, variantId, spoken, onReport]);
+
   return (
     <>
-      <a
-        className={`text-ui ${styles.exploreLink}`}
-        href="/models"
-      >
-        {t("playground.explore")}
-        <ArrowUpRight className={styles.exploreArrow} />
-      </a>
+      {!compact && (
+        <a className={`text-ui ${styles.exploreLink}`} href="/models">
+          {t("playground.explore")}
+          <ArrowUpRight className={styles.exploreArrow} />
+        </a>
+      )}
 
-      <h1 className={`h4 ${styles.stageTitle}`}>{t(`playground.${slug}.title`)}</h1>
+      <h1 className={`h4 ${styles.stageTitle} ${compact ? styles.stageTitleCompact : ""}`}>
+        {t(`playground.${slug}.title`)}
+      </h1>
 
       <div className={styles.composer}>
         {writes ? (

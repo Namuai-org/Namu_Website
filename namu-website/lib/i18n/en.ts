@@ -56,32 +56,32 @@ export const en = {
   "models.cta":        "Try the models",
 
   "home.model.interpret.kicker": "Speech translation",
-  "home.model.interpret.name":   "Namu-Interpret",
+  "home.model.interpret.name":   "Kora",
   "home.model.interpret.body":   "Hausa and French, carried both ways in speech. One side talks, the other hears it in their own language, and the conversation keeps its pace.",
   "home.model.interpret.alt":    "Watercolour illustration of two speech bubbles, one marked HA and one marked FR, joined by flowing sound waves",
 
   "home.model.haFr.kicker": "Speech translation",
-  "home.model.haFr.name":   "Namu-Interpret HA\u2192FR",
+  "home.model.haFr.name":   "Kora HA\u2192FR",
   "home.model.haFr.body":   "Speak or ask in Hausa and hear the answer in French. A whole conversation carried in speech, with nothing to type and nothing to read.",
   "home.model.haFr.alt":    "Watercolour illustration of two speech bubbles, one marked HA and one marked FR, joined by flowing sound waves",
 
   "home.model.frHa.kicker": "Speech translation",
-  "home.model.frHa.name":   "Namu-Interpret FR\u2192HA",
+  "home.model.frHa.name":   "Kora FR\u2192HA",
   "home.model.frHa.body":   "The same conversation running the other way: speak or ask in French and hear the answer in Hausa.",
   "home.model.frHa.alt":    "Watercolour illustration of two speech bubbles, one marked FR and one marked HA, joined by flowing sound waves",
 
   "home.model.asr.kicker":  "Speech recognition",
-  "home.model.asr.name":    "Namu-Transcribe",
+  "home.model.asr.name":    "Tatsuniya",
   "home.model.asr.body":    "Turn Hausa speech into accurate text, across accents, dialects and the noisy rooms people record in.",
   "home.model.asr.alt":     "Watercolour illustration of a sound wave resolving into four written lines of text",
 
   "home.model.tts.kicker":  "Speech synthesis",
-  "home.model.tts.name":    "Namu-Voice",
+  "home.model.tts.name":    "Tafiya",
   "home.model.tts.body":    "Natural, expressive Hausa speech from written text, shaped to be understood the first time it is heard.",
   "home.model.tts.alt":     "Watercolour illustration of a megaphone with sound radiating outward from it",
 
   "home.model.agent.kicker": "Voice agent",
-  "home.model.agent.name":   "Namu-Agent",
+  "home.model.agent.name":   "Aïr",
   "home.model.agent.body":   "An end-to-end conversation in Hausa. It listens, works out what you need, and answers out loud.",
   "home.model.agent.alt":    "Watercolour illustration of two overlapping speech bubbles with a sound wave running between them",
 
@@ -147,6 +147,39 @@ export const en = {
   "nav.product.api.body":     "Clean APIs, SDKs, and deployment tools, so any team can integrate speech-native AI.",
 
   // ---- Playground ---------------------------------------------------------
+
+  /* ---- The 3D playground --------------------------------------------------
+     The park's own copy: the sculptures, what each one does, and the words
+     painted or printed inside the scene. */
+
+  "park.eyebrow":           "Namu Playground",
+  "park.title":             "A park you can talk to.",
+  "park.intro":             "Four Namu models, built as things you walk up to and try. Pick one below, or click a sculpture.",
+  "park.back":              "The whole park",
+  "park.classic":           "Classic console",
+  "park.explore":           "Explore the models",
+  "park.loading":           "Building the playground",
+  "park.hint.pointer":      "Drag to look around · Scroll to zoom · Click a sculpture to play",
+  "park.hint.touch":        "Drag to look around · Pinch to zoom · Tap a sculpture to play",
+  "park.hint.compact":      "Drag to look · Tap a sculpture",
+  "park.station":           "Station",
+  "park.hub.name":          "The Blossom",
+  "park.hub.how":           "Namu's own mark, built as an arch you could walk through. The four stations stand around it.",
+  "park.interpret.name":    "Whisper Dishes",
+  "park.interpret.how":     "Speak into the Hausa dish. French arrives at the one across the grass.",
+  "park.interpret.ha":      "Hausa",
+  "park.interpret.fr":      "Français",
+  "park.interpret.hint":    "speak here",
+  "park.transcribe.name":   "Listening Tunnel",
+  "park.transcribe.how":    "Speak into the wide end. Your words drop out of the far end as letter blocks.",
+  "park.voice.name":        "Speaking Horn",
+  "park.voice.how":         "Write on the slate, and the horn says it out loud over the park.",
+  "park.voice.hint":        "write something here",
+  "park.agent.name":        "Talk Tubes",
+  "park.agent.how":         "Say something into one tube. Namu answers out of the other.",
+  "park.agent.ask":         "You",
+  "park.agent.answer":      "Namu",
+
   "playground.title":        "Playground",
   "playground.wordmark":     ":playground",
   "playground.models":       "Models",
@@ -154,6 +187,7 @@ export const en = {
   "playground.newSession":   "New session",
   "playground.explore":      "Explore the models",
   "playground.discover":     "Built on Namu's own speech models",
+  "playground.park":         "Open the 3D park",
   "playground.contact":      "Contact sales",
   "playground.collapse":     "Collapse sidebar",
   "playground.expand":       "Open sidebar",
@@ -173,7 +207,7 @@ export const en = {
   "playground.voiceLabel":   "Voice",
   "playground.registerLabel":"Register",
   "playground.dialectLabel": "Dialect",
-  "playground.interpret.family": "Namu-Interpret",
+  "playground.interpret.family": "Kora",
   "playground.dir.haFr":          "HA to FR",
   "playground.dir.frHa":          "FR to HA",
   "playground.directionLabel":    "Direction",

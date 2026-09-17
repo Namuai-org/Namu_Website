@@ -10,6 +10,19 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  /**
+   * The models were renamed — Kora, Tatsuniya, Tafiya and Aïr — and their
+   * pages moved with them. Anything already shared or indexed under the old
+   * paths still lands on the right page.
+   */
+  async redirects() {
+    return [
+      { source: "/models/namu-interpret", destination: "/models/kora", permanent: true },
+      { source: "/models/namu-transcribe", destination: "/models/tatsuniya", permanent: true },
+      { source: "/models/namu-voice", destination: "/models/tafiya", permanent: true },
+      { source: "/models/namu-agent", destination: "/models/air", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;

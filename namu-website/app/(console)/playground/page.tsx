@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PlaygroundPage } from "@/components/playground/PlaygroundPage";
+import { ParkPage } from "@/components/park/ParkPage";
 
 const DESCRIPTION =
   "Try Namu's speech models in the browser: Hausa–French interpretation both ways, Hausa transcription, Hausa speech synthesis, and the end-to-end voice agent.";
@@ -24,5 +24,5 @@ export const metadata: Metadata = {
 };
 
 export default function PlaygroundRoute() {
-  return <PlaygroundPage />;
+  return <ParkPage />;
 }

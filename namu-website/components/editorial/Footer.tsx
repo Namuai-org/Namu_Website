@@ -21,10 +21,10 @@ const COLUMNS = [
   {
     title: "footer.modelsTitle",
     links: [
-      { label: "home.model.interpret.name", href: "/models/namu-interpret" },
-      { label: "home.model.asr.name", href: "/models/namu-transcribe" },
-      { label: "home.model.tts.name", href: "/models/namu-voice" },
-      { label: "home.model.agent.name", href: "/models/namu-agent" },
+      { label: "home.model.interpret.name", href: "/models/kora" },
+      { label: "home.model.asr.name", href: "/models/tatsuniya" },
+      { label: "home.model.tts.name", href: "/models/tafiya" },
+      { label: "home.model.agent.name", href: "/models/air" },
       { label: "nav.panel.allModels", href: "/models" },
     ],
   },

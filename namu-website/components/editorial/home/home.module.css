@@ -257,6 +257,7 @@
 }
 
 .railCard {
+  position: relative;
   flex: 0 0 auto;
   width: calc(var(--col24) * 15 + var(--gutter24) * 14);
   background: var(--ds-surface);
@@ -265,6 +266,35 @@
   display: flex;
   align-items: stretch;
   justify-content: space-between;
+}
+
+/* The title's link covers the whole card, so the picture, the copy and the
+   read time all open the story. Drags still reach the track underneath; the
+   click that ends one is swallowed there. */
+.railLink {
+  color: inherit;
+  text-decoration: none;
+}
+
+.railLink::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: var(--radius-card);
+}
+
+.railTrackDragging .railLink::after {
+  cursor: grabbing;
+}
+
+.railLink:focus-visible {
+  outline: none;
+}
+
+.railLink:focus-visible::after {
+  outline: 2px solid var(--ds-accent);
+  outline-offset: calc(4 * var(--unit-fx));
 }
 
 .railThumb {

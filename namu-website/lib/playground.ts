@@ -104,8 +104,8 @@ export const catalogueEntry = (model: PlaygroundModel) =>
 export const modelById = (id: string) =>
   PLAYGROUND_MODELS.find((m) => m.id === id);
 
-/* ---- Namu-Voice options ---------------------------------------------------
-   The four voices and five registers from the Namu-Voice page, repeated here
+/* ---- Tafiya options ---------------------------------------------------
+   The four voices and five registers from the Tafiya page, repeated here
    because the playground has to offer them as controls rather than prose. */
 
 export const VOICES = ["Kanya", "Baobab", "Marke", "Gawo"] as const;
@@ -120,7 +120,7 @@ export const REGISTERS = [
 export type Voice = (typeof VOICES)[number];
 export type Register = (typeof REGISTERS)[number];
 
-/** Dialects Namu-Transcribe and the interpreters are measured on. */
+/** Dialects Tatsuniya and the interpreters are measured on. */
 export const DIALECTS = [
   "Auto",
   "Maradi",

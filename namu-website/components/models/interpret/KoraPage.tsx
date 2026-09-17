@@ -119,7 +119,7 @@ const SECTIONS = [
   { id: "try-it-out", label: "Try it out" },
 ];
 
-export function NamuInterpretPage() {
+export function KoraPage() {
   const [crossing, setCrossing] = useState(0);
   const [sample, setSample] = useState(0);
 
@@ -141,7 +141,7 @@ export function NamuInterpretPage() {
 
           <ScrollObject className={styles.heroInner}>
             <h1 className={styles.heroTitle}>
-              <SplitText immediate text="Namu-Interpret" />
+              <SplitText immediate text="Kora" />
             </h1>
             <p className={`text-large ${styles.heroLede}`}>
               <SplitText
@@ -180,7 +180,7 @@ export function NamuInterpretPage() {
               >
                 <SplitText
                   delay={0.2}
-                  text="Namu-Interpret carries speech between Hausa and French while the speaker is still talking, with low latency in both directions."
+                  text="Kora carries speech between Hausa and French while the speaker is still talking, with low latency in both directions."
                 />
               </p>
             </ScrollObject>
@@ -271,7 +271,7 @@ export function NamuInterpretPage() {
 
                 <div className={`${styles.outcome} ${styles.outcomeGood}`}>
                   <span className={`text-caption ${styles.rungTag}`}>
-                    Namu-Interpret
+                    Kora
                   </span>
                   <p className={styles.outcomeText} lang="fr">
                     {CROSSINGS[crossing].good}
@@ -298,7 +298,7 @@ export function NamuInterpretPage() {
               >
                 <SplitText
                   delay={0.3}
-                  text="Namu-Interpret detects which language was spoken and replies in the other, so no one has to set a direction."
+                  text="Kora detects which language was spoken and replies in the other, so no one has to set a direction."
                 />
               </p>
             </ScrollObject>
@@ -348,7 +348,7 @@ export function NamuInterpretPage() {
               >
                 <SplitText
                   delay={0.2}
-                  text="Namu-Interpret holds meaning, figures and names across long exchanges, not just across single sentences."
+                  text="Kora holds meaning, figures and names across long exchanges, not just across single sentences."
                 />
               </p>
             </ScrollObject>
@@ -406,7 +406,7 @@ export function NamuInterpretPage() {
         <section id="try-it-out" className={styles.tryOut}>
           <div className="ds-container ds-outer">
             <h2 className={`h3 ${styles.tryTitle}`}>
-              <SplitText text="Try Namu-Interpret" />
+              <SplitText text="Try Kora" />
             </h2>
 
             <ScrollObject className={styles.tryRow}>

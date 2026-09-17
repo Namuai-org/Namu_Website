@@ -99,6 +99,11 @@ export function Rail({ open, activeId, onSelect, onReset, onClose }: Props) {
       </p>
 
       <div className={styles.railFoot}>
+        {/* The park is the playground's front door; this console is the other
+            way in, so it keeps a way back. */}
+        <Link href="/playground" className={`text-ui ${styles.railBack}`}>
+          {t("playground.park")}
+        </Link>
         <span className={`text-small ${styles.railFootLabel}`}>
           {t("playground.discover")}
         </span>
