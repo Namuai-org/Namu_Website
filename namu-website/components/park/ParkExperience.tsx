@@ -62,7 +62,7 @@ export function ParkExperience() {
 
     if (width < 900) {
       const bar = 58;
-      const sheet = height * (open ? 0.6 : 0.42);
+      const sheet = open ? height * 0.6 : 64;
       park.setFrame(
         { x: 14, y: bar, width: width - 28, height: Math.max(160, height - bar - sheet) },
         immediate,
@@ -78,9 +78,8 @@ export function ParkExperience() {
         immediate,
       );
     } else {
-      const card = Math.min(420, Math.max(320, width * 0.28));
       park.setFrame(
-        { x: card + 40, y: bar, width: Math.max(240, width - card - 68), height: height - bar - 44 },
+        { x: 40, y: bar, width: width - 80, height: height - bar - 56 },
         immediate,
       );
     }
@@ -281,32 +280,6 @@ export function ParkExperience() {
           );
         })}
       </div>
-
-      <section className={styles.intro} data-open={station ? "false" : "true"} aria-hidden={!!station}>
-        <span className={`text-small ${styles.eyebrow}`}>{t("park.eyebrow")}</span>
-        <h1 className={`h4 ${styles.title}`}>{t("park.title")}</h1>
-        <p className={`text-regular ${styles.introBody}`}>{t("park.intro")}</p>
-        <ul className={styles.chips}>
-          {STATION_ORDER.map((id, i) => (
-            <li key={id}>
-              <button
-                type="button"
-                className={styles.chip}
-                onClick={() => select(id)}
-                onPointerEnter={() => parkRef.current?.hover(id)}
-                onPointerLeave={() => parkRef.current?.hover(null)}
-                tabIndex={station ? -1 : 0}
-              >
-                <span className={`text-small ${styles.chipNumber}`}>
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <span className={styles.chipName}>{nameOf(id)}</span>
-                <span className={`text-small ${styles.chipModel}`}>{modelNameOf(id)}</span>
-              </button>
-            </li>
-          ))}
-        </ul>
-      </section>
 
       <aside className={styles.panel} data-open={station ? "true" : "false"} aria-hidden={!station}>
         {station && model && (

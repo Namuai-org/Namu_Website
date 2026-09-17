@@ -8,6 +8,8 @@ const MAX_POLAR = 84 * DEG;
 const MIN_RADIUS = 7;
 const MAX_RADIUS = 130;
 const BASE_FOV = 38;
+/** A phone held upright sees almost nothing through a 38° lens. */
+const PORTRAIT_FOV = 50;
 
 /** The part of the canvas the park should be composed into, in CSS pixels. */
 export type Frame = { x: number; y: number; width: number; height: number };
@@ -145,9 +147,12 @@ export function createCameraRig(
 
   /* Framing ------------------------------------------------------------------ */
 
+  /** The lens widens on a portrait screen, where a long one sees a keyhole. */
+  const lens = () => (size.width / Math.max(1, size.height) < 0.95 ? PORTRAIT_FOV : BASE_FOV);
+
   /** How far back this subject has to be to fill the free part of the screen. */
   const fit = (view: View) => {
-    const focal = size.height / 2 / Math.tan((BASE_FOV * DEG) / 2);
+    const focal = size.height / 2 / Math.tan((lens() * DEG) / 2);
     const width = (view.size * focal) / Math.max(120, frame.width);
     const height = (view.size * 0.62 * focal) / Math.max(120, frame.height);
     // A station is framed, never surveyed: however narrow the screen, the
@@ -166,8 +171,7 @@ export function createCameraRig(
     camera.aspect = fullWidth / fullHeight;
     // Widening the virtual frame must not widen the lens, or the park would
     // appear to zoom out every time the panel opens.
-    camera.fov =
-      (2 * Math.atan(Math.tan((BASE_FOV * DEG) / 2) * (fullHeight / h))) / DEG;
+    camera.fov = (2 * Math.atan(Math.tan((lens() * DEG) / 2) * (fullHeight / h))) / DEG;
     camera.setViewOffset(
       fullWidth,
       fullHeight,

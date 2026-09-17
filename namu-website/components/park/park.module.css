@@ -154,102 +154,6 @@
   letter-spacing: -0.01em;
 }
 
-/* ---- The card you land on ------------------------------------------------- */
-
-.intro {
-  position: absolute;
-  left: calc(24 * var(--unit-fx));
-  bottom: calc(24 * var(--unit-fx));
-  z-index: 3;
-  width: min(calc(420 * var(--unit-fx)), 30vw);
-  min-width: 320px;
-  padding: calc(26 * var(--unit-fx));
-  border-radius: calc(12 * var(--unit-fx));
-  background: rgba(255, 250, 241, 0.94);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 calc(10 * var(--unit-fx)) calc(40 * var(--unit-fx)) rgba(28, 20, 16, 0.12);
-  transition:
-    opacity 0.5s var(--ease-out),
-    transform 0.6s var(--ease-out-cubic);
-}
-
-.intro[data-open="false"] {
-  opacity: 0;
-  transform: translateY(calc(20 * var(--unit-fx)));
-  pointer-events: none;
-}
-
-.eyebrow {
-  display: block;
-  margin-bottom: calc(12 * var(--unit-fx));
-  color: var(--ds-text-soft);
-}
-
-.title {
-  margin: 0 0 calc(12 * var(--unit-fx));
-  text-wrap: balance;
-}
-
-.introBody {
-  margin: 0 0 calc(20 * var(--unit-fx));
-  color: var(--ds-text-soft);
-}
-
-.chips {
-  display: flex;
-  flex-direction: column;
-  gap: calc(6 * var(--unit-fx));
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.chip {
-  display: flex;
-  align-items: baseline;
-  gap: calc(12 * var(--unit-fx));
-  width: 100%;
-  padding: calc(11 * var(--unit-fx)) calc(14 * var(--unit-fx));
-  border: 0;
-  border-radius: calc(8 * var(--unit-fx));
-  background: var(--ds-surface);
-  color: var(--ds-text);
-  font-family: var(--font-serif), Georgia, serif;
-  font-size: calc(21 * var(--unit-fx-type));
-  text-align: left;
-  cursor: pointer;
-  transition:
-    background-color 0.35s var(--ease-out),
-    transform 0.35s var(--ease-out-cubic);
-}
-
-.chipNumber {
-  color: var(--ds-accent);
-}
-
-.chipName {
-  flex: 1 1 auto;
-  letter-spacing: -0.01em;
-}
-
-.chipModel {
-  color: var(--ds-text-soft);
-  white-space: nowrap;
-}
-
-@media (hover: hover) {
-  .chip:hover {
-    background: var(--ds-surface-2);
-    transform: translateX(calc(4 * var(--unit-fx)));
-  }
-}
-
-@media (hover: none) {
-  .chip:active {
-    background: var(--ds-surface-2);
-  }
-}
-
 /* ---- The station panel ---------------------------------------------------- */
 
 .panel {
@@ -506,29 +410,17 @@
     display: none;
   }
 
-  /* A phone has no room for five names over a small park, so the labels
-     become the numbers painted on the ground, and the sheet carries the names. */
   .label {
-    width: 30px;
-    height: 30px;
-    padding: 0;
-    justify-content: center;
-    font-size: 13px;
+    gap: calc(7 * var(--unit-fx));
+    padding: calc(6 * var(--unit-fx)) calc(12 * var(--unit-fx));
+    font-size: calc(16 * var(--unit-fx-type));
   }
 
+  /* The mark in the middle names itself; five labels is one too many here. */
   .label[data-kind="hub"] {
     display: none;
   }
 
-  .labelName {
-    display: none;
-  }
-
-  .labelNumber {
-    font-size: 13px;
-  }
-
-  .intro,
   .panel {
     left: 0;
     right: 0;
@@ -538,17 +430,6 @@
     min-width: 0;
     border-radius: calc(16 * var(--unit-fx)) calc(16 * var(--unit-fx)) 0 0;
     box-shadow: 0 calc(-8 * var(--unit-fx)) calc(40 * var(--unit-fx)) rgba(28, 20, 16, 0.14);
-  }
-
-  .intro {
-    padding: calc(22 * var(--unit-fx)) calc(18 * var(--unit-fx))
-      calc(26 * var(--unit-fx));
-    max-height: 44dvh;
-    overflow-y: auto;
-  }
-
-  .intro[data-open="false"] {
-    transform: translateY(100%);
   }
 
   .panel {
@@ -567,8 +448,7 @@
   }
 
   /* A handle, so the sheet reads as one. */
-  .panel::before,
-  .intro::before {
+  .panel::before {
     content: "";
     display: block;
     width: calc(44 * var(--unit-fx));
@@ -578,32 +458,10 @@
     background: var(--ds-surface-2);
   }
 
-  .chips {
-    flex-direction: row;
-    flex-wrap: nowrap;
-    gap: calc(8 * var(--unit-fx));
-    margin-inline: calc(-18 * var(--unit-fx));
-    padding-inline: calc(18 * var(--unit-fx));
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-
-  .chips::-webkit-scrollbar {
-    display: none;
-  }
-
-  .chip {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: calc(4 * var(--unit-fx));
-    width: max-content;
-    min-width: calc(150 * var(--unit-fx));
-  }
-
   .hint {
     left: 50%;
     right: auto;
-    bottom: calc(45dvh + 8px);
+    bottom: calc(16 * var(--unit-fx));
     transform: translateX(-50%);
     padding: calc(6 * var(--unit-fx)) calc(14 * var(--unit-fx));
     white-space: nowrap;
@@ -616,10 +474,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .intro,
   .panel,
   .label,
-  .chip,
   .loadingBar {
     transition-duration: 0.01ms;
   }

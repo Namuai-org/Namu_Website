@@ -152,9 +152,6 @@ export const en = {
      The park's own copy: the sculptures, what each one does, and the words
      painted or printed inside the scene. */
 
-  "park.eyebrow":           "Namu Playground",
-  "park.title":             "A park you can talk to.",
-  "park.intro":             "Four Namu models, built as things you walk up to and try. Pick one below, or click a sculpture.",
   "park.back":              "The whole park",
   "park.classic":           "Classic console",
   "park.explore":           "Explore the models",

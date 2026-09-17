@@ -43,7 +43,7 @@ export const SPOTS = {
 } as const;
 
 export const VIEWS: Record<StationId | "park", View> = {
-  park: { target: [0, 1.4, -1.5], radius: 46, polar: 56, azimuth: DEFAULT_AZIMUTH, size: 47, maxFit: 3 },
+  park: { target: [0, 1.4, -1.5], radius: 56, polar: 56, azimuth: DEFAULT_AZIMUTH, size: 54, maxFit: 2.6 },
   hub: { target: [0, 3.6, 0], radius: 17, polar: 70, azimuth: DEFAULT_AZIMUTH, size: 13 },
   interpret: { target: [-15.5, 1.9, 5.5], radius: 18, polar: 63, azimuth: 6, size: 15 },
   transcribe: { target: [8.5, 1.4, -12], radius: 17, polar: 62, azimuth: 25, size: 20 },

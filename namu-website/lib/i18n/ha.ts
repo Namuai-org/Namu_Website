@@ -150,9 +150,6 @@ export const ha = {
 
   /* ---- The 3D playground -------------------------------------------------- */
 
-  "park.eyebrow":           "Filin Wasan Namu",
-  "park.title":             "Filin da za ka iya magana da shi.",
-  "park.intro":             "Samfuran Namu guda huɗu, an gina su kamar abubuwan wasa da za ka gwada. Zaɓi ɗaya a ƙasa, ko ka danna sassaka.",
   "park.back":              "Duk filin",
   "park.classic":           "Salon gargajiya",
   "park.explore":           "Duba samfuran",
