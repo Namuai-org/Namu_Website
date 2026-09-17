@@ -311,30 +311,55 @@ export function ParkExperience() {
       <aside className={styles.panel} data-open={station ? "true" : "false"} aria-hidden={!station}>
         {station && model && (
           <>
-            <div className={styles.panelHead}>
-              <button type="button" className={`text-ui ${styles.back}`} onClick={() => select("park")}>
-                <span aria-hidden="true">←</span>
-                {t("park.back")}
-              </button>
-              <span className={`text-small ${styles.count}`}>
-                {t("park.station")} {String(index + 1).padStart(2, "0")} / {String(STATION_ORDER.length).padStart(2, "0")}
-              </span>
-            </div>
+            <button
+              type="button"
+              className={styles.back}
+              onClick={() => select("park")}
+              aria-label={t("park.back")}
+              title={t("park.back")}
+            >
+              <span aria-hidden="true">←</span>
+            </button>
 
-            <p className={styles.panelName}>{nameOf(station)}</p>
-            <p className={`text-regular ${styles.panelHow}`}>{t(`park.${station}.how`)}</p>
+            <header className={styles.panelTitle}>
+              <h2 className={styles.panelName}>{nameOf(station)}</h2>
+              <p className={`text-small ${styles.panelModel}`}>{modelNameOf(station)}</p>
+              {/* The park is the description. Kept for anyone who cannot see it. */}
+              <p className={styles.srOnly}>{t(`park.${station}.how`)}</p>
+            </header>
 
             <div className={styles.console}>
               <Console model={model} resetToken={0} compact onReport={onReport} />
             </div>
 
-            <nav className={styles.panelNav}>
-              <button type="button" className={`text-ui ${styles.navButton}`} onClick={() => step(-1)}>
+            <nav className={styles.panelNav} aria-label={t("park.station")}>
+              <button
+                type="button"
+                className={styles.navArrow}
+                onClick={() => step(-1)}
+                aria-label={nameOf(STATION_ORDER[(index + STATION_ORDER.length - 1) % STATION_ORDER.length])}
+              >
                 <span aria-hidden="true">←</span>
-                {nameOf(STATION_ORDER[(index + STATION_ORDER.length - 1) % STATION_ORDER.length])}
               </button>
-              <button type="button" className={`text-ui ${styles.navButton}`} onClick={() => step(1)}>
-                {nameOf(STATION_ORDER[(index + 1) % STATION_ORDER.length])}
+              <span className={styles.pips}>
+                {STATION_ORDER.map((id) => (
+                  <button
+                    key={id}
+                    type="button"
+                    className={styles.pip}
+                    data-on={id === station ? "true" : "false"}
+                    onClick={() => select(id)}
+                    aria-label={nameOf(id)}
+                    aria-current={id === station ? "true" : undefined}
+                  />
+                ))}
+              </span>
+              <button
+                type="button"
+                className={styles.navArrow}
+                onClick={() => step(1)}
+                aria-label={nameOf(STATION_ORDER[(index + 1) % STATION_ORDER.length])}
+              >
                 <span aria-hidden="true">→</span>
               </button>
             </nav>

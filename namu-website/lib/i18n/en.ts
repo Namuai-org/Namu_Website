@@ -192,6 +192,7 @@ export const en = {
   "playground.collapse":     "Collapse sidebar",
   "playground.expand":       "Open sidebar",
   "playground.disclaimer":   "Namu Playground is an early preview. The models are still learning, and they can be wrong.",
+  "playground.preview":      "Early preview. The models can be wrong.",
   "playground.soon.label":   "Coming soon",
   "playground.soon.title":   "The next version is on its way",
   "playground.soon.body":    "We're developing a second version of these models. Stay tuned, and come back soon to test them out.",

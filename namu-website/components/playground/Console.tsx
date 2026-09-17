@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "@/hooks/useTranslation";
-import { ArrowUpRight } from "@/components/editorial/icons";
 import { AudioSample } from "@/components/models/voice/AudioSample";
 import { formatClock, useRecorder } from "@/hooks/useRecorder";
 import {
@@ -24,9 +23,11 @@ import {
 } from "@/lib/playgroundApi";
 import { ComingSoon } from "./ComingSoon";
 import { InlineSelect } from "./InlineSelect";
+import { LevelMeter } from "./LevelMeter";
 import { Pending } from "./Pending";
 import {
   IconArrowUp,
+  IconClose,
   IconStopSmall,
   IconMic,
   IconPlus,
@@ -228,17 +229,10 @@ export function Console({
   return (
     <>
       {!compact && (
-        <a className={`text-ui ${styles.exploreLink}`} href="/models">
-          {t("playground.explore")}
-          <ArrowUpRight className={styles.exploreArrow} />
-        </a>
+        <h1 className={`h4 ${styles.stageTitle}`}>{t(`playground.${slug}.title`)}</h1>
       )}
 
-      <h1 className={`h4 ${styles.stageTitle} ${compact ? styles.stageTitleCompact : ""}`}>
-        {t(`playground.${slug}.title`)}
-      </h1>
-
-      <div className={styles.composer}>
+      <div className={styles.composer} data-mode={writes ? "write" : "record"}>
         {writes ? (
           <textarea
             className={styles.composerInput}
@@ -251,7 +245,21 @@ export function Console({
             rows={2}
           />
         ) : (
-          <p className={`text-regular ${styles.composerHint}`}>
+          /* Nothing to read here: a button to speak into, the voice drawn as
+             it arrives, and the clock. The model says what it does; this only
+             has to say press me. */
+          <div className={styles.recordStage}>
+            <button
+              type="button"
+              className={`${styles.record} ${recorder.recording ? styles.recordLive : ""}`}
+              onClick={toggleRecording}
+              aria-label={recorder.recording ? t("playground.stop") : t("playground.record")}
+            >
+              {recorder.recording ? <IconStop /> : <IconMic />}
+            </button>
+
+            <LevelMeter active={recorder.recording} />
+
             {clip ? (
               <span className={styles.attached}>
                 <span className={`text-ui ${styles.attachedName}`}>{clip.name}</span>
@@ -259,14 +267,17 @@ export function Console({
                   type="button"
                   className={`text-ui ${styles.attachedClear}`}
                   onClick={() => setClip(null)}
+                  aria-label={t("playground.clear")}
                 >
-                  {t("playground.clear")}
+                  <IconClose />
                 </button>
               </span>
             ) : (
-              t(`playground.${slug}.placeholder`)
+              <span className={`text-ui ${styles.clock}`} data-live={recorder.recording}>
+                {formatClock(recorder.seconds)}
+              </span>
             )}
-          </p>
+          </div>
         )}
 
         <div className={styles.composerBar}>
@@ -289,10 +300,6 @@ export function Console({
                 tabIndex={-1}
               />
             </>
-          )}
-
-          {recorder.recording && (
-            <span className={styles.clock}>{formatClock(recorder.seconds)}</span>
           )}
 
           <div className={styles.composerBarEnd}>
@@ -348,18 +355,7 @@ export function Console({
               ) : null}
             </div>
 
-            {records && !clip ? (
-              <button
-                type="button"
-                className={`${styles.submit} ${recorder.recording ? styles.submitRecording : ""}`}
-                onClick={toggleRecording}
-                aria-label={
-                  recorder.recording ? t("playground.stop") : t("playground.record")
-                }
-              >
-                {recorder.recording ? <IconStop /> : <IconMic />}
-              </button>
-            ) : status === "running" ? (
+            {status === "running" ? (
               <button
                 type="button"
                 className={`${styles.submit} ${styles.submitReady}`}
@@ -465,25 +461,23 @@ export function Console({
         </div>
       )}
 
-      <div className={styles.presets}>
-        {presets.map((label) => (
-          <button
-            key={label}
-            type="button"
-            className={`text-ui ${styles.preset}`}
-            onClick={() => {
-              if (writes) setText(label);
-            }}
-          >
-            <IconPlayOutline className={styles.presetIcon} />
-            {label}
-          </button>
-        ))}
-      </div>
+      {writes && (
+        <div className={styles.presets}>
+          {presets.map((label) => (
+            <button
+              key={label}
+              type="button"
+              className={`text-ui ${styles.preset}`}
+              onClick={() => setText(label)}
+            >
+              <IconPlayOutline className={styles.presetIcon} />
+              {label}
+            </button>
+          ))}
+        </div>
+      )}
 
-      <p className={`text-small ${styles.disclaimer}`}>
-        {t("playground.disclaimer")}
-      </p>
+      <p className={`text-small ${styles.disclaimer}`}>{t("playground.preview")}</p>
     </>
   );
 }

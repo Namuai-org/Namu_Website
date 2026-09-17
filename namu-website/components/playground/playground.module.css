@@ -198,7 +198,7 @@
 
 .railSessions {
   color: var(--ds-text-soft);
-  white-space: nowrap;
+  text-wrap: pretty;
 }
 
 .railFoot {
@@ -305,31 +305,6 @@
   padding-block: calc(40 * var(--unit-fx));
 }
 
-.exploreLink {
-  display: inline-flex;
-  align-items: center;
-  gap: calc(8 * var(--unit-fx));
-  margin-bottom: calc(26 * var(--unit-fx));
-  padding: calc(10 * var(--unit-fx)) calc(20 * var(--unit-fx));
-  border-radius: calc(6 * var(--unit-fx));
-  background: var(--paper);
-  color: var(--ds-text);
-  text-decoration: none;
-  white-space: nowrap;
-  transition: background-color 0.4s var(--ease-out);
-}
-
-@media (hover: hover) {
-  .exploreLink:hover {
-    background: var(--ds-surface-2);
-  }
-}
-
-.exploreArrow {
-  width: calc(11 * var(--unit-fx));
-  min-width: 9px;
-}
-
 .stageTitle {
   margin: 0 0 calc(34 * var(--unit-fx));
   text-align: center;
@@ -345,7 +320,118 @@
   padding: calc(22 * var(--unit-fx)) calc(22 * var(--unit-fx))
     calc(16 * var(--unit-fx));
   border-radius: calc(10 * var(--unit-fx));
+  background: var(--composer-surface, var(--paper));
+}
+
+/* The record modes have nothing to type, so the box holds the act itself:
+   a button to speak into, the voice drawn as it arrives, and the clock. */
+.composer[data-mode="record"] {
+  align-self: center;
+  align-items: center;
+  width: 100%;
+  max-width: calc(520 * var(--unit-fx));
+  padding-top: calc(30 * var(--unit-fx));
+}
+
+.recordStage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(16 * var(--unit-fx));
+  width: 100%;
+  padding-bottom: calc(18 * var(--unit-fx));
+}
+
+/* Nothing is pushed to an edge here: the act is one column down the middle. */
+.composer[data-mode="record"] .composerBar {
+  justify-content: center;
+}
+
+.composer[data-mode="record"] .composerBarEnd {
+  margin-left: 0;
+}
+
+/* The same ring the film's play button wears: one round control, one accent
+   line, wherever a visitor is asked to start something. */
+.record {
+  display: grid;
+  place-items: center;
+  width: calc(96 * var(--unit-fx));
+  height: calc(96 * var(--unit-fx));
+  min-width: 66px;
+  min-height: 66px;
+  padding: 0;
+  border: calc(1.5 * var(--unit-fx)) solid var(--sahel);
+  border-radius: 50%;
   background: var(--paper);
+  color: var(--ds-text);
+  cursor: pointer;
+  transition:
+    background-color 0.5s var(--ease-out-cubic),
+    border-color 0.5s var(--ease-out-cubic),
+    color 0.5s var(--ease-out-cubic),
+    transform 0.5s var(--ease-out-cubic);
+}
+
+.record svg {
+  width: 34%;
+  height: auto;
+}
+
+@media (hover: hover) {
+  .record:hover {
+    background: var(--kola);
+    border-color: var(--kola);
+    color: var(--paper);
+    transform: scale(1.04);
+  }
+}
+
+@media (hover: none) {
+  .record:active {
+    background: var(--kola);
+    border-color: var(--kola);
+    color: var(--paper);
+    transform: scale(0.97);
+  }
+}
+
+/* Live: the ring fills and breathes, so the button reads as listening rather
+   than waiting. */
+.recordLive,
+.recordLive:hover {
+  background: var(--sahel);
+  border-color: var(--sahel);
+  color: var(--paper);
+  animation: pulse 2s var(--ease-out) infinite;
+}
+
+/* ---- The microphone, drawn ------------------------------------------------ */
+
+.meter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(5 * var(--unit-fx));
+  height: calc(34 * var(--unit-fx));
+  min-height: 24px;
+  transition: opacity 0.5s var(--ease-out);
+}
+
+.meter[data-active="false"] {
+  opacity: 0.4;
+}
+
+.meter span {
+  display: block;
+  width: calc(3 * var(--unit-fx));
+  min-width: 2px;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--ds-accent);
+  transform: scaleY(0.12);
+  transform-origin: center;
+  transition: transform 0.12s linear;
 }
 
 .composerInput {
@@ -370,19 +456,11 @@
   opacity: 0.85;
 }
 
-/* For the record-first modes there is no textarea; the placeholder is a static
-   line so the box keeps the same shape either way. */
-.composerHint {
-  min-height: calc(78 * var(--unit-fx));
-  margin: 0;
-  color: var(--ds-text-soft);
-  font-style: italic;
-}
-
 .composerBar {
   display: flex;
   align-items: center;
   gap: calc(10 * var(--unit-fx));
+  width: 100%;
   margin-top: calc(10 * var(--unit-fx));
 }
 
@@ -401,7 +479,8 @@
   gap: calc(10 * var(--unit-fx));
   padding: calc(9 * var(--unit-fx)) calc(16 * var(--unit-fx));
   border-radius: calc(4 * var(--unit-fx));
-  background: var(--ds-surface);
+  /* One shade away from whatever the composer is sitting on. */
+  background: var(--settings-surface, var(--ds-surface));
   min-width: 0;
 }
 
@@ -529,7 +608,7 @@
   flex: 0 0 auto;
   border: 0;
   border-radius: calc(4 * var(--unit-fx));
-  background: var(--ds-surface);
+  background: var(--settings-surface, var(--ds-surface));
   color: var(--ds-text);
   cursor: pointer;
   transition:
@@ -550,16 +629,8 @@
 
 .submit:disabled {
   cursor: not-allowed;
-  background: var(--ds-surface);
+  background: var(--settings-surface, var(--ds-surface));
   color: var(--ds-text-soft);
-}
-
-/* Recording: the button holds a stop square and pulses instead of spinning, so
-   it reads as "live" rather than "loading". */
-.submitRecording {
-  background: var(--sahel);
-  color: var(--paper);
-  animation: pulse 1.8s var(--ease-out) infinite;
 }
 
 @keyframes pulse {
@@ -573,18 +644,26 @@
 }
 
 .clock {
-  font-family: var(--font-mono-ui), ui-monospace, monospace;
-  font-size: calc(14 * var(--unit-fx-type));
-  color: var(--ds-accent);
+  color: var(--ds-text-soft);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
+  transition: color 0.4s var(--ease-out);
 }
 
+.clock[data-live="true"] {
+  color: var(--ds-accent);
+}
+
+/* What was recorded or attached, as one pill you can throw away. */
 .attached {
   display: inline-flex;
   align-items: center;
-  gap: calc(8 * var(--unit-fx));
+  gap: calc(6 * var(--unit-fx));
   min-width: 0;
+  padding: calc(6 * var(--unit-fx)) calc(8 * var(--unit-fx)) calc(6 * var(--unit-fx))
+    calc(14 * var(--unit-fx));
+  border-radius: var(--radius-pill);
+  background: var(--ds-surface);
   color: var(--ds-text-soft);
 }
 
@@ -596,12 +675,32 @@
 }
 
 .attachedClear {
+  display: grid;
+  place-items: center;
+  width: calc(22 * var(--unit-fx));
+  height: calc(22 * var(--unit-fx));
+  min-width: 20px;
+  min-height: 20px;
+  flex: 0 0 auto;
   border: 0;
+  border-radius: 50%;
   background: none;
   color: inherit;
   cursor: pointer;
-  text-decoration: underline;
-  font: inherit;
+  transition: background-color 0.3s var(--ease-out), color 0.3s var(--ease-out);
+}
+
+.attachedClear svg {
+  width: calc(12 * var(--unit-fx));
+  min-width: 10px;
+  height: auto;
+}
+
+@media (hover: hover) {
+  .attachedClear:hover {
+    background: var(--ds-surface-2);
+    color: var(--ds-text);
+  }
 }
 
 /* Every control shares one ring rather than the UA outline — the reference's
@@ -611,7 +710,7 @@
 .iconButton:focus-visible,
 .preset:focus-visible,
 .submit:focus-visible,
-.exploreLink:focus-visible,
+.record:focus-visible,
 .composerInput:focus-visible {
   outline: none;
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--ds-accent) 70%, transparent);
@@ -940,11 +1039,15 @@
   .iconButton,
   .preset,
   .submit,
-  .exploreLink {
+  .record,
+  .railBack {
     transition-duration: 0.01ms;
   }
-  .submitRecording {
+  .recordLive {
     animation: none;
+  }
+  .meter span {
+    transition: none;
   }
 }
 
@@ -961,7 +1064,7 @@
   .modelRowActive:active {
     background: var(--ds-surface-2);
   }
-  .exploreLink:active,
+  .railBack:active,
   .inlineTrigger:active,
   .preset:active {
     background: var(--ds-surface-2);
@@ -994,17 +1097,4 @@
   .modelRow:not(.modelRowActive) .modelNew {
     pointer-events: none;
   }
-}
-
-/* ---- Inside the park ------------------------------------------------------
-   The 3D playground puts this console in a panel a few hundred pixels wide.
-   The panel rescales --unit-fx for everything inside it, so the console keeps
-   its own proportions; only the headline, which is set for a whole stage,
-   needs to come down to a panel's size. */
-
-.stageTitleCompact {
-  margin-bottom: calc(22 * var(--unit-fx));
-  font-size: calc(40 * var(--unit-fx-type));
-  text-align: left;
-  text-wrap: pretty;
 }

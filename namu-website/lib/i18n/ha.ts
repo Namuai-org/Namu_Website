@@ -190,6 +190,7 @@ export const ha = {
   "playground.collapse":     "Rufe gefen shafi",
   "playground.expand":       "Bude gefen shafi",
   "playground.disclaimer":   "Filin gwajin Namu sabo ne. Samfuran suna cikin koyo, kuma suna iya yin kuskure.",
+  "playground.preview":      "Sabon gwaji. Samfuran na iya yin kuskure.",
   "playground.soon.label":   "Nan ba da jimawa ba",
   "playground.soon.title":   "Juzu'i na gaba yana kan hanya",
   "playground.soon.body":    "Muna kera juzu'i na biyu na wadannan samfura. Ku kasance tare da mu, ku dawo nan ba da jimawa ba don gwada su.",

@@ -104,6 +104,9 @@ export function Rail({ open, activeId, onSelect, onReset, onClose }: Props) {
         <Link href="/playground" className={`text-ui ${styles.railBack}`}>
           {t("playground.park")}
         </Link>
+        <Link href="/models" className={`text-ui ${styles.railBack}`}>
+          {t("playground.explore")}
+        </Link>
         <span className={`text-small ${styles.railFootLabel}`}>
           {t("playground.discover")}
         </span>
