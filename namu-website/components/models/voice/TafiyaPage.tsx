@@ -120,7 +120,7 @@ const SECTIONS = [
   { id: "try-it-out", label: "Try it out" },
 ];
 
-export function NamuVoicePage() {
+export function TafiyaPage() {
   return (
     <>
       <main id="main-content">
@@ -134,7 +134,7 @@ export function NamuVoicePage() {
           <ScrollObject className={styles.heroInner}>
             <p className={`text-ui ${styles.heroEyebrow}`}>Speech synthesis</p>
             <h1 className={styles.heroTitle}>
-              <SplitText immediate text="Namu-Voice" />
+              <SplitText immediate text="Tafiya" />
             </h1>
             <p className={`text-large ${styles.heroLede}`}>
               <SplitText
@@ -171,7 +171,7 @@ export function NamuVoicePage() {
               >
                 <SplitText
                   delay={0.2}
-                  text="Namu-Voice reads Hausa the way people say it, not the way it is written. Tone, vowel length and the rhythm of a sentence all come through. And every voice it uses is one somebody agreed to give."
+                  text="Tafiya reads Hausa the way people say it, not the way it is written. Tone, vowel length and the rhythm of a sentence all come through. And every voice it uses is one somebody agreed to give."
                 />
               </p>
             </ScrollObject>
@@ -296,7 +296,7 @@ export function NamuVoicePage() {
               <p className={`text-small ${styles.usingNote}`}>
                 <SplitText
                   delay={0.3}
-                  text="Samples generated with Namu-Voice"
+                  text="Samples generated with Tafiya"
                 />
               </p>
             </ScrollObject>
@@ -342,7 +342,7 @@ export function NamuVoicePage() {
               >
                 <SplitText
                   delay={0.2}
-                  text="Namu-Voice holds its speaker across long passages and starts speaking fast enough to hold a conversation."
+                  text="Tafiya holds its speaker across long passages and starts speaking fast enough to hold a conversation."
                 />
               </p>
             </ScrollObject>
@@ -392,7 +392,7 @@ export function NamuVoicePage() {
         <section id="try-it-out" className={styles.tryOut}>
           <div className="ds-container ds-outer">
             <h2 className={`h3 ${styles.tryTitle}`}>
-              <SplitText text="Try Namu-Voice" />
+              <SplitText text="Try Tafiya" />
             </h2>
 
             <ScrollObject className={styles.tryRow}>

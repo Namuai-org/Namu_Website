@@ -14,7 +14,7 @@ export const moundHeight = (d: number) =>
   d >= MOUND_RADIUS ? 0 : MOUND_HEIGHT * Math.pow(Math.cos((d / MOUND_RADIUS) * (Math.PI / 2)), 1.3);
 
 /**
- * Namu-Agent, as the talk tubes buried in every good playground: speak into one
+ * Aïr, as the talk tubes buried in every good playground: speak into one
  * and a voice comes back out of the other. The mound between them hides the run
  * of pipe, and the model is what happens in the dark part of the journey.
  */

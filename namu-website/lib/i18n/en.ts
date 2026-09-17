@@ -56,32 +56,32 @@ export const en = {
   "models.cta":        "Try the models",
 
   "home.model.interpret.kicker": "Speech translation",
-  "home.model.interpret.name":   "Namu-Interpret",
+  "home.model.interpret.name":   "Kora",
   "home.model.interpret.body":   "Hausa and French, carried both ways in speech. One side talks, the other hears it in their own language, and the conversation keeps its pace.",
   "home.model.interpret.alt":    "Watercolour illustration of two speech bubbles, one marked HA and one marked FR, joined by flowing sound waves",
 
   "home.model.haFr.kicker": "Speech translation",
-  "home.model.haFr.name":   "Namu-Interpret HA\u2192FR",
+  "home.model.haFr.name":   "Kora HA\u2192FR",
   "home.model.haFr.body":   "Speak or ask in Hausa and hear the answer in French. A whole conversation carried in speech, with nothing to type and nothing to read.",
   "home.model.haFr.alt":    "Watercolour illustration of two speech bubbles, one marked HA and one marked FR, joined by flowing sound waves",
 
   "home.model.frHa.kicker": "Speech translation",
-  "home.model.frHa.name":   "Namu-Interpret FR\u2192HA",
+  "home.model.frHa.name":   "Kora FR\u2192HA",
   "home.model.frHa.body":   "The same conversation running the other way: speak or ask in French and hear the answer in Hausa.",
   "home.model.frHa.alt":    "Watercolour illustration of two speech bubbles, one marked FR and one marked HA, joined by flowing sound waves",
 
   "home.model.asr.kicker":  "Speech recognition",
-  "home.model.asr.name":    "Namu-Transcribe",
+  "home.model.asr.name":    "Tatsuniya",
   "home.model.asr.body":    "Turn Hausa speech into accurate text, across accents, dialects and the noisy rooms people record in.",
   "home.model.asr.alt":     "Watercolour illustration of a sound wave resolving into four written lines of text",
 
   "home.model.tts.kicker":  "Speech synthesis",
-  "home.model.tts.name":    "Namu-Voice",
+  "home.model.tts.name":    "Tafiya",
   "home.model.tts.body":    "Natural, expressive Hausa speech from written text, shaped to be understood the first time it is heard.",
   "home.model.tts.alt":     "Watercolour illustration of a megaphone with sound radiating outward from it",
 
   "home.model.agent.kicker": "Voice agent",
-  "home.model.agent.name":   "Namu-Agent",
+  "home.model.agent.name":   "Aïr",
   "home.model.agent.body":   "An end-to-end conversation in Hausa. It listens, works out what you need, and answers out loud.",
   "home.model.agent.alt":    "Watercolour illustration of two overlapping speech bubbles with a sound wave running between them",
 
@@ -207,7 +207,7 @@ export const en = {
   "playground.voiceLabel":   "Voice",
   "playground.registerLabel":"Register",
   "playground.dialectLabel": "Dialect",
-  "playground.interpret.family": "Namu-Interpret",
+  "playground.interpret.family": "Kora",
   "playground.dir.haFr":          "HA to FR",
   "playground.dir.frHa":          "FR to HA",
   "playground.directionLabel":    "Direction",

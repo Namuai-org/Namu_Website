@@ -12,7 +12,7 @@ const CENTRE_Y = 2.2;
 const TWIST = 0.38;
 
 /**
- * Namu-Interpret, as the whisper dishes every science playground has: two
+ * Kora, as the whisper dishes every science playground has: two
  * parabolic dishes facing each other across the grass. Here one is Hausa and
  * the other French, and what carries between them is the model. Speak into the
  * ring in front of one, and the far dish answers.

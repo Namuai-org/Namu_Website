@@ -75,7 +75,7 @@ const SECTIONS = [
   { id: "try-it-out", label: "Try it out" },
 ];
 
-export function NamuAgentPage() {
+export function AirPage() {
   return (
     <>
       <main id="main-content">
@@ -94,7 +94,7 @@ export function NamuAgentPage() {
 
           <ScrollObject className={styles.heroInner}>
             <h1 className={styles.heroTitle}>
-              <SplitText immediate text="Namu-Agent" />
+              <SplitText immediate text="Aïr" />
             </h1>
             <p className={`text-large ${styles.heroLede}`}>
               <SplitText
@@ -133,7 +133,7 @@ export function NamuAgentPage() {
               >
                 <SplitText
                   delay={0.2}
-                  text="Namu-Agent listens, works out what the caller needs, does it, and answers out loud, all inside a single Hausa conversation."
+                  text="Aïr listens, works out what the caller needs, does it, and answers out loud, all inside a single Hausa conversation."
                 />
               </p>
             </ScrollObject>
@@ -244,7 +244,7 @@ export function NamuAgentPage() {
               >
                 <SplitText
                   delay={0.2}
-                  text="Namu-Agent is scored on whether the caller got what they rang for, not on how natural a single turn sounds."
+                  text="Aïr is scored on whether the caller got what they rang for, not on how natural a single turn sounds."
                 />
               </p>
             </ScrollObject>
@@ -302,7 +302,7 @@ export function NamuAgentPage() {
         <section id="try-it-out" className={styles.tryOut}>
           <div className="ds-container ds-outer">
             <h2 className={`h3 ${styles.tryTitle}`}>
-              <SplitText text="Try Namu-Agent" />
+              <SplitText text="Try Aïr" />
             </h2>
 
             <ScrollObject className={styles.tryRow}>

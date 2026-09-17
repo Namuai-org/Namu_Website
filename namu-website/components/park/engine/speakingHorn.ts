@@ -13,7 +13,7 @@ const AXIS_Y = 2.3;
 const TILT = 0.4;
 
 /**
- * Namu-Voice, as a slate and a horn.
+ * Tafiya, as a slate and a horn.
  *
  * You write on the board in chalk, the words run along the orange tube, and the
  * horn at the end of it says them aloud over the park. Text going in, speech

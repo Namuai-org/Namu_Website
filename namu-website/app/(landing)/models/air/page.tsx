@@ -1,28 +1,28 @@
 import type { Metadata } from "next";
-import { NamuAgentPage } from "@/components/models/agent/NamuAgentPage";
+import { AirPage } from "@/components/models/agent/AirPage";
 
 const DESCRIPTION =
-  "Namu-Agent handles a whole conversation in Hausa over an ordinary phone call, from the first question to the thing being done.";
+  "Aïr handles a whole conversation in Hausa over an ordinary phone call, from the first question to the thing being done.";
 
 export const metadata: Metadata = {
-  title: "Namu-Agent | Namu",
+  title: "Aïr | Namu",
   description: DESCRIPTION,
-  alternates: { canonical: "/models/namu-agent" },
+  alternates: { canonical: "/models/air" },
   openGraph: {
-    title: "Namu-Agent",
+    title: "Aïr",
     description: DESCRIPTION,
     type: "website",
-    url: "/models/namu-agent",
+    url: "/models/air",
     images: ["/modim/voice-agent.png"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Namu-Agent",
+    title: "Aïr",
     description: DESCRIPTION,
     images: ["/modim/voice-agent.png"],
   },
 };
 
 export default function NamuAgentRoute() {
-  return <NamuAgentPage />;
+  return <AirPage />;
 }

@@ -150,7 +150,7 @@ const SECTIONS = [
   { id: "try-it-out", label: "Try it out" },
 ];
 
-export function NamuTranscribePage() {
+export function TatsuniyaPage() {
   const [domain, setDomain] = useState(0);
   const [sample, setSample] = useState(0);
 
@@ -172,7 +172,7 @@ export function NamuTranscribePage() {
 
           <ScrollObject className={styles.heroInner}>
             <h1 className={styles.heroTitle}>
-              <SplitText immediate text="Namu-Transcribe" />
+              <SplitText immediate text="Tatsuniya" />
             </h1>
             <p className={`text-large ${styles.heroLede}`}>
               <SplitText
@@ -213,7 +213,7 @@ export function NamuTranscribePage() {
               >
                 <SplitText
                   delay={0.2}
-                  text="Namu-Transcribe is trained on Hausa the way people speak it: across dialects, over bad lines, and in rooms where other people are talking."
+                  text="Tatsuniya is trained on Hausa the way people speak it: across dialects, over bad lines, and in rooms where other people are talking."
                 />
               </p>
             </ScrollObject>
@@ -451,7 +451,7 @@ export function NamuTranscribePage() {
         <section id="try-it-out" className={styles.tryOut}>
           <div className="ds-container ds-outer">
             <h2 className={`h3 ${styles.tryTitle}`}>
-              <SplitText text="Try Namu-Transcribe" />
+              <SplitText text="Try Tatsuniya" />
             </h2>
 
             <ScrollObject className={styles.tryRow}>

@@ -15,7 +15,7 @@ const MAX_LETTERS = 12;
 const RESTING = "SANNU";
 
 /**
- * Namu-Transcribe, as a tunnel you speak into.
+ * Tatsuniya, as a tunnel you speak into.
  *
  * The ribs narrow from a wide mouth to a throat, the light runs down them with
  * your voice, and at the far end the words arrive as letter blocks dropping

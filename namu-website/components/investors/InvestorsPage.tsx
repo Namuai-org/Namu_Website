@@ -60,10 +60,10 @@ const THESIS = [
 ];
 
 const BUILT = [
-  { name: "Namu-Interpret", body: "Hausa and French, both ways", href: "/models/namu-interpret" },
-  { name: "Namu-Transcribe", body: "Speech to accurate text", href: "/models/namu-transcribe" },
-  { name: "Namu-Voice", body: "Text to natural speech", href: "/models/namu-voice" },
-  { name: "Namu-Agent", body: "A whole call, end to end", href: "/models/namu-agent" },
+  { name: "Kora", body: "Hausa and French, both ways", href: "/models/kora" },
+  { name: "Tatsuniya", body: "Speech to accurate text", href: "/models/tatsuniya" },
+  { name: "Tafiya", body: "Text to natural speech", href: "/models/tafiya" },
+  { name: "Aïr", body: "A whole call, end to end", href: "/models/air" },
 ];
 
 /* Sectors, deliberately not named organisations: inventing a metric the
