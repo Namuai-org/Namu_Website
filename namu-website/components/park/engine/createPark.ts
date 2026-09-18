@@ -108,7 +108,7 @@ export async function createPark(options: ParkOptions) {
   options.onProgress(0.84);
   await nextFrame();
 
-  const people = createPeople(scene, m);
+  const people = createPeople(scene);
 
   // The canvas, not the whole root: the panel and the cards sit above it in
   // the DOM, and a press on a button must never also turn the camera or pick

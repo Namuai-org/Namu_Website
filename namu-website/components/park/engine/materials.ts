@@ -77,9 +77,6 @@ export function createMaterials() {
     emissiveIntensity: 3.2,
   });
 
-  const figure = new THREE.MeshStandardMaterial({ color: HEX.figure, roughness: 0.92 });
-  const figureWarm = new THREE.MeshStandardMaterial({ color: HEX.figureWarm, roughness: 0.9 });
-
   const foliage = new THREE.MeshStandardMaterial({ color: "#72866a", roughness: 0.95, flatShading: true });
   const foliageDark = new THREE.MeshStandardMaterial({ color: "#5c7359", roughness: 0.95, flatShading: true });
   const bark = new THREE.MeshStandardMaterial({ color: "#5b3a24", roughness: 0.9 });
@@ -117,8 +114,6 @@ export function createMaterials() {
     ink,
     led,
     bulb,
-    figure,
-    figureWarm,
     foliage,
     foliageDark,
     bark,

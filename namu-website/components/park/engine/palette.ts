@@ -27,8 +27,6 @@ export const HEX = {
   clayBand: "#ecd3a8",
   sahelBand: "#f3c7a3",
   forestSoft: "#3d5a4b",
-  figure: "#f4ede2",
-  figureWarm: "#b98661",
   led: "#ffc98f",
 } as const;
 
