@@ -154,102 +154,6 @@
   letter-spacing: -0.01em;
 }
 
-/* ---- The card you land on ------------------------------------------------- */
-
-.intro {
-  position: absolute;
-  left: calc(24 * var(--unit-fx));
-  bottom: calc(24 * var(--unit-fx));
-  z-index: 3;
-  width: min(calc(420 * var(--unit-fx)), 30vw);
-  min-width: 320px;
-  padding: calc(26 * var(--unit-fx));
-  border-radius: calc(12 * var(--unit-fx));
-  background: rgba(255, 250, 241, 0.94);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 calc(10 * var(--unit-fx)) calc(40 * var(--unit-fx)) rgba(28, 20, 16, 0.12);
-  transition:
-    opacity 0.5s var(--ease-out),
-    transform 0.6s var(--ease-out-cubic);
-}
-
-.intro[data-open="false"] {
-  opacity: 0;
-  transform: translateY(calc(20 * var(--unit-fx)));
-  pointer-events: none;
-}
-
-.eyebrow {
-  display: block;
-  margin-bottom: calc(12 * var(--unit-fx));
-  color: var(--ds-text-soft);
-}
-
-.title {
-  margin: 0 0 calc(12 * var(--unit-fx));
-  text-wrap: balance;
-}
-
-.introBody {
-  margin: 0 0 calc(20 * var(--unit-fx));
-  color: var(--ds-text-soft);
-}
-
-.chips {
-  display: flex;
-  flex-direction: column;
-  gap: calc(6 * var(--unit-fx));
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.chip {
-  display: flex;
-  align-items: baseline;
-  gap: calc(12 * var(--unit-fx));
-  width: 100%;
-  padding: calc(11 * var(--unit-fx)) calc(14 * var(--unit-fx));
-  border: 0;
-  border-radius: calc(8 * var(--unit-fx));
-  background: var(--ds-surface);
-  color: var(--ds-text);
-  font-family: var(--font-serif), Georgia, serif;
-  font-size: calc(21 * var(--unit-fx-type));
-  text-align: left;
-  cursor: pointer;
-  transition:
-    background-color 0.35s var(--ease-out),
-    transform 0.35s var(--ease-out-cubic);
-}
-
-.chipNumber {
-  color: var(--ds-accent);
-}
-
-.chipName {
-  flex: 1 1 auto;
-  letter-spacing: -0.01em;
-}
-
-.chipModel {
-  color: var(--ds-text-soft);
-  white-space: nowrap;
-}
-
-@media (hover: hover) {
-  .chip:hover {
-    background: var(--ds-surface-2);
-    transform: translateX(calc(4 * var(--unit-fx)));
-  }
-}
-
-@media (hover: none) {
-  .chip:active {
-    background: var(--ds-surface-2);
-  }
-}
-
 /* ---- The station panel ---------------------------------------------------- */
 
 .panel {
@@ -279,61 +183,60 @@
   pointer-events: none;
 }
 
-.panelHead {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: calc(14 * var(--unit-fx));
-  margin-bottom: calc(18 * var(--unit-fx));
-}
-
+/* One arrow, no label: the park is behind the panel and the way back is the
+   only place this arrow can go. */
 .back {
-  display: inline-flex;
-  align-items: center;
-  gap: calc(8 * var(--unit-fx));
-  padding: calc(8 * var(--unit-fx)) calc(14 * var(--unit-fx));
-  margin-left: calc(-14 * var(--unit-fx));
+  position: absolute;
+  top: calc(20 * var(--unit-fx));
+  left: calc(20 * var(--unit-fx));
+  display: grid;
+  place-items: center;
+  width: calc(34 * var(--unit-fx));
+  height: calc(34 * var(--unit-fx));
+  min-width: 32px;
+  min-height: 32px;
   border: 0;
-  border-radius: calc(6 * var(--unit-fx));
+  border-radius: 50%;
   background: none;
   color: var(--ds-text-soft);
+  font-size: calc(17 * var(--unit-fx-type));
+  line-height: 1;
   cursor: pointer;
   transition:
     background-color 0.35s var(--ease-out),
     color 0.35s var(--ease-out);
 }
 
-@media (hover: hover) {
-  .back:hover {
-    background: var(--ds-surface);
-    color: var(--ds-text);
-  }
-}
-
-@media (hover: none) {
-  .back:active {
-    background: var(--ds-surface);
-    color: var(--ds-text);
-  }
-}
-
-.count {
-  color: var(--ds-text-soft);
+/* The only words above the console: what this sculpture is, and which model
+   is inside it. */
+.panelTitle {
+  margin: calc(18 * var(--unit-fx)) 0 calc(24 * var(--unit-fx));
+  text-align: center;
 }
 
 .panelName {
-  margin: 0 0 calc(6 * var(--unit-fx));
+  margin: 0 0 calc(5 * var(--unit-fx));
   font-family: var(--font-serif), Georgia, serif;
-  font-size: calc(30 * var(--unit-fx-type));
+  font-size: calc(32 * var(--unit-fx-type));
   font-weight: 450;
   letter-spacing: -0.02em;
   line-height: 1.1;
 }
 
-.panelHow {
-  margin: 0 0 calc(22 * var(--unit-fx));
-  color: var(--ds-text-soft);
-  text-wrap: pretty;
+.panelModel {
+  margin: 0;
+  color: var(--ds-accent);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 /* The console is built in fluid units sized for a whole page. The panel is a
@@ -343,47 +246,91 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  margin-block: auto;
   --unit-fx: 0.74px;
   --unit-fx-type: 0.78px;
+  /* The panel is already Paper, so the composer takes the next surface up to
+     stay a box you can put something into. */
+  --composer-surface: var(--ds-surface);
+  --settings-surface: var(--paper);
 }
 
+/* Four stations, four marks: which one you are at, and the two ways out of
+   it. No names — they are on the sculptures themselves. */
 .panelNav {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: calc(10 * var(--unit-fx));
+  justify-content: center;
+  gap: calc(14 * var(--unit-fx));
   margin-top: auto;
-  padding-top: calc(22 * var(--unit-fx));
+  padding-top: calc(24 * var(--unit-fx));
 }
 
-.navButton {
-  display: inline-flex;
-  align-items: center;
-  gap: calc(8 * var(--unit-fx));
-  max-width: 48%;
-  padding: calc(9 * var(--unit-fx)) calc(14 * var(--unit-fx));
+.navArrow {
+  display: grid;
+  place-items: center;
+  width: calc(32 * var(--unit-fx));
+  height: calc(32 * var(--unit-fx));
+  min-width: 30px;
+  min-height: 30px;
   border: 0;
-  border-radius: calc(6 * var(--unit-fx));
+  border-radius: 50%;
   background: none;
   color: var(--ds-text-soft);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: calc(16 * var(--unit-fx-type));
+  line-height: 1;
   cursor: pointer;
   transition:
     background-color 0.35s var(--ease-out),
     color 0.35s var(--ease-out);
 }
 
+.pips {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(8 * var(--unit-fx));
+}
+
+.pip {
+  width: calc(8 * var(--unit-fx));
+  height: calc(8 * var(--unit-fx));
+  min-width: 8px;
+  min-height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--ds-surface-2);
+  cursor: pointer;
+  transition:
+    width 0.45s var(--ease-out-cubic),
+    background-color 0.45s var(--ease-out);
+}
+
+.pip[data-on="true"] {
+  width: calc(26 * var(--unit-fx));
+  min-width: 24px;
+  background: var(--ds-accent);
+}
+
 @media (hover: hover) {
-  .navButton:hover {
+  .navArrow:hover,
+  .back:hover {
     background: var(--ds-surface);
     color: var(--ds-text);
+  }
+
+  .pip:hover {
+    background: var(--ds-text-soft);
+  }
+
+  .pip[data-on="true"]:hover {
+    background: var(--ds-accent);
   }
 }
 
 @media (hover: none) {
-  .navButton:active {
+  .navArrow:active,
+  .back:active {
     background: var(--ds-surface);
     color: var(--ds-text);
   }
@@ -463,29 +410,17 @@
     display: none;
   }
 
-  /* A phone has no room for five names over a small park, so the labels
-     become the numbers painted on the ground, and the sheet carries the names. */
   .label {
-    width: 30px;
-    height: 30px;
-    padding: 0;
-    justify-content: center;
-    font-size: 13px;
+    gap: calc(7 * var(--unit-fx));
+    padding: calc(6 * var(--unit-fx)) calc(12 * var(--unit-fx));
+    font-size: calc(16 * var(--unit-fx-type));
   }
 
+  /* The mark in the middle names itself; five labels is one too many here. */
   .label[data-kind="hub"] {
     display: none;
   }
 
-  .labelName {
-    display: none;
-  }
-
-  .labelNumber {
-    font-size: 13px;
-  }
-
-  .intro,
   .panel {
     left: 0;
     right: 0;
@@ -495,17 +430,6 @@
     min-width: 0;
     border-radius: calc(16 * var(--unit-fx)) calc(16 * var(--unit-fx)) 0 0;
     box-shadow: 0 calc(-8 * var(--unit-fx)) calc(40 * var(--unit-fx)) rgba(28, 20, 16, 0.14);
-  }
-
-  .intro {
-    padding: calc(22 * var(--unit-fx)) calc(18 * var(--unit-fx))
-      calc(26 * var(--unit-fx));
-    max-height: 44dvh;
-    overflow-y: auto;
-  }
-
-  .intro[data-open="false"] {
-    transform: translateY(100%);
   }
 
   .panel {
@@ -524,8 +448,7 @@
   }
 
   /* A handle, so the sheet reads as one. */
-  .panel::before,
-  .intro::before {
+  .panel::before {
     content: "";
     display: block;
     width: calc(44 * var(--unit-fx));
@@ -535,32 +458,10 @@
     background: var(--ds-surface-2);
   }
 
-  .chips {
-    flex-direction: row;
-    flex-wrap: nowrap;
-    gap: calc(8 * var(--unit-fx));
-    margin-inline: calc(-18 * var(--unit-fx));
-    padding-inline: calc(18 * var(--unit-fx));
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-
-  .chips::-webkit-scrollbar {
-    display: none;
-  }
-
-  .chip {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: calc(4 * var(--unit-fx));
-    width: max-content;
-    min-width: calc(150 * var(--unit-fx));
-  }
-
   .hint {
     left: 50%;
     right: auto;
-    bottom: calc(45dvh + 8px);
+    bottom: calc(16 * var(--unit-fx));
     transform: translateX(-50%);
     padding: calc(6 * var(--unit-fx)) calc(14 * var(--unit-fx));
     white-space: nowrap;
@@ -573,10 +474,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .intro,
   .panel,
   .label,
-  .chip,
   .loadingBar {
     transition-duration: 0.01ms;
   }

@@ -152,9 +152,6 @@ export const en = {
      The park's own copy: the sculptures, what each one does, and the words
      painted or printed inside the scene. */
 
-  "park.eyebrow":           "Namu Playground",
-  "park.title":             "A park you can talk to.",
-  "park.intro":             "Four Namu models, built as things you walk up to and try. Pick one below, or click a sculpture.",
   "park.back":              "The whole park",
   "park.classic":           "Classic console",
   "park.explore":           "Explore the models",
@@ -192,6 +189,7 @@ export const en = {
   "playground.collapse":     "Collapse sidebar",
   "playground.expand":       "Open sidebar",
   "playground.disclaimer":   "Namu Playground is an early preview. The models are still learning, and they can be wrong.",
+  "playground.preview":      "Early preview. The models can be wrong.",
   "playground.soon.label":   "Coming soon",
   "playground.soon.title":   "The next version is on its way",
   "playground.soon.body":    "We're developing a second version of these models. Stay tuned, and come back soon to test them out.",

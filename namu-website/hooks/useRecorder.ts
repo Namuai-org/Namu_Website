@@ -41,6 +41,10 @@ export function useRecorder() {
     try {
       const context = new (window.AudioContext ||
         (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
+      // The context is built after an await, so the gesture that started the
+      // recording may no longer be counted: without this it stays suspended
+      // and every reading is silence.
+      void context.resume().catch(() => {});
       const analyser = context.createAnalyser();
       analyser.fftSize = 512;
       analyser.smoothingTimeConstant = 0.7;

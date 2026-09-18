@@ -139,6 +139,15 @@ export function IconPlusCircle({ className, style }: IconProps) {
 }
 
 /** Submit. */
+/** A cross, for clearing what is attached. */
+export function IconClose({ className, style }: IconProps) {
+  return (
+    <svg className={className} style={style} viewBox="0 0 24 24" {...base}>
+      <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="1.6" />
+    </svg>
+  );
+}
+
 export function IconArrowUp({ className, style }: IconProps) {
   return (
     <svg className={className} style={style} viewBox="0 0 20 20" {...base}>
